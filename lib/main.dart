@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/Category.dart';
+import 'package:flutter_nav_bar/bottom_navigation.dart';
+import 'package:flutter_nav_bar/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
@@ -24,169 +27,48 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.amber,
         canvasColor: Colors.white,
       ),
-      home: DashboardScreen(),
+      home: MyHomePage(),
     );
   }
 }
-
-class DashboardScreen extends StatefulWidget {
+class MyHomePage extends StatefulWidget
+{
   @override
-  _DashboardScreenState createState() => _DashboardScreenState();
+  State<StatefulWidget> createState() {
+    return  _HomePage();
+  }
 }
-
-class _DashboardScreenState extends State<DashboardScreen> {
-  final _tabNavigator = GlobalKey<TabNavigatorState>();
-  final _tab1 = GlobalKey<NavigatorState>();
-  final _tab2 = GlobalKey<NavigatorState>();
-  final _tab3 = GlobalKey<NavigatorState>();
-  final _tab4 = GlobalKey<NavigatorState>();
-
-  var _tabSelectedIndex = 0;
-  var _tabPopStack = false;
-
-  void _setIndex(index) {
-    setState(() {
-      _tabPopStack = _tabSelectedIndex == index;
-      _tabSelectedIndex = index;
+class _HomePage extends State<MyHomePage> with SingleTickerProviderStateMixin
+{
+  checkLoginStatus() async {
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    print(sharedPreferences.getString('user_id'));
+    if (sharedPreferences.getString('user_id') != null) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (BuildContext context) => DashboardScreen()), (
+          Route<dynamic> route) => false);
+    } else {
+      Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+          builder: (BuildContext context) => login()), (
+          Route<dynamic> route) => false);
+    }
+  }
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration(seconds: 3)).then((value) {
+      checkLoginStatus();
     });
   }
-
-  @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => !await _tabNavigator.currentState!.maybePop(),
-      child: Scaffold(
-        body: TabNavigator(
-          key: _tabNavigator,
-          tabs: <TabItem>[
-            TabItem(_tab1, HomeScreen(title: '')),
-            TabItem(_tab2, CategoryScreen(title: '')),
-            TabItem(_tab3, PageWithButton(title: '')),
-            TabItem(_tab4, PageWithButton(title: '')),
-          ],
-          selectedIndex: _tabSelectedIndex,
-          popStack: _tabPopStack,
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _tabSelectedIndex,
-          onTap: _setIndex,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home,color: Colors.amber,),
-              title: Text('title'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.category_outlined,color: Colors.amber,),
-              title: Text('title'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart,color: Colors.amber,),
-              title: Text('title'),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.open_in_browser_outlined,color: Colors.amber,),
-              title: Text('title'),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class PageWithButton extends StatelessWidget {
-  final String title;
-  final int count;
-
-  const PageWithButton({
-    Key ?key,
-    required this.title,
-    this.count = 0,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: RaisedButton(
-          child: Text("$title $count"),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => PageWithButton(title: title, count: count + 1),
-            ));
-          },
+        backgroundColor: Color(0xffffd45f),
+        body: Center(child:Container(
+            width: MediaQuery.of(context).size.width/1.5,
+            child:Center(
+              child: Image.asset("images/logo.png"),)
         ),
-      ),
-    );
-  }
-}
-
-class TabItem {
-  final GlobalKey<NavigatorState> key;
-  final Widget tab;
-
-  const TabItem(this.key, this.tab);
-}
-
-class TabNavigator extends StatefulWidget {
-  final List<TabItem> tabs;
-  final int selectedIndex;
-  final bool popStack;
-
-  TabNavigator({
-    Key ?key,
-    required this.tabs,
-    required this.selectedIndex,
-    this.popStack = false,
-  }) : super(key: key);
-
-  @override
-  TabNavigatorState createState() => TabNavigatorState();
-}
-
-class TabNavigatorState extends State<TabNavigator> {
-  ///
-  /// Try to pop widget, return true if popped
-  ///
-  Future<bool> maybePop() {
-    return widget.tabs[widget.selectedIndex].key.currentState!.maybePop();
-  }
-
-  _popStackIfRequired(BuildContext context) async {
-    if (widget.popStack) {
-      widget.tabs[widget.selectedIndex].key.currentState!
-          .popUntil((route) => route.isFirst);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    print('selectedIndex=${widget.selectedIndex}, popStack=${widget.popStack}');
-
-    _popStackIfRequired(context);
-
-    return Stack(
-      children: List.generate(widget.tabs.length, _buildTab),
-    );
-  }
-
-  Widget _buildTab(int index) {
-    return Offstage(
-      offstage: widget.selectedIndex != index,
-      child: Opacity(
-        opacity: widget.selectedIndex == index ? 1.0 : 0.0,
-        child: Navigator(
-          key: widget.tabs[index].key,
-          onGenerateRoute: (settings) => MaterialPageRoute(
-            settings: settings,
-            builder: (_) => widget.tabs[index].tab,
-          ),
-        ),
-      ),
-    );
+        ));
   }
 }

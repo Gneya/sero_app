@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_nav_bar/bottom_navigation.dart';
+import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'personaldetails.dart';
@@ -138,9 +140,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               controller: _typeAheadController,
                               textAlign: TextAlign.center,
                               decoration: InputDecoration(
+                                border: InputBorder.none,
                                 hintText: hint,
                                 suffixIcon: IconButton(
-                                  icon:Icon(Icons.person_add),
+                                  icon:Icon(Icons.person_add_rounded),
                                   padding: EdgeInsets.zero,
                                   color: Colors.black,
                                   onPressed:(){
@@ -196,10 +199,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   minWidth: MediaQuery.of(context).size.width,
                   padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                   onPressed: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => SelectTable()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SelectTable()));
                   },
                   child: Text("Dine in",
                       textAlign: TextAlign.center,
