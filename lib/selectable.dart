@@ -116,7 +116,7 @@ class _SelectTableState extends State<SelectTable> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => DashboardScreen(index: 1,)));
+                        builder: (context) => CategoryScreen()));
               }
             },
           );

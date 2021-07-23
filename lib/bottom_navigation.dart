@@ -1,24 +1,24 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/Category.dart';
+import 'package:flutter_nav_bar/delay.dart';
+import 'package:flutter_nav_bar/utsav/cart_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class DashboardScreen extends StatefulWidget {
-  int ?index;
-  DashboardScreen({this.index});
   @override
-  _DashboardScreenState createState() => _DashboardScreenState(index:index);
+  _DashboardScreenState createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  int ?index=0;
-  _DashboardScreenState({this.index});
   final _tabNavigator = GlobalKey<TabNavigatorState>();
   final _tab1 = GlobalKey<NavigatorState>();
   final _tab2 = GlobalKey<NavigatorState>();
   final _tab3 = GlobalKey<NavigatorState>();
   final _tab4 = GlobalKey<NavigatorState>();
-  var _tabSelectedIndex=0;
+  var _tabSelectedIndex = 0;
   var _tabPopStack = false;
-
+    String total="0";
   void _setIndex(index) {
       setState(() {
         _tabPopStack = _tabSelectedIndex == index;
@@ -28,6 +28,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
+      fetchtotal();
     return WillPopScope(
       onWillPop: () async => !await _tabNavigator.currentState!.maybePop(),
       child: Scaffold(
@@ -36,10 +37,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
           tabs: <TabItem>[
             TabItem(_tab1, HomeScreen(title: '')),
             TabItem(_tab2, CategoryScreen(title: '')),
-            TabItem(_tab3, PageWithButton(title: '')),
+            TabItem(_tab3, Delay()),
             TabItem(_tab4, PageWithButton(title: '')),
           ],
-          selectedIndex: index??_tabSelectedIndex,
+          selectedIndex: _tabSelectedIndex,
           popStack: _tabPopStack,
         ),
         bottomNavigationBar: BottomNavigationBar(
@@ -55,7 +56,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
               title: Text('title'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart,color: Colors.amber,),
+              icon: Badge(
+              badgeColor: Colors.red,
+                position: BadgePosition.topEnd(top: -20, end: -10),
+                // badgeContent: FutureBuilder(
+                //   future: fetchtotal(),
+                // builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                   badgeContent:Text(total,style: TextStyle(color: Colors.white)),
+              //}),
+                child:Icon(Icons.shopping_cart,color: Colors.amber,),),
               title: Text('title'),
             ),
             BottomNavigationBarItem(
@@ -67,6 +76,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+
+  Future<String> fetchtotal() async {
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    var list=sharedPreferences.getStringList("selected");
+    setState(() {
+      total=list!.length.toString();
+    });
+    return sharedPreferences.getStringList("selected")!.length.toString();
+  }
+
 }
 
 class PageWithButton extends StatelessWidget {

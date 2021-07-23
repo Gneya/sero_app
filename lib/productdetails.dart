@@ -370,7 +370,12 @@ class _SelectItemState extends State<SelectItem> {
                         sharedPreferences.setStringList("selectedprice", listofprice);
                       });
                       print(sharedPreferences.getStringList("selected"));
-                      gotocart();
+                      Fluttertoast.showToast(
+                          msg: "Item added to cart",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          textColor: Colors.green,
+                          timeInSecForIosWeb: 10);
                     }
                     else {
                       // showDialog(context: context, builder: (context) {
@@ -475,7 +480,12 @@ class _SelectItemState extends State<SelectItem> {
                       print(sharedPreferences.getStringList("selected"));
                       print( _selectedItems);
                       //_selectedItemsprice.add(price[index]);
-                      gotocart();
+                      Fluttertoast.showToast(
+                          msg: "Item added to cart",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          textColor: Colors.green,
+                          timeInSecForIosWeb: 10);
                     }
                     else {
                       // showDialog(context: context, builder: (context) {
@@ -486,16 +496,6 @@ class _SelectItemState extends State<SelectItem> {
               );
             })
     );
-  }
-  Future<void> gotocart() async {
-    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(builder: (context) =>
-    //       CartScreen(
-    //         selectedItems: sharedPreferences.getStringList("selected")??[],
-    //         selectedItemsprice: sharedPreferences.getStringList("selectedprice")??[],)),
-    //);
   }
 }
 class product

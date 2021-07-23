@@ -24,6 +24,7 @@ dependencies:
   flutter:
     sdk: flutter
   csc_picker: ^0.2.5
+  badges:
   flutter_typeahead: ^3.2.0
   http: ^0.13.0-nullsafety.0
   fluttertoast: ^8.0.7
