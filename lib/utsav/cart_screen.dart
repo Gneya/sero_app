@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:sero_app/utsav/payment_screen.dart';
+import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 // import 'package:sero_app/utsav/void.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -450,10 +450,10 @@ class _CartScreenState extends State<CartScreen> {
               ),
               OutlinedButton.icon(
                 onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount,Discountt: discount, Redeem: points,)),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount,Discountt: discount, Redeem: points,)),
+                  );
                 },
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all(

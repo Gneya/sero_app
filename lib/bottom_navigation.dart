@@ -34,7 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     else {
       if(mounted){
       setState(() {
-        _tabPopStack = _tabSelectedIndex == index;
+        // _tabPopStack = _tabSelectedIndex == index;
         _tabSelectedIndex = index;
       });}
     }
