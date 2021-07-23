@@ -42,9 +42,10 @@ class _HomeScreenState extends State<HomeScreen> {
   fetch()
 
   async {
+    if(mounted){
     setState(() {
       _isloading = true;
-    });
+    });}
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setStringList("selected", []);
     sharedPreferences.setStringList("selectedprice", []);
@@ -57,16 +58,19 @@ class _HomeScreenState extends State<HomeScreen> {
               ''
         });
     var d = json.decode(Response.body.toString());
+    if(mounted){
     setState(() {
       _name = d["data"]["first_name"];
-    });
+    });}
+    if(mounted){
     setState(() {
       _isloading = false;
-    });
+    });}
   } setBottomBarIndex(index) {
+    if(mounted){
     setState(() {
       _currentIndex = index;
-    });
+    });}
   }
 
   @override

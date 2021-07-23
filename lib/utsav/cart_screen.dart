@@ -31,9 +31,9 @@ class _CartScreenState extends State<CartScreen> {
       _isloading =true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    table_id=  prefs.getInt("table_id")!;
-    table_name =prefs.getString("table_name")!;
-    customer_name=prefs.getString("customer_name")!;
+    table_id=  prefs.getInt("table_id")??0;
+    table_name =prefs.getString("table_name")??"";
+    customer_name=prefs.getString("customer_name")??"";
     //selectedItems=prefs.getStringList("selected")!;
     counter=prefs.getStringList("quantity")!;
     setState(() {
@@ -43,8 +43,6 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState()  {
     getSharedPrefs();
-    WidgetsBinding.instance!
-        .addPostFrameCallback((_) => fetchData());
     super.initState();
   }
   List<dynamic> _selectedItems =[];

@@ -19,7 +19,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final _tab4 = GlobalKey<NavigatorState>();
   var _tabSelectedIndex = 0;
   var _tabPopStack = false;
-    String total="0";
+    String? total="0";
   Future<void> _setIndex(index) async {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     if(sharedPreferences.getString("customer_name")=="")
@@ -32,10 +32,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             timeInSecForIosWeb: 10);
       }
     else {
+      if(mounted){
       setState(() {
         _tabPopStack = _tabSelectedIndex == index;
         _tabSelectedIndex = index;
-      });
+      });}
     }
   }
 
@@ -75,7 +76,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 // badgeContent: FutureBuilder(
                 //   future: fetchtotal(),
                 // builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                   badgeContent:Text(total,style: TextStyle(color: Colors.white)),
+                   badgeContent:Text(total??"",style: TextStyle(color: Colors.white)),
               //}),
                 child:Icon(Icons.shopping_cart,color: Colors.amber,),),
               title: Text('title'),
@@ -94,9 +95,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     var list=sharedPreferences.getStringList("selected");
     setState(() {
-      total=list!.length.toString();
+      total=list?.length.toString()??"0";
     });
-    return sharedPreferences.getStringList("selected")!.length.toString();
+    return sharedPreferences.getStringList("selected")?.length.toString()??"0";
   }
 
 }

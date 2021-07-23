@@ -39,15 +39,15 @@ class loginState extends State<login> {
           Uri.parse("https://pos.sero.app/oauth/token"), body: input);
       var v= json.decode(response.body);
       print(v);
-      Map m= {
-        "Authorization": v["access_token"],
-      };
       //print(m["Authorization"]);
       _model = Model.fromJson(json.decode(response.body.toString()));
       setState(() {
         _isloading = false;
       });
       if (_model.error == null||_model.error == ''){
+        Map m= {
+          "Authorization": v["access_token"],
+        };
         var s=_model.type+" "+m["Authorization"];
         sharedPreferences.setString("Authorization",s);
         print(sharedPreferences.getString("Authorization"));
