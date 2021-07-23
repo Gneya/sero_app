@@ -48,6 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setStringList("selected", []);
     sharedPreferences.setStringList("selectedprice", []);
+    sharedPreferences.setString("customer_name", "");
     sharedPreferences.setStringList("quantity", []);
     var Response = await http.get(
         Uri.parse("https://pos.sero.app/connector/api/user/loggedin"),

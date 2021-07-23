@@ -4,6 +4,7 @@ import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:flutter_nav_bar/delay.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class DashboardScreen extends StatefulWidget {
   @override
@@ -19,11 +20,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
   var _tabSelectedIndex = 0;
   var _tabPopStack = false;
     String total="0";
-  void _setIndex(index) {
+  Future<void> _setIndex(index) async {
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    if(sharedPreferences.getString("customer_name")=="")
+      {
+        Fluttertoast.showToast(
+            msg: "Please select the customer",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            textColor: Colors.green,
+            timeInSecForIosWeb: 10);
+      }
+    else {
       setState(() {
         _tabPopStack = _tabSelectedIndex == index;
         _tabSelectedIndex = index;
       });
+    }
   }
 
   @override

@@ -335,54 +335,66 @@ class _SelectItemState extends State<SelectItem> {
                 ),
               ),
                   onTap: () async {
-                    SharedPreferences sharedPreferences = await SharedPreferences
-                        .getInstance();
-                    print(_productlist[index].id);
-                    http.Response response = await http.get(
-                        Uri.parse(
-                            "https://pos.sero.app/connector/api/product/${_productlist[index].id}")
-                        , headers: {
-                      'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8" ??
-                          ''
-                    });
-                    var v = (json.decode(response.body));
-                    //print(v["data"][0]["modifiers"]);
-                    List<dynamic> check = v["data"][0]["modifiers"];
-                    List<String> modifiers = [];
-                    if (check.isNotEmpty) {
-                      for (var _mod in v["data"][0]["modifiers"][0]) {
-                        print(_mod["name"]);
-                        modifiers.add(_mod["name"]);
+                    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                    if(sharedPreferences.getString("customer_name")=="")
+                      {
+                        Fluttertoast.showToast(
+                            msg: "Please select thre customer and table first",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.BOTTOM,
+                            textColor: Colors.green,
+                            timeInSecForIosWeb: 10);
                       }
-                    }
-                    if (modifiers.isEmpty) {
-                      var list = sharedPreferences.getStringList("selected");
-                      var listofprice=sharedPreferences.getStringList("selectedprice");
-                      //_selectedItems.add(name[index]);
-                      setState(() {
-                        var _price=searchresultprice[index];
-                        var product = searchresult[index];
-                        list!.add(product);
-                        listofprice!.add(_price);
-                        sharedPreferences.setStringList("selected", []);
-                        sharedPreferences.setStringList("selected", list);
-                        sharedPreferences.setStringList("selectedprice", []);
-                        sharedPreferences.setStringList("selectedprice", listofprice);
-                      });
-                      print(sharedPreferences.getStringList("selected"));
-                      Fluttertoast.showToast(
-                          msg: "Item added to cart",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.BOTTOM,
-                          textColor: Colors.green,
-                          timeInSecForIosWeb: 10);
-                    }
                     else {
-                      // showDialog(context: context, builder: (context) {
-                      //   return add(modifiers: modifiers);
-                      // });
-                    }
-                  });
+                      print(_productlist[index].id);
+                      http.Response response = await http.get(
+                          Uri.parse(
+                              "https://pos.sero.app/connector/api/product/${_productlist[index]
+                                  .id}")
+                          , headers: {
+                        'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8" ??
+                            ''
+                      });
+                      var v = (json.decode(response.body));
+                      //print(v["data"][0]["modifiers"]);
+                      List<dynamic> check = v["data"][0]["modifiers"];
+                      List<String> modifiers = [];
+                      if (check.isNotEmpty) {
+                        for (var _mod in v["data"][0]["modifiers"][0]) {
+                          print(_mod["name"]);
+                          modifiers.add(_mod["name"]);
+                        }
+                      }
+                      if (modifiers.isEmpty) {
+                        var list = sharedPreferences.getStringList("selected");
+                        var listofprice = sharedPreferences.getStringList(
+                            "selectedprice");
+                        //_selectedItems.add(name[index]);
+                        setState(() {
+                          var _price = searchresultprice[index];
+                          var product = searchresult[index];
+                          list!.add(product);
+                          listofprice!.add(_price);
+                          sharedPreferences.setStringList("selected", []);
+                          sharedPreferences.setStringList("selected", list);
+                          sharedPreferences.setStringList("selectedprice", []);
+                          sharedPreferences.setStringList(
+                              "selectedprice", listofprice);
+                        });
+                        print(sharedPreferences.getStringList("selected"));
+                        Fluttertoast.showToast(
+                            msg: "Item added to cart",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.BOTTOM,
+                            textColor: Colors.green,
+                            timeInSecForIosWeb: 10);
+                      }
+                      else {
+                        // showDialog(context: context, builder: (context) {
+                        //   return add(modifiers: modifiers);
+                        // });
+                      }
+                    }});
             }):GridView.builder(
             primary: false,
             padding: const EdgeInsets.all(10),
@@ -446,6 +458,16 @@ class _SelectItemState extends State<SelectItem> {
                   onTap: () async {
                     SharedPreferences sharedPreferences = await SharedPreferences
                         .getInstance();
+                    if(sharedPreferences.getString("customer_name")=="")
+                    {
+                      Fluttertoast.showToast(
+                          msg: "Please select the customer and table first",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          textColor: Colors.green,
+                          timeInSecForIosWeb: 10);
+                    }
+                    else{
                     print(_productlist[index].id);
                     http.Response response = await http.get(
                         Uri.parse(
@@ -492,7 +514,7 @@ class _SelectItemState extends State<SelectItem> {
                       //   return add(modifiers: modifiers);
                       // });
                     }
-                  }
+                  }}
               );
             })
     );
