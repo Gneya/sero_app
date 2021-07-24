@@ -45,10 +45,15 @@ class _CartScreenState extends State<CartScreen> {
     getSharedPrefs();
     super.initState();
   }
+
   List<dynamic> _selectedItems =[];
   List<dynamic> _selectedItemsprice = [];
+  List<Modi> _modifiers =[];
+  bool isEmpty =true;
+
   @override
   Widget build(BuildContext context) {
+
     pay();
     size = MediaQuery.of(context).size;
     height = size.height;
@@ -160,116 +165,133 @@ class _CartScreenState extends State<CartScreen> {
     }
               else
                 {
-                  return ListView.builder(
-                    itemCount: _selectedItems.length,
-                    itemBuilder: (context, index) {
-                      if(counterList.length < _selectedItems.length ) {
-                        counterList.add("1");
-                      }
-                      return Padding(
-                        padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
-                        child: Container(
-                            height:MediaQuery.of(context).size.height/10 ,
-                            padding: EdgeInsets.only(left:10),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey,
-                                  offset: const Offset(
-                                    1.0,
-                                    1.0,
-                                  ), //Offset
-                                  blurRadius: 6.0,
-                                  spreadRadius: 2.0,
-                                ), //BoxShadow
-                                BoxShadow(
-                                  color: Colors.white,
-                                  offset: const Offset(0.0, 0.0),
-                                  blurRadius: 0.0,
-                                  spreadRadius: 0.0,
-                                ),],
-                            ),
-                            child:Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                Container(
-                                  width: MediaQuery.of(context).size.width/2.8,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(left: 0),
-                                    child: Text(
-                                      _selectedItems[index],
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold
+                  return Container(
+                    height:MediaQuery.of(context).size.height/1.85,
+                    child: ListView.builder(
+                      itemCount: _selectedItems.length,
+                      itemBuilder: (context, index) {
+                        if(counterList.length < _selectedItems.length ) {
+                          counterList.add("1");
+                        }
+                        return Padding(
+                          padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
+                          child: Container(
+                              // height:MediaQuery.of(context).size.height/10 ,
+                              padding: EdgeInsets.only(left:10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: const Offset(
+                                      1.0,
+                                      1.0,
+                                    ), //Offset
+                                    blurRadius: 6.0,
+                                    spreadRadius: 2.0,
+                                  ), //BoxShadow
+                                  BoxShadow(
+                                    color: Colors.white,
+                                    offset: const Offset(0.0, 0.0),
+                                    blurRadius: 0.0,
+                                    spreadRadius: 0.0,
+                                  ),],
+                              ),
+                              child:Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                        width: MediaQuery.of(context).size.width/2.8,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 0),
+                                          child: Text(
+                                            _selectedItems[index],
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                          ),
+                                        ),
                                       ),
-                                    ),
+                                      Row(
+                                        //mainAxisAlignment: MainAxisAlignment.,
+                                        children: [
+                                          IconButton(
+                                            onPressed:(){
+                                              setState(() {
+                                                var c=int.parse(counterList[index]);
+                                                if( c>1)
+                                                  c--;
+                                                counterList[index]=c.toString();
+                                                //saveState();
+                                              });
+                                            },
+                                            icon: Icon(Icons.remove_circle,
+                                              size: 17,),
+                                          ),
+                                          Text(counterList[index].toString(),
+                                            style: TextStyle(
+                                                fontSize: 15
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed:(){
+                                              setState(() {
+                                                var c=int.parse(counterList[index]);
+                                                c++;
+                                                counterList[index]=c.toString();
+                                                //saveState();
+                                              });
+                                            },
+                                            icon: Icon(Icons.add_circle_outlined,
+                                              size: 17,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                          width: MediaQuery.of(context).size.width/9,
+                                          child:Text(
+                                            '\$'+double.parse(_selectedItemsprice[index]).toStringAsFixed(2),
+                                            style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                          )),
+                                      IconButton(
+                                        onPressed:(){
+                                          setState(() {
+                                            _selectedItems.removeAt(index);
+                                            counterList.removeAt(index);
+                                            paymentAmount-=double.parse( _selectedItemsprice[index]);
+                                            _selectedItemsprice.removeAt(index);
+                                          });
+                                          delete(_selectedItems,counterList,_selectedItemsprice);
+                                        },
+                                        icon: Icon(Icons.delete,
+                                          color: Colors.red,
+                                          size: 25,),
+                                      ),
+                                    ],
                                   ),
-                                ),
-                                Row(
-                                  //mainAxisAlignment: MainAxisAlignment.,
-                                  children: [
-                                    IconButton(
-                                      onPressed:(){
-                                        setState(() {
-                                          var c=int.parse(counterList[index]);
-                                          if( c>1)
-                                            c--;
-                                          counterList[index]=c.toString();
-                                          //saveState();
-                                        });
+                                  isEmpty ? Text('') :Container(
+                                    height: _modifiers[index]._modi.length*20,
+
+                                    child:ListView.builder(
+                                      itemCount: _modifiers[index]._modi.length,
+                                      itemBuilder: (context, index) {
+                                        return Text(' - Extra '+_modifiers[index]._modi[index]);
                                       },
-                                      icon: Icon(Icons.remove_circle,
-                                        size: 17,),
-                                    ),
-                                    Text(counterList[index].toString(),
-                                      style: TextStyle(
-                                          fontSize: 15
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed:(){
-                                        setState(() {
-                                          var c=int.parse(counterList[index]);
-                                          c++;
-                                          counterList[index]=c.toString();
-                                          //saveState();
-                                        });
-                                      },
-                                      icon: Icon(Icons.add_circle_outlined,
-                                        size: 17,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                    width: MediaQuery.of(context).size.width/9,
-                                    child:Text(
-                                      '\$'+double.parse(_selectedItemsprice[index]).toStringAsFixed(2),
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold
-                                      ),
-                                    )),
-                                IconButton(
-                                  onPressed:(){
-                                    setState(() {
-                                      _selectedItems.removeAt(index);
-                                      counterList.removeAt(index);
-                                      paymentAmount-=double.parse( _selectedItemsprice[index]);
-                                      _selectedItemsprice.removeAt(index);
-                                    });
-                                    delete(_selectedItems,counterList,_selectedItemsprice);
-                                  },
-                                  icon: Icon(Icons.delete,
-                                    color: Colors.red,
-                                    size: 25,),
-                                ),
-                              ],
-                            )
-                        ),
-                      );
-                    },
+                                  )
+                                  )
+                                ],
+                              )
+                          ),
+                        );
+                      },
+                    ),
                   );
               }
             }),
@@ -491,172 +513,28 @@ class _CartScreenState extends State<CartScreen> {
     _selectedItems=list!;
     _selectedItemsprice=sharedPreferences.getStringList("selectedprice")!;
     print(_selectedItems);
+    for(int i=0 ;i<list.length;i++){
+       var _mod = sharedPreferences.getStringList(list[i]);
+       Modi modi ;
+       modi = Modi.add(_mod!);
+       if(_mod!=null){
+         isEmpty = false;
+         _modifiers.add(modi)  ;
+       }
+       else{
+         isEmpty = true;
+       }
+    }
     setState(() {
       _isloading=false;
     });
      return list;
   }
 }
+class Modi {
+  List<dynamic> _modi =[];
 
-// class BodyLayout extends StatefulWidget {
-//   List<String> selectedItems = [];
-//   List<String> selectedItemsprice = [];
-//   List<String> counterList;
-//   double payment;
-//   BodyLayout({ Key? key,
-//     required this.selectedItems
-//     ,required this.selectedItemsprice,
-//     required this.counterList,
-//     required this.payment
-//   }) : super(key: key);
-//
-//   @override
-//   _BodyLayoutState createState() => _BodyLayoutState(selectedItems);
-// }
-//
-// class _BodyLayoutState extends State<BodyLayout> {
-//   _BodyLayoutState(List<String> selectedItems);
-//   List<String> selectedItems = [];
-//   int _counter =1;
-//   @override
-//   Widget build(BuildContext context) {
-//     _counter=widget.selectedItems.length;
-//     return Container(
-//       height: MediaQuery.of(context).size.height/1.95,
-//       child: ListView.builder(
-//         itemCount: widget.selectedItems.length,
-//         itemBuilder: (context, index) {
-//           if(widget.counterList.length < widget.selectedItems.length ) {
-//             widget.counterList.add("1");
-//           }
-//           return Padding(
-//             padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
-//             child: Container(
-//                 height:MediaQuery.of(context).size.height/10 ,
-//                 padding: EdgeInsets.only(left:10),
-//                 decoration: BoxDecoration(
-//                   borderRadius: BorderRadius.circular(30),
-//                   boxShadow: [
-//                     BoxShadow(
-//                       color: Colors.grey,
-//                       offset: const Offset(
-//                         1.0,
-//                         1.0,
-//                       ), //Offset
-//                       blurRadius: 6.0,
-//                       spreadRadius: 2.0,
-//                     ), //BoxShadow
-//                     BoxShadow(
-//                       color: Colors.white,
-//                       offset: const Offset(0.0, 0.0),
-//                       blurRadius: 0.0,
-//                       spreadRadius: 0.0,
-//                     ),],
-//                 ),
-//                 child:Row(
-//                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                   children: [
-//                     Container(
-//                       width: MediaQuery.of(context).size.width/2.8,
-//                       child: Padding(
-//                         padding: const EdgeInsets.only(left: 0),
-//                         child: Text(
-//                           widget.selectedItems[index],
-//                           style: TextStyle(
-//                               fontSize: 15,
-//                               fontWeight: FontWeight.bold
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                     Row(
-//                       //mainAxisAlignment: MainAxisAlignment.,
-//                       children: [
-//                         IconButton(
-//                           onPressed:(){
-//                             setState(() {
-//                               var c=int.parse(widget.counterList[index]);
-//                               if( c>1)
-//                                 c--;
-//                               widget.counterList[index]=c.toString();
-//                               saveState();
-//                             });
-//                           },
-//                           icon: Icon(Icons.remove_circle,
-//                             size: 17,),
-//                         ),
-//                         Text(widget.counterList[index].toString(),
-//                           style: TextStyle(
-//                               fontSize: 15
-//                           ),
-//                         ),
-//                         IconButton(
-//                           onPressed:(){
-//                             setState(() {
-//                               var c=int.parse(widget.counterList[index]);
-//                               c++;
-//                               widget.counterList[index]=c.toString();
-//                               saveState();
-//                             });
-//                           },
-//                           icon: Icon(Icons.add_circle_outlined,
-//                             size: 17,
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                     Container(
-//                         width: MediaQuery.of(context).size.width/9,
-//                         child:Text(
-//                           '\$'+double.parse(widget.selectedItemsprice[index]).toStringAsFixed(2),
-//                           style: TextStyle(
-//                               fontSize: 15,
-//                               fontWeight: FontWeight.bold
-//                           ),
-//                         )),
-//                     IconButton(
-//                       onPressed:(){
-//                         setState(() {
-//                           widget.selectedItems.removeAt(index);
-//                           widget.counterList.removeAt(index);
-//                           widget.payment-=double.parse( widget.selectedItemsprice[index]);
-//                           widget.selectedItemsprice.removeAt(index);
-//                         });
-//                         delete(widget.selectedItems,widget.counterList,widget.selectedItemsprice);
-//                       },
-//                       icon: Icon(Icons.delete,
-//                         color: Colors.red,
-//                         size: 25,),
-//                     ),
-//                   ],
-//                 )
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-//
-//   // Future<void> saveState() async {
-//   //   SharedPreferences prefs=await SharedPreferences.getInstance();
-//   //   prefs.setStringList("quantity",[]);
-//   //   prefs.setStringList("quantity",widget.counterList);
-//   // }
-//   //
-//   // Future<void> delete(List<String> s,List<String> counter,List<String> price) async {
-//   //   SharedPreferences prefs=await SharedPreferences.getInstance();
-//   //   // var list=prefs.getStringList("selected");
-//   //   // prefs.setStringList("selected",[]);
-//   //   // var counter=prefs.getStringList("quantity");
-//   //   // counter!.removeAt(index);
-//   //   // prefs.setStringList("quantity",[]);
-//   //   // prefs.setStringList("quantity",counter);
-//   //   // list!.removeAt(index);
-//   //   // print(list);
-//   //   prefs.setStringList("quantity",counter);
-//   //   prefs.setStringList("selected",s);
-//   //   prefs.setStringList("selectedprice",price);
-//   //
-//   // }
-// }
-//
+  Modi.add(List<dynamic> m){
+    _modi=m;
+  }
+}

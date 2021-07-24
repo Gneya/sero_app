@@ -10,6 +10,8 @@ import 'package:http/http.dart' as http;
 //import 'package:barcode_scan/barcode_scan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'addons_and_modifiers.dart';
+
 class SelectItem extends StatefulWidget {
   String category;
   List<String> selectedItems = [];
@@ -482,34 +484,32 @@ class _SelectItemState extends State<SelectItem> {
                         modifiers.add(_mod["name"]);
                       }
                     }
-                    if (modifiers.isEmpty) {
-                      var list = sharedPreferences.getStringList("selected");
-                      var listofprice=sharedPreferences.getStringList("selectedprice");
-                      var product = _productlist[index].name;
-                      var _price=_productlist[index].price;
-                      list!.add(product);
-                      listofprice!.add(_price);
-                      sharedPreferences.setStringList("selected", []);
-                      sharedPreferences.setStringList("selected", list);
-                      sharedPreferences.setStringList("selectedprice", []);
-                      sharedPreferences.setStringList("selectedprice", listofprice);
-                      sharedPreferences.setStringList("selectedprice", listofprice);
-                      print(sharedPreferences.getStringList("selectedprice"));
-                      print(sharedPreferences.getStringList("selected"));
-                      print( _selectedItems);
-                      //_selectedItemsprice.add(price[index]);
-                      Fluttertoast.showToast(
-                          msg: "Item added to cart",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.BOTTOM,
-                          textColor: Colors.green,
-                          timeInSecForIosWeb: 10);
+                    if (modifiers.isNotEmpty) {
+                      showDialog(context: context, builder: (context) {
+                        return add(modifiers: modifiers,product: _productlist[index].name);
+                      });
                     }
-                    else {
-                      // showDialog(context: context, builder: (context) {
-                      //   return add(modifiers: modifiers);
-                      // });
-                    }
+                    var list = sharedPreferences.getStringList("selected");
+                    var listofprice=sharedPreferences.getStringList("selectedprice");
+                    var product = _productlist[index].name;
+                    var _price=_productlist[index].price;
+                    list!.add(product);
+                    listofprice!.add(_price);
+                    sharedPreferences.setStringList("selected", []);
+                    sharedPreferences.setStringList("selected", list);
+                    sharedPreferences.setStringList("selectedprice", []);
+                    sharedPreferences.setStringList("selectedprice", listofprice);
+                    sharedPreferences.setStringList("selectedprice", listofprice);
+                    print(sharedPreferences.getStringList("selectedprice"));
+                    print(sharedPreferences.getStringList("selected"));
+                    print( _selectedItems);
+                    //_selectedItemsprice.add(price[index]);
+                    Fluttertoast.showToast(
+                        msg: "Item added to cart",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        textColor: Colors.green,
+                        timeInSecForIosWeb: 10);
                   }}
               );
             })
