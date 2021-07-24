@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_nav_bar/forgetpassword.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
@@ -262,11 +263,11 @@ class loginState extends State<login> {
                   GestureDetector(
                     child: Text('Forgot your password?'),
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //       builder: (context) => ForgetPassword(title: '',)),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ForgetPassword(title: '',)),
+                      );
                     },
                   )
                 ],
