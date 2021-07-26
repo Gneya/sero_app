@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
-// import 'package:sero_app/utsav/void.dart';
+import 'package:flutter_nav_bar/utsav/void.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class CartScreen extends StatefulWidget {
   @override
@@ -16,10 +17,12 @@ class _CartScreenState extends State<CartScreen> {
   bool _isloading =false;
   List<String> counter=[];
   int points=0;
-  int _currentIndex = 0;
+  int _currentIndex = 2;
   var size,height,width;
   int table_id=0;
   String table_name='';
+
+
   setBottomBarIndex(index){
     setState(() {
       _currentIndex = index;
@@ -360,12 +363,12 @@ class _CartScreenState extends State<CartScreen> {
                 children: [
                   IconButton(
                     onPressed:(){
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (context){
-                      //       return VoidBill(Ammount: paymentAmount,);
-                      //     }
-                      // );
+                      showDialog(
+                          context: context,
+                          builder: (context){
+                            return VoidBill(Ammount: paymentAmount,);
+                          }
+                      );
                     },
                     iconSize: 25,
                     icon: Icon(Icons.delete,
@@ -401,12 +404,12 @@ class _CartScreenState extends State<CartScreen> {
                   IconButton(
                     onPressed:()async{
                       SharedPreferences prefs = await SharedPreferences.getInstance();
+                      prefs.setInt('index',2);
                       table_id=  prefs.getInt("table_id")!;
                       table_name =prefs.getString("table_name")!;
                       customer_name=prefs.getString("customer_name")!;
                       setState(() {
                         _currentIndex =0;
-
                         setState(() {
                           _isloading =false;
                         });
@@ -454,7 +457,15 @@ class _CartScreenState extends State<CartScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 30),
                 child: OutlinedButton.icon(
-                  onPressed: () {
+                  onPressed: () async {
+                    SharedPreferences holdOrder = await SharedPreferences.getInstance();
+                    holdOrder.getInt('table_id');
+                    var response = await http.post(
+                        Uri.parse("https://pos.sero.app/connector/api/contactapi"), body: input,
+                        headers: {
+                          'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjlhNTYwNGYxZDAxMzU2NTRhY2YyYjE4MmEyOGUwMjA4M2QxOGUxY2Y1ZTY0MzM1MzdmNzc3MzFkMTMzZjNmNWQ5MTU3ZTEwOTQ5NDE3ZmQ3In0.eyJhdWQiOiIzIiwianRpIjoiOWE1NjA0ZjFkMDEzNTY1NGFjZjJiMTgyYTI4ZTAyMDgzZDE4ZTFjZjVlNjQzMzUzN2Y3NzczMWQxMzNmM2Y1ZDkxNTdlMTA5NDk0MTdmZDciLCJpYXQiOjE2MjM2NjAxMzksIm5iZiI6MTYyMzY2MDEzOSwiZXhwIjoxNjU1MTk2MTM5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WGLAu9KVi-jSt0q9yUyENDoEQnSLF1o0tezej5YozBFXJVQuEvSykvA9T6nnJghujQ2uU-nxUCRftLBhYzGjsu26YoKZBin70k1cqoYDfIWlVZ-fNkJi1vAXYOk9Pzxz7YFBa6hgz1MyUlDOI1LsSSsJh87hGBzIN6Ib_cYmGoo8KHVEfqbDtCNnZdOq68vjhwf6dwYEJUtxanaocuC-_XHkdM7769JiO48Ot93BqZjmRuVwvK9zE_8bilmhktlgD65ahgKOSS2yQlMdpgpsqP1W5Mfy_SBu32BkqTpAc5v2QWRTVhevES-blsfqdoZ59aw0OzrxyC8PvipyuhGQjs6V7eCrKK0jOei9g4RyhKlQueDXxxrWrqsStIsPzkn-kXA5k2NINIFgr2MlLtypTR76xnncWE5rCqm39K5V2_q3aXDQvCHdl3SVBKDqwNCUKq1CxbJlkF8r1R1mxXxN76TBZbcalO7wUX0F-D1j9oWkwXSZBe7L6vQQqvhC2AsQO2LB4QiByuFi1-J4h05vM3Kab0nmRvVeNYekhNP9HtTGWCH_UDuiDAp23VqUhMTrFygUAPEASU0fnw-rMKhrll_O0wMaBE33ZfItsV0o6pHCQhUjsDKwfmgVynOyYu0rX_huVN_PUBSYQVuCiabUMp8Q5Dv7n8Ky7_yI8XypQK4'
+                        }
+                    );
                   },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all(
@@ -471,7 +482,7 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
               OutlinedButton.icon(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount,Discountt: discount, Redeem: points,)),
@@ -509,22 +520,23 @@ class _CartScreenState extends State<CartScreen> {
       _isloading=true;
     });
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    _currentIndex = sharedPreferences.getInt('index') ?? 2;
     var list=sharedPreferences.getStringList("selected");
     _selectedItems=list!;
     _selectedItemsprice=sharedPreferences.getStringList("selectedprice")!;
     print(_selectedItems);
-    for(int i=0 ;i<list.length;i++){
-       var _mod = sharedPreferences.getStringList(list[i]);
-       Modi modi ;
-       modi = Modi.add(_mod!);
-       if(_mod!=null){
-         isEmpty = false;
-         _modifiers.add(modi)  ;
-       }
-       else{
-         isEmpty = true;
-       }
-    }
+    // for(int i=0 ;i<list.length;i++){
+    //    var _mod = sharedPreferences.getStringList(list[i]);
+    //    Modi modi ;
+    //    modi = Modi.add(_mod!);
+    //    if(_mod!=null){
+    //      isEmpty = false;
+    //      _modifiers.add(modi)  ;
+    //    }
+    //    else{
+    //      isEmpty = true;
+    //    }
+    // }
     setState(() {
       _isloading=false;
     });

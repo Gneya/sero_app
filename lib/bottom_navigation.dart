@@ -2,10 +2,10 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/Category.dart';
-import 'package:flutter_nav_bar/delay.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 class DashboardScreen extends StatefulWidget {
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
@@ -22,6 +22,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     String? total="0";
   Future<void> _setIndex(index) async {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    sharedPreferences.setInt('index',index);
     if(sharedPreferences.getString("customer_name")=="")
       {
         Fluttertoast.showToast(
@@ -51,8 +52,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
           tabs: <TabItem>[
             TabItem(_tab1, HomeScreen(title: '')),
             TabItem(_tab2, CategoryScreen(title: '')),
-            TabItem(_tab3, Delay()),
-            TabItem(_tab4, PageWithButton(title: '')),
+            TabItem(_tab3, CartScreen()),
+            TabItem(_tab4, CartScreen())
           ],
           selectedIndex: _tabSelectedIndex,
           popStack: _tabPopStack,
@@ -100,37 +101,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return sharedPreferences.getStringList("selected")?.length.toString()??"0";
   }
 
-}
-
-class PageWithButton extends StatelessWidget {
-  final String title;
-  final int count;
-
-  const PageWithButton({
-    Key ?key,
-    required this.title,
-    this.count = 0,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        centerTitle: true,
-      ),
-      body: Center(
-        child: RaisedButton(
-          child: Text("$title $count"),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (_) => PageWithButton(title: title, count: count + 1),
-            ));
-          },
-        ),
-      ),
-    );
-  }
 }
 
 class TabItem {

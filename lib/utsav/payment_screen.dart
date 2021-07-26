@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
 import 'package:badges/badges.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class PaymentScreen extends StatefulWidget {
@@ -666,63 +667,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
+     testmethod();
     int _counter = 1;
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
     paymentAmount=widget.Ammount;
     return Scaffold(
-      // bottomNavigationBar: BottomAppBar(
-      //   color: Colors.white,
-      //   shape: CircularNotchedRectangle(),
-      //   child: Container(
-      //     height: 50,
-      //     padding: EdgeInsets.symmetric(horizontal: 20),
-      //     child: Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //       children: [
-      //
-      //         // button 1
-      //         IconButton(
-      //           icon: Icon(Icons.home_sharp,
-      //             color: _currentIndex == 0 ? Color(0xFFFFD45F) : Colors.grey[800],
-      //           ),
-      //           onPressed: (){
-      //             setBottomBarIndex(0);
-      //           },
-      //           splashColor: Colors.white,
-      //         ),
-      //
-      //         // button 2
-      //         IconButton(
-      //             icon: Icon(Icons.border_all_rounded,
-      //               color: _currentIndex == 1 ? Color(0xFFFFD45F) : Colors.grey[800],
-      //             ),
-      //             onPressed: (){
-      //               setBottomBarIndex(1);
-      //             }),
-      //
-      //         // button 3
-      //         IconButton(
-      //             icon: Icon(Icons.shopping_cart,
-      //               color: _currentIndex == 2 ? Color(0xFFFFD45F) : Colors.grey[800],
-      //             ),
-      //             onPressed: (){
-      //               setBottomBarIndex(2);
-      //             }),
-      //
-      //         // button 4
-      //         IconButton(
-      //             icon: Icon(Icons.open_in_browser_sharp,
-      //               color: _currentIndex == 3 ? Color(0xFFFFD45F) : Colors.grey[800],
-      //             ),
-      //             onPressed: (){
-      //               setBottomBarIndex(3);
-      //             }),
-      //       ],
-      //     ),
-      //   ),
-      // ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -1508,6 +1459,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
       ):null ,
     );
+  }
+
+  void testmethod() async {
+    SharedPreferences indexData = await SharedPreferences.getInstance();
+    _currentIndex = indexData.getInt('index')!;
   }
 }
 
