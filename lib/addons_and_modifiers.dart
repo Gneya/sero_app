@@ -75,7 +75,8 @@ class _MyHomePageState extends State<add> {
                FlatButton(onPressed: ()async {
                  SharedPreferences prefs =  await SharedPreferences.getInstance();
                  prefs.setStringList(widget.product,_selectedModifiers);
-                 print(_selectedModifiers);
+                 print("BLAHHHHHHHHHHHHHHHHHHHHHHHH");
+                 print(widget.product);
                  Navigator.pop(context);
                  },
                    color: Color(0xFFFFD45F),

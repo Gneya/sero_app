@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_nav_bar/utsav/edit_item.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 // import 'package:sero_app/utsav/void.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,8 @@ class _CartScreenState extends State<CartScreen> {
   var size,height,width;
   int table_id=0;
   String table_name='';
+
+  Map m={};
   setBottomBarIndex(index){
     setState(() {
       _currentIndex = index;
@@ -31,11 +34,12 @@ class _CartScreenState extends State<CartScreen> {
       _isloading =true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    table_id=  prefs.getInt("table_id")??0;
-    table_name =prefs.getString("table_name")??"";
-    customer_name=prefs.getString("customer_name")??"";
-    //selectedItems=prefs.getStringList("selected")!;
-    counter=prefs.getStringList("quantity")!;
+    // table_id=  prefs.getInt("table_id")??0;
+    // table_name =prefs.getString("table_name")??"";
+    // customer_name=prefs.getString("customer_name")??"";
+    // //selectedItems=prefs.getStringList("selected")!;
+    // counter=prefs.getStringList("quantity")!;
+
     setState(() {
       _isloading =false;
     });
@@ -166,133 +170,143 @@ class _CartScreenState extends State<CartScreen> {
               else
                 {
                   return Container(
-                    height:MediaQuery.of(context).size.height/1.85,
-                    child: ListView.builder(
-                      itemCount: _selectedItems.length,
-                      itemBuilder: (context, index) {
-                        if(counterList.length < _selectedItems.length ) {
-                          counterList.add("1");
-                        }
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
-                          child: Container(
-                              // height:MediaQuery.of(context).size.height/10 ,
-                              padding: EdgeInsets.only(left:10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    offset: const Offset(
-                                      1.0,
-                                      1.0,
-                                    ), //Offset
-                                    blurRadius: 6.0,
-                                    spreadRadius: 2.0,
-                                  ), //BoxShadow
-                                  BoxShadow(
-                                    color: Colors.white,
-                                    offset: const Offset(0.0, 0.0),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ),],
-                              ),
-                              child:Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      height:MediaQuery.of(context).size.height/1.85,
+                      child: ListView.builder(
+                        itemCount: _selectedItems.length,
+                        itemBuilder: (context, index) {
+                          if(counterList.length < _selectedItems.length ) {
+                            counterList.add("1");
+                          }
+                          return GestureDetector(
+                            onTap:(){
+                              showDialog(context: context, builder: (context) {
+                                return edit_item(name: _selectedItems[index],quantity: counterList[index],price: _selectedItemsprice[index]);
+                              });
+                          },
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
+                              child: Container(
+                                  // height:MediaQuery.of(context).size.height/10 ,
+                                  padding: EdgeInsets.only(left:10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: const Offset(
+                                          1.0,
+                                          1.0,
+                                        ), //Offset
+                                        blurRadius: 6.0,
+                                        spreadRadius: 2.0,
+                                      ), //BoxShadow
+                                      BoxShadow(
+                                        color: Colors.white,
+                                        offset: const Offset(0.0, 0.0),
+                                        blurRadius: 0.0,
+                                        spreadRadius: 0.0,
+                                      ),],
+                                  ),
+                                  child:Column(
                                     children: [
-                                      Container(
-                                        width: MediaQuery.of(context).size.width/2.8,
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 0),
-                                          child: Text(
-                                            _selectedItems[index],
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold
-                                            ),
-                                          ),
-                                        ),
-                                      ),
                                       Row(
-                                        //mainAxisAlignment: MainAxisAlignment.,
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                                         children: [
+                                          Container(
+                                            width: MediaQuery.of(context).size.width/2.8,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 0),
+                                              child: Text(
+                                                _selectedItems[index],
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Row(
+                                            //mainAxisAlignment: MainAxisAlignment.,
+                                            children: [
+                                              IconButton(
+                                                onPressed:(){
+                                                  setState(() {
+                                                    var c=int.parse(counterList[index]);
+                                                    if( c>1)
+                                                      c--;
+                                                    counterList[index]=c.toString();
+                                                    //saveState();
+                                                  });
+                                                },
+                                                icon: Icon(Icons.remove_circle,
+                                                  size: 17,),
+                                              ),
+                                              Text(counterList[index].toString(),
+                                                style: TextStyle(
+                                                    fontSize: 15
+                                                ),
+                                              ),
+                                              IconButton(
+                                                onPressed:(){
+                                                  setState(() {
+                                                    var c=int.parse(counterList[index]);
+                                                    c++;
+                                                    counterList[index]=c.toString();
+                                                    //saveState();
+                                                  });
+                                                },
+                                                icon: Icon(Icons.add_circle_outlined,
+                                                  size: 17,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context).size.width/9,
+                                              child:Text(
+                                                '\$'+double.parse(_selectedItemsprice[index]).toStringAsFixed(2),
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold
+                                                ),
+                                              )),
                                           IconButton(
                                             onPressed:(){
                                               setState(() {
-                                                var c=int.parse(counterList[index]);
-                                                if( c>1)
-                                                  c--;
-                                                counterList[index]=c.toString();
-                                                //saveState();
+                                                _selectedItems.removeAt(index);
+                                                counterList.removeAt(index);
+                                                paymentAmount-=double.parse( _selectedItemsprice[index]);
+                                                _selectedItemsprice.removeAt(index);
+                                                _selectedItemsprice.removeAt(index);
                                               });
+                                              delete(_selectedItems,counterList,_selectedItemsprice);
                                             },
-                                            icon: Icon(Icons.remove_circle,
-                                              size: 17,),
-                                          ),
-                                          Text(counterList[index].toString(),
-                                            style: TextStyle(
-                                                fontSize: 15
-                                            ),
-                                          ),
-                                          IconButton(
-                                            onPressed:(){
-                                              setState(() {
-                                                var c=int.parse(counterList[index]);
-                                                c++;
-                                                counterList[index]=c.toString();
-                                                //saveState();
-                                              });
-                                            },
-                                            icon: Icon(Icons.add_circle_outlined,
-                                              size: 17,
-                                            ),
+                                            icon: Icon(Icons.delete,
+                                              color: Colors.red,
+                                              size: 25,),
                                           ),
                                         ],
                                       ),
-                                      Container(
-                                          width: MediaQuery.of(context).size.width/9,
-                                          child:Text(
-                                            '\$'+double.parse(_selectedItemsprice[index]).toStringAsFixed(2),
-                                            style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.bold
-                                            ),
-                                          )),
-                                      IconButton(
-                                        onPressed:(){
-                                          setState(() {
-                                            _selectedItems.removeAt(index);
-                                            counterList.removeAt(index);
-                                            paymentAmount-=double.parse( _selectedItemsprice[index]);
-                                            _selectedItemsprice.removeAt(index);
-                                          });
-                                          delete(_selectedItems,counterList,_selectedItemsprice);
-                                        },
-                                        icon: Icon(Icons.delete,
-                                          color: Colors.red,
-                                          size: 25,),
-                                      ),
-                                    ],
-                                  ),
-                                  isEmpty ? Text('') :Container(
-                                    height: _modifiers[index]._modi.length*20,
-
-                                    child:ListView.builder(
-                                      itemCount: _modifiers[index]._modi.length,
-                                      itemBuilder: (context, index) {
-                                        return Text(' - Extra '+_modifiers[index]._modi[index]);
-                                      },
+                                       Container(
+                                        height: 20,
+                                        child:ListView.builder(
+                                          itemCount:index*20,
+                                          itemBuilder: (context, i) {
+                                            var v=m[_selectedItems[index]];
+                                            if(v!=null)
+                                            return Text(' - Extra '+m[_selectedItems[index]].toString());
+                                            else
+                                              return Text("");
+                                          },
+                                      )
+                                      )
+                                    ] ,
                                   )
-                                  )
-                                ],
-                              )
-                          ),
-                        );
-                      },
-                    ),
-                  );
+                              ),
+                            ),
+                          );
+                        },
+                      ));
               }
             }),
         bottomSheet:_currentIndex == 3 ? new Container(
@@ -509,22 +523,26 @@ class _CartScreenState extends State<CartScreen> {
       _isloading=true;
     });
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    var list=sharedPreferences.getStringList("selected");
-    _selectedItems=list!;
+    var list=sharedPreferences.getStringList("selected")??[];
+    _selectedItems=list;
     _selectedItemsprice=sharedPreferences.getStringList("selectedprice")!;
     print(_selectedItems);
-    for(int i=0 ;i<list.length;i++){
-       var _mod = sharedPreferences.getStringList(list[i]);
-       Modi modi ;
-       modi = Modi.add(_mod!);
-       if(_mod!=null){
-         isEmpty = false;
-         _modifiers.add(modi)  ;
-       }
-       else{
-         isEmpty = true;
-       }
-    }
+    var _mod;
+    for(int i=0 ;i<list.length;i++) {
+      if(sharedPreferences.containsKey(list[i])) {
+        _mod = sharedPreferences.getStringList(list[i]);
+        m[list[i]] = _mod;
+      }
+      else
+        {
+          m[list[i]] = null;
+        }
+      }
+
+       // Modi modi ;
+       // modi = Modi.add(_mod!);
+       //   _modifiers.add(modi)  ;
+
     setState(() {
       _isloading=false;
     });
