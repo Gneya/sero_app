@@ -20,6 +20,8 @@ class _CartScreenState extends State<CartScreen> {
   var size,height,width;
   int table_id=0;
   String table_name='';
+
+  Map m={};
   setBottomBarIndex(index){
     setState(() {
       _currentIndex = index;
@@ -31,11 +33,12 @@ class _CartScreenState extends State<CartScreen> {
       _isloading =true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    table_id=  prefs.getInt("table_id")??0;
-    table_name =prefs.getString("table_name")??"";
-    customer_name=prefs.getString("customer_name")??"";
-    //selectedItems=prefs.getStringList("selected")!;
-    counter=prefs.getStringList("quantity")!;
+    // table_id=  prefs.getInt("table_id")??0;
+    // table_name =prefs.getString("table_name")??"";
+    // customer_name=prefs.getString("customer_name")??"";
+    // //selectedItems=prefs.getStringList("selected")!;
+    // counter=prefs.getStringList("quantity")!;
+
     setState(() {
       _isloading =false;
     });
@@ -276,17 +279,21 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                     ],
                                   ),
-                                  isEmpty ? Text('') :Container(
-                                    height: _modifiers[index]._modi.length*20,
+                                   Container(
+                                    height: 20,
 
                                     child:ListView.builder(
-                                      itemCount: _modifiers[index]._modi.length,
-                                      itemBuilder: (context, index) {
-                                        return Text(' - Extra '+_modifiers[index]._modi[index]);
+                                      itemCount:index*20,
+                                      itemBuilder: (context, i) {
+                                        var v=m[_selectedItems[index]];
+                                        if(v!=null)
+                                        return Text(' - Extra '+m[_selectedItems[index]].toString());
+                                        else
+                                          return Text("");
                                       },
                                   )
                                   )
-                                ],
+                                ] ,
                               )
                           ),
                         );
@@ -509,22 +516,26 @@ class _CartScreenState extends State<CartScreen> {
       _isloading=true;
     });
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    var list=sharedPreferences.getStringList("selected");
-    _selectedItems=list!;
+    var list=sharedPreferences.getStringList("selected")??[];
+    _selectedItems=list;
     _selectedItemsprice=sharedPreferences.getStringList("selectedprice")!;
     print(_selectedItems);
-    for(int i=0 ;i<list.length;i++){
-       var _mod = sharedPreferences.getStringList(list[i]);
-       Modi modi ;
-       modi = Modi.add(_mod!);
-       if(_mod!=null){
-         isEmpty = false;
-         _modifiers.add(modi)  ;
-       }
-       else{
-         isEmpty = true;
-       }
-    }
+    var _mod;
+    for(int i=0 ;i<list.length;i++) {
+      if(sharedPreferences.containsKey(list[i])) {
+        _mod = sharedPreferences.getStringList(list[i]);
+        m[list[i]] = _mod;
+      }
+      else
+        {
+          m[list[i]] = null;
+        }
+      }
+
+       // Modi modi ;
+       // modi = Modi.add(_mod!);
+       //   _modifiers.add(modi)  ;
+
     setState(() {
       _isloading=false;
     });
