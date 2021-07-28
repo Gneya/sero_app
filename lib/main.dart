@@ -5,6 +5,7 @@ import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:flutter_nav_bar/login.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

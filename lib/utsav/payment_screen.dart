@@ -128,6 +128,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 Container(
                                   height: 50,
+                                  width: MediaQuery.of(context).size.width,
                                   child: TextField(
                                     enableInteractiveSelection: false,
                                     focusNode: new AlwaysDisabledFocusNode(),
@@ -171,23 +172,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       fontWeight: FontWeight.w400,
                                     ) ,),
                                 ),
-                                Container(
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8),
                                   child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.grey,
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                          ),
+                                          borderRadius: BorderRadius.circular(35),
+                                          color :Colors.white,
                                         ),
-                                        borderRadius: BorderRadius.circular(35),
-                                        color :Colors.white,
-                                      ),
-                                      width: 160,
-                                      height: 50,
-                                      child: Center(
-                                          child: Text(
-                                            '\$'+widget.Discountt.toStringAsFixed(2),
-                                            textScaleFactor: 1.25,
-                                            style: TextStyle(fontWeight: FontWeight.bold),
-                                          ))),
+                                        width: MediaQuery.of(context).size.width/2.5,
+                                        height: 50,
+                                        child: Center(
+                                            child: Text(
+                                              '\$'+widget.Discountt.toStringAsFixed(2),
+                                              textScaleFactor: 1.25,
+                                              // style: TextStyle(fontWeight: FontWeight.bold),
+                                            ))),
+                                  ),
                                 ),
                               ]
                           ),
@@ -196,7 +200,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           child: Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 8,right: 30),
+                                  padding: const EdgeInsets.only(bottom: 8,right:8),
                                   child: Text('Redeemed Points',
                                     style:TextStyle(
                                       fontSize: 15,
@@ -213,13 +217,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         borderRadius: BorderRadius.circular(35),
                                         color :Colors.white,
                                       ),
-                                      width: 160,
+                                       width: MediaQuery.of(context).size.width/2.5,
                                       height: 50,
                                       child: Center(
                                           child: Text(
                                             widget.Redeem.toString(),
                                             textScaleFactor: 1.25,
-                                            style: TextStyle(fontWeight: FontWeight.bold),
+                                            // style: TextStyle(fontWeight: FontWeight.bold),
                                           )
                                       )
                                   ),
@@ -236,7 +240,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       children: [
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 20,right: 20),
+                            padding: const EdgeInsets.only(left: 20,),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -250,6 +254,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ),
                                 Container(
                                   height: 50,
+                                  width: MediaQuery.of(context).size.width/2.5,
                                   child: Form(
                                     key: _formKey,
                                     child: TextFormField(
@@ -278,7 +283,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           child: Column(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(bottom: 8,),
+                                  padding: const EdgeInsets.only(bottom: 8),
                                   child: Text('Balance Amount',
                                     style:TextStyle(
                                       fontSize: 15,
@@ -290,25 +295,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   child: Container(
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(35),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.grey,
-                                            offset: const Offset(
-                                              1.0,
-                                              1.0,
-                                            ), //Offset
-                                            blurRadius: 6.0,
-                                            spreadRadius: 2.0,
-                                          ), //BoxShadow
-                                          BoxShadow(
-                                            color: Colors.white,
-                                            offset: const Offset(0.0, 0.0),
-                                            blurRadius: 0.0,
-                                            spreadRadius: 0.0,
-                                          ),],
+                                        // boxShadow: [
+                                        //   BoxShadow(
+                                        //     color: Colors.grey,
+                                        //     offset: const Offset(
+                                        //       1.0,
+                                        //       1.0,
+                                        //     ), //Offset
+                                        //     blurRadius: 6.0,
+                                        //     spreadRadius: 2.0,
+                                        //   ), //BoxShadow
+                                        //   BoxShadow(
+                                        //     color: Colors.white,
+                                        //     offset: const Offset(0.0, 0.0),
+                                        //     blurRadius: 0.0,
+                                        //     spreadRadius: 0.0,
+                                        //   ),],
                                         color :Color(0xFFFFD45F),
                                       ),
-                                      width: 160,
+                                      width: MediaQuery.of(context).size.width/2.5,
                                       height: 50,
                                       child: Center(
                                           child: Text(
@@ -380,6 +385,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                   Container(
                                     height: 50,
+                                    width: MediaQuery.of(context).size.width/2.5,
                                     child: TextField(
                                       enableInteractiveSelection: false,
                                       focusNode: new AlwaysDisabledFocusNode(),
@@ -420,6 +426,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                   Container(
                                     height: 50,
+                                    width: MediaQuery.of(context).size.width/2.5,
                                     child: Form(
                                       key: _Key,
                                       child: TextFormField(
@@ -465,7 +472,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             child: Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(bottom: 8,right: 30),
+                                    padding: const EdgeInsets.only(bottom: 8,right: 30,left: 23),
                                     child: Text('Discount Amount',
                                       style:TextStyle(
                                         fontSize: 15,
@@ -481,13 +488,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           borderRadius: BorderRadius.circular(35),
                                           color :Colors.white,
                                         ),
-                                        width: 160,
+                                        width: MediaQuery.of(context).size.width/2.5,
                                         height: 50,
                                         child: Center(
                                             child: Text(
                                               '\$'+widget.Discountt.toStringAsFixed(2),
                                               textScaleFactor: 1.25,
-                                              style: TextStyle(fontWeight: FontWeight.bold),
                                             ))),
                                   ),
                                 ]
@@ -497,7 +503,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             child: Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(bottom: 8,right: 30),
+                                    padding: const EdgeInsets.only(bottom: 8,right: 8),
                                     child: Text('Redeemed Points',
                                       style:TextStyle(
                                         fontSize: 15,
@@ -514,13 +520,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           borderRadius: BorderRadius.circular(35),
                                           color :Colors.white,
                                         ),
-                                        width: 160,
+                                        width: MediaQuery.of(context).size.width/2.5,
                                         height: 50,
                                         child: Center(
                                             child: Text(
                                               widget.Redeem.toString(),
                                               textScaleFactor: 1.25,
-                                              style: TextStyle(fontWeight: FontWeight.bold),
                                             ))),
 
                                   ),
@@ -537,7 +542,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 20,right: 20),
+                              padding: const EdgeInsets.only(left: 20),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -551,6 +556,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ),
                                   Container(
                                     height: 50,
+                                    width: MediaQuery.of(context).size.width/2.5,
                                     child: Form(
                                       key: _formKey,
                                       child: TextFormField(
@@ -579,7 +585,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             child: Column(
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(bottom: 8,right: 30),
+                                    padding: const EdgeInsets.only(bottom: 8),
                                     child: Text('Balance Amount',
                                       style:TextStyle(
                                         fontSize: 15,
@@ -591,25 +597,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     child: Container(
                                         decoration: BoxDecoration(
                                           borderRadius: BorderRadius.circular(35),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.grey,
-                                              offset: const Offset(
-                                                1.0,
-                                                1.0,
-                                              ), //Offset
-                                              blurRadius: 6.0,
-                                              spreadRadius: 2.0,
-                                            ), //BoxShadow
-                                            BoxShadow(
-                                              color: Colors.white,
-                                              offset: const Offset(0.0, 0.0),
-                                              blurRadius: 0.0,
-                                              spreadRadius: 0.0,
-                                            ),],
+                                          // boxShadow: [
+                                          //   BoxShadow(
+                                          //     color: Colors.grey,
+                                          //     offset: const Offset(
+                                          //       1.0,
+                                          //       1.0,
+                                          //     ), //Offset
+                                          //     blurRadius: 6.0,
+                                          //     spreadRadius: 2.0,
+                                          //   ), //BoxShadow
+                                          //   BoxShadow(
+                                          //     color: Colors.white,
+                                          //     offset: const Offset(0.0, 0.0),
+                                          //     blurRadius: 0.0,
+                                          //     spreadRadius: 0.0,
+                                          //   ),],
                                           color :Color(0xFFFFD45F),
                                         ),
-                                        width: 160,
+                                        width: MediaQuery.of(context).size.width/2.5,
                                         height: 50,
                                         child: Center(
                                             child: Text(
@@ -699,7 +705,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),],
               ),
               height:180,
-
               child: Padding(
                 padding: const EdgeInsets.only(top:30),
                 child: Column(
@@ -910,12 +915,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             child: Container(
                               child: GestureDetector(
                                 child: Container(
-                                  child:Center(child: Text(_payMeth[0],
-                                    style: TextStyle(fontWeight:FontWeight.w600,
+                                  child:Center(
+                                    child: _payMeth[0].length>6 ?
+                                    Text(
+                                      _payMeth[0].substring(0,6),
+                                      style: TextStyle(
+                                        fontWeight:FontWeight.w600,
                                         fontSize: 18,
-                                      color: Colors.black
+                                      ),
+                                    ):Text(
+                                      _payMeth[0],
+                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
                                     ),
-                                  )),
+                                  ),
                                   decoration: BoxDecoration(
                                     color: isClicked1 ? Colors.white : Color(0xFFFFD45F),
                                     borderRadius: BorderRadius.circular(35),
@@ -956,11 +968,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             child: Container(
                               child: GestureDetector(
                                 child: Container(
-                                  child:Center(child: Text(_payMeth[1],style: TextStyle(fontWeight:FontWeight.w600,
-                                      fontSize: 18
-                                  ),
-                                  ),
-
+                                  child:Center(
+                                    child: _payMeth[1].length>6 ?
+                                    Text(
+                                      _payMeth[1].substring(0,6),
+                                      style: TextStyle(
+                                        fontWeight:FontWeight.w600,
+                                        fontSize: 18,
+                                      ),
+                                    ):Text(
+                                      _payMeth[1],
+                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
+                                    ),
                                   ),
                                   decoration: BoxDecoration(
                                     color: isClicked2 ? Colors.white : Color(0xFFFFD45F),
@@ -998,13 +1017,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left:18),
+                            padding: const EdgeInsets.only(left:15),
                             child: Container(
                               child: GestureDetector(
                                 child: Container(
-                                  child:Center(child: Text(_payMeth[2],style: TextStyle(fontWeight:FontWeight.w600,
-                                      fontSize: 18
-                                  ),)),
+                                  child:Center(
+                                    child: _payMeth[2].length>6 ?
+                                    Text(
+                                      _payMeth[2].substring(0,6),
+                                      style: TextStyle(
+                                        fontWeight:FontWeight.w600,
+                                        fontSize: 18,
+                                      ),
+                                    ):Text(
+                                      _payMeth[2],
+                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
+                                    ),
+                                  ),
                                   decoration: BoxDecoration(
                                     color: isClicked3 ? Colors.white : Color(0xFFFFD45F),
                                     borderRadius: BorderRadius.circular(35),
@@ -1049,13 +1078,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left:8,right: 15),
+                            padding: const EdgeInsets.only(left:10),
                             child: Container(
                               child: GestureDetector(
                                 child: Container(
-                                  child:Center(child: Text(_payMeth[3],style: TextStyle(fontWeight:FontWeight.w600,
-                                      fontSize: 18
-                                  ),)),
+                                  child:Center(
+                                      child: _payMeth[3].length>6 ?
+                                      Text(
+                                        _payMeth[3].substring(0,6),
+                                        style: TextStyle(
+                                          fontWeight:FontWeight.w600,
+                                           fontSize: 18,
+                                        ),
+                                       ):Text(
+                                            _payMeth[3],
+                                        style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
+                                             ),
+                                     ),
                                   decoration: BoxDecoration(
                                     color: isClicked4 ? Colors.white : Color(0xFFFFD45F),
                                     borderRadius: BorderRadius.circular(35),
@@ -1077,7 +1116,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ),],
                                   ),
                                   height: 45,
-                                  width: 150,
+                                  width: 100,
                                 ),
                                 onTap: (){
                                   setState(() {
@@ -1092,13 +1131,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left:15,right: 12),
+                            padding: const EdgeInsets.only(left:15),
                             child: Container(
                               child: GestureDetector(
                                 child: Container(
-                                  child:Center(child: Text(_payMeth[4],style: TextStyle(fontWeight:FontWeight.w600,
-                                      fontSize: 18
-                                  ),)),
+                                  child:Center(
+                                    child: _payMeth[4].length>6 ?
+                                    Text(
+                                      _payMeth[4].substring(0,6),
+                                      style: TextStyle(
+                                        fontWeight:FontWeight.w600,
+                                        fontSize: 18,
+                                      ),
+                                    ):Text(
+                                      _payMeth[4],
+                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
+                                    ),
+                                  ),
                                   decoration: BoxDecoration(
                                     color: isClicked5 ? Colors.white : Color(0xFFFFD45F),
                                     borderRadius: BorderRadius.circular(35),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/main.dart';
-import '';
+
 class ForgetPassword extends StatefulWidget {
   ForgetPassword({Key ? key, required this.title}) : super(key: key);
 

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/edit_item.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
-// import 'package:sero_app/utsav/void.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CartScreen extends StatefulWidget {
@@ -480,7 +479,7 @@ class _CartScreenState extends State<CartScreen> {
                     color: Colors.black87,),
                   label: Text("HOLD",style: TextStyle(
                       color: Colors.black87,
-                      fontSize: 20
+                      fontSize: 20,
                   ),),
                 ),
               ),
