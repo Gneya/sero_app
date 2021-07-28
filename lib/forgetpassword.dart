@@ -55,13 +55,10 @@ class ForgetPasswordState extends State<ForgetPassword> {
                           SizedBox(
                             height: 40,
                           ),
-                          Material(
-                            elevation: 10.0,
-                            shadowColor: Colors.grey.shade100,
-                            child: TextFormField(
+                         TextFormField(
                               autofocus: false,
                               decoration: InputDecoration(
-                                  icon: new Icon(Icons.email, color: Colors.grey,),
+                                  prefixIcon: new Icon(Icons.email, color: Colors.grey,),
                                   labelText: "Enter email",
                                   fillColor: Colors.white,
                                   filled: true,
@@ -72,7 +69,6 @@ class ForgetPasswordState extends State<ForgetPassword> {
                                       borderSide: BorderSide(
                                           color: Colors.white, width: 3.0))),
                             ),
-                          ),
                         ],
                       ),
                       //password

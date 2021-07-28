@@ -110,10 +110,8 @@ class loginState extends State<login> {
                   ),
                   //welcome back
                   Text(
-                    'Welcome Back',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                    'Welcome back',
+                      style: GoogleFonts.ptSans(color: Color(0xff000000),fontSize: 22)
                   ),
                   SizedBox(
                     height: 40,
@@ -123,7 +121,7 @@ class loginState extends State<login> {
                       //email
                       Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Email')),
+                          child: Text('Email',style: GoogleFonts.ptSans(color: Color(0xff000000),fontSize: 16),)),
                       SizedBox(
                         height: 10,
                       ),
@@ -159,7 +157,7 @@ class loginState extends State<login> {
                     children: <Widget>[
                       Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Password')),
+                          child: Text('Password',style: GoogleFonts.ptSans(color: Color(0xff000000),fontSize: 16))),
                       SizedBox(
                         height: 10,
                       ),
@@ -194,6 +192,7 @@ class loginState extends State<login> {
                         Checkbox(
                           activeColor: Color(0xFF325288),
                           value: this.value,
+
                           onChanged: (bool? value) {
                             setState(() {
                               this.value = value!;
