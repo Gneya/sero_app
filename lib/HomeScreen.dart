@@ -47,6 +47,15 @@ class _HomeScreenState extends State<HomeScreen> {
       _isloading = true;
     });}
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var list=sharedPreferences.getStringList("selected")??[];
+    if(list.length>0) {
+      for (int i = 0; i < list.length; i++) {
+        if (sharedPreferences.containsKey(list[i])) {
+          sharedPreferences.setStringList(list[i], []);
+          sharedPreferences.setStringList(list[i] + "price", []);
+        }
+      }
+    }
     sharedPreferences.setStringList("selected", []);
     sharedPreferences.setStringList("selectedprice", []);
     sharedPreferences.setString("customer_name", "");
@@ -101,23 +110,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
         ],
       ),
+      backgroundColor: Color(0xfff5f5f5),
       body:  _isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),)):Padding(
-        padding: const EdgeInsets.only(left: 15,right: 15),
+        padding: const EdgeInsets.only(left: 25,right: 25),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               SizedBox(
-                height: 40,
-              ),
-              Image.asset(
-                'images/x.png',
-                height: 130.0,
-                width: 180.0,
-              ),
-              SizedBox(
-                height: 30.0,
+                height: 60.0,
               ),
               Text(
                 _name,
@@ -127,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               SizedBox(
-                height: 40,
+                height: 30,
               ),
               Material(
                   elevation: 10.0,
@@ -192,7 +194,7 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 40,
               ),
-              Text('Select mode'),
+              Text('Select Mode',style: TextStyle(fontSize: 20),),
               SizedBox(
                 height: 30,
               ),
