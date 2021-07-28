@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ui';
 //import 'package:barcode_scan/barcode_scan.dart';
 // import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:barcode_scan/barcode_scan.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'personaldetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
@@ -197,15 +199,24 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         children: [
                           IconButton(
                             alignment: Alignment.topLeft,
-                            icon: const Icon(Icons.menu),
+                            icon: const Icon(Icons.menu,color:Color(0xff949494)),
                             onPressed: () {
                             },
                           ),
-                          Text("CATEGORY",
-                            style: TextStyle(fontSize: 23,fontWeight: FontWeight.w500),),
-                          CircleAvatar(
-                              backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                          Center(child: Text("CATEGORY",style: GoogleFonts.ptSans(fontSize: 22),)),
+
+                          Row(
+                            children: [
+                              Container(
+                              margin: EdgeInsets.only(right: 0),
+                                  child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
+                              SizedBox(width: 5,),
+                              CircleAvatar(
+                                  backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                              ),
+                            ],
                           ),
+
                         ]),
                       /*Row(
                     mainAxisAlignment: MainAxisAlignment.center,

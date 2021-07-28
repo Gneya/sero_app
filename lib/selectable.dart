@@ -57,7 +57,7 @@ class _SelectTableState extends State<SelectTable> {
     return Scaffold(
       appBar: AppBar(
 
-        leading: Icon(Icons.menu),
+        leading: Icon(Icons.menu,color:Color(0xff949494)),
         title: Center(child: Text("SELECT TABLE",style: TextStyle(color: Colors.grey.shade700,fontSize: 18),)),
         backgroundColor: Color(0xffffd45f),
         actions: [

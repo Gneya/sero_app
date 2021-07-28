@@ -199,12 +199,15 @@ class _SelectItemState extends State<SelectItem> {
                           children: [
                             IconButton(
                               alignment: Alignment.topLeft,
-                              icon: const Icon(Icons.menu),
+                              icon: const Icon(Icons.menu,color:Color(0xff949494)),
                               onPressed: () {
                               },
                             ),
-                            Text(widget.category,
-                              style: TextStyle(fontSize: 23,fontWeight: FontWeight.w500),),
+                            Text(widget.category.toUpperCase(),
+                              style: TextStyle(fontSize: 20,color: Colors.grey.shade700),),
+                            Container(
+                              //margin: EdgeInsets.only(right: 20),
+                                child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
                             CircleAvatar(
                                 backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
                             ),

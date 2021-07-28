@@ -95,8 +95,8 @@ class _PersonalDetailsState extends State<PersonalDetails> {
     return Scaffold(
         appBar: AppBar(
 
-          leading: Icon(Icons.menu),
-          title: Center(child: Text("ADD CUSTOMER",style: TextStyle(color: Colors.grey.shade700,fontSize: 18),)),
+          leading: Icon(Icons.menu,color: Color(0xff949494),),
+          title: Center(child: Text("ADD CUSTOMER",style: TextStyle(color:Color(0xff707070),fontSize: 18),)),
           backgroundColor: Color(0xffffd45f),
           actions: [
             Container(
