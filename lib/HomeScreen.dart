@@ -20,7 +20,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TextStyle style = TextStyle(fontSize: 20.0);
+  TextStyle style = TextStyle(fontSize: 20.0,fontFamily: 'Product Sans');
   bool value = false;
   bool value1 = false;
   String _selectedAnimal="";
@@ -124,6 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Text(
                 _name,
                 style: TextStyle(
+                  fontFamily: 'Product Sans',
                   fontSize: 20,
                 ),
               ),
@@ -244,7 +245,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   onPressed: () {},
                   child: Text("Home Delivery",
                       textAlign: TextAlign.center,
-                      style: style.copyWith(color: Colors.black)),
+                      style: style.copyWith(color: Colors.black)
+                  ),
                 ),
               ),
             ],

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -143,11 +144,7 @@ class _ShippingState extends State<Shipping> {
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
                           child: Text('ADD SHIPPING',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 35,
-                                fontWeight: FontWeight.bold
-                            ),),
+                            style: GoogleFonts.ptSans(color: Colors.white,fontSize: 35,fontWeight: FontWeight.bold),)
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -155,12 +152,8 @@ class _ShippingState extends State<Shipping> {
                             Padding(
                               padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
                               child: Text('Shipping Cost',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20
-                                ),),
-                            ),
+                                style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
+                            )),
                           ],
                         ),
                         Padding(
@@ -178,7 +171,8 @@ class _ShippingState extends State<Shipping> {
                               keyboardType:TextInputType.number,
                               decoration: InputDecoration(
                                 fillColor: Colors.white, filled: true,
-                                errorStyle: TextStyle(color: Color(0xFFFFD45F),fontWeight: FontWeight.bold,fontSize: 12),
+                                errorStyle:
+                                GoogleFonts.ptSans(color: Color(0xFFFFD45F),fontSize: 12,fontWeight: FontWeight.bold),
 
                                 prefix:  Text('\$'),
                                 hintText: 'Enter Shipping Cost here',
@@ -200,11 +194,7 @@ class _ShippingState extends State<Shipping> {
                             Padding(
                               padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
                               child: Text('Packaging Cost',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20
-                                ),),
+                                style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
                             ),
                           ],
                         ),
@@ -234,11 +224,7 @@ class _ShippingState extends State<Shipping> {
                             Padding(
                               padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
                               child: Text('Select Driver',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20
-                                ),),
+                                style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
                             ),
                           ],
                         ),
@@ -291,12 +277,10 @@ class _ShippingState extends State<Shipping> {
                               GestureDetector(
                                 child: Container(
                                   child:Center(child: Text('Ship',
-                                    style: TextStyle(fontWeight:FontWeight.bold,
+                                    style: GoogleFonts.ptSans(fontSize: 30,fontWeight: FontWeight.bold),
+                                  ),
+                                  ),
 
-                                        fontSize: 30
-                                    ),
-                                  ),
-                                  ),
                                   decoration: BoxDecoration(
                                     color:Color(0xFFFFD45F),
                                     borderRadius: BorderRadius.circular(45),
@@ -323,9 +307,7 @@ class _ShippingState extends State<Shipping> {
                               ),
                               GestureDetector(
                                 child: Container(
-                                  child:Center(child: Text('Cancel',style: TextStyle(fontWeight:FontWeight.bold,
-                                      fontSize: 30
-                                  ),
+                                  child:Center(child: Text('Cancel',style: GoogleFonts.ptSans(fontSize: 30,fontWeight: FontWeight.bold),
                                   ),
 
                                   ),
