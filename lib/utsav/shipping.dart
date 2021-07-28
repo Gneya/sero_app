@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -155,12 +156,8 @@ class _ShippingState extends State<Shipping> {
                             Padding(
                               padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
                               child: Text('Shipping Cost',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20
-                                ),),
-                            ),
+                                style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
+                            )),
                           ],
                         ),
                         Padding(
@@ -200,11 +197,7 @@ class _ShippingState extends State<Shipping> {
                             Padding(
                               padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
                               child: Text('Packaging Cost',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20
-                                ),),
+                                style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
                             ),
                           ],
                         ),

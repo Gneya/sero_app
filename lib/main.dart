@@ -1,8 +1,6 @@
-import 'package:flutter/foundation.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_nav_bar/HomeScreen.dart';
-import 'package:flutter_nav_bar/Category.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:flutter_nav_bar/login.dart';
 import 'package:google_fonts/google_fonts.dart';
