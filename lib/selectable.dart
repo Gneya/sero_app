@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -58,7 +59,7 @@ class _SelectTableState extends State<SelectTable> {
       appBar: AppBar(
 
         leading: Icon(Icons.menu,color:Color(0xff949494)),
-        title: Center(child: Text("SELECT TABLE",style: TextStyle(color: Colors.grey.shade700,fontSize: 18),)),
+        title: Center(child: Text("SELECT TABLE",style: GoogleFonts.ptSans(color: Colors.black,fontSize: 18))),
         backgroundColor: Color(0xffffd45f),
         actions: [
           Container(

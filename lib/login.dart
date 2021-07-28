@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_nav_bar/forgetpassword.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'dart:convert';
@@ -92,15 +93,12 @@ class loginState extends State<login> {
         child: Form(
           key: _formKey,
           child: Padding(
-            padding: const EdgeInsets.all(36.0),
+            padding: const EdgeInsets.only(top:3,left: 40,right: 40),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  SizedBox(
-                    height: 50,
-                  ),
                   //logo
                   Image.asset(
                     'images/logo.png',
@@ -129,10 +127,7 @@ class loginState extends State<login> {
                       SizedBox(
                         height: 10,
                       ),
-                      Material(
-                        elevation: 10.0,
-                        shadowColor: Colors.grey.shade100,
-                        child: TextFormField(
+                     TextFormField(
                           controller: email,
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -142,18 +137,17 @@ class loginState extends State<login> {
                           },
                           autofocus: false,
                           decoration: InputDecoration(
-                              icon: new Icon(Icons.email, color: Colors.grey),
+                              prefixIcon: new Icon(Icons.email, color: Colors.grey),
                               hintText: 'Enter your email',
                               fillColor: Colors.white,
                               filled: true,
                               contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
                               enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(32.0),
+                                  borderRadius: BorderRadius.circular(50.0),
                                   borderSide: BorderSide(
                                       color: Colors.white, width: 3.0))),
                         ),
-                      ),
                     ],
                   ),
                   //password
@@ -169,10 +163,7 @@ class loginState extends State<login> {
                       SizedBox(
                         height: 10,
                       ),
-                      Material(
-                        elevation: 10.0,
-                        shadowColor: Colors.grey.shade100,
-                        child: TextFormField(
+                      TextFormField(
                           controller: password,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
@@ -183,7 +174,7 @@ class loginState extends State<login> {
                           obscureText: true,
                           autofocus: false,
                           decoration: InputDecoration(
-                              icon: new Icon(Icons.lock, color: Colors.grey),
+                              prefixIcon: new Icon(Icons.lock, color: Colors.grey),
                               hintText: 'Password',
                               fillColor: Colors.white,
                               filled: true,
@@ -194,66 +185,53 @@ class loginState extends State<login> {
                                   borderSide: BorderSide(
                                       color: Colors.white, width: 3.0))),
                         ),
-                      ),
                     ],
                   ),
-                  SizedBox(
-                    height: 40,
-                  ),
+                  Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Checkbox(
+                          activeColor: Color(0xFF325288),
+                          value: this.value,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              this.value = value!;
+                            });
+                          },
+                        ),
+                        SizedBox(width: 2),
+                        Text(
+                          'Remember me',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ), //Text//SizedBox
+                      ]),
+                  SizedBox(height: 25,),
                   //login
                   Material(
                     elevation: 5.0,
-                    borderRadius: BorderRadius.circular(30.0),
-                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(15.0),
+                    color: Color(0xff1b2d61),
                     child: MaterialButton(
                       minWidth: MediaQuery
                           .of(context)
                           .size
-                          .width,
-                      padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                          .width/3,
+                      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
                       onPressed: _authenticate,
-                      child: Text("Login",
+                      child: Text("LOG IN",
                           textAlign: TextAlign.center,
-                          style: style.copyWith(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold)),
-                    ),
+                          style:GoogleFonts.ptSans(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20)
+                             )),
                   ),
                   SizedBox(
-                    height: 15,
-                  ),
-                  Column(
-                    children: [
-                      //remember me
-                      Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Remember me',
-                              style: TextStyle(
-                                fontSize: 16.0,
-                              ),
-                            ), //Text
-                            SizedBox(width: 10), //SizedBox
-                            Checkbox(
-                              activeColor: Color(0xFF325288),
-                              value: this.value,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  this.value = value!;
-                                });
-                              },
-                            ),
-                          ]),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 15,
+                    height: 10,
                   ),
                   //forget password
                   GestureDetector(
-                    child: Text('Forgot your password?'),
+                    child: Text('Forgot your password?',style: GoogleFonts.ptSans(color: Color(0xff26315f),fontSize: 16),),
                     onTap: () {
                       Navigator.push(
                         context,
@@ -262,12 +240,22 @@ class loginState extends State<login> {
                       );
                     },
                   ),
-                  TextButton(
-                    onPressed: _authenticate,
-                    //Signup
-                    child: Text(
-                      "Sign up",
-                      style: TextStyle(color: Colors.black),
+                  SizedBox(height: 40,),
+                  Container(
+                    padding: EdgeInsets.only(bottom: 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Not yet Registered?",style: GoogleFonts.ptSans(color: Color(0xff97979b),fontSize: 16),),
+                        TextButton(
+                          onPressed: _authenticate,
+                          //Signup
+                          child: Text(
+                            "Sign up",
+                            style: GoogleFonts.ptSans(color: Colors.black,fontSize: 16),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

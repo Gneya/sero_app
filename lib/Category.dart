@@ -203,7 +203,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             onPressed: () {
                             },
                           ),
-                          Center(child: Text("CATEGORY",style: GoogleFonts.ptSans(fontSize: 22),)),
+                          Center(child: Text("CATEGORY",style: GoogleFonts.ptSans(fontSize: 18),)),
 
                           Row(
                             children: [
@@ -301,77 +301,82 @@ class _CategoryScreenState extends State<CategoryScreen> {
       body: _isloading?Center(
           child: CircularProgressIndicator(color: Color(0xff000066),)):searchresult.length != 0 || _controller.text.isNotEmpty?
       Center(
-        child:ListView.builder(
-          itemCount: searchresult.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(child:Container(
-              height: MediaQuery.of(context).size.height/10,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      offset: const Offset(
-                        2.0,
-                        2.0,
+        child:Container(
+          padding: EdgeInsets.all(20),
+          child: ListView.builder(
+            itemCount: searchresult.length,
+            itemBuilder: (BuildContext context, int index) {
+              return GestureDetector(child:Container(
+                height: MediaQuery.of(context).size.height/10,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Colors.white,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey,
+                        offset: const Offset(
+                          2.0,
+                          2.0,
+                        ),
+                        blurRadius: 2.0,
+                        spreadRadius: 1.0,
                       ),
-                      blurRadius: 2.0,
-                      spreadRadius: 1.0,
-                    ),
-                  ]//BoxShadow
-              ),
-              margin: EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width/1.5,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Container(
-                    //child:Image.network(_images[index],height: 30,width:MediaQuery.of(context).size.width/4.5,)),
-                    /* SizedBox(
-                           width: 15,
-                         ),*/),
-                  Container(
+                    ]//BoxShadow
+                ),
+                margin: EdgeInsets.all(10),
+                width: MediaQuery.of(context).size.width/1.5,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      //child:Image.network(_images[index],height: 30,width:MediaQuery.of(context).size.width/4.5,)),
+                      /* SizedBox(
+                             width: 15,
+                           ),*/),
+                    Container(
+                        width: MediaQuery.of(context).size.width/3,
+                        child:Text(searchresult[index],
+                            softWrap: true,
+                            textAlign: TextAlign.center,
+                            style: style.copyWith(color: Colors.black))),
+                    /*SizedBox(
+                             width:50,
+                           ),*/
+                    Container(
                       width: MediaQuery.of(context).size.width/3,
-                      child:Text(searchresult[index],
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          style: style.copyWith(color: Colors.black))),
-                  /*SizedBox(
-                           width:50,
-                         ),*/
-                  Container(
-                    width: MediaQuery.of(context).size.width/3,
-                    child:  IconButton(icon:Icon(
-                      Icons.arrow_forward,
-                    ),
-                      onPressed:(){
+                      child:  IconButton(icon:Icon(
+                        Icons.arrow_forward,
+                      ),
+                        onPressed:(){
 
-                      } ,
-                    ),
-                  )
-                ],
+                        } ,
+                      ),
+                    )
+                  ],
+                ),
+
               ),
+                onTap:() async {
+                  SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+                  _selectedItemsprice!.addAll(sharedPreferences.getStringList("selected")??[]);
+                  print(_selectedItemsprice);
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                      //    builder: (context) => SelectItem(category:searchresult[index],selectedItemsprice:_selectedItemsprice??[],selectedItems: _selectedItems??[],)));
+                } ,
+              );
+            },
+            // SizedBox(
+            //   height: 20,
+            // ),
 
-            ),
-              onTap:() async {
-                SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-                _selectedItemsprice!.addAll(sharedPreferences.getStringList("selected")??[]);
-                print(_selectedItemsprice);
-                // Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                    //    builder: (context) => SelectItem(category:searchresult[index],selectedItemsprice:_selectedItemsprice??[],selectedItems: _selectedItems??[],)));
-              } ,
-            );
-          },
-          // SizedBox(
-          //   height: 20,
-          // ),
-
+          ),
         ),
       )://No search found then
-      Center(
+      Container(
+        padding: EdgeInsets.all(20),
+        child:Center(
         child:ListView.builder(
           itemCount: _datalist.length,
           itemBuilder: (BuildContext context, int index) {
@@ -395,7 +400,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               margin: EdgeInsets.all(10),
               width: MediaQuery.of(context).size.width/1.5,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
                     //child:Image.network(_images[index],height: 30,width:MediaQuery.of(context).size.width/4.5,)),
@@ -404,10 +409,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
                          ),*/),
                   Container(
                       width: MediaQuery.of(context).size.width/3,
-                      child:Text(_datalist[index],
+                      child:Text(_datalist[index].toString().toUpperCase(),
                           softWrap: true,
                           textAlign: TextAlign.center,
-                          style: style.copyWith(color: Colors.black))),
+                          style: GoogleFonts.ptSans(color: Color(0xff707070),fontSize: 16,fontWeight: FontWeight.bold))),
                   /*SizedBox(
                            width:50,
                          ),*/
@@ -442,7 +447,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
         ),
       ),
-      // This trailing comma makes auto-formatting nicer for build methods.
+      )// This trailing comma makes auto-formatting nicer for build methods.
     );
 
   }

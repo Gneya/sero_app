@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:sero_app/addons_and_modifiers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 // import 'package:sero_app/utsav/cart_screen.dart';
 //import 'package:barcode_scan/barcode_scan.dart';
@@ -203,13 +204,17 @@ class _SelectItemState extends State<SelectItem> {
                               onPressed: () {
                               },
                             ),
-                            Text(widget.category.toUpperCase(),
-                              style: TextStyle(fontSize: 20,color: Colors.grey.shade700),),
-                            Container(
-                              //margin: EdgeInsets.only(right: 20),
-                                child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
-                            CircleAvatar(
-                                backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                            Text(widget.category.toUpperCase(),style: GoogleFonts.ptSans(color: Colors.black,fontSize: 18)),
+                            Row(
+                              children: [
+                                Container(
+                                    margin: EdgeInsets.only(right: 0),
+                                    child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
+                                SizedBox(width: 5,),
+                                CircleAvatar(
+                                    backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                                ),
+                              ],
                             ),
                           ]),
                         /*Row(

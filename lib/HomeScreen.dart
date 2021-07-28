@@ -47,12 +47,13 @@ class _HomeScreenState extends State<HomeScreen> {
       _isloading = true;
     });}
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var list=sharedPreferences.getStringList("selected");
-    for(int i=0;i<list!.length;i++) {
-      if (sharedPreferences.containsKey(list[i]))
-      {
-        sharedPreferences.setStringList(list[i], []);
-        sharedPreferences.setStringList(list[i]+"price", []);
+    var list=sharedPreferences.getStringList("selected")??[];
+    if(list.length>0) {
+      for (int i = 0; i < list.length; i++) {
+        if (sharedPreferences.containsKey(list[i])) {
+          sharedPreferences.setStringList(list[i], []);
+          sharedPreferences.setStringList(list[i] + "price", []);
+        }
       }
     }
     sharedPreferences.setStringList("selected", []);
