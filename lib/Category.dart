@@ -201,7 +201,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             onPressed: () {
                             },
                           ),
-                          Text("Category",
+                          Text("CATEGORY",
                             style: TextStyle(fontSize: 23,fontWeight: FontWeight.w500),),
                           CircleAvatar(
                               backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
@@ -244,7 +244,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                           ),
 
                                           suffixIcon: IconButton(
-                                            icon:Icon(Icons.qr_code),
+                                            icon:Image.asset("images/barcode.png"),
                                             onPressed:_scanQR,
                                             color: Colors.black,
                                           )

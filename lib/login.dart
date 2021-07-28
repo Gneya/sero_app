@@ -98,14 +98,6 @@ class loginState extends State<login> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  TextButton(
-                    onPressed: _authenticate,
-                    //Signup
-                    child: Text(
-                      "Sign up",
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
                   SizedBox(
                     height: 50,
                   ),
@@ -269,7 +261,15 @@ class loginState extends State<login> {
                             builder: (context) => ForgetPassword(title: '',)),
                       );
                     },
-                  )
+                  ),
+                  TextButton(
+                    onPressed: _authenticate,
+                    //Signup
+                    child: Text(
+                      "Sign up",
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
                 ],
               ),
             ),

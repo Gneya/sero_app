@@ -71,6 +71,7 @@ class _SelectItemState extends State<SelectItem> {
         if (i["category"] == widget.category) {
           _product=product.fromJson(i);
           _productlist.add(_product);
+          print(_productlist);
         }
       }
       i++;
@@ -467,7 +468,11 @@ class _SelectItemState extends State<SelectItem> {
                           timeInSecForIosWeb: 10);
                     }
                     else{
-                    print(_productlist[index].id);
+                    if(sharedPreferences.containsKey(_productlist[index].name))
+                      {
+                        sharedPreferences.setStringList(_productlist[index].name, []);
+                        sharedPreferences.setStringList(_productlist[index].name+"price", []);
+                      }
                     http.Response response = await http.get(
                         Uri.parse(
                             "https://pos.sero.app/connector/api/product/${_productlist[index].id}")
@@ -478,22 +483,25 @@ class _SelectItemState extends State<SelectItem> {
                     //print(v["data"][0]["modifiers"]);
                     List<dynamic> check = v["data"][0]["modifiers"];
                     List<String> modifiers = [];
+                    List<String> _modifiers_price=[];
                     if (check.isNotEmpty) {
                       for (var _mod in v["data"][0]["modifiers"][0]) {
                         print(_mod["name"]);
+                        print(_mod["sell_price_inc_tax"]);
+                        _modifiers_price.add(_mod["sell_price_inc_tax"]);
                         modifiers.add(_mod["name"]);
                       }
                     }
                     if (modifiers.isNotEmpty) {
                       showDialog(context: context, builder: (context) {
-                        return add(modifiers: modifiers,product: _productlist[index].name);
+                        return add(modifiers: modifiers,product: _productlist[index].name,price:_modifiers_price);
                       });
                     }
                     var list = sharedPreferences.getStringList("selected");
                     var listofprice=sharedPreferences.getStringList("selectedprice");
                     var product = _productlist[index].name;
                     var _price=_productlist[index].price;
-                    list!.add(product);
+                    list!.add(_productlist[index].name);
                     listofprice!.add(_price);
                     sharedPreferences.setStringList("selected", []);
                     sharedPreferences.setStringList("selected", list);

@@ -93,6 +93,26 @@ class _PersonalDetailsState extends State<PersonalDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+
+          leading: Icon(Icons.menu),
+          title: Center(child: Text("ADD CUSTOMER",style: TextStyle(color: Colors.grey.shade700,fontSize: 18),)),
+          backgroundColor: Color(0xffffd45f),
+          actions: [
+            Container(
+                margin: EdgeInsets.only(right: 20),
+                child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
+            SizedBox(height: 10,),
+            Container(
+              margin: EdgeInsets.only(right: 10),
+              child: CircleAvatar(
+                  backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+              ),
+            ),
+            SizedBox(height: 10,),
+
+          ],
+        ),
         body: _isloading?Center(
             child: CircularProgressIndicator(color: Color(0xff000066),)):Form(
             key: _formKey,
@@ -101,24 +121,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
               child: SingleChildScrollView(
                 child: Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: 40,
-                    ),
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: Text(
-                        'Add Customer',
-                        style: TextStyle(
-                          fontFamily: 'AirbnbCerealExtraBold',
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 13,
-                    ),
                     Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       child: Column(
@@ -426,7 +428,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                       height: 10,
                     ),
                     SizedBox(
-                      width: 380,
+                      width: 180,
                       height: 50,
                       child: CupertinoButton(
                         onPressed:(){
@@ -447,7 +449,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         },
 
 
-                        child: Text('Done'),
+                        child: Center(child: Text('DONE',style: TextStyle(fontWeight: FontWeight.bold),)),
                         color: Color(0xFFFFD45F),
                       ),
                     )
@@ -547,11 +549,23 @@ class DropdownScreenState extends State<DropdownScreen> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color(0xFF167F67),
-          title: Text(
-            'Dropdown options',
-            style: TextStyle(color: Colors.white),
-          ),
+          leading: Icon(Icons.menu),
+          title: Center(child: Image.asset("images/logo.png",height: MediaQuery.of(context).size.height/22,width: MediaQuery.of(context).size.width/3,)),
+          backgroundColor: Color(0xffffd45f),
+          actions: [
+            Container(
+                margin: EdgeInsets.only(right: 20),
+                child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
+            SizedBox(height: 10,),
+            Container(
+              margin: EdgeInsets.only(right: 10),
+              child: CircleAvatar(
+                  backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+              ),
+            ),
+            SizedBox(height: 10,),
+
+          ],
         ),
         body: Center(
           child: DropdownButton<Item>(

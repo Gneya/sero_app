@@ -52,6 +52,8 @@ flutter:
   assets:
     - images/x.png
     - images/logo.png
+    - images/row_4.png
+    - images/barcode.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
