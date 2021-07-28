@@ -5,8 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 class add extends StatefulWidget {
-  add({required this.modifiers,required this.product});
+  add({required this.modifiers,required this.product,required this.price});
   List<dynamic> modifiers;
+  List<dynamic> price;
   String product;
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -15,7 +16,7 @@ class add extends StatefulWidget {
 class _MyHomePageState extends State<add> {
    List<dynamic> _cast =[];
   final List<String> _selectedModifiers = <String>[];
-
+   final List<String> _selectedModifiersprice = <String>[];
   Iterable<Widget> get actorWidgets sync* {
     for (int actor=0;actor<_cast.length;actor++/*final Modifiers actor in _cast*/) {
       yield Padding(
@@ -32,6 +33,7 @@ class _MyHomePageState extends State<add> {
               setState(() {
                 if (value) {
                   _selectedModifiers.add(_cast[actor]);
+                  _selectedModifiersprice.add(widget.price[actor]);
                   print(_cast[actor]);
                 } else {
                   _selectedModifiers.removeWhere((String name) {
@@ -75,7 +77,9 @@ class _MyHomePageState extends State<add> {
                FlatButton(onPressed: ()async {
                  SharedPreferences prefs =  await SharedPreferences.getInstance();
                  prefs.setStringList(widget.product,_selectedModifiers);
+                 prefs.setStringList(widget.product+"price",_selectedModifiersprice);
                  print("BLAHHHHHHHHHHHHHHHHHHHHHHHH");
+                 print(_selectedModifiersprice);
                  print(widget.product);
                  Navigator.pop(context);
                  },

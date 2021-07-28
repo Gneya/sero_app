@@ -23,6 +23,7 @@ class _CartScreenState extends State<CartScreen> {
   String table_name='';
 
   Map m={};
+  double p=0.0;
   setBottomBarIndex(index){
     setState(() {
       _currentIndex = index;
@@ -290,7 +291,7 @@ class _CartScreenState extends State<CartScreen> {
                                        Container(
                                         height: 20,
                                         child:ListView.builder(
-                                          itemCount:index*20,
+                                          itemCount:1,
                                           itemBuilder: (context, i) {
                                             var v=m[_selectedItems[index]];
                                             if(v!=null)
@@ -515,10 +516,13 @@ class _CartScreenState extends State<CartScreen> {
     for(int i=0;i<_selectedItemsprice.length;i++)
     {
       paymentAmount+=double.parse(_selectedItemsprice[i]);
+      print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
+      paymentAmount+=p;
     }
   }
 
   fetchData() async {
+    p=0;
     setState(() {
       _isloading=true;
     });
@@ -530,8 +534,18 @@ class _CartScreenState extends State<CartScreen> {
     var _mod;
     for(int i=0 ;i<list.length;i++) {
       if(sharedPreferences.containsKey(list[i])) {
+        var price=sharedPreferences.getStringList(list[i]+"price")??[];
+        for(int i=0;i<price.length;i++)
+          {
+            print(price[i]);
+            p+=double.parse(price[i]);
+            print("PPPPPPPPPPPPPPPPPPPPPPPPPPP");
+            print(p);
+          }
         _mod = sharedPreferences.getStringList(list[i]);
+        print(_mod);
         m[list[i]] = _mod;
+        print([list[i]]);
       }
       else
         {

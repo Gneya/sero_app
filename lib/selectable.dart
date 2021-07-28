@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -56,15 +57,31 @@ class _SelectTableState extends State<SelectTable> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select table'),
+
+        leading: Icon(Icons.menu,color:Color(0xff949494)),
+        title: Center(child: Text("SELECT TABLE",style: GoogleFonts.ptSans(color: Colors.black,fontSize: 18))),
         backgroundColor: Color(0xffffd45f),
+        actions: [
+          Container(
+              margin: EdgeInsets.only(right: 20),
+              child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
+          SizedBox(height: 10,),
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            child: CircleAvatar(
+                backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+            ),
+          ),
+          SizedBox(height: 10,),
+
+        ],
       ),
       body: _isloading? Center(
           child: CircularProgressIndicator(color: Color(0xff000066),)):
       GridView.builder(
         shrinkWrap: true,
         primary: false,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(18),
         itemBuilder: (BuildContext context, int index) {
           i=index;
           return GestureDetector(
@@ -72,26 +89,16 @@ class _SelectTableState extends State<SelectTable> {
               //height: MediaQuery.of(context).size.height,
               //width:  MediaQuery.of(context).size.height/2,
               decoration: BoxDecoration(
-                color:_table_status[i]=="Occupied"?Colors.red:_table_status[i]=="available\t"?Colors.green:Colors.yellow,
+                color:_table_status[i]=="Occupied"?Color(0xfffd6360):_table_status[i]=="available\t"?Color(0xff00af20):Colors.yellow,
                 borderRadius: BorderRadius.circular(20),
               ),
               child:Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  /*SizedBox(
-                    height: 10,
-                  ),*/
-                  Icon(
-                    Icons.table_chart,
-                    size: 50,
-                    color: Colors.white,
-                  ),
-                  /*SizedBox(
-                    height: 5,
-                  ),*/
+                  Image.asset("images/row_4.png",height: MediaQuery.of(context).size.height/17,),
                   Text(
                     _tablenos[index],
-                    style: TextStyle(color: Colors.white, fontSize: 10),
+                    style: TextStyle(color: Colors.white, fontSize: 14),
                   ),
                 ],
               ),
@@ -122,7 +129,7 @@ class _SelectTableState extends State<SelectTable> {
           );
         }, gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
-        crossAxisSpacing: 25.0,
+        crossAxisSpacing: 15.0,
         mainAxisSpacing: 25.0,
       ),
         itemCount: _tablenos.length ,
