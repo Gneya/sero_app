@@ -6,6 +6,7 @@ import 'package:flutter_nav_bar/utsav/redeem.dart';
 import 'package:flutter_nav_bar/utsav/shipping.dart';
 import 'package:flutter_nav_bar/utsav/split_payment.dart';
 import 'package:flutter_nav_bar/utsav/discount.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
@@ -724,7 +725,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         Padding(
                           padding: const EdgeInsets.only(top:8),
                           child: Text("TABLE -11",
-                            style: TextStyle(fontSize: 23,fontWeight: FontWeight.w500),),
+                            style: GoogleFonts.ptSans(fontSize: 23,fontWeight: FontWeight.w500),),
+
                         ),
                         Badge(
                           badgeColor: Colors.white,
