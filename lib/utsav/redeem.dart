@@ -214,5 +214,3 @@ class _RedeemPointState extends State<RedeemPoint> {
     );;;
   }
 }
-
-
