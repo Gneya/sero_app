@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnlineOrder extends StatefulWidget {
   OnlineOrder({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _OnlineOrderState extends State<OnlineOrder> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text('ONLINE ORDER',
-                          style: TextStyle(
+                          style: GoogleFonts.ptSans(
                               color: Colors.white,
                               fontSize: 35,
                               fontWeight: FontWeight.bold
@@ -40,7 +41,7 @@ class _OnlineOrderState extends State<OnlineOrder> {
                           child: Column(
                             children: [
                               Text('You Have Recieved an Online Order',
-                                style: TextStyle(
+                                style: GoogleFonts.ptSans(
                                   color: Colors.white,
                                   fontSize: 28,
                                   fontWeight: FontWeight.bold,
@@ -58,7 +59,7 @@ class _OnlineOrderState extends State<OnlineOrder> {
                               GestureDetector(
                                 child: Container(
                                   child:Center(child: Text('Accept',
-                                    style: TextStyle(fontWeight:FontWeight.bold,
+                                    style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
 
                                         fontSize: 30
                                     ),
@@ -81,7 +82,7 @@ class _OnlineOrderState extends State<OnlineOrder> {
                               ),
                               GestureDetector(
                                 child: Container(
-                                  child:Center(child: Text('Cancel',style: TextStyle(fontWeight:FontWeight.bold,
+                                  child:Center(child: Text('Cancel',style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                                       fontSize: 30
                                   ),
                                   ),
@@ -113,3 +114,5 @@ class _OnlineOrderState extends State<OnlineOrder> {
     );
   }
 }
+
+

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RedeemPoint extends StatefulWidget {
   double Ammount=0.0;
@@ -60,7 +61,7 @@ class _RedeemPointState extends State<RedeemPoint> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text('$points POINTS',
-                          style: TextStyle(
+                          style: GoogleFonts.ptSans(
                               color: Colors.white,
                               fontSize: 35,
                               fontWeight: FontWeight.bold
@@ -71,7 +72,7 @@ class _RedeemPointState extends State<RedeemPoint> {
                             Padding(
                               padding: const EdgeInsets.only(left: 40,top: 20),
                               child: Text('Redeem Points',
-                                style: TextStyle(
+                                style: GoogleFonts.ptSans(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18
@@ -93,7 +94,7 @@ class _RedeemPointState extends State<RedeemPoint> {
                               controller: pointscontroller,
                               keyboardType:TextInputType.number,
                               decoration: InputDecoration(
-                                  errorStyle: TextStyle(color: Color(0xFFFFD45F),fontWeight: FontWeight.bold,fontSize: 12),
+                                  errorStyle: GoogleFonts.ptSans(color: Color(0xFFFFD45F),fontWeight: FontWeight.bold,fontSize: 12),
                                   fillColor: Colors.white, filled: true,
                                   border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(30),
@@ -114,7 +115,7 @@ class _RedeemPointState extends State<RedeemPoint> {
                             Padding(
                               padding: const EdgeInsets.only(left: 40,top: 20),
                               child: Text('Coupon Code',
-                                style: TextStyle(
+                                style: GoogleFonts.ptSans(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 18
@@ -153,7 +154,7 @@ class _RedeemPointState extends State<RedeemPoint> {
                               GestureDetector(
                                 child: Container(
                                   child:Center(child: Text('Add',
-                                    style: TextStyle(fontWeight:FontWeight.bold,
+                                    style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
 
                                         fontSize: 30
                                     ),
@@ -170,18 +171,18 @@ class _RedeemPointState extends State<RedeemPoint> {
                                 onTap: (){
                                   setState(() {
                                     if(_formKey.currentState!.validate()){
-                                    totalAmounttype();
-                                    Redeemed();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => PaymentScreen(Ammount:widget.Ammount , Balance:double.parse(redeemedAmount), Discountt: widget.Discountt, Redeem: redeemed ,)),
-                                    );}
+                                      totalAmounttype();
+                                      Redeemed();
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => PaymentScreen(Ammount:widget.Ammount , Balance:double.parse(redeemedAmount), Discountt: widget.Discountt, Redeem: redeemed ,)),
+                                      );}
                                   });
                                 },
                               ),
                               GestureDetector(
                                 child: Container(
-                                  child:Center(child: Text('Cancel',style: TextStyle(fontWeight:FontWeight.bold,
+                                  child:Center(child: Text('Cancel',style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                                       fontSize: 30
                                   ),
                                   ),
@@ -213,3 +214,5 @@ class _RedeemPointState extends State<RedeemPoint> {
     );;;
   }
 }
+
+

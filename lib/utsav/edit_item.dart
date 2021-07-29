@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 class edit_item extends StatefulWidget {
   String name;
   String quantity;
@@ -9,7 +10,7 @@ class edit_item extends StatefulWidget {
     required this.name,
     required this.quantity,
     required this.price,
-});
+  });
   @override
   _edit_item_State createState() => _edit_item_State();
 }
@@ -31,16 +32,16 @@ class _edit_item_State extends State<edit_item> {
             height: 450,
             padding: EdgeInsets.all(8),
             child: (
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Text("EDIT ITEM",style: TextStyle(fontSize: 20),),
-                ),
-                Container(
-                  // height:MediaQuery.of(context).size.height/1.85,
-                  child:Padding(
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Center(
+                      child: Text("EDIT ITEM",style: GoogleFonts.ptSans(fontSize: 20),),
+                    ),
+                    Container(
+                      // height:MediaQuery.of(context).size.height/1.85,
+                      child:Padding(
                         padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
                         child: Container(
                           // height:MediaQuery.of(context).size.height/10 ,
@@ -75,7 +76,7 @@ class _edit_item_State extends State<edit_item> {
                                         padding: const EdgeInsets.only(left: 0),
                                         child: Text(
                                           widget.name,
-                                          style: TextStyle(
+                                          style: GoogleFonts.ptSans(
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold
                                           ),
@@ -99,7 +100,7 @@ class _edit_item_State extends State<edit_item> {
                                             size: 17,),
                                         ),
                                         Text(widget.quantity.toString(),
-                                          style: TextStyle(
+                                          style: GoogleFonts.ptSans(
                                               fontSize: 12
                                           ),
                                         ),
@@ -108,7 +109,7 @@ class _edit_item_State extends State<edit_item> {
                                             setState(() {
                                               var c=int.parse(widget.quantity);
                                               c++;
-                                          widget.quantity=c.toString();
+                                              widget.quantity=c.toString();
                                               //saveState();
                                             });
                                           },
@@ -122,7 +123,7 @@ class _edit_item_State extends State<edit_item> {
                                         width: MediaQuery.of(context).size.width/9,
                                         child:Text(
                                           '\$'+double.parse(widget.price).toStringAsFixed(2),
-                                          style: TextStyle(
+                                          style: GoogleFonts.ptSans(
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold
                                           ),
@@ -134,66 +135,90 @@ class _edit_item_State extends State<edit_item> {
                             )
                         ),
                       ),
-                  ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
-                          left: 25),
-                      child: Container(
-                        height: 40,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(30),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey,
-                              offset: const Offset(
-                                1.0,
-                                1.0,
-                              ), //Offset
-                              blurRadius: 0.0,
-                              spreadRadius: 2.0,
-                            ), //BoxShadow
-                            BoxShadow(
+                    ),
+                    Row(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
+                              left: 25),
+                          child: Container(
+                            height: 40,
+                            width: 120,
+                            decoration: BoxDecoration(
                               color: Colors.white,
-                              offset: const Offset(0.0, 0.0),
-                              blurRadius: 0.0,
-                              spreadRadius: 0.0,
-                            ),],
-                        ),
-                        child: DropdownButton<String>(
-                          value: dropdownValue1,
-                          items: [
-                            DropdownMenuItem(
-                              value: 'Fixed',
-                              child: Text('Fixed'),
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey,
+                                  offset: const Offset(
+                                    1.0,
+                                    1.0,
+                                  ), //Offset
+                                  blurRadius: 0.0,
+                                  spreadRadius: 2.0,
+                                ), //BoxShadow
+                                BoxShadow(
+                                  color: Colors.white,
+                                  offset: const Offset(0.0, 0.0),
+                                  blurRadius: 0.0,
+                                  spreadRadius: 0.0,
+                                ),],
                             ),
-                            DropdownMenuItem(
-                              value: 'Percentage',
-                              child: Text('Percentage'),
-                            ),
+                            child: DropdownButton<String>(
+                              value: dropdownValue1,
+                              items: [
+                                DropdownMenuItem(
+                                  value: 'Fixed',
+                                  child: Text('Fixed'),
+                                ),
+                                DropdownMenuItem(
+                                  value: 'Percentage',
+                                  child: Text('Percentage'),
+                                ),
 
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              var dropdownValue1 = value!;
-                            });
-                          },
+                              ],
+                              onChanged: (value) {
+                                setState(() {
+                                  var dropdownValue1 = value!;
+                                });
+                              },
+                            ),
+                          ),
                         ),
-                      ),
+                        Container(
+                          height: 50,
+                          width: 120,
+                          child: TextField(
+                            enableInteractiveSelection: false,
+                            focusNode: new AlwaysDisabledFocusNode(),
+                            keyboardType:TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: 'Hi',
+                              hintStyle: GoogleFonts.ptSans(
+                                  fontWeight: FontWeight.bold
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(color:Colors.brown),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(30),
+                                borderSide: BorderSide(color:Colors.brown),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     Container(
-                      height: 50,
-                      width: 120,
+                      height: 200,
+                      width: 320,
                       child: TextField(
+                        maxLines: 10,
                         enableInteractiveSelection: false,
-                        focusNode: new AlwaysDisabledFocusNode(),
-                        keyboardType:TextInputType.number,
                         decoration: InputDecoration(
                           hintText: 'Hi',
-                          hintStyle: TextStyle(
+                          hintStyle: GoogleFonts.ptSans(
                               fontWeight: FontWeight.bold
                           ),
                           border: OutlineInputBorder(
@@ -207,43 +232,21 @@ class _edit_item_State extends State<edit_item> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      width: 180,
+                      height: 50,
+                      child: CupertinoButton(
+                        child: Center(child: Text('Done',style: GoogleFonts.ptSans(color:Colors.black),)),
+                        color: Color(0xFFFFD45F), onPressed: () {  },
+                      ),
+                    )
                   ],
-                ),
-                Container(
-                  height: 200,
-                  width: 320,
-                  child: TextField(
-                    maxLines: 10,
-                    enableInteractiveSelection: false,
-                    decoration: InputDecoration(
-                      hintText: 'Hi',
-                      hintStyle: TextStyle(
-                          fontWeight: FontWeight.bold
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(color:Colors.brown),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide(color:Colors.brown),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 180,
-                  height: 50,
-                  child: CupertinoButton(
-                    child: Center(child: Text('Done',style: TextStyle(color:Colors.black),)),
-                    color: Color(0xFFFFD45F), onPressed: () {  },
-                  ),
                 )
-              ],
-            )
-    ),
+            ),
           ),
         ));
   }
 }
+
+
 
