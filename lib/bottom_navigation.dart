@@ -22,6 +22,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   var _tabPopStack = false;
     String? total="0";
   Future<void> _setIndex(index) async {
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    sharedPreferences.setInt("index", index);
       if(mounted){
       setState(() {
         // _tabPopStack = _tabSelectedIndex == index;
@@ -52,16 +54,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
           popStack: _tabPopStack,
         ),
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.amber,
+          unselectedItemColor: Colors.grey.shade700,
           currentIndex: _tabSelectedIndex,
           onTap: _setIndex,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home,color: Colors.amber,),
-              title: Text('title'),
+              icon: Icon(Icons.home,),
+              title: Text(''),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.category_outlined,color: Colors.amber,),
-              title: Text('title'),
+              icon: Icon(Icons.category_outlined,),
+              title: Text(''),
             ),
             BottomNavigationBarItem(
               icon: Badge(
@@ -72,12 +76,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
                    return Text(total??"",style: TextStyle(color: Colors.white));
               }),
-                child:Icon(Icons.shopping_cart,color: Colors.amber,),),
-              title: Text('title'),
+                child:Icon(Icons.shopping_cart),),
+              title: Text(''),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.open_in_browser_outlined,color: Colors.amber,),
-              title: Text('title'),
+              icon: Icon(Icons.open_in_browser_outlined,),
+              title: Text(''),
             ),
           ],
         ),

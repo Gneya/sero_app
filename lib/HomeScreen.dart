@@ -5,6 +5,7 @@ import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'personaldetails.dart';
 // import 'package:sero_app/selecttable.dart';
 // import 'package:sero_app/forget_password.dart';
@@ -98,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Container(
               margin: EdgeInsets.only(right: 20),
-              child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
+              child: Icon(Icons.notifications,color: Colors.black,)),
           SizedBox(height: 10,),
           Container(
             margin: EdgeInsets.only(right: 10),
@@ -123,11 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Text(
                 _name,
-                style: TextStyle(
-                  fontFamily: 'Product Sans',
-                  fontSize: 20,
-                ),
-              ),
+                style:GoogleFonts.ptSans(fontSize: 22)),
               SizedBox(
                 height: 30,
               ),
@@ -194,58 +191,67 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 40,
               ),
-              Text('Select Mode',style: TextStyle(fontSize: 20),),
+              Text('Select Mode',style: GoogleFonts.ptSans(fontSize: 22),),
               SizedBox(
                 height: 30,
               ),
-              Material(
-                elevation: 5.0,
-                borderRadius: BorderRadius.circular(30.0),
-                color: Colors.white,
-                child: MaterialButton(
-                  minWidth: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SelectTable()));
-                  },
-                  child: Text("Dine in",
-                      textAlign: TextAlign.center,
-                      style: style.copyWith(color: Colors.black)),
+              Container(
+                padding: EdgeInsets.only(left: 20,right: 20),
+                child: Material(
+                  elevation: 5.0,
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Colors.white,
+                  child: MaterialButton(
+                    minWidth: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SelectTable()));
+                    },
+                    child: Text("Dine in",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.ptSans(fontSize: 18)),
+                  ),
                 ),
               ),
               SizedBox(
                 height: 20,
               ),
-              Material(
-                elevation: 5.0,
-                borderRadius: BorderRadius.circular(30.0),
-                color: Colors.white,
-                child: MaterialButton(
-                  minWidth: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  onPressed: () {},
-                  child: Text("Take Away",
-                      textAlign: TextAlign.center,
-                      style: style.copyWith(color: Colors.black)),
+              Container(
+                padding: EdgeInsets.only(left:20,right: 20),
+                child: Material(
+                  elevation: 5.0,
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Colors.white,
+                  child: MaterialButton(
+                    minWidth: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    onPressed: () {},
+                    child: Text("Take Away",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.ptSans(fontSize: 18)),
+                  ),
                 ),
               ),
               SizedBox(
                 height: 20,
               ),
-              Material(
-                elevation: 5.0,
-                borderRadius: BorderRadius.circular(30.0),
-                color: Colors.white,
-                child: MaterialButton(
-                  minWidth: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  onPressed: () {},
-                  child: Text("Home Delivery",
-                      textAlign: TextAlign.center,
-                      style: style.copyWith(color: Colors.black)
+              Container(
+                padding: EdgeInsets.only(left: 20,right: 20),
+                child: Material(
+                  elevation: 5.0,
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Colors.white,
+                  child: MaterialButton(
+                    minWidth: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    onPressed: () {},
+                    child: Text("Home Delivery",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.ptSans(fontSize: 18)
+                    ),
                   ),
                 ),
               ),

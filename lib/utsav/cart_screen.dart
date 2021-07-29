@@ -21,7 +21,6 @@ class _CartScreenState extends State<CartScreen> {
   var size,height,width;
   int table_id=0;
   String table_name='';
-
   Map m={};
   double p=0.0;
   setBottomBarIndex(index){
@@ -39,7 +38,6 @@ class _CartScreenState extends State<CartScreen> {
     table_name =prefs.getString("table_name")??"";
     customer_name=prefs.getString("customer_name")??"";
     //selectedItems=prefs.getStringList("selected")!;
-
     setState(() {
       _isloading =false;
     });
@@ -52,7 +50,6 @@ class _CartScreenState extends State<CartScreen> {
 
   List<dynamic> _selectedItems =[];
   List<dynamic> _selectedItemsprice = [];
-  List<Modi> _modifiers =[];
   bool isEmpty =true;
 
   @override
@@ -268,6 +265,7 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ],
                                       ),
+
                                       //  Container(
                                       //   height: 20,
                                       //   child:ListView.builder(
