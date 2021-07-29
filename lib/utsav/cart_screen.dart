@@ -4,7 +4,6 @@ import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/edit_item.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'notification.dart';
 
 class CartScreen extends StatefulWidget {
@@ -112,68 +111,76 @@ class _CartScreenState extends State<CartScreen> {
                   height:150,
                   child:Padding(
                     padding: const EdgeInsets.only(top:30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Column(
                       children: [
-                        IconButton(
-                          alignment: Alignment.topLeft,
-                          icon: const Icon(Icons.menu),
-                          onPressed: () {
-                            setState(() {
-                            });
-                          },
-                        ),
-                        Text("ORDER",
-                          style: TextStyle(fontSize: 18),),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              margin: EdgeInsets.only(right: 0),
-                              child: IconButton(
-                                icon: const Icon(Icons.notifications,
+                            IconButton(
+                              alignment: Alignment.topLeft,
+                              icon: const Icon(Icons.menu),
+                              onPressed: () {
+                                setState(() {
+                                });
+                              },
+                            ),
+                            Text("ORDER",
+                              style: TextStyle(fontSize: 18),),
+                            Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(right: 0),
+                                  child: IconButton(
+                                    icon: const Icon(Icons.notifications,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context){
+                                            return OnlineOrder();
+                                          }
+                                      );
+                                    },
+                                  ),),
+                                CircleAvatar(
+                                    backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
                                 ),
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context){
-                                        return OnlineOrder();
-                                      }
-                                  );
-                                },
-                              ),),
-                            CircleAvatar(
-                                backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                              ],
                             ),
                           ],
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 35),
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 12,left: 25,right: 25),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(table_name,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16
+                                    ),),
+                                  Text(customer_name,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15
+                                    ),),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12,left: 25,right: 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(table_name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15
-                          ),),
-                        Text(customer_name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15
-                          ),),
-                      ],
-                    ),
-                  ),
-                ),
+
               ]
           ),
-          toolbarHeight: 170,
+          toolbarHeight: 115,
           backgroundColor: Colors.white,
         ),
         body: _isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),))
@@ -505,14 +512,14 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void pay() {
-    paymentAmount=0;
-    for(int i=0;i<_selectedItemsprice.length;i++)
-    {
-      paymentAmount+=double.parse(_selectedItemsprice[i]);
-      // print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
-      paymentAmount+=p;
-    }}
+  // void pay() {
+  //   paymentAmount=0;
+  //   for(int i=0;i<_selectedItemsprice.length;i++)
+  //   {
+  //     paymentAmount+=double.parse(_selectedItemsprice[i]);
+  //     // print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
+  //     paymentAmount+=p;
+  //   }}
 
   fetchData() async {
     p=0;
