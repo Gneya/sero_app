@@ -4,6 +4,7 @@ import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:sero_app/selecttable.dart';
 import 'package:http/http.dart' as http;
@@ -95,13 +96,24 @@ class _PersonalDetailsState extends State<PersonalDetails> {
     return Scaffold(
         appBar: AppBar(
 
-          leading: Icon(Icons.menu,color: Color(0xff949494),),
-          title: Center(child: Text("ADD CUSTOMER",style: TextStyle(color:Color(0xff707070),fontSize: 18),)),
+          leading: Icon(Icons.menu,),
+          title: Center(child: Text("ADD CUSTOMER",style: TextStyle(fontSize: 18),)),
           backgroundColor: Color(0xffffd45f),
           actions: [
             Container(
-                margin: EdgeInsets.only(right: 20),
-                child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
+                margin: EdgeInsets.only(right: 0),
+                child: IconButton(
+                  icon: const Icon(Icons.notifications,
+                  ),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context){
+                          return OnlineOrder();
+                        }
+                    );
+                  },
+                )),
             SizedBox(height: 10,),
             Container(
               margin: EdgeInsets.only(right: 10),

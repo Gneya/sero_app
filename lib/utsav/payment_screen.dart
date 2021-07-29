@@ -725,36 +725,31 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         Padding(
                           padding: const EdgeInsets.only(top:8),
                           child: Text("TABLE -11",
-                            style: GoogleFonts.ptSans(fontSize: 23,fontWeight: FontWeight.w500),),
+                            style: GoogleFonts.ptSans(fontSize: 18),),
 
                         ),
-                        Badge(
-                          badgeColor: Colors.white,
-                          position: BadgePosition.topEnd(top: 0, end: 3),
-                          animationDuration: Duration(milliseconds: 300),
-                          animationType: BadgeAnimationType.slide,
-                          badgeContent: Text(
-                            _counter.toString(),
-                            style: GoogleFonts.ptSans(color: Colors.black),
-                          ),
-                          child: IconButton(
-                            alignment:Alignment.topRight,
-                            icon: const Icon(Icons.notifications,
-                              size: 30,
+                        Row(
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(right: 0),
+                                child: IconButton(
+                                  icon: const Icon(Icons.notifications,
+                                  ),
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context){
+                                          return OnlineOrder();
+                                        }
+                                    );
+                                  },
+                                ),),
+                            CircleAvatar(
+                                backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
                             ),
-                            onPressed: () {
-                              showDialog(
-                                  context: context,
-                                  builder: (context){
-                                    return OnlineOrder();
-                                  }
-                              );
-                            },
-                          ),
+                          ],
                         ),
-                        CircleAvatar(
-                            backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
-                        ),
+
                       ],
                     ),
                     Padding(

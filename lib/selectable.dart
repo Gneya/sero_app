@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -57,13 +58,24 @@ class _SelectTableState extends State<SelectTable> {
     return Scaffold(
       appBar: AppBar(
 
-        leading: Icon(Icons.menu,color:Color(0xff949494)),
+        leading: Icon(Icons.menu),
         title: Center(child: Text("SELECT TABLE",style: GoogleFonts.ptSans(color: Colors.black,fontSize: 18))),
         backgroundColor: Color(0xffffd45f),
         actions: [
           Container(
-              margin: EdgeInsets.only(right: 20),
-              child: Icon(Icons.notifications)),
+              margin: EdgeInsets.only(right: 0),
+              child: IconButton(
+                icon: const Icon(Icons.notifications,
+                ),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context){
+                        return OnlineOrder();
+                      }
+                  );
+                },
+              )),
           SizedBox(height: 10,),
           Container(
             margin: EdgeInsets.only(right: 10),

@@ -5,6 +5,8 @@ import 'package:flutter_nav_bar/utsav/edit_item.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'notification.dart';
+
 class CartScreen extends StatefulWidget {
   @override
   _CartScreenState createState() => _CartScreenState();
@@ -123,10 +125,27 @@ class _CartScreenState extends State<CartScreen> {
                           },
                         ),
                         Text("ORDER",
-                          style: TextStyle(fontSize: 23,fontWeight: FontWeight.w500),),
-                        CircleAvatar(
-                            backgroundImage:
-                            NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                          style: TextStyle(fontSize: 18),),
+                        Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 0),
+                              child: IconButton(
+                                icon: const Icon(Icons.notifications,
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context){
+                                        return OnlineOrder();
+                                      }
+                                  );
+                                },
+                              ),),
+                            CircleAvatar(
+                                backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -486,14 +505,14 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  // void pay() {
-  //   paymentAmount=0;
-  //   for(int i=0;i<_selectedItemsprice.length;i++)
-  //   {
-  //     paymentAmount+=double.parse(_selectedItemsprice[i]);
-  //     // print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
-  //     paymentAmount+=p;
-  //   }
+  void pay() {
+    paymentAmount=0;
+    for(int i=0;i<_selectedItemsprice.length;i++)
+    {
+      paymentAmount+=double.parse(_selectedItemsprice[i]);
+      // print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
+      paymentAmount+=p;
+    }}
 
   fetchData() async {
     p=0;
