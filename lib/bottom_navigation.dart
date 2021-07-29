@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
@@ -21,29 +22,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
   var _tabPopStack = false;
     String? total="0";
   Future<void> _setIndex(index) async {
-    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    sharedPreferences.setInt('index',index);
-    if(sharedPreferences.getString("customer_name")=="")
-      {
-        Fluttertoast.showToast(
-            msg: "Please select the customer",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            textColor: Colors.green,
-            timeInSecForIosWeb: 10);
-      }
-    else {
       if(mounted){
       setState(() {
         // _tabPopStack = _tabSelectedIndex == index;
         _tabSelectedIndex = index;
       });}
-    }
   }
-
+  var cart=FlutterCart();
+  fetch(){
+    setState(() {
+      total=cart.getCartItemCount().toString();
+    });
+  }
   @override
   Widget build(BuildContext context) {
-      fetchtotal();
+   fetch();
     return WillPopScope(
       onWillPop: () async => !await _tabNavigator.currentState!.maybePop(),
       child: Scaffold(
@@ -74,11 +67,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
               icon: Badge(
               badgeColor: Colors.red,
                 position: BadgePosition.topEnd(top: -20, end: -10),
-                // badgeContent: FutureBuilder(
-                //   future: fetchtotal(),
-                // builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                   badgeContent:Text(total??"",style: TextStyle(color: Colors.white)),
-              //}),
+                 badgeContent: FutureBuilder(
+                 future: fetch(),
+                 builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                   return Text(total??"",style: TextStyle(color: Colors.white));
+              }),
                 child:Icon(Icons.shopping_cart,color: Colors.amber,),),
               title: Text('title'),
             ),
@@ -92,14 +85,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Future<String> fetchtotal() async {
-    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    var list=sharedPreferences.getStringList("selected");
-    setState(() {
-      total=list?.length.toString()??"0";
-    });
-    return sharedPreferences.getStringList("selected")?.length.toString()??"0";
-  }
 
 }
 

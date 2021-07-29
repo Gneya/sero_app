@@ -1,12 +1,14 @@
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:sero_app/addons_and_modifiers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_nav_bar/model.dart';
 // import 'package:sero_app/utsav/cart_screen.dart';
 //import 'package:barcode_scan/barcode_scan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,6 +28,7 @@ class SelectItem extends StatefulWidget {
 class _SelectItemState extends State<SelectItem> {
   var v;
   //List<String> selectedReportList = [];
+  var cart=FlutterCart();
   late product _product;
   List<product> _productlist=[];
   bool _isSearching=false;
@@ -74,6 +77,7 @@ class _SelectItemState extends State<SelectItem> {
           print(_productlist);
         }
       }
+      i++;
     print(_productlist);
     setState(() {
       _isloading = false;
@@ -352,6 +356,8 @@ class _SelectItemState extends State<SelectItem> {
                             timeInSecForIosWeb: 10);
                       }
                     else {
+                      final _cart=CartItem(name: _productlist[index].name, quantity: 1, price:double.parse(_productlist[index].price));
+                     print(_cart);
                       print(_productlist[index].id);
                       http.Response response = await http.get(
                           Uri.parse(
@@ -473,11 +479,7 @@ class _SelectItemState extends State<SelectItem> {
                           timeInSecForIosWeb: 10);
                     }
                     else{
-                    if(sharedPreferences.containsKey(_productlist[index].name))
-                      {
-                        sharedPreferences.setStringList(_productlist[index].name, []);
-                        sharedPreferences.setStringList(_productlist[index].name+"price", []);
-                      }
+                      cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
                     http.Response response = await http.get(
                         Uri.parse(
                             "https://pos.sero.app/connector/api/product/${_productlist[index].id}")
@@ -502,20 +504,6 @@ class _SelectItemState extends State<SelectItem> {
                         return add(modifiers: modifiers,product: _productlist[index].name,price:_modifiers_price);
                       });
                     }
-                    var list = sharedPreferences.getStringList("selected");
-                    var listofprice=sharedPreferences.getStringList("selectedprice");
-                    var product = _productlist[index].name;
-                    var _price=_productlist[index].price;
-                    list!.add(_productlist[index].name);
-                    listofprice!.add(_price);
-                    sharedPreferences.setStringList("selected", []);
-                    sharedPreferences.setStringList("selected", list);
-                    sharedPreferences.setStringList("selectedprice", []);
-                    sharedPreferences.setStringList("selectedprice", listofprice);
-                    sharedPreferences.setStringList("selectedprice", listofprice);
-                    print(sharedPreferences.getStringList("selectedprice"));
-                    print(sharedPreferences.getStringList("selected"));
-                    print( _selectedItems);
                     //_selectedItemsprice.add(price[index]);
                     Fluttertoast.showToast(
                         msg: "Item added to cart",

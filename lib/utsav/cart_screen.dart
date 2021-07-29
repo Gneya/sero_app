@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/edit_item.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,11 +35,10 @@ class _CartScreenState extends State<CartScreen> {
       _isloading =true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // table_id=  prefs.getInt("table_id")??0;
-    // table_name =prefs.getString("table_name")??"";
-    // customer_name=prefs.getString("customer_name")??"";
-    // //selectedItems=prefs.getStringList("selected")!;
-    // counter=prefs.getStringList("quantity")!;
+    table_id=  prefs.getInt("table_id")??0;
+    table_name =prefs.getString("table_name")??"";
+    customer_name=prefs.getString("customer_name")??"";
+    //selectedItems=prefs.getStringList("selected")!;
 
     setState(() {
       _isloading =false;
@@ -57,8 +57,8 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    pay();
+    final cart=FlutterCart();
+    // pay();
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
@@ -81,7 +81,7 @@ class _CartScreenState extends State<CartScreen> {
       prefs.setStringList("quantity",counter);
       prefs.setStringList("selected",List<String>.from(s));
       prefs.setStringList("selectedprice",List<String>.from(price));
-      print(List<String>.from(s));
+      // print(List<String>.from(s));
 
     }
     return Scaffold(
@@ -161,18 +161,10 @@ class _CartScreenState extends State<CartScreen> {
           backgroundColor: Colors.white,
         ),
         body: _isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),))
-            :FutureBuilder(
-            future: fetchData(),
-            builder: (context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.data==null) {
-              return Text("No data");
-    }
-              else
-                {
-                  return Container(
+            :Container(
                       height:MediaQuery.of(context).size.height/1.85,
                       child: ListView.builder(
-                        itemCount: _selectedItems.length,
+                        itemCount: cart.cartItem.length,
                         itemBuilder: (context, index) {
                           if(counterList.length < _selectedItems.length ) {
                             counterList.add("1");
@@ -180,7 +172,7 @@ class _CartScreenState extends State<CartScreen> {
                           return GestureDetector(
                             onTap:(){
                               showDialog(context: context, builder: (context) {
-                                return edit_item(name: _selectedItems[index],quantity: counterList[index],price: _selectedItemsprice[index]);
+                                return edit_item(name: cart.cartItem[index].productName.toString(),quantity: cart.cartItem[index].quantity.toString(),price: cart.cartItem[index].unitPrice.toString());
                               });
                           },
                             child: Padding(
@@ -216,8 +208,7 @@ class _CartScreenState extends State<CartScreen> {
                                             width: MediaQuery.of(context).size.width/2.8,
                                             child: Padding(
                                               padding: const EdgeInsets.only(left: 0),
-                                              child: Text(
-                                                _selectedItems[index],
+                                              child: Text(cart.cartItem[index].productName.toString(),
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold
@@ -231,28 +222,22 @@ class _CartScreenState extends State<CartScreen> {
                                               IconButton(
                                                 onPressed:(){
                                                   setState(() {
-                                                    var c=int.parse(counterList[index]);
-                                                    if( c>1)
-                                                      c--;
-                                                    counterList[index]=c.toString();
-                                                    //saveState();
+                                                    cart.decrementItemFromCart(index);
                                                   });
                                                 },
                                                 icon: Icon(Icons.remove_circle,
                                                   size: 17,),
                                               ),
-                                              Text(counterList[index].toString(),
+                                              Text(cart.cartItem[index].quantity.toString(),
                                                 style: TextStyle(
                                                     fontSize: 15
                                                 ),
                                               ),
                                               IconButton(
                                                 onPressed:(){
+                                                  print(cart.cartItem[index].productId);
                                                   setState(() {
-                                                    var c=int.parse(counterList[index]);
-                                                    c++;
-                                                    counterList[index]=c.toString();
-                                                    //saveState();
+                                                    cart.incrementItemToCart(index);
                                                   });
                                                 },
                                                 icon: Icon(Icons.add_circle_outlined,
@@ -262,9 +247,9 @@ class _CartScreenState extends State<CartScreen> {
                                             ],
                                           ),
                                           Container(
-                                              width: MediaQuery.of(context).size.width/9,
+                                              width: MediaQuery.of(context).size.width/8,
                                               child:Text(
-                                                '\$'+double.parse(_selectedItemsprice[index]).toStringAsFixed(2),
+                                                cart.cartItem[index].unitPrice.toString(),
                                                 style: TextStyle(
                                                     fontSize: 15,
                                                     fontWeight: FontWeight.bold
@@ -273,13 +258,9 @@ class _CartScreenState extends State<CartScreen> {
                                           IconButton(
                                             onPressed:(){
                                               setState(() {
-                                                _selectedItems.removeAt(index);
-                                                counterList.removeAt(index);
-                                                paymentAmount-=double.parse( _selectedItemsprice[index]);
-                                                _selectedItemsprice.removeAt(index);
-                                                _selectedItemsprice.removeAt(index);
+                                                cart.deleteItemFromCart(index);
+                                                print(cart.getCartItemCount());
                                               });
-                                              delete(_selectedItems,counterList,_selectedItemsprice);
                                             },
                                             icon: Icon(Icons.delete,
                                               color: Colors.red,
@@ -287,28 +268,25 @@ class _CartScreenState extends State<CartScreen> {
                                           ),
                                         ],
                                       ),
-                                       Container(
-                                        height: 20,
-                                        child:ListView.builder(
-                                          itemCount:1,
-                                          itemBuilder: (context, i) {
-                                            var v=m[_selectedItems[index]];
-                                            if(v!=null)
-                                            return Text(' - Extra '+m[_selectedItems[index]].toString());
-                                            else
-                                              return Text("");
-                                          },
-                                      )
-                                      )
+                                      //  Container(
+                                      //   height: 20,
+                                      //   child:ListView.builder(
+                                      //     itemCount:1,
+                                      //     itemBuilder: (context, i) {
+                                      //       var v=m[_selectedItems[index]];
+                                      //       if(v!=null)
+                                      //       return Text(' - Extra '+m[_selectedItems[index]].toString());
+                                      //       else
+                                      //         return Text("");
+                                      //     },
+                                      // )
+                                      // )
                                     ] ,
                                   )
                               ),
                             ),
-                          );
-                        },
-                      ));
-              }
-            }),
+                          );})),
+
         bottomSheet:_currentIndex == 3 ? new Container(
           height: 70,
           decoration: BoxDecoration(
@@ -499,7 +477,7 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 icon: Icon(Icons.payment,
                   color: Colors.black87,),
-                label: Text("PAY:\$${paymentAmount.toStringAsFixed(2)}",style: TextStyle(
+                label: Text("PAY:\$${double.parse(cart.getTotalAmount().toString()).toStringAsFixed(2)}",style: TextStyle(
                     color: Colors.black87,
                     fontSize: 20
                 ),),
@@ -510,15 +488,14 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void pay() {
-    paymentAmount=0;
-    for(int i=0;i<_selectedItemsprice.length;i++)
-    {
-      paymentAmount+=double.parse(_selectedItemsprice[i]);
-      print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
-      paymentAmount+=p;
-    }
-  }
+  // void pay() {
+  //   paymentAmount=0;
+  //   for(int i=0;i<_selectedItemsprice.length;i++)
+  //   {
+  //     paymentAmount+=double.parse(_selectedItemsprice[i]);
+  //     // print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
+  //     paymentAmount+=p;
+  //   }
 
   fetchData() async {
     p=0;
@@ -529,7 +506,7 @@ class _CartScreenState extends State<CartScreen> {
     var list=sharedPreferences.getStringList("selected")??[];
     _selectedItems=list;
     _selectedItemsprice=sharedPreferences.getStringList("selectedprice")!;
-    print(_selectedItems);
+    // print(_selectedItems);
     var _mod;
     for(int i=0 ;i<list.length;i++) {
       if(sharedPreferences.containsKey(list[i])) {
@@ -538,13 +515,13 @@ class _CartScreenState extends State<CartScreen> {
           {
             print(price[i]);
             p+=double.parse(price[i]);
-            print("PPPPPPPPPPPPPPPPPPPPPPPPPPP");
-            print(p);
+            // print("PPPPPPPPPPPPPPPPPPPPPPPPPPP");
+            // print(p);
           }
         _mod = sharedPreferences.getStringList(list[i]);
-        print(_mod);
+        // print(_mod);
         m[list[i]] = _mod;
-        print([list[i]]);
+        // print([list[i]]);
       }
       else
         {
