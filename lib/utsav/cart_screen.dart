@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/edit_item.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -21,7 +21,6 @@ class _CartScreenState extends State<CartScreen> {
   var size,height,width;
   int table_id=0;
   String table_name='';
-
   Map m={};
   double p=0.0;
   setBottomBarIndex(index){
@@ -35,12 +34,10 @@ class _CartScreenState extends State<CartScreen> {
       _isloading =true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    // table_id=  prefs.getInt("table_id")??0;
-    // table_name =prefs.getString("table_name")??"";
-    // customer_name=prefs.getString("customer_name")??"";
-    // //selectedItems=prefs.getStringList("selected")!;
-    // counter=prefs.getStringList("quantity")!;
-
+    table_id=  prefs.getInt("table_id")??0;
+    table_name =prefs.getString("table_name")??"";
+    customer_name=prefs.getString("customer_name")??"";
+    //selectedItems=prefs.getStringList("selected")!;
     setState(() {
       _isloading =false;
     });
@@ -53,13 +50,12 @@ class _CartScreenState extends State<CartScreen> {
 
   List<dynamic> _selectedItems =[];
   List<dynamic> _selectedItemsprice = [];
-  List<Modi> _modifiers =[];
   bool isEmpty =true;
 
   @override
   Widget build(BuildContext context) {
-
-    pay();
+    final cart=FlutterCart();
+    // pay();
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
@@ -82,7 +78,7 @@ class _CartScreenState extends State<CartScreen> {
       prefs.setStringList("quantity",counter);
       prefs.setStringList("selected",List<String>.from(s));
       prefs.setStringList("selectedprice",List<String>.from(price));
-      print(List<String>.from(s));
+      // print(List<String>.from(s));
 
     }
     return Scaffold(
@@ -127,7 +123,7 @@ class _CartScreenState extends State<CartScreen> {
                           },
                         ),
                         Text("ORDER",
-                          style: GoogleFonts.ptSans(fontSize: 23,fontWeight: FontWeight.w500),),
+                          style: TextStyle(fontSize: 23,fontWeight: FontWeight.w500),),
                         CircleAvatar(
                             backgroundImage:
                             NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
@@ -143,12 +139,12 @@ class _CartScreenState extends State<CartScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(table_name,
-                          style: GoogleFonts.ptSans(
+                          style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15
                           ),),
                         Text(customer_name,
-                          style: GoogleFonts.ptSans(
+                          style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 15
                           ),),
@@ -162,154 +158,133 @@ class _CartScreenState extends State<CartScreen> {
           backgroundColor: Colors.white,
         ),
         body: _isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),))
-            :FutureBuilder(
-            future: fetchData(),
-            builder: (context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.data==null) {
-                return Text("No data");
-              }
-              else
-              {
-                return Container(
-                    height:MediaQuery.of(context).size.height/1.85,
-                    child: ListView.builder(
-                      itemCount: _selectedItems.length,
-                      itemBuilder: (context, index) {
-                        if(counterList.length < _selectedItems.length ) {
-                          counterList.add("1");
-                        }
-                        return GestureDetector(
-                          onTap:(){
-                            showDialog(context: context, builder: (context) {
-                              return edit_item(name: _selectedItems[index],quantity: counterList[index],price: _selectedItemsprice[index]);
-                            });
+            :Container(
+                      height:MediaQuery.of(context).size.height/1.85,
+                      child: ListView.builder(
+                        itemCount: cart.cartItem.length,
+                        itemBuilder: (context, index) {
+                          if(counterList.length < _selectedItems.length ) {
+                            counterList.add("1");
+                          }
+                          return GestureDetector(
+                            onTap:(){
+                              showDialog(context: context, builder: (context) {
+                                return edit_item(name: cart.cartItem[index].productName.toString(),quantity: cart.cartItem[index].quantity.toString(),price: cart.cartItem[index].unitPrice.toString());
+                              });
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
-                            child: Container(
-                              // height:MediaQuery.of(context).size.height/10 ,
-                                padding: EdgeInsets.only(left:10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(30),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey,
-                                      offset: const Offset(
-                                        1.0,
-                                        1.0,
-                                      ), //Offset
-                                      blurRadius: 6.0,
-                                      spreadRadius: 2.0,
-                                    ), //BoxShadow
-                                    BoxShadow(
-                                      color: Colors.white,
-                                      offset: const Offset(0.0, 0.0),
-                                      blurRadius: 0.0,
-                                      spreadRadius: 0.0,
-                                    ),],
-                                ),
-                                child:Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Container(
-                                          width: MediaQuery.of(context).size.width/2.8,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(left: 0),
-                                            child: Text(
-                                              _selectedItems[index],
-                                              style: GoogleFonts.ptSans(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
+                              child: Container(
+                                  // height:MediaQuery.of(context).size.height/10 ,
+                                  padding: EdgeInsets.only(left:10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(30),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: const Offset(
+                                          1.0,
+                                          1.0,
+                                        ), //Offset
+                                        blurRadius: 6.0,
+                                        spreadRadius: 2.0,
+                                      ), //BoxShadow
+                                      BoxShadow(
+                                        color: Colors.white,
+                                        offset: const Offset(0.0, 0.0),
+                                        blurRadius: 0.0,
+                                        spreadRadius: 0.0,
+                                      ),],
+                                  ),
+                                  child:Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Container(
+                                            width: MediaQuery.of(context).size.width/2.8,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(left: 0),
+                                              child: Text(cart.cartItem[index].productName.toString(),
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        Row(
-                                          //mainAxisAlignment: MainAxisAlignment.,
-                                          children: [
-                                            IconButton(
-                                              onPressed:(){
-                                                setState(() {
-                                                  var c=int.parse(counterList[index]);
-                                                  if( c>1)
-                                                    c--;
-                                                  counterList[index]=c.toString();
-                                                  //saveState();
-                                                });
-                                              },
-                                              icon: Icon(Icons.remove_circle,
-                                                size: 17,),
-                                            ),
-                                            Text(counterList[index].toString(),
-                                              style: GoogleFonts.ptSans(
-                                                  fontSize: 15
+                                          Row(
+                                            //mainAxisAlignment: MainAxisAlignment.,
+                                            children: [
+                                              IconButton(
+                                                onPressed:(){
+                                                  setState(() {
+                                                    cart.decrementItemFromCart(index);
+                                                  });
+                                                },
+                                                icon: Icon(Icons.remove_circle,
+                                                  size: 17,),
                                               ),
-                                            ),
-                                            IconButton(
-                                              onPressed:(){
-                                                setState(() {
-                                                  var c=int.parse(counterList[index]);
-                                                  c++;
-                                                  counterList[index]=c.toString();
-                                                  //saveState();
-                                                });
-                                              },
-                                              icon: Icon(Icons.add_circle_outlined,
-                                                size: 17,
+                                              Text(cart.cartItem[index].quantity.toString(),
+                                                style: TextStyle(
+                                                    fontSize: 15
+                                                ),
                                               ),
-                                            ),
-                                          ],
-                                        ),
-                                        Container(
-                                            width: MediaQuery.of(context).size.width/9,
-                                            child:Text(
-                                              '\$'+double.parse(_selectedItemsprice[index]).toStringAsFixed(2),
-                                              style: GoogleFonts.ptSans(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold
+                                              IconButton(
+                                                onPressed:(){
+                                                  print(cart.cartItem[index].productId);
+                                                  setState(() {
+                                                    cart.incrementItemToCart(index);
+                                                  });
+                                                },
+                                                icon: Icon(Icons.add_circle_outlined,
+                                                  size: 17,
+                                                ),
                                               ),
-                                            )),
-                                        IconButton(
-                                          onPressed:(){
-                                            setState(() {
-                                              _selectedItems.removeAt(index);
-                                              counterList.removeAt(index);
-                                              paymentAmount-=double.parse( _selectedItemsprice[index]);
-                                              _selectedItemsprice.removeAt(index);
-                                              _selectedItemsprice.removeAt(index);
-                                            });
-                                            delete(_selectedItems,counterList,_selectedItemsprice);
-                                          },
-                                          icon: Icon(Icons.delete,
-                                            color: Colors.red,
-                                            size: 25,),
-                                        ),
-                                      ],
-                                    ),
-                                    Container(
-                                        height: 20,
-                                        child:ListView.builder(
-                                          itemCount:1,
-                                          itemBuilder: (context, i) {
-                                            var v=m[_selectedItems[index]];
-                                            if(v!=null)
-                                              return Text(' - Extra '+m[_selectedItems[index]].toString());
-                                            else
-                                              return Text("");
-                                          },
-                                        )
-                                    )
-                                  ] ,
-                                )
+                                            ],
+                                          ),
+                                          Container(
+                                              width: MediaQuery.of(context).size.width/8,
+                                              child:Text(
+                                                cart.cartItem[index].unitPrice.toString(),
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold
+                                                ),
+                                              )),
+                                          IconButton(
+                                            onPressed:(){
+                                              setState(() {
+                                                cart.deleteItemFromCart(index);
+                                                print(cart.getCartItemCount());
+                                              });
+                                            },
+                                            icon: Icon(Icons.delete,
+                                              color: Colors.red,
+                                              size: 25,),
+                                          ),
+                                        ],
+                                      ),
+
+                                      //  Container(
+                                      //   height: 20,
+                                      //   child:ListView.builder(
+                                      //     itemCount:1,
+                                      //     itemBuilder: (context, i) {
+                                      //       var v=m[_selectedItems[index]];
+                                      //       if(v!=null)
+                                      //       return Text(' - Extra '+m[_selectedItems[index]].toString());
+                                      //       else
+                                      //         return Text("");
+                                      //     },
+                                      // )
+                                      // )
+                                    ] ,
+                                  )
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ));
-              }
-            }),
+                          );})),
+
         bottomSheet:_currentIndex == 3 ? new Container(
           height: 70,
           decoration: BoxDecoration(
@@ -346,7 +321,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Text('Tables',
-                    style: GoogleFonts.ptSans(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
                     ),)
@@ -365,7 +340,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Text('Resume',
-                    style: GoogleFonts.ptSans(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
                     ),
@@ -388,7 +363,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Text('Void',
-                    style: GoogleFonts.ptSans(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
                     ),)
@@ -405,7 +380,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Text('Clear',
-                    style: GoogleFonts.ptSans(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
                     ),)
@@ -479,9 +454,9 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   icon: Icon(Icons.pause_outlined,
                     color: Colors.black87,),
-                  label: Text("HOLD",style: GoogleFonts.ptSans(
-                    color: Colors.black87,
-                    fontSize: 20,
+                  label: Text("HOLD",style: TextStyle(
+                      color: Colors.black87,
+                      fontSize: 20,
                   ),),
                 ),
               ),
@@ -500,7 +475,7 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 icon: Icon(Icons.payment,
                   color: Colors.black87,),
-                label: Text("PAY:\$${paymentAmount.toStringAsFixed(2)}",style: GoogleFonts.ptSans(
+                label: Text("PAY:\$${double.parse(cart.getTotalAmount().toString()).toStringAsFixed(2)}",style: TextStyle(
                     color: Colors.black87,
                     fontSize: 20
                 ),),
@@ -511,15 +486,14 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void pay() {
-    paymentAmount=0;
-    for(int i=0;i<_selectedItemsprice.length;i++)
-    {
-      paymentAmount+=double.parse(_selectedItemsprice[i]);
-      print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
-      paymentAmount+=p;
-    }
-  }
+  // void pay() {
+  //   paymentAmount=0;
+  //   for(int i=0;i<_selectedItemsprice.length;i++)
+  //   {
+  //     paymentAmount+=double.parse(_selectedItemsprice[i]);
+  //     // print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
+  //     paymentAmount+=p;
+  //   }
 
   fetchData() async {
     p=0;
@@ -530,37 +504,37 @@ class _CartScreenState extends State<CartScreen> {
     var list=sharedPreferences.getStringList("selected")??[];
     _selectedItems=list;
     _selectedItemsprice=sharedPreferences.getStringList("selectedprice")!;
-    print(_selectedItems);
+    // print(_selectedItems);
     var _mod;
     for(int i=0 ;i<list.length;i++) {
       if(sharedPreferences.containsKey(list[i])) {
         var price=sharedPreferences.getStringList(list[i]+"price")??[];
         for(int i=0;i<price.length;i++)
-        {
-          print(price[i]);
-          p+=double.parse(price[i]);
-          print("PPPPPPPPPPPPPPPPPPPPPPPPPPP");
-          print(p);
-        }
+          {
+            print(price[i]);
+            p+=double.parse(price[i]);
+            // print("PPPPPPPPPPPPPPPPPPPPPPPPPPP");
+            // print(p);
+          }
         _mod = sharedPreferences.getStringList(list[i]);
-        print(_mod);
+        // print(_mod);
         m[list[i]] = _mod;
-        print([list[i]]);
+        // print([list[i]]);
       }
       else
-      {
-        m[list[i]] = null;
+        {
+          m[list[i]] = null;
+        }
       }
-    }
 
-    // Modi modi ;
-    // modi = Modi.add(_mod!);
-    //   _modifiers.add(modi)  ;
+       // Modi modi ;
+       // modi = Modi.add(_mod!);
+       //   _modifiers.add(modi)  ;
 
     setState(() {
       _isloading=false;
     });
-    return list;
+     return list;
   }
 }
 class Modi {
@@ -570,5 +544,3 @@ class Modi {
     _modi=m;
   }
 }
-
-

@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
@@ -22,28 +23,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
     String? total="0";
   Future<void> _setIndex(index) async {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    sharedPreferences.setInt('index',index);
-    if(sharedPreferences.getString("customer_name")=="")
-      {
-        Fluttertoast.showToast(
-            msg: "Please select the customer",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            textColor: Colors.green,
-            timeInSecForIosWeb: 10);
-      }
-    else {
+    sharedPreferences.setInt("index", index);
       if(mounted){
       setState(() {
         // _tabPopStack = _tabSelectedIndex == index;
         _tabSelectedIndex = index;
       });}
-    }
   }
-
+  var cart=FlutterCart();
+  fetch(){
+    setState(() {
+      total=cart.getCartItemCount().toString();
+    });
+  }
   @override
   Widget build(BuildContext context) {
-      fetchtotal();
+   fetch();
     return WillPopScope(
       onWillPop: () async => !await _tabNavigator.currentState!.maybePop(),
       child: Scaffold(
@@ -59,32 +54,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
           popStack: _tabPopStack,
         ),
         bottomNavigationBar: BottomNavigationBar(
+          selectedItemColor: Colors.amber,
+          unselectedItemColor: Colors.grey.shade700,
           currentIndex: _tabSelectedIndex,
           onTap: _setIndex,
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home,color: Colors.amber,),
-              title: Text('title'),
+              icon: Icon(Icons.home,),
+              title: Text(''),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.category_outlined,color: Colors.amber,),
-              title: Text('title'),
+              icon: Icon(Icons.category_outlined,),
+              title: Text(''),
             ),
             BottomNavigationBarItem(
               icon: Badge(
               badgeColor: Colors.red,
                 position: BadgePosition.topEnd(top: -20, end: -10),
-                // badgeContent: FutureBuilder(
-                //   future: fetchtotal(),
-                // builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                   badgeContent:Text(total??"",style: TextStyle(color: Colors.white)),
-              //}),
-                child:Icon(Icons.shopping_cart,color: Colors.amber,),),
-              title: Text('title'),
+                 badgeContent: FutureBuilder(
+                 future: fetch(),
+                 builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                   return Text(total??"",style: TextStyle(color: Colors.white));
+              }),
+                child:Icon(Icons.shopping_cart),),
+              title: Text(''),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.open_in_browser_outlined,color: Colors.amber,),
-              title: Text('title'),
+              icon: Icon(Icons.open_in_browser_outlined,),
+              title: Text(''),
             ),
           ],
         ),
@@ -92,14 +89,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Future<String> fetchtotal() async {
-    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    var list=sharedPreferences.getStringList("selected");
-    setState(() {
-      total=list?.length.toString()??"0";
-    });
-    return sharedPreferences.getStringList("selected")?.length.toString()??"0";
-  }
 
 }
 

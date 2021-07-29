@@ -141,7 +141,7 @@ class loginState extends State<login> {
                               filled: true,
                               contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                              enabledBorder: OutlineInputBorder(
+                              border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50.0),
                                   borderSide: BorderSide(
                                       color: Colors.white, width: 3.0))),
@@ -178,28 +178,34 @@ class loginState extends State<login> {
                               filled: true,
                               contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                              enabledBorder: OutlineInputBorder(
+                              border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(32.0),
                                   borderSide: BorderSide(
                                       color: Colors.white, width: 3.0))),
                         ),
                     ],
                   ),
+                  SizedBox(height: 10,),
                   Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Checkbox(
-                          activeColor: Color(0xFF325288),
-                          value: this.value,
+                        Container(
+                          color: Colors.white,
+                          height: 14,
+                          width: 14,
+                          child: Checkbox(
+                            activeColor: Color(0xFF325288),
+                            value: this.value,
 
-                          onChanged: (bool? value) {
-                            setState(() {
-                              this.value = value!;
-                            });
-                          },
+                            onChanged: (bool? value) {
+                              setState(() {
+                                this.value = value!;
+                              });
+                            },
+                          ),
                         ),
-                        SizedBox(width: 2),
+                        SizedBox(width: 10),
                         Text(
                           'Remember me',
                           style: TextStyle(
