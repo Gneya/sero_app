@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Discount extends StatefulWidget {
   double Ammount=0.0;
@@ -52,7 +53,7 @@ class _DiscountState extends State<Discount> {
   }
   double DiscountAmount()
   {
-     discountted=double.parse(_amountController.text) ;
+    discountted=double.parse(_amountController.text) ;
     if(dropdownValue=='Percentage %'){
       double totalAmount = (widget.Balance*discountAmount/100);
       setState(() {
@@ -121,7 +122,7 @@ class _DiscountState extends State<Discount> {
                   Padding(
                     padding: const EdgeInsets.only(top: 15,left: 50),
                     child: Text('Amount',
-                      style: TextStyle(
+                      style: GoogleFonts.ptSans(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
                           fontSize: 18
@@ -129,47 +130,47 @@ class _DiscountState extends State<Discount> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top:4,left: 45,bottom: 20,right: 45),
-                      child: Form(
-                        key: _formKey,
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter amount to be discounted';
-                            }
-                            return null;
-                          },
-                          controller: _amountController,
-                          keyboardType:TextInputType.number,
-                          decoration: InputDecoration(
-                            errorStyle: TextStyle(color: Color(0xFFFFD45F),fontWeight: FontWeight.bold,fontSize: 12),
-                            fillColor: Colors.white, filled: true,
-                            prefix: dropdownValue =='Percentage %' ? Text('%') : Text('\$'),
-                            helperStyle: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.w500
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(color:Colors.brown),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(30),
-                              borderSide: BorderSide(color:Colors.brown),
-                            ),
+                    child: Form(
+                      key: _formKey,
+                      child: TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter amount to be discounted';
+                          }
+                          return null;
+                        },
+                        controller: _amountController,
+                        keyboardType:TextInputType.number,
+                        decoration: InputDecoration(
+                          errorStyle: GoogleFonts.ptSans(color: Color(0xFFFFD45F),fontWeight: FontWeight.bold,fontSize: 12),
+                          fillColor: Colors.white, filled: true,
+                          prefix: dropdownValue =='Percentage %' ? Text('%') : Text('\$'),
+                          helperStyle: GoogleFonts.ptSans(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w500
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color:Colors.brown),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                            borderSide: BorderSide(color:Colors.brown),
                           ),
                         ),
                       ),
                     ),
+                  ),
 
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       GestureDetector(
                         child: Container(
-                          child:Center(child: dropdownValue =='Percentage %' ? Text(num_list[0]+'%',style: TextStyle(fontWeight:FontWeight.bold,
+                          child:Center(child: dropdownValue =='Percentage %' ? Text(num_list[0]+'%',style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                               fontSize: 18
                           ),
-                          ):Text('\$'+num_list[0],style: TextStyle(fontWeight:FontWeight.bold,
+                          ):Text('\$'+num_list[0],style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                               fontSize: 18
                           ),
                           ),
@@ -195,10 +196,10 @@ class _DiscountState extends State<Discount> {
                       ),
                       GestureDetector(
                         child: Container(
-                          child:Center(child: dropdownValue =='Percentage %' ? Text(num_list[1]+'%',style: TextStyle(fontWeight:FontWeight.bold,
+                          child:Center(child: dropdownValue =='Percentage %' ? Text(num_list[1]+'%',style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                               fontSize: 18
                           ),
-                          ):Text('\$'+num_list[1],style: TextStyle(fontWeight:FontWeight.bold,
+                          ):Text('\$'+num_list[1],style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                               fontSize: 18
                           ),
                           ),
@@ -230,10 +231,10 @@ class _DiscountState extends State<Discount> {
                       children: [
                         GestureDetector(
                           child: Container(
-                            child:Center(child: dropdownValue =='Percentage %' ? Text(num_list[2]+'%',style: TextStyle(fontWeight:FontWeight.bold,
+                            child:Center(child: dropdownValue =='Percentage %' ? Text(num_list[2]+'%',style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                                 fontSize: 18
                             ),
-                            ):Text('\$'+num_list[2],style: TextStyle(fontWeight:FontWeight.bold,
+                            ):Text('\$'+num_list[2],style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                                 fontSize: 18
                             ),
                             ),
@@ -259,10 +260,10 @@ class _DiscountState extends State<Discount> {
                         ),
                         GestureDetector(
                           child: Container(
-                            child:Center(child: dropdownValue =='Percentage %' ? Text(num_list[3]+'%',style: TextStyle(fontWeight:FontWeight.bold,
+                            child:Center(child: dropdownValue =='Percentage %' ? Text(num_list[3]+'%',style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                                 fontSize: 18
                             ),
-                            ):Text('\$'+num_list[3],style: TextStyle(fontWeight:FontWeight.bold,
+                            ):Text('\$'+num_list[3],style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                                 fontSize: 18
                             ),
                             ),
@@ -294,7 +295,7 @@ class _DiscountState extends State<Discount> {
                       InkWell(
                         child: Container(
                           child:Center(child: Text('Add',
-                            style: TextStyle(fontWeight:FontWeight.bold,
+                            style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                                 fontSize: 30
                             ),
                           ),
@@ -309,18 +310,18 @@ class _DiscountState extends State<Discount> {
                         onTap: (){
                           setState(() {
                             if(_formKey.currentState!.validate()){
-                             totalAmounttype();
-                             DiscountAmount();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: widget.Ammount, Balance: double.parse(discountedAmount), Discountt: discountted, Redeem: widget.Redeem,)),
-                                );}
+                              totalAmounttype();
+                              DiscountAmount();
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: widget.Ammount, Balance: double.parse(discountedAmount), Discountt: discountted, Redeem: widget.Redeem,)),
+                              );}
                           });
                         },
                       ),
                       GestureDetector(
                         child: Container(
-                          child:Center(child: Text('Cancel',style: TextStyle(fontWeight:FontWeight.bold,
+                          child:Center(child: Text('Cancel',style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                               fontSize: 30
                           ),
                           ),
@@ -349,3 +350,5 @@ class _DiscountState extends State<Discount> {
     );
   }
 }
+
+

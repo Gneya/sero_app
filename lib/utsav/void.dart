@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class VoidBill extends StatefulWidget {
   double Ammount=0.0;
@@ -33,7 +34,7 @@ class _VoidBillState extends State<VoidBill> {
                       children: [
                         Text('VOID BILL',
                           style: GoogleFonts.ptSans(color: Colors.white,fontSize: 35,fontWeight: FontWeight.bold),
-                          // style: TextStyle(
+                          // style: GoogleFonts.ptSans(
                           //     color: Colors.white,
                           //     fontSize: 35,
                           //     fontWeight: FontWeight.bold
@@ -44,7 +45,7 @@ class _VoidBillState extends State<VoidBill> {
                           child: Column(
                             children: [
                               Text('Are you Sure You want to Void this Bill.Once Voided it cannot be reversed',
-                                style: TextStyle(
+                                style: GoogleFonts.ptSans(
                                   color: Colors.white,
                                   fontSize: 22,
                                   fontWeight: FontWeight.bold,
@@ -62,7 +63,7 @@ class _VoidBillState extends State<VoidBill> {
                               GestureDetector(
                                 child: Container(
                                   child:Center(child: Text('Yes',
-                                    style: TextStyle(fontWeight:FontWeight.bold,
+                                    style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
 
                                         fontSize: 30
                                     ),
@@ -85,7 +86,7 @@ class _VoidBillState extends State<VoidBill> {
                               ),
                               GestureDetector(
                                 child: Container(
-                                  child:Center(child: Text('No',style: TextStyle(fontWeight:FontWeight.bold,
+                                  child:Center(child: Text('No',style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                                       fontSize: 30
                                   ),
                                   ),
@@ -117,3 +118,5 @@ class _VoidBillState extends State<VoidBill> {
     );
   }
 }
+
+

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MoreOptions extends StatefulWidget {
   const MoreOptions({Key? key}) : super(key: key);
@@ -51,7 +52,7 @@ class _MoreOptionsState extends State<MoreOptions> {
                   ),
                 ),
                 Text('Tables',
-                  style: TextStyle(
+                  style: GoogleFonts.ptSans(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey[800],
                   ),)
@@ -70,7 +71,7 @@ class _MoreOptionsState extends State<MoreOptions> {
                   ),
                 ),
                 Text('Resume',
-                  style: TextStyle(
+                  style: GoogleFonts.ptSans(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey[800],
                   ),
@@ -93,7 +94,7 @@ class _MoreOptionsState extends State<MoreOptions> {
                   ),
                 ),
                 Text('Void',
-                  style: TextStyle(
+                  style: GoogleFonts.ptSans(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey[800],
                   ),)
@@ -110,7 +111,7 @@ class _MoreOptionsState extends State<MoreOptions> {
                   ),
                 ),
                 Text('Clear',
-                  style: TextStyle(
+                  style: GoogleFonts.ptSans(
                     fontWeight: FontWeight.bold,
                     color: Colors.grey[800],
                   ),)
@@ -151,3 +152,5 @@ class _MoreOptionsState extends State<MoreOptions> {
     );
   }
 }
+
+

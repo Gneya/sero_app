@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:flutter_nav_bar/selectable.dart';
+import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -98,8 +99,19 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Color(0xffffd45f),
         actions: [
           Container(
-              margin: EdgeInsets.only(right: 20),
-              child: Icon(Icons.notifications,color: Colors.black,)),
+              margin: EdgeInsets.only(right: 0),
+              child: IconButton(
+                icon: const Icon(Icons.notifications,
+                ),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context){
+                        return OnlineOrder();
+                      }
+                  );
+                },
+              )),
           SizedBox(height: 10,),
           Container(
             margin: EdgeInsets.only(right: 10),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SplitPay extends StatefulWidget {
   double Ammount=0.0;
@@ -32,119 +33,119 @@ class _SplitPayState extends State<SplitPay> {
             children: [
               Container(
                 height: 300,
-                  child: ListView.builder(
-                    itemCount:items ,
-                    padding: const EdgeInsets.all(8),
-                    itemBuilder: (BuildContext context, int index) {
-                      return  Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              Text('Payment Amount',
-                                style: TextStyle(
-                                    color: Colors.white
-                                ),),
-                              Padding(
-                                padding: const EdgeInsets.only(top:4,bottom: 20),
-                                child: Container(
-                                  height: 40,
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: TextFormField(
-                                    onFieldSubmitted: (text) {
-                                      setState(() {
-                                        temp=text;
-                                      });
-                                      print(temp);
-                                      print(split);
-                                    },
-                                    keyboardType:TextInputType.number,
-                                    decoration: InputDecoration(
-                                      prefix: Text('\$'),
-                                      helperStyle: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w500
-                                      ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                        borderSide: BorderSide(color:Colors.brown),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                        borderSide: BorderSide(color:Colors.brown),
-                                      ),
+                child: ListView.builder(
+                  itemCount:items ,
+                  padding: const EdgeInsets.all(8),
+                  itemBuilder: (BuildContext context, int index) {
+                    return  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          children: [
+                            Text('Payment Amount',
+                              style: GoogleFonts.ptSans(
+                                  color: Colors.white
+                              ),),
+                            Padding(
+                              padding: const EdgeInsets.only(top:4,bottom: 20),
+                              child: Container(
+                                height: 40,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: TextFormField(
+                                  onFieldSubmitted: (text) {
+                                    setState(() {
+                                      temp=text;
+                                    });
+                                    print(temp);
+                                    print(split);
+                                  },
+                                  keyboardType:TextInputType.number,
+                                  decoration: InputDecoration(
+                                    prefix: Text('\$'),
+                                    helperStyle: GoogleFonts.ptSans(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w500
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      borderSide: BorderSide(color:Colors.brown),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      borderSide: BorderSide(color:Colors.brown),
                                     ),
                                   ),
                                 ),
                               ),
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              Text('Payment Mode',
-                                style: TextStyle(
-                                    color: Colors.white
-                                ),),
-                              Padding(
-                                padding: const EdgeInsets.only(top:4,bottom: 20),
-                                child: Container(
-                                  height: 40,
-                                  width: 120,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(30),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
-                                        left: 25),
-                                    child: DropdownButton<String>(
-                                      value: dropdownValue1,
-                                      items: [
-                                        DropdownMenuItem(
-                                          value: 'Cash',
-                                          child: Text('Cash'),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: 'Card',
-                                          child: Text('Card'),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: 'PayTM',
-                                          child: Text('PayTM'),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: 'UPI',
-                                          child: Text('UPI'),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: 'Other',
-                                          child: Text('Other'),
-                                        ),
-                                      ],
-                                      onChanged: (value) {
-                                        setState(() {
-                                          dropdownValue1 = value!;
-                                        });
-                                      },
-                                    ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          children: [
+                            Text('Payment Mode',
+                              style: GoogleFonts.ptSans(
+                                  color: Colors.white
+                              ),),
+                            Padding(
+                              padding: const EdgeInsets.only(top:4,bottom: 20),
+                              child: Container(
+                                height: 40,
+                                width: 120,
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
+                                      left: 25),
+                                  child: DropdownButton<String>(
+                                    value: dropdownValue1,
+                                    items: [
+                                      DropdownMenuItem(
+                                        value: 'Cash',
+                                        child: Text('Cash'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'Card',
+                                        child: Text('Card'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'PayTM',
+                                        child: Text('PayTM'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'UPI',
+                                        child: Text('UPI'),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: 'Other',
+                                        child: Text('Other'),
+                                      ),
+                                    ],
+                                    onChanged: (value) {
+                                      setState(() {
+                                        dropdownValue1 = value!;
+                                      });
+                                    },
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ],
+                    );
+                  },
                 ),
+              ),
               GestureDetector(
                   child: Container(
                     child:Center(child: Text('Add Row',
-                      style: TextStyle(fontWeight:FontWeight.bold,
+                      style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
                           fontSize: 20
                       ),
                     ),
@@ -194,7 +195,7 @@ class _SplitPayState extends State<SplitPay> {
                             child: Text(
                               'Proceed to Pay',
                               textScaleFactor: 1.0,
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                              style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
                             ))),
 
                   ),
@@ -235,7 +236,7 @@ class _SplitPayState extends State<SplitPay> {
               //             child: Text(
               //               'Pay:\$'+widget.Ammount.toStringAsFixed(2),
               //               textScaleFactor: 2.0,
-              //               style: TextStyle(fontWeight: FontWeight.bold),
+              //               style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
               //             ))),
               //   ),
               // )
@@ -246,3 +247,5 @@ class _SplitPayState extends State<SplitPay> {
     );
   }
 }
+
+
