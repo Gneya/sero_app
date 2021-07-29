@@ -5,6 +5,7 @@ import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'personaldetails.dart';
 // import 'package:sero_app/selecttable.dart';
 // import 'package:sero_app/forget_password.dart';
@@ -98,7 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Container(
               margin: EdgeInsets.only(right: 20),
-              child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
+              child: Icon(Icons.notifications,color: Colors.black,)),
           SizedBox(height: 10,),
           Container(
             margin: EdgeInsets.only(right: 10),
@@ -123,11 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Text(
                 _name,
-                style: TextStyle(
-                  fontFamily: 'Product Sans',
-                  fontSize: 20,
-                ),
-              ),
+                style:GoogleFonts.ptSans(fontSize: 22)),
               SizedBox(
                 height: 30,
               ),
@@ -194,58 +191,67 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox(
                 height: 40,
               ),
-              Text('Select Mode',style: TextStyle(fontSize: 20),),
+              Text('Select Mode',style: GoogleFonts.ptSans(fontSize: 22),),
               SizedBox(
                 height: 30,
               ),
-              Material(
-                elevation: 5.0,
-                borderRadius: BorderRadius.circular(30.0),
-                color: Colors.white,
-                child: MaterialButton(
-                  minWidth: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => SelectTable()));
-                  },
-                  child: Text("Dine in",
-                      textAlign: TextAlign.center,
-                      style: style.copyWith(color: Colors.black)),
+              Container(
+                padding: EdgeInsets.only(left: 20,right: 20),
+                child: Material(
+                  elevation: 5.0,
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Colors.white,
+                  child: MaterialButton(
+                    minWidth: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SelectTable()));
+                    },
+                    child: Text("Dine in",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.ptSans(fontSize: 18)),
+                  ),
                 ),
               ),
               SizedBox(
                 height: 20,
               ),
-              Material(
-                elevation: 5.0,
-                borderRadius: BorderRadius.circular(30.0),
-                color: Colors.white,
-                child: MaterialButton(
-                  minWidth: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  onPressed: () {},
-                  child: Text("Take Away",
-                      textAlign: TextAlign.center,
-                      style: style.copyWith(color: Colors.black)),
+              Container(
+                padding: EdgeInsets.only(left:20,right: 20),
+                child: Material(
+                  elevation: 5.0,
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Colors.white,
+                  child: MaterialButton(
+                    minWidth: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    onPressed: () {},
+                    child: Text("Take Away",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.ptSans(fontSize: 18)),
+                  ),
                 ),
               ),
               SizedBox(
                 height: 20,
               ),
-              Material(
-                elevation: 5.0,
-                borderRadius: BorderRadius.circular(30.0),
-                color: Colors.white,
-                child: MaterialButton(
-                  minWidth: MediaQuery.of(context).size.width,
-                  padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                  onPressed: () {},
-                  child: Text("Home Delivery",
-                      textAlign: TextAlign.center,
-                      style: style.copyWith(color: Colors.black)
+              Container(
+                padding: EdgeInsets.only(left: 20,right: 20),
+                child: Material(
+                  elevation: 5.0,
+                  borderRadius: BorderRadius.circular(30.0),
+                  color: Colors.white,
+                  child: MaterialButton(
+                    minWidth: MediaQuery.of(context).size.width,
+                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                    onPressed: () {},
+                    child: Text("Home Delivery",
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.ptSans(fontSize: 18)
+                    ),
                   ),
                 ),
               ),
@@ -276,9 +282,8 @@ class CustomerApi {
     List<Customer>name = [];
 
     late Customer cus;
-    do {
       var response = await http.get(
-          Uri.parse("https://pos.sero.app/connector/api/contactapi/?page=$i"),
+          Uri.parse("https://pos.sero.app/connector/api/contactapi/?per_page=-1"),
           headers: {
             'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
           });
@@ -298,8 +303,6 @@ class CustomerApi {
           return false;
       }
       ).toList());
-      i++;
-    }while(i<=pages["meta"]["last_page"]);
     return name;
   }
 }

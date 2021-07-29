@@ -64,7 +64,7 @@ class _SelectTableState extends State<SelectTable> {
         actions: [
           Container(
               margin: EdgeInsets.only(right: 20),
-              child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
+              child: Icon(Icons.notifications)),
           SizedBox(height: 10,),
           Container(
             margin: EdgeInsets.only(right: 10),
@@ -98,7 +98,7 @@ class _SelectTableState extends State<SelectTable> {
                   Image.asset("images/row_4.png",height: MediaQuery.of(context).size.height/17,),
                   Text(
                     _tablenos[index],
-                    style: TextStyle(color: Colors.white, fontSize: 14),
+                    style: GoogleFonts.ptSans(fontSize: 16,color: Colors.white),
                   ),
                 ],
               ),

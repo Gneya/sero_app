@@ -110,10 +110,8 @@ class loginState extends State<login> {
                   ),
                   //welcome back
                   Text(
-                    'Welcome Back',
-                    style: TextStyle(
-                      fontSize: 20,
-                    ),
+                    'Welcome back',
+                      style: GoogleFonts.ptSans(color: Color(0xff000000),fontSize: 22)
                   ),
                   SizedBox(
                     height: 40,
@@ -123,7 +121,7 @@ class loginState extends State<login> {
                       //email
                       Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Email')),
+                          child: Text('Email',style: GoogleFonts.ptSans(color: Color(0xff000000),fontSize: 16),)),
                       SizedBox(
                         height: 10,
                       ),
@@ -143,7 +141,7 @@ class loginState extends State<login> {
                               filled: true,
                               contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                              enabledBorder: OutlineInputBorder(
+                              border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(50.0),
                                   borderSide: BorderSide(
                                       color: Colors.white, width: 3.0))),
@@ -159,7 +157,7 @@ class loginState extends State<login> {
                     children: <Widget>[
                       Align(
                           alignment: Alignment.centerLeft,
-                          child: Text('Password')),
+                          child: Text('Password',style: GoogleFonts.ptSans(color: Color(0xff000000),fontSize: 16))),
                       SizedBox(
                         height: 10,
                       ),
@@ -180,27 +178,34 @@ class loginState extends State<login> {
                               filled: true,
                               contentPadding:
                               EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                              enabledBorder: OutlineInputBorder(
+                              border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(32.0),
                                   borderSide: BorderSide(
                                       color: Colors.white, width: 3.0))),
                         ),
                     ],
                   ),
+                  SizedBox(height: 10,),
                   Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Checkbox(
-                          activeColor: Color(0xFF325288),
-                          value: this.value,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              this.value = value!;
-                            });
-                          },
+                        Container(
+                          color: Colors.white,
+                          height: 14,
+                          width: 14,
+                          child: Checkbox(
+                            activeColor: Color(0xFF325288),
+                            value: this.value,
+
+                            onChanged: (bool? value) {
+                              setState(() {
+                                this.value = value!;
+                              });
+                            },
+                          ),
                         ),
-                        SizedBox(width: 2),
+                        SizedBox(width: 10),
                         Text(
                           'Remember me',
                           style: TextStyle(
