@@ -77,11 +77,11 @@ class _CartScreenState extends State<CartScreen> {
         prefs.setStringList(name, []);
         var price=prefs.getStringList(name+"price");
         for(int i=0;i<price!.length;i++)
-          {
-            setState(() {
-              p=p-double.parse(price[i]);
-            });
-          }
+        {
+          setState(() {
+            p=p-double.parse(price[i]);
+          });
+        }
         prefs.setStringList(name+"price",[]);
       }
     }
@@ -510,7 +510,7 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 icon: Icon(Icons.payment,
                   color: Colors.black87,),
-                label: Text("PAY:\$${paymentAmount.toStringAsFixed(2)}",style: GoogleFonts.ptSans(
+                label: Text("PAY:\$${getPaymentAmount()}",style: GoogleFonts.ptSans(
                     color: Colors.black87,
                     fontSize: 20
                 ),),
@@ -547,6 +547,7 @@ class _CartScreenState extends State<CartScreen> {
         var price=sharedPreferences.getStringList(list[i]+"price")??[];
         for(int i=0;i<price.length;i++)
         {
+          print(price[i]);
           print(price[i]);
           p+=double.parse(price[i]);
           // print("PPPPPPPPPPPPPPPPPPPPPPPPPPP");
@@ -599,6 +600,13 @@ class _CartScreenState extends State<CartScreen> {
       return [];
     }
   }
+  String getPaymentAmount() {
+    var cart =FlutterCart();
+    setState(() {
+      paymentAmount=cart.getTotalAmount()+p;
+    });
+    return paymentAmount.toStringAsFixed(2);
+  }
 }
 class Modi {
   List<dynamic> _modi =[];
@@ -607,6 +615,8 @@ class Modi {
     _modi=m;
   }
 }
+
+
 
 
 
