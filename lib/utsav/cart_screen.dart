@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/edit_item.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'notification.dart';
 
 class CartScreen extends StatefulWidget {
@@ -112,197 +112,205 @@ class _CartScreenState extends State<CartScreen> {
                   height:150,
                   child:Padding(
                     padding: const EdgeInsets.only(top:30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Column(
                       children: [
-                        IconButton(
-                          alignment: Alignment.topLeft,
-                          icon: const Icon(Icons.menu),
-                          onPressed: () {
-                            setState(() {
-                            });
-                          },
-                        ),
-                        Text("ORDER",
-                          style: TextStyle(fontSize: 18),),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              margin: EdgeInsets.only(right: 0),
-                              child: IconButton(
-                                icon: const Icon(Icons.notifications,
+                            IconButton(
+                              alignment: Alignment.topLeft,
+                              icon: const Icon(Icons.menu),
+                              onPressed: () {
+                                setState(() {
+                                });
+                              },
+                            ),
+                            Text("ORDER",
+                              style: GoogleFonts.ptSans(fontSize: 18),),
+                            Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(right: 0),
+                                  child: IconButton(
+                                    icon: const Icon(Icons.notifications,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context){
+                                            return OnlineOrder();
+                                          }
+                                      );
+                                    },
+                                  ),),
+                                CircleAvatar(
+                                    backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
                                 ),
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context){
-                                        return OnlineOrder();
-                                      }
-                                  );
-                                },
-                              ),),
-                            CircleAvatar(
-                                backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                              ],
                             ),
                           ],
                         ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 35),
+                          child: Container(
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 12,left: 25,right: 25),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(table_name,
+                                    style: GoogleFonts.ptSans(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16
+                                    ),),
+                                  Text(customer_name,
+                                    style: GoogleFonts.ptSans(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 15
+                                    ),),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                Container(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 12,left: 25,right: 25),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(table_name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15
-                          ),),
-                        Text(customer_name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 15
-                          ),),
-                      ],
-                    ),
-                  ),
-                ),
+
               ]
           ),
-          toolbarHeight: 170,
+          toolbarHeight: 115,
           backgroundColor: Colors.white,
         ),
         body: _isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),))
             :Container(
-                      height:MediaQuery.of(context).size.height/1.85,
-                      child: ListView.builder(
-                        itemCount: cart.cartItem.length,
-                        itemBuilder: (context, index) {
-                          if(counterList.length < _selectedItems.length ) {
-                            counterList.add("1");
-                          }
-                          return GestureDetector(
-                            onTap:(){
-                              showDialog(context: context, builder: (context) {
-                                return edit_item(name: cart.cartItem[index].productName.toString(),quantity: cart.cartItem[index].quantity.toString(),price: cart.cartItem[index].unitPrice.toString());
-                              });
-                          },
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
-                              child: Container(
-                                  // height:MediaQuery.of(context).size.height/10 ,
-                                  padding: EdgeInsets.only(left:10),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  child:Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Container(
-                                            width: MediaQuery.of(context).size.width/2.8,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(left: 0),
-                                              child: Text(cart.cartItem[index].productName.toString(),
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Row(
-                                            //mainAxisAlignment: MainAxisAlignment.,
-                                            children: [
-                                              IconButton(
-                                                onPressed:(){
-                                                  setState(() {
-                                                    cart.decrementItemFromCart(index);
-                                                  });
-                                                },
-                                                icon: Icon(Icons.remove_circle,
-                                                  size: 17,),
-                                              ),
-                                              Text(cart.cartItem[index].quantity.toString(),
-                                                style: TextStyle(
-                                                    fontSize: 15
-                                                ),
-                                              ),
-                                              IconButton(
-                                                onPressed:(){
-                                                  print(cart.cartItem[index].productId);
-                                                  setState(() {
-                                                    cart.incrementItemToCart(index);
-                                                  });
-                                                },
-                                                icon: Icon(Icons.add_circle_outlined,
-                                                  size: 17,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          Container(
-                                              width: MediaQuery.of(context).size.width/8,
-                                              child:Text(
-                                                cart.cartItem[index].unitPrice.toString(),
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold
-                                                ),
-                                              )),
-                                          IconButton(
-                                            onPressed:(){
-                                              setState(() {
-                                                cart.deleteItemFromCart(index);
-                                                print(cart.getCartItemCount());
-                                              });
-                                            },
-                                            icon: Icon(Icons.delete,
-                                              color: Colors.red,
-                                              size: 25,),
-                                          ),
-                                        ],
+            height:MediaQuery.of(context).size.height/1.85,
+            child: ListView.builder(
+                itemCount: cart.cartItem.length,
+                itemBuilder: (context, index) {
+                  if(counterList.length < _selectedItems.length ) {
+                    counterList.add("1");
+                  }
+                  return GestureDetector(
+                    onTap:(){
+                      showDialog(context: context, builder: (context) {
+                        return edit_item(name: cart.cartItem[index].productName.toString(),quantity: cart.cartItem[index].quantity.toString(),price: cart.cartItem[index].unitPrice.toString());
+                      });
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
+                      child: Container(
+                        // height:MediaQuery.of(context).size.height/10 ,
+                          padding: EdgeInsets.only(left:10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey,
+                                offset: const Offset(
+                                  1.0,
+                                  1.0,
+                                ), //Offset
+                                blurRadius: 6.0,
+                                spreadRadius: 2.0,
+                              ), //BoxShadow
+                              BoxShadow(
+                                color: Colors.white,
+                                offset: const Offset(0.0, 0.0),
+                                blurRadius: 0.0,
+                                spreadRadius: 0.0,
+                              ),],
+                          ),
+                          child:Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                children: [
+                                  Container(
+                                    width: MediaQuery.of(context).size.width/2.8,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 0),
+                                      child: Text(cart.cartItem[index].productName.toString(),
+                                        style: GoogleFonts.ptSans(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold
+                                        ),
                                       ),
-
-                                      //  Container(
-                                      //   height: 20,
-                                      //   child:ListView.builder(
-                                      //     itemCount:1,
-                                      //     itemBuilder: (context, i) {
-                                      //       var v=m[_selectedItems[index]];
-                                      //       if(v!=null)
-                                      //       return Text(' - Extra '+m[_selectedItems[index]].toString());
-                                      //       else
-                                      //         return Text("");
-                                      //     },
-                                      // )
-                                      // )
-                                    ] ,
-                                  )
+                                    ),
+                                  ),
+                                  Row(
+                                    //mainAxisAlignment: MainAxisAlignment.,
+                                    children: [
+                                      IconButton(
+                                        onPressed:(){
+                                          setState(() {
+                                            cart.decrementItemFromCart(index);
+                                          });
+                                        },
+                                        icon: Icon(Icons.remove_circle,
+                                          size: 17,),
+                                      ),
+                                      Text(cart.cartItem[index].quantity.toString(),
+                                        style: GoogleFonts.ptSans(
+                                            fontSize: 15
+                                        ),
+                                      ),
+                                      IconButton(
+                                        onPressed:(){
+                                          print(cart.cartItem[index].productId);
+                                          setState(() {
+                                            cart.incrementItemToCart(index);
+                                          });
+                                        },
+                                        icon: Icon(Icons.add_circle_outlined,
+                                          size: 17,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                      width: MediaQuery.of(context).size.width/8,
+                                      child:Text(
+                                        cart.cartItem[index].unitPrice.toString(),
+                                        style: GoogleFonts.ptSans(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                      )),
+                                  IconButton(
+                                    onPressed:(){
+                                      setState(() {
+                                        cart.deleteItemFromCart(index);
+                                        print(cart.getCartItemCount());
+                                      });
+                                    },
+                                    icon: Icon(Icons.delete,
+                                      color: Colors.red,
+                                      size: 25,),
+                                  ),
+                                ],
                               ),
-                            ),
-                          );})),
+
+                              //  Container(
+                              //   height: 20,
+                              //   child:ListView.builder(
+                              //     itemCount:1,
+                              //     itemBuilder: (context, i) {
+                              //       var v=m[_selectedItems[index]];
+                              //       if(v!=null)
+                              //       return Text(' - Extra '+m[_selectedItems[index]].toString());
+                              //       else
+                              //         return Text("");
+                              //     },
+                              // )
+                              // )
+                            ] ,
+                          )
+                      ),
+                    ),
+                  );})),
 
         bottomSheet:_currentIndex == 3 ? new Container(
           height: 70,
@@ -340,7 +348,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Text('Tables',
-                    style: TextStyle(
+                    style: GoogleFonts.ptSans(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
                     ),)
@@ -359,7 +367,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Text('Resume',
-                    style: TextStyle(
+                    style: GoogleFonts.ptSans(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
                     ),
@@ -382,7 +390,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Text('Void',
-                    style: TextStyle(
+                    style: GoogleFonts.ptSans(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
                     ),)
@@ -399,7 +407,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                   Text('Clear',
-                    style: TextStyle(
+                    style: GoogleFonts.ptSans(
                       fontWeight: FontWeight.bold,
                       color: Colors.grey[800],
                     ),)
@@ -473,9 +481,9 @@ class _CartScreenState extends State<CartScreen> {
                   ),
                   icon: Icon(Icons.pause_outlined,
                     color: Colors.black87,),
-                  label: Text("HOLD",style: TextStyle(
-                      color: Colors.black87,
-                      fontSize: 20,
+                  label: Text("HOLD",style: GoogleFonts.ptSans(
+                    color: Colors.black87,
+                    fontSize: 20,
                   ),),
                 ),
               ),
@@ -494,7 +502,7 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 icon: Icon(Icons.payment,
                   color: Colors.black87,),
-                label: Text("PAY:\$${double.parse(cart.getTotalAmount().toString()).toStringAsFixed(2)}",style: TextStyle(
+                label: Text("PAY:\$${double.parse(cart.getTotalAmount().toString()).toStringAsFixed(2)}",style: GoogleFonts.ptSans(
                     color: Colors.black87,
                     fontSize: 20
                 ),),
@@ -505,14 +513,14 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  void pay() {
-    paymentAmount=0;
-    for(int i=0;i<_selectedItemsprice.length;i++)
-    {
-      paymentAmount+=double.parse(_selectedItemsprice[i]);
-      // print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
-      paymentAmount+=p;
-    }}
+  // void pay() {
+  //   paymentAmount=0;
+  //   for(int i=0;i<_selectedItemsprice.length;i++)
+  //   {
+  //     paymentAmount+=double.parse(_selectedItemsprice[i]);
+  //     // print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
+  //     paymentAmount+=p;
+  //   }}
 
   fetchData() async {
     p=0;
@@ -529,31 +537,31 @@ class _CartScreenState extends State<CartScreen> {
       if(sharedPreferences.containsKey(list[i])) {
         var price=sharedPreferences.getStringList(list[i]+"price")??[];
         for(int i=0;i<price.length;i++)
-          {
-            print(price[i]);
-            p+=double.parse(price[i]);
-            // print("PPPPPPPPPPPPPPPPPPPPPPPPPPP");
-            // print(p);
-          }
+        {
+          print(price[i]);
+          p+=double.parse(price[i]);
+          // print("PPPPPPPPPPPPPPPPPPPPPPPPPPP");
+          // print(p);
+        }
         _mod = sharedPreferences.getStringList(list[i]);
         // print(_mod);
         m[list[i]] = _mod;
         // print([list[i]]);
       }
       else
-        {
-          m[list[i]] = null;
-        }
+      {
+        m[list[i]] = null;
       }
+    }
 
-       // Modi modi ;
-       // modi = Modi.add(_mod!);
-       //   _modifiers.add(modi)  ;
+    // Modi modi ;
+    // modi = Modi.add(_mod!);
+    //   _modifiers.add(modi)  ;
 
     setState(() {
       _isloading=false;
     });
-     return list;
+    return list;
   }
 }
 class Modi {
@@ -563,3 +571,4 @@ class Modi {
     _modi=m;
   }
 }
+
