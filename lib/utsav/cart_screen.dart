@@ -12,6 +12,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
   String customer_name="";
+  List<dynamic> _modifiers=[];
   double paymentAmount=0;
   double discount =0.0;
   bool _isloading =false;
@@ -266,19 +267,22 @@ class _CartScreenState extends State<CartScreen> {
                                         ],
                                       ),
 
-                                      //  Container(
-                                      //   height: 20,
-                                      //   child:ListView.builder(
-                                      //     itemCount:1,
-                                      //     itemBuilder: (context, i) {
-                                      //       var v=m[_selectedItems[index]];
-                                      //       if(v!=null)
-                                      //       return Text(' - Extra '+m[_selectedItems[index]].toString());
-                                      //       else
-                                      //         return Text("");
-                                      //     },
-                                      // )
-                                      // )
+                                       Container(
+                                        height: 20,
+                                        child:FutureBuilder(
+                                          future:get(cart.cartItem[index].productName) ,
+                                          builder: (context,snapshot){
+                                            return ListView.builder(
+                                                itemCount:1,
+                                                itemBuilder: (context, i) {
+                                                  if(m[cart.cartItem[index].productName]!=null)
+                                              return Text(' - Extra '+m[cart.cartItem[index].productName].toString());
+                                            else{
+                                              return Text("");
+                                                  }
+                                                  },
+                                      );}),
+                                        )
                                     ] ,
                                   )
                               ),
@@ -475,7 +479,7 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 icon: Icon(Icons.payment,
                   color: Colors.black87,),
-                label: Text("PAY:\$${double.parse(cart.getTotalAmount().toString()).toStringAsFixed(2)}",style: TextStyle(
+                label: Text("PAY:\$${(cart.getTotalAmount()+p).toString()}",style: TextStyle(
                     color: Colors.black87,
                     fontSize: 20
                 ),),
@@ -493,6 +497,7 @@ class _CartScreenState extends State<CartScreen> {
   //     paymentAmount+=double.parse(_selectedItemsprice[i]);
   //     // print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
   //     paymentAmount+=p;
+  //   }
   //   }
 
   fetchData() async {
@@ -535,6 +540,24 @@ class _CartScreenState extends State<CartScreen> {
       _isloading=false;
     });
      return list;
+  }
+
+   get(String? name) async {
+    p=0;
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    if(sharedPreferences.containsKey(name!)){
+     m[name]=sharedPreferences.getStringList(name);
+    var price=sharedPreferences.getStringList(name+"price");
+     for (int i=0;i<price!.length;i++) {
+       p += double.parse(price[i]);
+     }
+     print("PPPPPPPPPPPPPPPPPPPPP:"+p.toString());
+      return m;
+    }
+    else
+      {
+        return [];
+      }
   }
 }
 class Modi {
