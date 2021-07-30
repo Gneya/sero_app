@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -499,7 +498,7 @@ class _CartScreenState extends State<CartScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: cart.getTotalAmount()+p, Balance:cart.getTotalAmount()+p ,Discountt: discount, Redeem: points,)),
+                    MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
                   );
                 },
                 style: ButtonStyle(

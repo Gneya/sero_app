@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -89,12 +88,6 @@ class _ShippingState extends State<Shipping> {
       setState(() {
         _isloading = false;
       });
-      Fluttertoast.showToast(
-          msg: _customer.error,
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          textColor: Colors.red,
-          timeInSecForIosWeb: 10);
     }
     else {
       setState(() {
@@ -103,12 +96,6 @@ class _ShippingState extends State<Shipping> {
         _charges.clear();
         print(_charges);
       });
-      Fluttertoast.showToast(
-          msg: "Shipping done",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          textColor: Colors.green,
-          timeInSecForIosWeb: 10);
       setState(() {
         _isloading = false;
       });
