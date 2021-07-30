@@ -4,7 +4,7 @@ import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_nav_bar/utsav/more_option.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -48,7 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             TabItem(_tab1, HomeScreen(title: '')),
             TabItem(_tab2, CategoryScreen(title: '')),
             TabItem(_tab3, CartScreen()),
-            TabItem(_tab4, CartScreen())
+            TabItem(_tab4, MoreOptions())
           ],
           selectedIndex: _tabSelectedIndex,
           popStack: _tabPopStack,

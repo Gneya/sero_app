@@ -15,7 +15,7 @@ class _MoreOptionsState extends State<MoreOptions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CartScreen(),
+      body: Container(),
       bottomSheet: new Container(
         height: 70,
         decoration: BoxDecoration(
