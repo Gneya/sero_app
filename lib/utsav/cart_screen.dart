@@ -35,9 +35,10 @@ class _CartScreenState extends State<CartScreen> {
       _isloading =true;
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    print("GETTTTTT");
+    customer_name=prefs.getString("customer_name")??"";
     table_id=  prefs.getInt("table_id")??0;
     table_name =prefs.getString("table_name")??"";
-    customer_name=prefs.getString("customer_name")??"";
     //selectedItems=prefs.getStringList("selected")!;
     setState(() {
       _isloading =false;
