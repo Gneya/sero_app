@@ -2,15 +2,12 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-// import 'package:sero_app/addons_and_modifiers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_nav_bar/model.dart';
-// import 'package:sero_app/utsav/cart_screen.dart';
-//import 'package:barcode_scan/barcode_scan.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'addons_and_modifiers.dart';
@@ -195,7 +192,7 @@ class _SelectItemState extends State<SelectItem> {
                           children: [
                             IconButton(
                               alignment: Alignment.topLeft,
-                              icon: const Icon(Icons.menu,color:Color(0xff949494)),
+                              icon: const Icon(Icons.menu,),
                               onPressed: () {
                               },
                             ),
@@ -203,9 +200,19 @@ class _SelectItemState extends State<SelectItem> {
                             Row(
                               children: [
                                 Container(
-                                    margin: EdgeInsets.only(right: 0),
-                                    child: Icon(Icons.notifications,color: Colors.grey.shade700,)),
-                                SizedBox(width: 5,),
+                                  margin: EdgeInsets.only(right: 0),
+                                  child: IconButton(
+                                    icon: const Icon(Icons.notifications,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context){
+                                            return OnlineOrder();
+                                          }
+                                      );
+                                    },
+                                  ),),
                                 CircleAvatar(
                                     backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
                                 ),
