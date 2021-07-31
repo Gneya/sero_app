@@ -90,7 +90,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           textColor: Colors.green,
-          timeInSecForIosWeb: 10);
+          timeInSecForIosWeb: 4);
 
     }
 
@@ -278,7 +278,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                           toastLength: Toast.LENGTH_LONG,
                                           gravity: ToastGravity.BOTTOM,
                                           textColor: Colors.green,
-                                          timeInSecForIosWeb: 10);
+                                          timeInSecForIosWeb: 4);
                                     },
                                     suggestionsCallback: CustomerApi.getUserSuggestion,
                                   )),
