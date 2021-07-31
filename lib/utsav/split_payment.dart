@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class SplitPay extends StatefulWidget {
@@ -11,16 +12,16 @@ class SplitPay extends StatefulWidget {
 }
 
 class _SplitPayState extends State<SplitPay> {
-
   int items=2;
   String dropdownValue1 ='Cash';
   String dropdownValue2 ='Card';
   bool isClickedAdd= true;
   bool isClickedCancel= true;
   bool addRow = false;
-  List<String> split =[];
   String temp ='0';
   bool isActive = true;
+  List<String> payment =['0','0'];
+  List<String> paymentMode =['Cash','Card'];
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -56,12 +57,12 @@ class _SplitPayState extends State<SplitPay> {
                                   borderRadius: BorderRadius.circular(30),
                                 ),
                                 child: TextFormField(
-                                  onFieldSubmitted: (text) {
+                                  onChanged: (text) {
                                     setState(() {
                                       temp=text;
+                                      payment[index]=temp;
                                     });
                                     print(temp);
-                                    print(split);
                                   },
                                   keyboardType:TextInputType.number,
                                   decoration: InputDecoration(
@@ -78,6 +79,7 @@ class _SplitPayState extends State<SplitPay> {
                                       borderRadius: BorderRadius.circular(30),
                                       borderSide: BorderSide(color:Colors.brown),
                                     ),
+                                    hintText: payment[index] ?? '0'
                                   ),
                                 ),
                               ),
@@ -103,7 +105,7 @@ class _SplitPayState extends State<SplitPay> {
                                   padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
                                       left: 25),
                                   child: DropdownButton<String>(
-                                    value: dropdownValue1,
+                                    value: paymentMode[index],
                                     items: [
                                       DropdownMenuItem(
                                         value: 'Cash',
@@ -129,6 +131,7 @@ class _SplitPayState extends State<SplitPay> {
                                     onChanged: (value) {
                                       setState(() {
                                         dropdownValue1 = value!;
+                                        paymentMode[index] = dropdownValue1;
                                       });
                                     },
                                   ),
@@ -159,6 +162,8 @@ class _SplitPayState extends State<SplitPay> {
                   ),
                   onTap:(){
                     setState(() {
+                      payment.add('0');
+                      paymentMode.add('Cash');
                       items++;
                     });
                   }
@@ -167,7 +172,21 @@ class _SplitPayState extends State<SplitPay> {
                 padding: const EdgeInsets.only(top: 10),
                 child: Container(
                   child: InkWell(
-                    onTap:isActive ? ()=> print('hello'): null,
+                    onTap: (){
+                      double sum =0;
+                      for( int i=0;i<payment.length;i++){
+                        sum=sum+double.parse(payment[i]);
+                      }
+                      print(sum);
+                      if(sum!= widget.Ammount){
+                        Fluttertoast.showToast(
+                            msg: "Total amount must be equal to balance amount",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.BOTTOM,
+                            textColor: Colors.green,
+                            timeInSecForIosWeb: 4);
+                      }
+                    },
                     child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(35),

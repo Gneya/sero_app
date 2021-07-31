@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -62,19 +63,19 @@ class _SelectItemState extends State<SelectItem> {
     }
     int i=1;
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-      http.Response response = await http.get(
-          Uri.parse("https://pos.sero.app/connector/api/variation/?per_page=-1"), headers: {
-        'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
-      });
-      v = (json.decode(response.body));
-      for (var i in v["data"]) {
-        if (i["category"] == widget.category) {
-          _product=product.fromJson(i);
-          _productlist.add(_product);
-          print(_productlist);
-        }
+    http.Response response = await http.get(
+        Uri.parse("https://pos.sero.app/connector/api/variation/?per_page=-1"), headers: {
+      'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
+    });
+    v = (json.decode(response.body));
+    for (var i in v["data"]) {
+      if (i["category"] == widget.category) {
+        _product=product.fromJson(i);
+        _productlist.add(_product);
+        print(_productlist);
       }
-      i++;
+    }
+    i++;
     print(_productlist);
     setState(() {
       _isloading = false;
@@ -109,7 +110,7 @@ class _SelectItemState extends State<SelectItem> {
           toastLength: Toast.LENGTH_LONG,
           gravity: ToastGravity.BOTTOM,
           textColor: Colors.green,
-          timeInSecForIosWeb: 10);
+          timeInSecForIosWeb: 4 );
 
     }
 
@@ -238,35 +239,49 @@ class _SelectItemState extends State<SelectItem> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Container(
-                                    height: MediaQuery.of(context).size.height/20,
-                                    width: MediaQuery.of(context).size.width/1.6,
-                                    child:TextField(
-                                        controller: _controller,
-                                        cursorColor: Colors.black,
-                                        decoration: InputDecoration(
-                                            fillColor: Colors.black,
-                                            focusColor: Colors.black,
-                                            hoverColor: Colors.black,
-                                            hintText: "Search..",
-                                            focusedBorder: UnderlineInputBorder(
-                                                borderSide: BorderSide(color: Colors.black)
-                                            ),
-                                            prefixIcon: Icon(
-                                              Icons.search,color: Colors.black,
-                                            ),
-                                            suffixIcon: IconButton(
-                                              icon:Icon(Icons.qr_code),
-                                              onPressed:_scanQR,
-                                              color: Colors.black,
+                                      height: MediaQuery.of(context).size.height/20,
+                                      width: MediaQuery.of(context).size.width/1.6,
+                                      child:TypeAheadField<Customer>(
+                                        textFieldConfiguration: TextFieldConfiguration(
+                                          //controller: _typeAheadController,
+                                            textAlign: TextAlign.center,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: "Search Product",
+                                              suffixIcon: IconButton(
+                                                  icon:Image.asset("images/barcode.png",height: 20,width: 20,),
+                                                  padding: EdgeInsets.zero,
+                                                  color: Colors.black,
+                                                  onPressed:_scanQR
+                                              ),
+                                              prefixIcon:  IconButton(
+                                                padding: EdgeInsets.zero,
+                                                icon:Icon(Icons.search),
+                                                color: Colors.black,
+                                                onPressed:(){} ,
+                                              ),
                                             )
-
-
                                         ),
-                                        onChanged: (value){
-                                          _handleSearchStart();
-                                          searchOperation(value);
-                                        }
-                                    ),),
+                                        itemBuilder: (BuildContext context,Customer? suggestion) {
+                                          final content=suggestion!;
+                                          return ListTile(
+                                            title: Text(content._name),
+                                          );
+                                        },
+                                        onSuggestionSelected: (Customer? suggestion) async {
+                                          var cart=FlutterCart();
+                                          cart.addToCart(productId: double.parse(suggestion!.id), unitPrice: double.parse(suggestion._phone),productName: suggestion!._name);
+                                          //hint=suggestion!._name;
+                                          //_typeAheadController.text=suggestion._name;
+                                          Fluttertoast.showToast(
+                                              msg:suggestion._name+" is selected",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              gravity: ToastGravity.BOTTOM,
+                                              textColor: Colors.green,
+                                              timeInSecForIosWeb: 4);
+                                        },
+                                        suggestionsCallback: CustomerApi.getUserSuggestion,
+                                      )),
 
 
                                 ],
@@ -348,14 +363,14 @@ class _SelectItemState extends State<SelectItem> {
                   onTap: () async {
                     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                     if(sharedPreferences.getString("customer_name")=="")
-                      {
-                        Fluttertoast.showToast(
-                            msg: "Please select thre customer and table first",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.BOTTOM,
-                            textColor: Colors.green,
-                            timeInSecForIosWeb: 10);
-                      }
+                    {
+                      Fluttertoast.showToast(
+                          msg: "Please select thre customer and table first",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          textColor: Colors.green,
+                          timeInSecForIosWeb: 4);
+                    }
                     else {
                       print(_productlist[index].id);
                       http.Response response = await http.get(
@@ -397,7 +412,7 @@ class _SelectItemState extends State<SelectItem> {
                             toastLength: Toast.LENGTH_LONG,
                             gravity: ToastGravity.BOTTOM,
                             textColor: Colors.green,
-                            timeInSecForIosWeb: 10);
+                            timeInSecForIosWeb: 4);
                       }
                       else {
                         // showDialog(context: context, builder: (context) {
@@ -475,42 +490,42 @@ class _SelectItemState extends State<SelectItem> {
                           toastLength: Toast.LENGTH_LONG,
                           gravity: ToastGravity.BOTTOM,
                           textColor: Colors.green,
-                          timeInSecForIosWeb: 10);
+                          timeInSecForIosWeb: 4);
                     }
                     else{
                       cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
-                    http.Response response = await http.get(
-                        Uri.parse(
-                            "https://pos.sero.app/connector/api/product/${_productlist[index].id}")
-                        ,  headers: {
-                      'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
-                    });
-                    var v = (json.decode(response.body));
-                    //print(v["data"][0]["modifiers"]);
-                    List<dynamic> check = v["data"][0]["modifiers"];
-                    List<String> modifiers = [];
-                    List<String> _modifiers_price=[];
-                    if (check.isNotEmpty) {
-                      for (var _mod in v["data"][0]["modifiers"][0]) {
-                        print(_mod["name"]);
-                        print(_mod["sell_price_inc_tax"]);
-                        _modifiers_price.add(_mod["sell_price_inc_tax"]);
-                        modifiers.add(_mod["name"]);
-                      }
-                    }
-                    if (modifiers.isNotEmpty) {
-                      showDialog(context: context, builder: (context) {
-                        return add(modifiers: modifiers,product: _productlist[index].name,price:_modifiers_price);
+                      http.Response response = await http.get(
+                          Uri.parse(
+                              "https://pos.sero.app/connector/api/product/${_productlist[index].id}")
+                          ,  headers: {
+                        'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
                       });
-                    }
-                    //_selectedItemsprice.add(price[index]);
-                    Fluttertoast.showToast(
-                        msg: "Item added to cart",
-                        toastLength: Toast.LENGTH_LONG,
-                        gravity: ToastGravity.BOTTOM,
-                        textColor: Colors.green,
-                        timeInSecForIosWeb: 10);
-                  }}
+                      var v = (json.decode(response.body));
+                      //print(v["data"][0]["modifiers"]);
+                      List<dynamic> check = v["data"][0]["modifiers"];
+                      List<String> modifiers = [];
+                      List<String> _modifiers_price=[];
+                      if (check.isNotEmpty) {
+                        for (var _mod in v["data"][0]["modifiers"][0]) {
+                          print(_mod["name"]);
+                          print(_mod["sell_price_inc_tax"]);
+                          _modifiers_price.add(_mod["sell_price_inc_tax"]);
+                          modifiers.add(_mod["name"]);
+                        }
+                      }
+                      if (modifiers.isNotEmpty) {
+                        showDialog(context: context, builder: (context) {
+                          return add(modifiers: modifiers,product: _productlist[index].name,price:_modifiers_price);
+                        });
+                      }
+                      //_selectedItemsprice.add(price[index]);
+                      Fluttertoast.showToast(
+                          msg: "Item added to cart",
+                          toastLength: Toast.LENGTH_LONG,
+                          gravity: ToastGravity.BOTTOM,
+                          textColor: Colors.green,
+                          timeInSecForIosWeb: 4);
+                    }}
               );
             })
     );
@@ -527,4 +542,40 @@ class product
         name=json["product_name"],
         url=json["product_image_url"],
         id=json["product_id"].toString();
+}
+class Customer
+{
+  final String _name;
+  final String _phone;
+  final String id;
+  Customer.fromJson(Map<String,dynamic> json):
+        this._name=json["name"],
+        this._phone=json["product_variations"][0]["variations"][0]["sell_price_inc_tax"],
+        this.id=json["id"].toString();
+
+}
+class CustomerApi {
+  static Future<List<Customer>> getUserSuggestion(String query)
+  async {
+    int i = 1;
+    var pages;
+    List<Customer>name = [];
+    late Customer cus;
+    var response = await http.get(
+        Uri.parse("https://pos.sero.app/connector/api/product/?per_page=-1"),
+        headers: {
+          'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8" ??
+              ''
+        });
+    final List d = json.decode(response.body)["data"];
+    pages=json.decode(response.body);
+    print(d);
+    name.addAll(d.map((e) => Customer.fromJson(e)).where((element) {
+      final name = element._name.toLowerCase();
+      final _name = query.toLowerCase();
+      print("NAME");
+      return name.contains(_name);
+    }).toList());
+    return name;
+  }
 }

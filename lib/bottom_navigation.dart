@@ -20,7 +20,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final _tab4 = GlobalKey<NavigatorState>();
   var _tabSelectedIndex = 0;
   var _tabPopStack = false;
-    String? total="0";
+  String? total="0";
   Future<void> _setIndex(index) async {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     sharedPreferences.setInt("index", index);
@@ -95,7 +95,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
 class TabItem {
   final GlobalKey<NavigatorState> key;
   final Widget tab;
-
   const TabItem(this.key, this.tab);
 }
 
