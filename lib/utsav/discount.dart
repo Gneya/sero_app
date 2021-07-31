@@ -99,14 +99,12 @@ class _DiscountState extends State<Discount> {
                             value: dropdownValue,
                             items: [
                               DropdownMenuItem(
-                                value: 'Percentage %',
-                                child: Text('Percentage %',
-                                ),
+                                value: 'Fixed',
+                                child: Text('Fixed'),
                               ),
                               DropdownMenuItem(
-                                value: 'Fixed \$',
-                                child: Text('Fixed \$',
-                                ),
+                                value: 'Percentage',
+                                child: Text('Percentage'),
                               ),
                             ],
                             onChanged: (value) {

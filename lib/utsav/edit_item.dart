@@ -16,7 +16,7 @@ class edit_item extends StatefulWidget {
 }
 
 class _edit_item_State extends State<edit_item> {
-  String dropdownValue1 ='Percentage';
+  String dropdownValue ='Percentage';
   final _formKey = GlobalKey<FormState>();
   final _amountController = new TextEditingController();
   @override
@@ -29,7 +29,7 @@ class _edit_item_State extends State<edit_item> {
         elevation: 16,
         child:SingleChildScrollView(
           child: Container(
-            height: 450,
+            height: MediaQuery.of(context).size.height/1.58,
             padding: EdgeInsets.all(8),
             child: (
                 Column(
@@ -37,12 +37,12 @@ class _edit_item_State extends State<edit_item> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Center(
-                      child: Text("EDIT ITEM",style: GoogleFonts.ptSans(fontSize: 20),),
+                      child: Text("EDIT ITEM",style: GoogleFonts.ptSans(fontSize: 18),),
                     ),
                     Container(
                       // height:MediaQuery.of(context).size.height/1.85,
                       child:Padding(
-                        padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
+                        padding: const EdgeInsets.only(top: 10,left: 8,right: 7),
                         child: Container(
                           // height:MediaQuery.of(context).size.height/10 ,
                             padding: EdgeInsets.only(left:10),
@@ -52,15 +52,15 @@ class _edit_item_State extends State<edit_item> {
                                 BoxShadow(
                                   color: Colors.grey,
                                   offset: const Offset(
-                                    1.0,
-                                    1.0,
+                                    0.0,
+                                    0.3,
                                   ), //Offset
-                                  blurRadius: 6.0,
-                                  spreadRadius: 2.0,
+                                  blurRadius: 1.0,
+                                  spreadRadius: 0.5,
                                 ), //BoxShadow
                                 BoxShadow(
                                   color: Colors.white,
-                                  offset: const Offset(0.0, 0.0),
+                                  offset: const Offset(0.5, 0.0),
                                   blurRadius: 0.0,
                                   spreadRadius: 0.0,
                                 ),],
@@ -136,14 +136,17 @@ class _edit_item_State extends State<edit_item> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      height:30 ,
+                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
-                              left: 25),
+                          padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,),
                           child: Container(
                             height: 40,
-                            width: 120,
+                            width: MediaQuery.of(context).size.width/2.6,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(30),
@@ -151,51 +154,57 @@ class _edit_item_State extends State<edit_item> {
                                 BoxShadow(
                                   color: Colors.grey,
                                   offset: const Offset(
-                                    1.0,
-                                    1.0,
+                                    0.0,
+                                    0.3,
                                   ), //Offset
-                                  blurRadius: 0.0,
-                                  spreadRadius: 2.0,
+                                  blurRadius: 1.0,
+                                  spreadRadius: 0.5,
                                 ), //BoxShadow
                                 BoxShadow(
                                   color: Colors.white,
-                                  offset: const Offset(0.0, 0.0),
+                                  offset: const Offset(0.5, 0.0),
                                   blurRadius: 0.0,
                                   spreadRadius: 0.0,
                                 ),],
                             ),
                             child: DropdownButton<String>(
-                              value: dropdownValue1,
+                              value: dropdownValue,
                               items: [
                                 DropdownMenuItem(
                                   value: 'Fixed',
-                                  child: Text('Fixed'),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('Fixed'),
+                                  ),
                                 ),
                                 DropdownMenuItem(
                                   value: 'Percentage',
-                                  child: Text('Percentage'),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text('Percentage'),
+                                  ),
                                 ),
 
                               ],
                               onChanged: (value) {
                                 setState(() {
-                                  var dropdownValue1 = value!;
+                                  dropdownValue = value!;
                                 });
                               },
                             ),
                           ),
                         ),
                         Container(
-                          height: 50,
-                          width: 120,
+                          height: 40,
+                          width: MediaQuery.of(context).size.width/2.6,
                           child: TextField(
                             enableInteractiveSelection: false,
                             focusNode: new AlwaysDisabledFocusNode(),
                             keyboardType:TextInputType.number,
                             decoration: InputDecoration(
-                              hintText: 'Hi',
-                              hintStyle: GoogleFonts.ptSans(
-                                  fontWeight: FontWeight.bold
+                              hintText: '0.00',
+                              hintStyle: TextStyle(
+                                  color: Colors.grey
                               ),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
@@ -210,36 +219,55 @@ class _edit_item_State extends State<edit_item> {
                         ),
                       ],
                     ),
+                    SizedBox(
+                      height: 40,
+                    ),
                     Container(
-                      height: 200,
+                      height: 150,
                       width: 320,
                       child: TextField(
                         maxLines: 10,
                         enableInteractiveSelection: false,
                         decoration: InputDecoration(
-                          hintText: 'Hi',
-                          hintStyle: GoogleFonts.ptSans(
-                              fontWeight: FontWeight.bold
+                          hintText: 'Cooking Instruction',
+                          hintStyle: TextStyle(
+                            color: Colors.grey
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color:Colors.brown),
+                            borderSide: BorderSide(color:Colors.grey,width: 2.0),
                           ),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(color:Colors.brown),
+                            borderSide: BorderSide(color:Colors.grey,width: 2.0),
                           ),
                         ),
                       ),
                     ),
-                    SizedBox(
-                      width: 180,
-                      height: 50,
-                      child: CupertinoButton(
-                        child: Center(child: Text('Done',style: GoogleFonts.ptSans(color:Colors.black),)),
-                        color: Color(0xFFFFD45F), onPressed: () {  },
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15,bottom: 15),
+                      child: GestureDetector(
+                        child: Container(
+                          child:Center(child: Text('DONE',style: GoogleFonts.ptSans(fontWeight:FontWeight.bold,
+                              fontSize: 18
+                          ),
+                          ),
+
+                          ),
+                          decoration: BoxDecoration(
+                            color: Color(0xFFFFD45F),
+                            borderRadius: BorderRadius.circular(45),
+                          ),
+                          height: 40,
+                          width: 130,
+                        ),
+                        onTap :(){
+                          setState(() {
+
+                          });
+                        },
                       ),
-                    )
+                    ),
                   ],
                 )
             ),

@@ -145,6 +145,9 @@ class _SplitPayState extends State<SplitPay> {
                   },
                 ),
               ),
+              SizedBox(
+                height: 20,
+              ),
               GestureDetector(
                   child: Container(
                     child:Center(child: Text('Add Row',
@@ -154,10 +157,10 @@ class _SplitPayState extends State<SplitPay> {
                     ),
                     ),
                     decoration: BoxDecoration(
-                      color: isClickedAdd ? Colors.white : Color(0xFFFFD45F),
+                      color: Color(0xFFFFD45F),
                       borderRadius: BorderRadius.circular(45),
                     ),
-                    height: 60,
+                    height: 45,
                     width: 120,
                   ),
                   onTap:(){
@@ -167,6 +170,9 @@ class _SplitPayState extends State<SplitPay> {
                       items++;
                     });
                   }
+              ),
+              SizedBox(
+                height: 40,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 10),
@@ -189,6 +195,7 @@ class _SplitPayState extends State<SplitPay> {
                     },
                     child: Container(
                         decoration: BoxDecoration(
+                          color:Color(0xFFFFD45F),
                           borderRadius: BorderRadius.circular(35),
                           boxShadow: [
                             BoxShadow(
@@ -206,14 +213,13 @@ class _SplitPayState extends State<SplitPay> {
                               blurRadius: 0.0,
                               spreadRadius: 0.0,
                             ),],
-                          color : isActive ?  Color(0xFFFFD45F):Colors.grey,
                         ),
-                        width: 130,
-                        height: 40,
+                        width: 250,
+                        height: 50,
                         child: Center(
                             child: Text(
-                              'Proceed to Pay',
-                              textScaleFactor: 1.0,
+                              'Pay:\$'+widget.Ammount.toStringAsFixed(2),
+                              textScaleFactor: 2.0,
                               style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
                             ))),
 
