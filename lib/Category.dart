@@ -279,9 +279,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                           gravity: ToastGravity.BOTTOM,
                                           textColor: Colors.green,
                                           timeInSecForIosWeb: 10);
-                                      SharedPreferences prefs= await SharedPreferences.getInstance();
-                                      print(prefs.getString("customer_name"));
-                                      prefs.setString("customer_name",suggestion._name);
                                     },
                                     suggestionsCallback: CustomerApi.getUserSuggestion,
                                   )),
