@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_cart/flutter_cart.dart';
@@ -28,6 +29,7 @@ class _SelectItemState extends State<SelectItem> {
   //List<String> selectedReportList = [];
   var cart=FlutterCart();
   late product _product;
+  List<Map<String,dynamic>> list_of_m=[];
   List<product> _productlist=[];
   bool _isSearching=false;
   List<String> searchresult = [];
@@ -493,7 +495,49 @@ class _SelectItemState extends State<SelectItem> {
                           timeInSecForIosWeb: 4);
                     }
                     else{
+                      var list = sharedPreferences.getStringList("variation");
+                      list!.add(_productlist[index].variation_id);
+                      print(_productlist[index].variation_id);
+                      sharedPreferences.setStringList("variation", []);
+                      sharedPreferences.setStringList("variation", list!);
+                      Map<String,dynamic> product={};
+                      // product={
+                      //   "product_id":double.parse(_productlist[index].id),
+                      //   "variation_id":_productlist[index].variation_id,
+                      //   "quantity": 1,
+                      //   "unit_price": double.parse(_productlist[index].price),
+                      // };
+                      // list_of_m.add(product);
+                      // product={
+                      //   "product_id":double.parse(_productlist[index].id),
+                      //   "variation_id":_productlist[index].variation_id,
+                      //   "quantity": 1,
+                      //   "unit_price": double.parse(_productlist[index].price),
+                      // };
+                      // list_of_m.add(product);
                       cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
+                      if(sharedPreferences.getInt("order_id")==0)
+                        {
+                          // var dio=Dio();
+                          // dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
+                          // var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
+                          // var v=r.data[0]["id"];
+                          // print(v.toString());
+                          // sharedPreferences.setInt("order_id", v);
+                          // http.Response response = await http.post(
+                          //     Uri.parse("https://pos.sero.app/connector/api/sell")
+                          //     ,  headers: {
+                          //   'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
+                          // },
+                          // body: json.encode(api));
+                          // print(json.decode(response.body));
+                        }
+                      else
+                        {
+                            Map<String,dynamic> map={
+                              "products":list_of_m
+                            };
+                        }
                       http.Response response = await http.get(
                           Uri.parse(
                               "https://pos.sero.app/connector/api/product/${_productlist[index].id}")
@@ -537,11 +581,13 @@ class product
   final String name;
   final String price;
   final String url;
+  final String variation_id;
   product.fromJson(Map<String,dynamic> json):
         price=json["sell_price_inc_tax"],
         name=json["product_name"],
         url=json["product_image_url"],
-        id=json["product_id"].toString();
+        id=json["product_id"].toString(),
+        variation_id=json["variation_id"].toString();
 }
 class Customer
 {
