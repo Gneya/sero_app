@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,12 +23,14 @@ class _CartScreenState extends State<CartScreen> {
   bool _isloading =false;
   List<String> counter=[];
   int points=0;
-  int _currentIndex = 0;
+
   var size,height,width;
   int table_id=0;
+
   String table_name='';
   Map m={};
   double p=0.0;
+  int _currentIndex = 0;
   setBottomBarIndex(index){
     setState(() {
       _currentIndex = index;
