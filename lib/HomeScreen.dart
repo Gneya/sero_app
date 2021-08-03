@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _isloading = true;
     });}
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setStringList("variation", []);
     var list=sharedPreferences.getStringList("selected")??[];
     sharedPreferences.setInt("order_id",0);
     if(list.length>0) {
@@ -89,6 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     // TODO: implement initState
+
     fetch();
     super.initState();
   }

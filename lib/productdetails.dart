@@ -496,9 +496,10 @@ class _SelectItemState extends State<SelectItem> {
                     }
                     else{
                       var list = sharedPreferences.getStringList("variation");
+                      list!.add(_productlist[index].variation_id);
                       print(_productlist[index].variation_id);
                       sharedPreferences.setStringList("variation", []);
-                      // sharedPreferences.setStringList("variation", list);
+                      sharedPreferences.setStringList("variation", list!);
                       Map<String,dynamic> product={};
                       // product={
                       //   "product_id":double.parse(_productlist[index].id),
@@ -514,21 +515,6 @@ class _SelectItemState extends State<SelectItem> {
                       //   "unit_price": double.parse(_productlist[index].price),
                       // };
                       // list_of_m.add(product);
-                      // Map<String,dynamic> api= {
-                      //   "sells":[
-                      //     {
-                      //       "location_id": sharedPreferences.getInt("bid")??1,
-                      //       "contact_id": double.parse(sharedPreferences.getString("customer_id")??""),
-                      //       "status": "draft",
-                      //       "products":list_of_m,
-                      //       "payments": [
-                      //         {
-                      //           "amount": 165.2,
-                      //         }
-                      //       ]
-                      //     }
-                      //   ]
-                      // };
                       cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
                       if(sharedPreferences.getInt("order_id")==0)
                         {
