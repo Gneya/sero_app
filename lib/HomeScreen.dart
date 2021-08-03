@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });}
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var list=sharedPreferences.getStringList("selected")??[];
+    sharedPreferences.setInt("order_id",0);
     if(list.length>0) {
       for (int i = 0; i < list.length; i++) {
         if (sharedPreferences.containsKey(list[i])) {
@@ -71,6 +72,8 @@ class _HomeScreenState extends State<HomeScreen> {
     if(mounted){
     setState(() {
       _name = d["data"]["first_name"];
+      sharedPreferences.setInt("bid",d["data"]["business_id"]);
+      print("BIDDDDDDDDD:"+sharedPreferences.getInt("bid").toString());
     });}
     if(mounted){
     setState(() {
@@ -195,6 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             SharedPreferences prefs= await SharedPreferences.getInstance();
                             print(prefs.getString("customer_name"));
                             prefs.setString("customer_name",suggestion._name);
+                            prefs.setString("customer_id",suggestion.id);
                           },
                           suggestionsCallback: CustomerApi.getUserSuggestion,
                         )

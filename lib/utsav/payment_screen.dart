@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/redeem.dart';
 import 'package:flutter_nav_bar/utsav/shipping.dart';
 import 'package:flutter_nav_bar/utsav/split_payment.dart';
@@ -1291,7 +1292,24 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     ),
                     Container(
                       child: InkWell(
-                        onTap:isEnabled ? ()=> print('hello'): null,
+                        onTap:isEnabled ? () async {
+                          List<Map<String,dynamic>> list_of_m=[];
+                          SharedPreferences shared=await SharedPreferences.getInstance();
+                          var variation=shared.getStringList("variation");
+                          var cart=FlutterCart();
+                          for(int index=0;index<cart.cartItem.length;index++)
+                            {
+
+                              Map<String,dynamic> product={
+                                "product_id":double.parse(cart.cartItem[index].productId),
+                                //"variation_id":double.parse(variation![index]),
+                                "quantity": cart.cartItem[index].quantity,
+                                "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
+                              };
+                              list_of_m.add(product);
+                              print(list_of_m);
+                            }
+                        }:(){},
                         child: Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(35),
