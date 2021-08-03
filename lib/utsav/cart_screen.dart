@@ -275,7 +275,7 @@ class _CartScreenState extends State<CartScreen> {
                                   Container(
                                       width: MediaQuery.of(context).size.width/8,
                                       child:Text(
-                                        cart.cartItem[index].unitPrice.toString(),
+                                        (cart.cartItem[index].unitPrice*cart.cartItem[index].quantity).toString(),
                                         style: GoogleFonts.ptSans(
                                             fontSize: 15,
                                             fontWeight: FontWeight.bold
