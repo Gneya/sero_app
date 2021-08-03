@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
+import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +13,8 @@ class MoreOptions extends StatefulWidget {
 }
 
 class _MoreOptionsState extends State<MoreOptions> {
+  double paymentAmount =0.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,8 +65,12 @@ class _MoreOptionsState extends State<MoreOptions> {
               children: [
                 IconButton(
                   onPressed:(){
-                    setState(() {
-                    });
+                    showDialog(
+                        context: context,
+                        builder: (context){
+                          return ResumeScreen();
+                        }
+                    );
                   },
                   iconSize: 29,
                   icon: Icon(Icons.play_arrow_sharp,
@@ -81,12 +88,12 @@ class _MoreOptionsState extends State<MoreOptions> {
               children: [
                 IconButton(
                   onPressed:(){
-                    // showDialog(
-                    //     context: context,
-                    //     builder: (context){
-                    // return VoidBill(Ammount: paymentAmount,);
-                    //     }
-                    // );
+                    showDialog(
+                        context: context,
+                        builder: (context){
+                    return VoidBill(Ammount: paymentAmount,);
+                        }
+                    );
                   },
                   iconSize: 25,
                   icon: Icon(Icons.delete,

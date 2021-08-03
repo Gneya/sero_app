@@ -168,11 +168,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: EdgeInsets.zero,
                                   color: Colors.black,
                                   onPressed:(){
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PersonalDetails()));
-                                    } ,
+                                    // Navigator.push(
+                                    //   context,
+                                    //   MaterialPageRoute(
+                                    //       builder: (context) => PersonalDetails()));
+                                     } ,
                                 ),
                                 prefixIcon:  IconButton(
                                   padding: EdgeInsets.zero,
