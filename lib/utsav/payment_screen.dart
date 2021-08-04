@@ -46,7 +46,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool value =false;
   bool isEnabled = false;
   bool isEnabledBalance = false;
-
+  bool _isloading =false;
+  String table_name='';
   final _tipController = new TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -87,6 +88,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
       data['other'],
     ];
     return paymentMethod;
+  }
+  Future<void> getSharedPrefs() async {
+    setState(() {
+      _isloading =true;
+    });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    table_name =prefs.getString("table_name")??"";
+    setState(() {
+      _isloading =false;
+    });
   }
   Widget selectPaymentMode(){
     if(isClicked1 ==false){
@@ -671,6 +682,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     fetchData();
+    getSharedPrefs();
     super.initState();
 
   }
@@ -723,7 +735,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             onPressed: () {
                             },
                           ),
-                          Text('Table -11',style: GoogleFonts.ptSans(color: Colors.black,fontSize: 18)),
+                          Text(table_name,style: GoogleFonts.ptSans(color: Colors.black,fontSize: 18)),
                           Row(
                             children: [
                               Container(
@@ -885,7 +897,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         toolbarHeight: 150,
         backgroundColor: Colors.white,
       ),
-      body: SingleChildScrollView(
+      body:_isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),)): SingleChildScrollView(
         child: Column(
           children: [
             Container(
