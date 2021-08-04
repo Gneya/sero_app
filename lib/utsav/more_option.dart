@@ -13,8 +13,6 @@ class MoreOptions extends StatefulWidget {
 }
 
 class _MoreOptionsState extends State<MoreOptions> {
-  double paymentAmount =0.0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,12 +63,10 @@ class _MoreOptionsState extends State<MoreOptions> {
               children: [
                 IconButton(
                   onPressed:(){
-                    showDialog(
-                        context: context,
-                        builder: (context){
-                          return ResumeScreen();
-                        }
-                    );
+                    Navigator.push(
+                               context,
+                               MaterialPageRoute(
+                               builder: (context) => ResumeScreen()));
                   },
                   iconSize: 29,
                   icon: Icon(Icons.play_arrow_sharp,
@@ -88,12 +84,12 @@ class _MoreOptionsState extends State<MoreOptions> {
               children: [
                 IconButton(
                   onPressed:(){
-                    showDialog(
-                        context: context,
-                        builder: (context){
-                    return VoidBill(Ammount: paymentAmount,);
-                        }
-                    );
+                    // showDialog(
+                    //     context: context,
+                    //     builder: (context){
+                    // return VoidBill(Ammount: paymentAmount,);
+                    //     }
+                    // );
                   },
                   iconSize: 25,
                   icon: Icon(Icons.delete,

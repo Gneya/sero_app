@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class VoidBill extends StatefulWidget {
-  double Ammount=0.0;
-  VoidBill({Key? key, required this.Ammount}) : super(key: key);
 
   @override
   _VoidBillState createState() => _VoidBillState();
@@ -81,6 +80,8 @@ class _VoidBillState extends State<VoidBill> {
                                 onTap: (){
                                   setState(() {
                                     isClickedAdd =! isClickedAdd;
+                                    var cart=FlutterCart();
+                                    cart.deleteAllCart();
                                   });
                                 },
                               ),

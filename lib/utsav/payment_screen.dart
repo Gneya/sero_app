@@ -1554,7 +1554,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                     showDialog(
                         context: context,
                         builder: (context){
-                          return VoidBill(Ammount: paymentAmount,);
+                          return VoidBill();
                         }
                     );
                   },
