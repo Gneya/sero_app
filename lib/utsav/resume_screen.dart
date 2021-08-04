@@ -42,12 +42,14 @@ class _ResumeScreenState extends State<ResumeScreen> {
         double sum=0;
         List<double> price_of_indiviual=[];
         List<int> pid=[];
+        List<String> vid=[];
         for(var c in i["sell_lines"])
         {
           count++;
           price_of_indiviual.add(double.parse(c["unit_price"].toString()));
           sum+=double.parse(c["unit_price"]);
           pid.add(c["product_id"]??0);
+          vid.add(c["variation_id"].toString()??'');
         }
         total_list.add(count);
         var cid=i["contact_id"];
@@ -64,6 +66,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
           "order_id":i["id"],
           "cus_name":json.decode(response.body)["data"][0]["name"].toString(),
           "pid":pid,
+           "vid":vid,
           "total_price":sum,
           "price_of_indiviual":price_of_indiviual,
           "count":count
@@ -211,6 +214,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                                 productName: v
                                             );
                                           }
+                                          shared.setStringList("variation",list[index]["vid"]);
                                           Navigator.push(
                                               context,
                                               MaterialPageRoute(

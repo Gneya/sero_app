@@ -287,8 +287,12 @@ class _CartScreenState extends State<CartScreen> {
                                       )),
                                   IconButton(
                                     onPressed:(){
-                                      setState(() {
+                                      setState(() async {
                                         cart.deleteItemFromCart(index);
+                                        SharedPreferences shared = await SharedPreferences.getInstance();
+                                       var list = shared.getStringList("variation");
+                                        list!.removeAt(index);
+                                        shared.setStringList("variation", list);
                                         paymentAmount = cart.getTotalAmount();
                                         print(cart.getCartItemCount());
                                       });

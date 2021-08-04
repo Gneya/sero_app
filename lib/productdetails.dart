@@ -485,16 +485,7 @@ class _SelectItemState extends State<SelectItem> {
                   onTap: () async {
                     SharedPreferences sharedPreferences = await SharedPreferences
                         .getInstance();
-                    if(sharedPreferences.getString("customer_name")=="")
-                    {
-                      Fluttertoast.showToast(
-                          msg: "Please select the customer and table first",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.BOTTOM,
-                          textColor: Colors.green,
-                          timeInSecForIosWeb: 4);
-                    }
-                    else{
+
                       var list = sharedPreferences.getStringList("variation");
                       list!.add(_productlist[index].variation_id);
                       print(_productlist[index].variation_id);
@@ -569,7 +560,7 @@ class _SelectItemState extends State<SelectItem> {
                           gravity: ToastGravity.BOTTOM,
                           textColor: Colors.green,
                           timeInSecForIosWeb: 4);
-                    }}
+                    }
               );
             })
     );
