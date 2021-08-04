@@ -3,6 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:flutter_nav_bar/bottom_navigation.dart';
+import 'package:flutter_nav_bar/bottom_navigation.dart';
+import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -490,8 +493,9 @@ class _SelectItemState extends State<SelectItem> {
                       list!.add(_productlist[index].variation_id);
                       print(_productlist[index].variation_id);
                       sharedPreferences.setStringList("variation", []);
-                      sharedPreferences.setStringList("variation", list!);
+                      sharedPreferences.setStringList("variation", list);
                       Map<String,dynamic> product={};
+                      sharedPreferences.setString("total", (cart.getCartItemCount()+1).toString());
                       // product={
                       //   "product_id":double.parse(_productlist[index].id),
                       //   "variation_id":_productlist[index].variation_id,
