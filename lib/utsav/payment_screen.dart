@@ -684,56 +684,49 @@ class _PaymentScreenState extends State<PaymentScreen> {
     width = size.width;
     paymentAmount=widget.Ammount;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(bottomLeft:Radius.circular(30),bottomRight:Radius.circular(30),),
-                color :const Color(0xFFFFD45F),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey,
-                    offset: const Offset(
-                      1.0,
-                      1.0,
-                    ), //Offset
-                    blurRadius: 6.0,
-                    spreadRadius: 2.0,
-                  ), //BoxShadow
-                  BoxShadow(
-                    color: Colors.white,
-                    offset: const Offset(0.0, 0.0),
-                    blurRadius: 0.0,
-                    spreadRadius: 0.0,
-                  ),],
-              ),
-              height:180,
-              child: Padding(
-                padding: const EdgeInsets.only(top:30),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        IconButton(
-                          alignment: Alignment.topLeft,
-                          icon: const Icon(Icons.menu),
-                          onPressed: () {
-                            setState(() {
-                            });
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top:8),
-                          child: Text("TABLE -11",
-                            style: GoogleFonts.ptSans(fontSize: 18),),
-
-                        ),
-                        Row(
-                          children: [
-                            Container(
+      appBar: AppBar(
+        flexibleSpace:  Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(bottomLeft:Radius.circular(30),bottomRight:Radius.circular(30),),
+                  color :const Color(0xffffd45f),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: const Offset(
+                        1.0,
+                        1.0,
+                      ), //Offset
+                      blurRadius: 0.0,
+                      spreadRadius: 2.0,
+                    ), //BoxShadow
+                    BoxShadow(
+                      color: Colors.white,
+                      offset: const Offset(0.0, 0.0),
+                      blurRadius: 0.0,
+                      spreadRadius: 0.0,
+                    ),],
+                ),
+                height:180,
+                child:Padding(
+                  padding: const EdgeInsets.only(top:30),
+                  child: Column(
+                    children:[Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            alignment: Alignment.topLeft,
+                            icon: const Icon(Icons.menu,),
+                            onPressed: () {
+                            },
+                          ),
+                          Text('Table -11',style: GoogleFonts.ptSans(color: Colors.black,fontSize: 18)),
+                          Row(
+                            children: [
+                              Container(
                                 margin: EdgeInsets.only(right: 0),
                                 child: IconButton(
                                   icon: const Icon(Icons.notifications,
@@ -747,152 +740,160 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     );
                                   },
                                 ),),
-                            CircleAvatar(
-                                backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
-                            ),
-                          ],
+                              CircleAvatar(
+                                  backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                              ),
+                            ],
+                          ),
+                        ]),
+                      Container(
+                        child:  Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Column(
+                                children: [
+                                  OutlineButton(
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context){
+                                            return Discount(Ammount: widget.Ammount, Balance: widget.Balance, Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                          }
+                                      );
+                                    },
+                                    highlightedBorderColor: Colors.black87,
+                                    textColor: Colors.black87,
+                                    // splashColor: isClickedButton? Colors.white : Color(0xFFFFD45F),
+                                    child: Icon(
+                                      Icons.sell_outlined,
+                                      size: 24,
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    shape: CircleBorder(),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 2),
+                                    child: Text('Discount',
+                                      style: GoogleFonts.ptSans(
+                                          fontWeight: FontWeight.bold
+                                      ),),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  OutlineButton(
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context){
+                                            return SplitPay(Ammount: widget.Ammount,);
+                                          }
+                                      );
+                                    },
+                                    highlightedBorderColor: Colors.black87,
+                                    textColor: Colors.black87,
+                                    child: Icon(
+                                      Icons.safety_divider,
+                                      size: 32,
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    shape: CircleBorder(),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 2),
+                                    child: Text('Split',
+                                      style: GoogleFonts.ptSans(
+                                          fontWeight: FontWeight.bold
+                                      ),),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  OutlineButton(
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context){
+                                            return RedeemPoint(Ammount: widget.Ammount,
+                                              Balance: widget.Ammount,
+                                              Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                          }
+                                      );
+                                    },
+                                    highlightedBorderColor: Colors.black87,
+                                    textColor: Colors.black87,
+                                    child: Icon(
+                                      Icons.redeem_rounded,
+                                      size: 24,
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    shape: CircleBorder(),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 2),
+                                    child: Text('Points',
+                                      style: GoogleFonts.ptSans(
+                                          fontWeight: FontWeight.bold
+                                      ),),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                children: [
+                                  OutlineButton(
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context){
+                                            return Shipping(Ammount: widget.Ammount, Balance: widget.Balance,
+                                              Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                          }
+                                      );
+                                    },
+                                    highlightedBorderColor: Colors.black87,
+                                    textColor: Colors.black87,
+                                    child: Icon(
+                                      Icons.local_shipping,
+                                      size: 24,
+                                    ),
+                                    padding: EdgeInsets.all(16),
+                                    shape: CircleBorder(),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 2),
+                                    child: Text('Shipping',
+                                      style: GoogleFonts.ptSans(
+                                          fontWeight: FontWeight.bold
+                                      ),),
+                                  )
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              OutlineButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context){
-                                        return Discount(Ammount: widget.Ammount, Balance: widget.Balance, Discountt: widget.Discountt, Redeem: widget.Redeem,);
-                                      }
-                                  );
-                                },
-                                highlightedBorderColor: Colors.black87,
-                                textColor: Colors.black87,
-                                // splashColor: isClickedButton? Colors.white : Color(0xFFFFD45F),
-                                child: Icon(
-                                  Icons.sell_outlined,
-                                  size: 24,
-                                ),
-                                padding: EdgeInsets.all(16),
-                                shape: CircleBorder(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: Text('Discount',
-                                  style: GoogleFonts.ptSans(
-                                      fontWeight: FontWeight.bold
-                                  ),),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              OutlineButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context){
-                                        return SplitPay(Ammount: widget.Ammount,);
-                                      }
-                                  );
-                                },
-                                highlightedBorderColor: Colors.black87,
-                                textColor: Colors.black87,
-                                child: Icon(
-                                  Icons.safety_divider,
-                                  size: 32,
-                                ),
-                                padding: EdgeInsets.all(16),
-                                shape: CircleBorder(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: Text('Split',
-                                  style: GoogleFonts.ptSans(
-                                      fontWeight: FontWeight.bold
-                                  ),),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              OutlineButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context){
-                                        return RedeemPoint(Ammount: widget.Ammount,
-                                          Balance: widget.Ammount,
-                                          Discountt: widget.Discountt, Redeem: widget.Redeem,);
-                                      }
-                                  );
-                                },
-                                highlightedBorderColor: Colors.black87,
-                                textColor: Colors.black87,
-                                child: Icon(
-                                  Icons.redeem_rounded,
-                                  size: 24,
-                                ),
-                                padding: EdgeInsets.all(16),
-                                shape: CircleBorder(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: Text('Points',
-                                  style: GoogleFonts.ptSans(
-                                      fontWeight: FontWeight.bold
-                                  ),),
-                              )
-                            ],
-                          ),
-                          Column(
-                            children: [
-                              OutlineButton(
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context){
-                                        return Shipping(Ammount: widget.Ammount, Balance: widget.Balance,
-                                          Discountt: widget.Discountt, Redeem: widget.Redeem,);
-                                      }
-                                  );
-                                },
-                                highlightedBorderColor: Colors.black87,
-                                textColor: Colors.black87,
-                                child: Icon(
-                                  Icons.local_shipping,
-                                  size: 24,
-                                ),
-                                padding: EdgeInsets.all(16),
-                                shape: CircleBorder(),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(top: 2),
-                                child: Text('Shipping',
-                                  style: GoogleFonts.ptSans(
-                                      fontWeight: FontWeight.bold
-                                  ),),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
+            ]
+        ),
+        toolbarHeight: 150,
+        backgroundColor: Colors.white,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
             Container(
               height: 170 ,
               width: width,
               color:Colors.white54,
               child: Padding(
-                padding: const EdgeInsets.only(top: 12),
+                padding: const EdgeInsets.only(top: 8),
                 child: Column(
                   children: [
                     Row(

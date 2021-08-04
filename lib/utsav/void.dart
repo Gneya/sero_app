@@ -12,7 +12,6 @@ class VoidBill extends StatefulWidget {
 class _VoidBillState extends State<VoidBill> {
   bool isClickedAdd = true;
   bool isClickedCancel = true;
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
