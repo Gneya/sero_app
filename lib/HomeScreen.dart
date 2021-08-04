@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });}
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setStringList("variation", []);
+    sharedPreferences.setString("total", "0");
     var list=sharedPreferences.getStringList("selected")??[];
     sharedPreferences.setInt("order_id",0);
     if(list.length>0) {

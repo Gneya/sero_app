@@ -31,14 +31,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
       });}
   }
   var cart=FlutterCart();
-  fetch(){
-    setState(() {
-      total=cart.getCartItemCount().toString();
+
+  fetch() async {
+    SharedPreferences shared=await SharedPreferences.getInstance();
+    setState(()  {
+      total=shared.getString("total");
     });
   }
   @override
   Widget build(BuildContext context) {
-   fetch();
     return WillPopScope(
       onWillPop: () async => !await _tabNavigator.currentState!.maybePop(),
       child: Scaffold(
@@ -74,7 +75,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                  badgeContent: FutureBuilder(
                  future: fetch(),
                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                   return Text(total??"",style: TextStyle(color: Colors.white));
+                   return Text(total.toString()??"",style: TextStyle(color: Colors.white));
               }),
                 child:Icon(Icons.shopping_cart),),
               title: Text(''),
@@ -131,7 +132,7 @@ class TabNavigatorState extends State<TabNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    print('selectedIndex=${widget.selectedIndex}, popStack=${widget.popStack}');
+    // print('selectedIndex=${widget.selectedIndex}, popStack=${widget.popStack}');
 
     _popStackIfRequired(context);
 
