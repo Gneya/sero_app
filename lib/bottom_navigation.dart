@@ -12,7 +12,7 @@ class DashboardScreen extends StatefulWidget {
   _DashboardScreenState createState() => _DashboardScreenState();
 }
 
-class _DashboardScreenState extends State<DashboardScreen> {
+class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProviderStateMixin{
   final _tabNavigator = GlobalKey<TabNavigatorState>();
   final _tab1 = GlobalKey<NavigatorState>();
   final _tab2 = GlobalKey<NavigatorState>();
@@ -21,9 +21,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
   var _tabSelectedIndex = 0;
   var _tabPopStack = false;
   String? total="0";
+  // late TabController _tabController;
+  // @override
+  // void initState() {
+  //   super.initState();
+  // }
+
   Future<void> _setIndex(index) async {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     sharedPreferences.setInt("index", index);
+    if(index== 0){
+      sharedPreferences.setString( "screen", "Home");
+    }
+    else if(index ==1){
+       sharedPreferences.setString("screen", "Category");
+
+    }
+    else if(index ==2){
+      sharedPreferences.setString("screen", "Cart");
+
+    }
+    else{
+
+    }
       if(mounted){
       setState(() {
         // _tabPopStack = _tabSelectedIndex == index;
@@ -43,7 +63,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return WillPopScope(
       onWillPop: () async => !await _tabNavigator.currentState!.maybePop(),
       child: Scaffold(
-        body: TabNavigator(
+        body: TabNavigator (
           key: _tabNavigator,
           tabs: <TabItem>[
             TabItem(_tab1, HomeScreen(title: '')),

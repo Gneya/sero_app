@@ -561,7 +561,9 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
               OutlinedButton.icon(
-                onPressed: () {
+                onPressed: () async {
+                  SharedPreferences shared =await SharedPreferences.getInstance();
+                  shared.setString("screen", "Payment");
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
