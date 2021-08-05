@@ -1,9 +1,18 @@
+
+
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
+import 'package:flutter_nav_bar/Category.dart';
+import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
+import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../selectable.dart';
 
 class MoreOptions extends StatefulWidget {
   const MoreOptions({Key? key}) : super(key: key);
@@ -11,12 +20,38 @@ class MoreOptions extends StatefulWidget {
   @override
   _MoreOptionsState createState() => _MoreOptionsState();
 }
-
 class _MoreOptionsState extends State<MoreOptions> {
+  int index =0;
+  Future<void> getIndex() async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var screen = shared.getString("screen");
+    if(screen == "Home"){
+      index =0;
+    }
+    else if(screen =="Category"){
+      index =1;
+    }
+    else if(screen == "Cart"){
+    index =2 ;
+    }
+    else if(screen == "Payment"){
+       index=3;
+    }
+    else{
+
+    }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    getIndex();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
+    getIndex();
     return Scaffold(
-      body: Container(),
+      body: index ==0 ? HomeScreen(title: 'title'): index ==1 ? CategoryScreen():CartScreen(),
       bottomSheet: new Container(
         height: 70,
         decoration: BoxDecoration(
@@ -45,6 +80,10 @@ class _MoreOptionsState extends State<MoreOptions> {
                 IconButton(
                   onPressed:(){
                     setState(() {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SelectTable()),
+                      );
                     });
                   },
                   iconSize: 25,
@@ -105,8 +144,22 @@ class _MoreOptionsState extends State<MoreOptions> {
             ),Column(
               children: [
                 IconButton(
-                  onPressed:(){
+                  onPressed:() async {
+                    var cart = FlutterCart();
+                    cart.deleteAllCart();
+                    SharedPreferences shared = await SharedPreferences.getInstance();
+                    setState(() {
+                      shared.setString("customer_name", "");
+                      shared.setString("table_name", "");
+                      shared.setString("total", "0");
+                    });
 
+                    Fluttertoast.showToast(
+                        msg:"Order has been cleared you can go to home screen",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        textColor: Colors.green,
+                        timeInSecForIosWeb: 10);
                   },
                   iconSize: 25,
                   icon: Icon(Icons.clear_all_sharp,
@@ -120,35 +173,6 @@ class _MoreOptionsState extends State<MoreOptions> {
                   ),)
               ],
             ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed:()async{
-                    // SharedPreferences prefs = await SharedPreferences.getInstance();
-                    // prefs.setInt('index',2);
-                    // table_id=  prefs.getInt("table_id")!;
-                    // table_name =prefs.getString("table_name")!;
-                    // customer_name=prefs.getString("customer_name")!;
-                    setState(() {
-
-                      // _currentIndex =2;
-                      // setState(() {
-                      //   _isloading =false;
-                      // });
-                      // setState(() {
-                      //
-                      //
-                      // });
-                    });
-                  },
-                  iconSize: 40,
-                  icon: Icon(Icons.keyboard_arrow_down_outlined,
-                    color: Colors.grey[800],
-                  ),
-                ),
-              ],
-            ),
-
           ],
         ),
       ),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
@@ -48,9 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _isloading = true;
     });}
+    var cart =FlutterCart();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setStringList("variation", []);
-    sharedPreferences.setString("total", "0");
+    sharedPreferences.setString("total",cart.getCartItemCount().toString());
     var list=sharedPreferences.getStringList("selected")??[];
     sharedPreferences.setInt("order_id",0);
     if(list.length>0) {
@@ -279,6 +281,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
+      // bottomSheet:_currentIndex == 3 ? Container(
+      //   height: 50,
+      //   color: Colors.black,
+      // ):Container(
+      //   height: 50,
+      //   color: Colors.blue,
+      // ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

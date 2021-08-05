@@ -290,6 +290,7 @@ class _CartScreenState extends State<CartScreen> {
                                       setState(() async {
                                         cart.deleteItemFromCart(index);
                                         SharedPreferences shared = await SharedPreferences.getInstance();
+                                        shared.setString("total", (cart.getCartItemCount()).toString());
                                        var list = shared.getStringList("variation");
                                         list!.removeAt(index);
                                         shared.setStringList("variation", list);
@@ -444,7 +445,6 @@ class _CartScreenState extends State<CartScreen> {
                         });
                         setState(() {
 
-
                         });
                       });
                     },
@@ -560,7 +560,9 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
               OutlinedButton.icon(
-                onPressed: () {
+                onPressed: () async {
+                  SharedPreferences shared =await SharedPreferences.getInstance();
+                  shared.setString("screen", "Payment");
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),

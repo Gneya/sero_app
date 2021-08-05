@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
@@ -215,10 +216,20 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                             );
                                           }
                                           shared.setStringList("variation",list[index]["vid"]);
-                                          Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => CartScreen()));
+                                          shared.setString("total", cart.getCartItemCount().toString());
+                                          shared.setString("customer_name",list[index]["cus_name"]);
+                                          print(shared.getString("customer_name"));
+                                          Fluttertoast.showToast(
+                                              msg: "Order is moved to cart",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              gravity: ToastGravity.BOTTOM,
+                                              textColor: Colors.green,
+                                              timeInSecForIosWeb: 4);
+                                          Navigator.pop(context);
+                                          // Navigator.push(
+                                          //     context,
+                                          //     MaterialPageRoute(
+                                          //         builder: (context) => CartScreen()));
                                         },
                                       ),
                                       Container(
