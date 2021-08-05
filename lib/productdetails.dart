@@ -495,7 +495,6 @@ class _SelectItemState extends State<SelectItem> {
                       sharedPreferences.setStringList("variation", []);
                       sharedPreferences.setStringList("variation", list);
                       Map<String,dynamic> product={};
-                      sharedPreferences.setString("total", (cart.getCartItemCount()+1).toString());
                       // product={
                       //   "product_id":double.parse(_productlist[index].id),
                       //   "variation_id":_productlist[index].variation_id,
@@ -533,6 +532,7 @@ class _SelectItemState extends State<SelectItem> {
                               "products":list_of_m
                             };
                         }
+                      //print(DashboardScreen().createState().fetch().toString());
                       http.Response response = await http.get(
                           Uri.parse(
                               "https://pos.sero.app/connector/api/product/${_productlist[index].id}")

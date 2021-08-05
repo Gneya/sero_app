@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
@@ -18,7 +19,9 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   final _tab2 = GlobalKey<NavigatorState>();
   final _tab3 = GlobalKey<NavigatorState>();
   final _tab4 = GlobalKey<NavigatorState>();
-  var _tabSelectedIndex = 0;
+  var cart=FlutterCart();
+   ValueNotifier<int> _counter = ValueNotifier<int>(0);
+  int _tabSelectedIndex = 0;
   var _tabPopStack = false;
   String? total="0";
   // late TabController _tabController;
@@ -27,9 +30,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   //   super.initState();
   // }
 
-  Future<void> _setIndex(index) async {
-    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-    sharedPreferences.setInt("index", index);
+   _setIndex(index) {
     if(index== 0){
       sharedPreferences.setString( "screen", "Home");
     }
@@ -46,16 +47,15 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
     }
       if(mounted){
       setState(() {
-        // _tabPopStack = _tabSelectedIndex == index;
+        _tabPopStack = _tabSelectedIndex == index;
         _tabSelectedIndex = index;
+        print(_tabSelectedIndex);
       });}
   }
-  var cart=FlutterCart();
-
-  fetch() async {
+  fetch(int index) async {
     SharedPreferences shared=await SharedPreferences.getInstance();
-    setState(()  {
-      total=shared.getString("total");
+    setState(() {
+      total = cart.getCartItemCount().toString();
     });
   }
   @override
@@ -73,6 +73,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
           ],
           selectedIndex: _tabSelectedIndex,
           popStack: _tabPopStack,
+
         ),
         bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Colors.amber,
@@ -92,11 +93,17 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
               icon: Badge(
               badgeColor: Colors.red,
                 position: BadgePosition.topEnd(top: -20, end: -10),
-                 badgeContent: FutureBuilder(
-                 future: fetch(),
+                  badgeContent: FutureBuilder(
+                 //future: fetch(),
                  builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                   return Text(total.toString()??"",style: TextStyle(color: Colors.white));
+                   return Text(cart.getCartItemCount().toString()??"",style: TextStyle(color: Colors.white));
               }),
+                // ValueListenableBuilder<int>(
+                //   valueListenable: _counter,
+                //   builder: (BuildContext context, value, Widget? child) {
+                //     return Text(value.toString());
+                //   },
+                // ),
                 child:Icon(Icons.shopping_cart),),
               title: Text(''),
             ),
@@ -128,7 +135,7 @@ class TabNavigator extends StatefulWidget {
     Key ?key,
     required this.tabs,
     required this.selectedIndex,
-    this.popStack = false,
+    this.popStack=false,
   }) : super(key: key);
 
   @override
@@ -152,7 +159,7 @@ class TabNavigatorState extends State<TabNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    // print('selectedIndex=${widget.selectedIndex}, popStack=${widget.popStack}');
+    print('selectedIndex=${widget.selectedIndex}, popStack=${widget.popStack}');
 
     _popStackIfRequired(context);
 
