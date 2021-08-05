@@ -290,6 +290,7 @@ class _CartScreenState extends State<CartScreen> {
                                       setState(() async {
                                         cart.deleteItemFromCart(index);
                                         SharedPreferences shared = await SharedPreferences.getInstance();
+                                        shared.setString("total", (cart.getCartItemCount()).toString());
                                        var list = shared.getStringList("variation");
                                         list!.removeAt(index);
                                         shared.setStringList("variation", list);
