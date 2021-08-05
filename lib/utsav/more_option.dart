@@ -1,14 +1,18 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../selectable.dart';
 
 class MoreOptions extends StatefulWidget {
   const MoreOptions({Key? key}) : super(key: key);
@@ -76,7 +80,10 @@ class _MoreOptionsState extends State<MoreOptions> {
                 IconButton(
                   onPressed:(){
                     setState(() {
-                      // add tablenumber//////
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => SelectTable()),
+                      );
                     });
                   },
                   iconSize: 25,
@@ -137,8 +144,22 @@ class _MoreOptionsState extends State<MoreOptions> {
             ),Column(
               children: [
                 IconButton(
-                  onPressed:(){
+                  onPressed:() async {
+                    var cart = FlutterCart();
+                    cart.deleteAllCart();
+                    SharedPreferences shared = await SharedPreferences.getInstance();
+                    setState(() {
+                      shared.setString("customer_name", "");
+                      shared.setString("table_name", "");
+                      shared.setString("total", "0");
+                    });
 
+                    Fluttertoast.showToast(
+                        msg:"Order has been cleared you can go to home screen",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        textColor: Colors.green,
+                        timeInSecForIosWeb: 10);
                   },
                   iconSize: 25,
                   icon: Icon(Icons.clear_all_sharp,
