@@ -239,49 +239,64 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Container(
-                                  height: MediaQuery.of(context).size.height/20,
-                                  width: MediaQuery.of(context).size.width/1.6,
-                                  child:TypeAheadField<Customer>(
-                                    textFieldConfiguration: TextFieldConfiguration(
+                                    height: MediaQuery.of(context).size.height/20,
+                                    width: MediaQuery.of(context).size.width/1.6,
+                                    child:TypeAheadField<Customer>(
+                                      textFieldConfiguration: TextFieldConfiguration(
                                         //controller: _typeAheadController,
-                                        textAlign: TextAlign.center,
-                                        decoration: InputDecoration(
-                                          border: InputBorder.none,
-                                          hintText: "Search Product",
-                                          suffixIcon: IconButton(
-                                            icon:Image.asset("images/barcode.png",height: 20,width: 20,),
-                                            padding: EdgeInsets.zero,
-                                            color: Colors.black,
-                                            onPressed:_scanQR
-                                          ),
-                                          prefixIcon:  IconButton(
-                                            padding: EdgeInsets.zero,
-                                            icon:Icon(Icons.search),
-                                            color: Colors.black,
-                                            onPressed:(){} ,
-                                          ),
-                                        )
-                                    ),
-                                    itemBuilder: (BuildContext context,Customer? suggestion) {
-                                      final content=suggestion!;
-                                      return ListTile(
-                                        title: Text(content._name),
-                                      );
-                                    },
-                                    onSuggestionSelected: (Customer? suggestion) async {
-                                      var cart=FlutterCart();
-                                      cart.addToCart(productId: double.parse(suggestion!.id), unitPrice: double.parse(suggestion._phone),productName: suggestion!._name);
-                                      //hint=suggestion!._name;
-                                      //_typeAheadController.text=suggestion._name;
-                                      Fluttertoast.showToast(
-                                          msg:suggestion._name+" is selected",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          textColor: Colors.green,
-                                          timeInSecForIosWeb: 4);
-                                    },
-                                    suggestionsCallback: CustomerApi.getUserSuggestion,
-                                  )),
+                                          textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "Search Product",
+                                            suffixIcon: IconButton(
+                                                icon:Image.asset("images/barcode.png",height: 20,width: 20,),
+                                                padding: EdgeInsets.zero,
+                                                color: Colors.black,
+                                                onPressed:_scanQR
+                                            ),
+                                            prefixIcon:  IconButton(
+                                              padding: EdgeInsets.zero,
+                                              icon:Icon(Icons.search),
+                                              color: Colors.black,
+                                              onPressed:(){} ,
+                                            ),
+                                          )
+                                      ),
+                                      itemBuilder: (BuildContext context,Customer? suggestion) {
+                                        final content=suggestion!;
+                                        return ListTile(
+                                          title: Text(content._name),
+                                        );
+                                      },
+                                      onSuggestionSelected: (Customer? suggestion) async {
+                                        print("IDDDDDDDDDD");
+                                        SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+                                        var cart=FlutterCart();
+                                        print(suggestion!.id);
+                                        cart.addToCart(productId: double.parse(suggestion!.id), unitPrice: double.parse(suggestion._phone),productName: suggestion!._name);
+                                        //hint=suggestion!._name;
+                                        //_typeAheadController.text=suggestion._name;
+                                        var list = sharedPreferences.getStringList("variation");
+                                        http.Response response = await http.get(
+                                            Uri.parse("https://pos.sero.app/connector/api/variation/?name=${suggestion._name}"), headers: {
+                                          'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
+                                        });
+                                        print("IDDDDDDDDDD");
+                                        print(json.decode(response.body)["data"][0]["variation_id"].toString());
+                                        list!.add(json.decode(response.body)["data"][0]["variation_id"].toString());
+                                        //print(suggestion.variation_id);
+                                        sharedPreferences.setStringList("variation", []);
+                                        sharedPreferences.setStringList("variation", list);
+                                        sharedPreferences.setString("total",cart.getCartItemCount().toString());
+                                        Fluttertoast.showToast(
+                                            msg:suggestion._name+" is selected",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.BOTTOM,
+                                            textColor: Colors.green,
+                                            timeInSecForIosWeb: 4);
+                                      },
+                                      suggestionsCallback: CustomerApi.getUserSuggestion,
+                                    )),
                                 // GestureDetector(child:Icon(Icons.search),
                                 //   onTap: (){
                                 //        Navigator.push(
