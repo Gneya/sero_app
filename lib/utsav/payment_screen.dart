@@ -762,7 +762,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         child:  Padding(
                           padding: const EdgeInsets.only(top: 15),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Column(
                                 children: [
@@ -780,7 +780,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // splashColor: isClickedButton? Colors.white : Color(0xFFFFD45F),
                                     child: Icon(
                                       Icons.sell_outlined,
-                                      size: 24,
+                                      size: 20,
                                     ),
                                     padding: EdgeInsets.all(16),
                                     shape: CircleBorder(),
@@ -809,7 +809,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     textColor: Colors.black87,
                                     child: Icon(
                                       Icons.safety_divider,
-                                      size: 32,
+                                      size: 25,
                                     ),
                                     padding: EdgeInsets.all(16),
                                     shape: CircleBorder(),
@@ -840,7 +840,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     textColor: Colors.black87,
                                     child: Icon(
                                       Icons.redeem_rounded,
-                                      size: 24,
+                                      size: 20,
                                     ),
                                     padding: EdgeInsets.all(16),
                                     shape: CircleBorder(),
@@ -870,7 +870,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     textColor: Colors.black87,
                                     child: Icon(
                                       Icons.local_shipping,
-                                      size: 24,
+                                      size: 20,
                                     ),
                                     padding: EdgeInsets.all(16),
                                     shape: CircleBorder(),
@@ -894,7 +894,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ]
         ),
-        toolbarHeight: 150,
+        toolbarHeight: 170,
         backgroundColor: Colors.white,
       ),
       body:_isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),)): SingleChildScrollView(
