@@ -1,7 +1,4 @@
-import 'dart:collection';
-
 import 'package:badges/badges.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
@@ -163,14 +160,11 @@ class TabNavigatorState extends State<TabNavigator> {
 
   @override
   Widget build(BuildContext context) {
-    Queue<Widget> tabs = new Queue<Widget>();
     // print('selectedIndex=${widget.selectedIndex}, popStack=${widget.popStack}');
 
     _popStackIfRequired(context);
-    tabs.add(HomeScreen(title: ''));
-    tabs.add(CategoryScreen());
 
-    return Queue<Widget>(
+    return Stack(
       children: List.generate(widget.tabs.length, _buildTab),
     );
   }
