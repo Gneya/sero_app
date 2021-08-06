@@ -809,7 +809,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     textColor: Colors.black87,
                                     child: Icon(
                                       Icons.safety_divider,
-                                      size: 25,
+                                      size: 20,
                                     ),
                                     padding: EdgeInsets.all(16),
                                     shape: CircleBorder(),
@@ -1410,6 +1410,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               var v=r.data[0]["id"];
                               print(v.toString());
                               shared.setInt("order_id", v);
+                              shared.setInt("index",0);
                               Fluttertoast.showToast(
                                   msg: "Payment Successful and Your Order Id is $v",
                                   toastLength: Toast.LENGTH_LONG,

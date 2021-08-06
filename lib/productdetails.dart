@@ -525,6 +525,7 @@ class _SelectItemState extends State<SelectItem> {
                       // };
                       // list_of_m.add(product);
                       cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
+                    sharedPreferences.setString("total", cart.getCartItemCount().toString());
                       if(sharedPreferences.getInt("order_id")==0)
                         {
                           // var dio=Dio();

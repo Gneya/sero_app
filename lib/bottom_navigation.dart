@@ -1,4 +1,7 @@
+import 'dart:collection';
+
 import 'package:badges/badges.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
@@ -54,6 +57,14 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
 
   fetch() async {
     SharedPreferences shared=await SharedPreferences.getInstance();
+    var i=shared.getInt("index");
+    if(i==0)
+    {
+      setState(() {
+        _tabSelectedIndex=0;
+      });
+
+    }
     setState(()  {
       total=shared.getString("total");
     });
@@ -152,11 +163,14 @@ class TabNavigatorState extends State<TabNavigator> {
 
   @override
   Widget build(BuildContext context) {
+    Queue<Widget> tabs = new Queue<Widget>();
     // print('selectedIndex=${widget.selectedIndex}, popStack=${widget.popStack}');
 
     _popStackIfRequired(context);
+    tabs.add(HomeScreen(title: ''));
+    tabs.add(CategoryScreen());
 
-    return Stack(
+    return Queue<Widget>(
       children: List.generate(widget.tabs.length, _buildTab),
     );
   }
