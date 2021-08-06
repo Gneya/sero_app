@@ -62,6 +62,11 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
       });
 
     }
+    else if(i==1){
+      setState(() {
+        _tabSelectedIndex=1;
+      });
+    }
     setState(()  {
       total=shared.getString("total");
     });

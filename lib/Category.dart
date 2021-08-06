@@ -22,9 +22,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class CategoryScreen extends StatefulWidget {
   CategoryScreen({Key? key, this.title}) : super(key: key);
-
   final String ?title;
-
   @override
   _CategoryScreenState createState() => _CategoryScreenState();
 }

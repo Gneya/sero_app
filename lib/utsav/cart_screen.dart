@@ -202,7 +202,7 @@ class _CartScreenState extends State<CartScreen> {
                   return GestureDetector(
                     onTap:(){
                       showDialog(context: context, builder: (context) {
-                        return edit_item(name: cart.cartItem[index].productName.toString(),quantity: cart.cartItem[index].quantity.toString(),price: cart.cartItem[index].unitPrice.toString());
+                        return edit_item(name: cart.cartItem[index].productName.toString(),quantity: cart.cartItem[index].quantity.toString(),price: cart.cartItem[index].unitPrice.toString(), index: index,);
                       });
                     },
                     child: Padding(
@@ -586,16 +586,6 @@ class _CartScreenState extends State<CartScreen> {
         )
     );
   }
-
-  // void pay() {
-  //   paymentAmount=0;
-  //   for(int i=0;i<_selectedItemsprice.length;i++)
-  //   {
-  //     paymentAmount+=double.parse(_selectedItemsprice[i]);
-  //     // print(paymentAmount.toString()+"+ "+_selectedItemsprice[i]);
-  //     paymentAmount+=p;
-  //   }
-  //   }
 
   fetchData() async {
     p=0;
