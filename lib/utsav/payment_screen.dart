@@ -759,8 +759,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ),
                         ]),
                       Container(
+                        width: MediaQuery.of(context).size.width,
                         child:  Padding(
-                          padding: const EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.only(top: 15,),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -782,14 +783,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       Icons.sell_outlined,
                                       size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Discount',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                        fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -811,14 +813,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       Icons.safety_divider,
                                       size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Split',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -842,14 +845,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       Icons.redeem_rounded,
                                       size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Points',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -872,14 +876,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       Icons.local_shipping,
                                       size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Shipping',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13
                                       ),),
                                   )
                                 ],
