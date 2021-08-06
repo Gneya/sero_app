@@ -759,10 +759,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ),
                         ]),
                       Container(
+                        width: MediaQuery.of(context).size.width,
                         child:  Padding(
-                          padding: const EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.only(top: 15,),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Column(
                                 children: [
@@ -780,16 +781,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // splashColor: isClickedButton? Colors.white : Color(0xFFFFD45F),
                                     child: Icon(
                                       Icons.sell_outlined,
-                                      size: 24,
+                                      size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Discount',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                        fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -809,16 +811,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     textColor: Colors.black87,
                                     child: Icon(
                                       Icons.safety_divider,
-                                      size: 32,
+                                      size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Split',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -840,16 +843,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     textColor: Colors.black87,
                                     child: Icon(
                                       Icons.redeem_rounded,
-                                      size: 24,
+                                      size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Points',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -870,16 +874,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     textColor: Colors.black87,
                                     child: Icon(
                                       Icons.local_shipping,
-                                      size: 24,
+                                      size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Shipping',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -894,7 +899,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ]
         ),
-        toolbarHeight: 150,
+        toolbarHeight: 170,
         backgroundColor: Colors.white,
       ),
       body:_isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),)): SingleChildScrollView(
@@ -1410,6 +1415,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               var v=r.data[0]["id"];
                               print(v.toString());
                               shared.setInt("order_id", v);
+                              shared.setInt("index",0);
                               Fluttertoast.showToast(
                                   msg: "Payment Successful and Your Order Id is $v",
                                   toastLength: Toast.LENGTH_LONG,

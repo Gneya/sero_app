@@ -274,16 +274,31 @@ class _SelectItemState extends State<SelectItem> {
                                           );
                                         },
                                         onSuggestionSelected: (Customer? suggestion) async {
+                                          print("IDDDDDDDDDD");
+                                          SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
                                           var cart=FlutterCart();
+                                          print(suggestion!.id);
                                           cart.addToCart(productId: double.parse(suggestion!.id), unitPrice: double.parse(suggestion._phone),productName: suggestion!._name);
                                           //hint=suggestion!._name;
                                           //_typeAheadController.text=suggestion._name;
+                                          var list = sharedPreferences.getStringList("variation");
+                                          http.Response response = await http.get(
+                                              Uri.parse("https://pos.sero.app/connector/api/variation/?name=${suggestion._name}"), headers: {
+                                            'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
+                                          });
+                                          print("IDDDDDDDDDD");
+                                          print(json.decode(response.body)["data"][0]["variation_id"].toString());
+                                          list!.add(json.decode(response.body)["data"][0]["variation_id"].toString());
+                                          //print(suggestion.variation_id);
+                                          sharedPreferences.setStringList("variation", []);
+                                          sharedPreferences.setStringList("variation", list);
+                                          sharedPreferences.setString("total",cart.getCartItemCount().toString());
                                           Fluttertoast.showToast(
                                               msg:suggestion._name+" is selected",
                                               toastLength: Toast.LENGTH_LONG,
                                               gravity: ToastGravity.BOTTOM,
                                               textColor: Colors.green,
-                                              timeInSecForIosWeb: 4);
+                                               timeInSecForIosWeb: 4);
                                         },
                                         suggestionsCallback: CustomerApi.getUserSuggestion,
                                       )),
@@ -495,7 +510,6 @@ class _SelectItemState extends State<SelectItem> {
                       sharedPreferences.setStringList("variation", []);
                       sharedPreferences.setStringList("variation", list);
                       Map<String,dynamic> product={};
-                      sharedPreferences.setString("total", (cart.getCartItemCount()+1).toString());
                       // product={
                       //   "product_id":double.parse(_productlist[index].id),
                       //   "variation_id":_productlist[index].variation_id,
@@ -511,6 +525,7 @@ class _SelectItemState extends State<SelectItem> {
                       // };
                       // list_of_m.add(product);
                       cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
+                    sharedPreferences.setString("total", cart.getCartItemCount().toString());
                       if(sharedPreferences.getInt("order_id")==0)
                         {
                           // var dio=Dio();
@@ -533,6 +548,7 @@ class _SelectItemState extends State<SelectItem> {
                               "products":list_of_m
                             };
                         }
+                      //print(DashboardScreen().createState().fetch().toString());
                       http.Response response = await http.get(
                           Uri.parse(
                               "https://pos.sero.app/connector/api/product/${_productlist[index].id}")
@@ -589,10 +605,12 @@ class Customer
   final String _name;
   final String _phone;
   final String id;
+  final String variation_id;
   Customer.fromJson(Map<String,dynamic> json):
         this._name=json["name"],
         this._phone=json["product_variations"][0]["variations"][0]["sell_price_inc_tax"],
-        this.id=json["id"].toString();
+        this.id=json["id"].toString(),
+      this.variation_id=json["product_variation_id"].toString();
 
 }
 class CustomerApi {

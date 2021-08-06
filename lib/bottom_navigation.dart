@@ -34,7 +34,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
       sharedPreferences.setString( "screen", "Home");
     }
     else if(index ==1){
-       sharedPreferences.setString("screen", "Category");
+      sharedPreferences.setString("screen", "Category");
 
     }
     else if(index ==2){
@@ -44,9 +44,9 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
     else{
 
     }
-      if(mounted){
+    if(mounted){
       setState(() {
-        // _tabPopStack = _tabSelectedIndex == index;
+        _tabPopStack = _tabSelectedIndex == index;
         _tabSelectedIndex = index;
       });}
   }
@@ -54,6 +54,19 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
 
   fetch() async {
     SharedPreferences shared=await SharedPreferences.getInstance();
+    var i=shared.getInt("index");
+    if(i==0)
+    {
+      setState(() {
+        _tabSelectedIndex=0;
+      });
+
+    }
+    else if(i==1){
+      setState(() {
+        _tabSelectedIndex=1;
+      });
+    }
     setState(()  {
       total=shared.getString("total");
     });
@@ -90,13 +103,13 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
             ),
             BottomNavigationBarItem(
               icon: Badge(
-              badgeColor: Colors.red,
+                badgeColor: Colors.red,
                 position: BadgePosition.topEnd(top: -20, end: -10),
-                 badgeContent: FutureBuilder(
-                 future: fetch(),
-                 builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                   return Text(total.toString()??"",style: TextStyle(color: Colors.white));
-              }),
+                badgeContent: FutureBuilder(
+                    future: fetch(),
+                    builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                      return Text(total.toString()??"",style: TextStyle(color: Colors.white));
+                    }),
                 child:Icon(Icons.shopping_cart),),
               title: Text(''),
             ),
