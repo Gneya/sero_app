@@ -120,6 +120,7 @@ class _MyHomePageState extends State<add> {
                          "variation_id":_modifiers[j].variation_id,
                          "quantity": 1,
                          "unit_price": _modifiers[j].sell_price,
+                         "children_type":"modifier"
                        };
                        list_of_m.add(product);
 
