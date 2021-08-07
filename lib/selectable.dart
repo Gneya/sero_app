@@ -131,10 +131,11 @@ class _SelectTableState extends State<SelectTable> {
                 sharedPreferences.setInt("table_id", id[index]);
                 print(sharedPreferences.getInt("table_id"));
                 print(_table_status[i]);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CategoryScreen()));
+                sharedPreferences.setInt("index", 1);
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => CategoryScreen()));
               }
             },
           );

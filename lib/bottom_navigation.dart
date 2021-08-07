@@ -1,5 +1,3 @@
-import 'dart:collection';
-
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
@@ -23,11 +21,6 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   var _tabSelectedIndex = 0;
   var _tabPopStack = false;
   String? total="0";
-  // late TabController _tabController;
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
 
   Future<void> _setIndex(index) async {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
@@ -58,9 +51,17 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
     SharedPreferences shared=await SharedPreferences.getInstance();
     var i=shared.getInt("index");
     if(i==0)
-      {
+    {
+      setState(() {
         _tabSelectedIndex=0;
-      }
+      });
+
+    }
+    else if(i==1){
+      setState(() {
+        _tabSelectedIndex=1;
+      });
+    }
     setState(()  {
       total=shared.getString("total");
     });

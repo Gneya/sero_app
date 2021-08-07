@@ -1,24 +1,48 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 class edit_item extends StatefulWidget {
   String name;
   String quantity;
   String price;
+  int index;
   edit_item({
     required this.name,
     required this.quantity,
     required this.price,
+    required this.index,
   });
   @override
   _edit_item_State createState() => _edit_item_State();
 }
 
 class _edit_item_State extends State<edit_item> {
+  double discountAmount =0.0;
+  double discountted =0.0;
+  String  discountedAmount ='0';
   String dropdownValue ='Percentage';
+  TextEditingController _discount = TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  var cart = FlutterCart();
   final _amountController = new TextEditingController();
+  // String totalAmounttype(){
+  //   discountAmount =double.parse(_amountController.text);
+  //   if(dropdownValue=='Percentage'){
+  //     double totalAmount = (widget.Balance - (widget.Balance*discountAmount/100));
+  //     setState(() {
+  //       discountedAmount = totalAmount.toStringAsFixed(2);
+  //     });}
+  //   else{
+  //     {
+  //       double totalAmount = (widget.Balance - discountAmount);
+  //       setState(() {
+  //         discountedAmount = totalAmount.toStringAsFixed(2);
+  //       });}
+  //   }
+  //   return discountedAmount;
+  // }
   @override
   Widget build(BuildContext context) {
     var dropdownValue1;
@@ -92,6 +116,8 @@ class _edit_item_State extends State<edit_item> {
                                               var c=int.parse(widget.quantity);
                                               if( c>1)
                                                 c--;
+                                              var cart = FlutterCart();
+                                              cart.decrementItemFromCart(widget.index);
                                               widget.quantity=c.toString();
                                               //saveState();
                                             });
@@ -109,6 +135,8 @@ class _edit_item_State extends State<edit_item> {
                                             setState(() {
                                               var c=int.parse(widget.quantity);
                                               c++;
+                                              var cart = FlutterCart();
+                                              cart.incrementItemToCart(widget.index);
                                               widget.quantity=c.toString();
                                               //saveState();
                                             });
@@ -198,8 +226,8 @@ class _edit_item_State extends State<edit_item> {
                           height: 40,
                           width: MediaQuery.of(context).size.width/2.6,
                           child: TextField(
+                            controller: _discount,
                             enableInteractiveSelection: false,
-                            focusNode: new AlwaysDisabledFocusNode(),
                             keyboardType:TextInputType.number,
                             decoration: InputDecoration(
                               hintText: '0.00',
@@ -263,7 +291,12 @@ class _edit_item_State extends State<edit_item> {
                         ),
                         onTap :(){
                           setState(() {
-
+                            if(dropdownValue == "Fixed"){
+                              cart.cartItem[widget.index].unitPrice-= double.parse(_discount.text);
+                              cart.cartItem[widget.index].subTotal-= double.parse(_discount.text);
+                            }
+                            print(cart.getTotalAmount().toString());
+                             Navigator.pop(context);
                           });
                         },
                       ),

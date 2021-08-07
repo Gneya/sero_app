@@ -689,7 +689,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    testmethod();
+    // testmethod();
     int _counter = 1;
     size = MediaQuery.of(context).size;
     height = size.height;
@@ -759,8 +759,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ),
                         ]),
                       Container(
+                        width: MediaQuery.of(context).size.width,
                         child:  Padding(
-                          padding: const EdgeInsets.only(top: 15),
+                          padding: const EdgeInsets.only(top: 15,),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -782,14 +783,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       Icons.sell_outlined,
                                       size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Discount',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                        fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -809,16 +811,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     textColor: Colors.black87,
                                     child: Icon(
                                       Icons.safety_divider,
-                                      size: 25,
+                                      size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Split',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -842,14 +845,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       Icons.redeem_rounded,
                                       size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Points',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -872,14 +876,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       Icons.local_shipping,
                                       size: 20,
                                     ),
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.all(13),
                                     shape: CircleBorder(),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(top: 2),
                                     child: Text('Shipping',
                                       style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -1280,6 +1285,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 list_of_m.add(product);
                                 // print(list_of_m);
                               }
+                             if(shared.containsKey("modifiers")){
+                              List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
+                              print(mod[0]);
+                              for(int i =0;i<mod.length;i++){
+                                list_of_m.add(mod[0]);
+                                // print(mod[0]["name"]);
+                              }}
+
                             print(list_of_m);
 
 
@@ -1316,7 +1329,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   textColor: Colors.green,
                                   timeInSecForIosWeb: 4);
                             }
+                            shared.setString("modifiers", '');
+                            shared.setStringList("selectedmodifiers", []);
+                            shared.setStringList("selectedmodifiersprice", []);
                             cart.deleteAllCart();
+                            shared.clear();
 
                             setState(() {
                               shared.setString("customer_name", '');
@@ -1383,6 +1400,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 list_of_m.add(product);
                                 // print(list_of_m);
                               }
+                            if(shared.containsKey("modifiers")){
+                              List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
+                              print(mod[0]);
+                              for(int i =0;i<mod.length;i++){
+                                list_of_m.add(mod[0]);
+                              }
+
+                            }
                             print(list_of_m);
 
                             if(shared.getInt("order_id")==0)
@@ -1442,7 +1467,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               var v=r.data["id"];
                               print(v.toString());
                               shared.setInt("order_id", v);
-
+                              cart.deleteAllCart();
+                              shared.setString("total",'0');
+                              shared.clear();
                               Fluttertoast.showToast(
                                   msg: "Payment Successful and Your Order Id is $v",
                                   toastLength: Toast.LENGTH_LONG,
