@@ -41,6 +41,7 @@ class _HomePage extends State<MyHomePage> with SingleTickerProviderStateMixin
 {
   checkLoginStatus() async {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    sharedPreferences.setInt("index",0);
     print(sharedPreferences.getString('user_id'));
     if (sharedPreferences.getString('user_id') != null) {
       Navigator.of(context).pushAndRemoveUntil(

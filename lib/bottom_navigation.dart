@@ -21,11 +21,6 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   var _tabSelectedIndex = 0;
   var _tabPopStack = false;
   String? total="0";
-  // late TabController _tabController;
-  // @override
-  // void initState() {
-  //   super.initState();
-  // }
 
   Future<void> _setIndex(index) async {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
