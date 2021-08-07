@@ -689,7 +689,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    testmethod();
+    // testmethod();
     int _counter = 1;
     size = MediaQuery.of(context).size;
     height = size.height;
@@ -1285,6 +1285,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 list_of_m.add(product);
                                 // print(list_of_m);
                               }
+                             if(shared.containsKey("modifiers")){
+                              List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
+                              print(mod[0]);
+                              for(int i =0;i<mod.length;i++){
+                                list_of_m.add(mod[0]);
+                                // print(mod[0]["name"]);
+                              }}
+
                             print(list_of_m);
 
 
@@ -1321,7 +1329,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   textColor: Colors.green,
                                   timeInSecForIosWeb: 4);
                             }
+                            shared.setString("modifiers", '');
+                            shared.setStringList("selectedmodifiers", []);
+                            shared.setStringList("selectedmodifiersprice", []);
                             cart.deleteAllCart();
+                            shared.clear();
 
                             setState(() {
                               shared.setString("customer_name", '');
@@ -1388,6 +1400,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 list_of_m.add(product);
                                 // print(list_of_m);
                               }
+                            if(shared.containsKey("modifiers")){
+                              List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
+                              print(mod[0]);
+                              for(int i =0;i<mod.length;i++){
+                                list_of_m.add(mod[0]);
+                              }
+
+                            }
                             print(list_of_m);
 
                             if(shared.getInt("order_id")==0)
@@ -1447,7 +1467,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               var v=r.data["id"];
                               print(v.toString());
                               shared.setInt("order_id", v);
-
+                              cart.deleteAllCart();
+                              shared.setString("total",'0');
+                              shared.clear();
                               Fluttertoast.showToast(
                                   msg: "Payment Successful and Your Order Id is $v",
                                   toastLength: Toast.LENGTH_LONG,
