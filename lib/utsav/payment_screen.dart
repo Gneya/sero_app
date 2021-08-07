@@ -1393,7 +1393,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "table_id" :shared.getInt("table_id")??0,
                                     "location_id": shared.getInt("bid")??1,
                                     "contact_id": double.parse(shared.getString("customer_id")??""),
-                                    "status": "draft",
+                                    //"status": "draft",
                                     "products":list_of_m,
                                     "payments": [
                                       {
@@ -1410,6 +1410,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               var v=r.data[0]["id"];
                               print(v.toString());
                               shared.setInt("order_id", v);
+                              shared.setInt("index",0);
                               Fluttertoast.showToast(
                                   msg: "Payment Successful and Your Order Id is $v",
                                   toastLength: Toast.LENGTH_LONG,

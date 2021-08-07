@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
@@ -54,6 +56,11 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
 
   fetch() async {
     SharedPreferences shared=await SharedPreferences.getInstance();
+    var i=shared.getInt("index");
+    if(i==0)
+      {
+        _tabSelectedIndex=0;
+      }
     setState(()  {
       total=shared.getString("total");
     });
