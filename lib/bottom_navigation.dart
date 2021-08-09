@@ -54,6 +54,11 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
     {
       setState(() {
         _tabSelectedIndex=0;
+        if(shared.getInt("PAY_HOLD")==1)
+          {
+            _tabPopStack=true;
+            shared.setInt("PAY_HOLD", 0);
+          }
       });
 
     }

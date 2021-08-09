@@ -697,7 +697,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
     paymentAmount=widget.Ammount;
     return Scaffold(
       appBar: AppBar(
+        leading: Container(
+          margin: EdgeInsets.only(bottom:80,left:0),
+          child:IconButton(
+            icon:Icon(Icons.arrow_back),
+            onPressed: (){
+              Navigator.pop(context);
+            },
+          )
+        ),
+        automaticallyImplyLeading: false,
         flexibleSpace:  Column(
+
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
@@ -759,7 +770,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ),
                         ]),
                       Container(
-                        width: MediaQuery.of(context).size.width,
+                        //width: MediaQuery.of(context).size.width,
                         child:  Padding(
                           padding: const EdgeInsets.only(top: 15,),
                           child: Row(
@@ -1263,124 +1274,124 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 30),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        child: InkWell(
-                          onTap:() async {
-                            print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
-                            List<Map<String,dynamic>> list_of_m=[];
-                            SharedPreferences shared=await SharedPreferences.getInstance();
-                            var variation=shared.getStringList("variation");
-                            var cart=FlutterCart();
-                            for(int index=0;index<cart.cartItem.length;index++)
-                              {
-
-                                Map<String,dynamic> product={
-                                  "product_id":double.parse(cart.cartItem[index].productId),
-                                  "variation_id":double.parse(variation![index]),
-                                  "quantity": cart.cartItem[index].quantity,
-                                  "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
-                                };
-                                list_of_m.add(product);
-                                // print(list_of_m);
-                              }
-                             if(shared.containsKey("modifiers")){
-                              List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
-                              print(mod[0]);
-                              for(int i =0;i<mod.length;i++){
-                                list_of_m.add(mod[0]);
-                                // print(mod[0]["name"]);
-                              }}
-
-                            print(list_of_m);
-
-
-                            if(shared.getInt("order_id")==0)
-                            {
-                              Map<String,dynamic> api= {
-                                "sells":[
-                                  {
-                                    "table_id" :shared.getInt("table_id")??0,
-                                    "location_id": shared.getInt("bid")??1,
-                                    "contact_id": double.parse(shared.getString("customer_id")??""),
-                                    // "status": "draft",
-                                    "is_suspend": 1,
-                                    "products":list_of_m,
-                                    "payments": [
-                                      {
-                                        "amount":cart.getTotalAmount(),
-                                      }
-                                    ]
-                                  }
-                                ]
-                              };
-                              var dio=Dio();
-                              dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
-                              var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
-                              var v=r.data[0]["id"];
-                              print(v.toString());
-                              shared.setInt("order_id", v);
-
-                              Fluttertoast.showToast(
-                                  msg: "Order on hold and Your Order Id is $v",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.BOTTOM,
-                                  textColor: Colors.green,
-                                  timeInSecForIosWeb: 4);
-                            }
-                            shared.setString("modifiers", '');
-                            shared.setStringList("selectedmodifiers", []);
-                            shared.setStringList("selectedmodifiersprice", []);
-                            cart.deleteAllCart();
-                            shared.clear();
-
-                            setState(() {
-                              shared.setString("customer_name", '');
-                              shared.setString("table_name", '');
-                              // get("");
-                            });
-                          },
-                          child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(35),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey,
-                                    offset: const Offset(
-                                      1.0,
-                                      1.0,
-                                    ), //Offset
-                                    blurRadius: 6.0,
-                                    spreadRadius: 2.0,
-                                  ), //BoxShadow
-                                  BoxShadow(
-                                    color: Colors.white,
-                                    offset: const Offset(0.0, 0.0),
-                                    blurRadius: 0.0,
-                                    spreadRadius: 0.0,
-                                  ),],
-                                color :Color(0xFFFFD45F),
-                              ),
-                              margin: EdgeInsets.only(top: 10),
-                              width: 100,
-                              height: 45,
-                              child: Center(
-                                  child:Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.pause_outlined),
-                                      Text(
-                                        'Hold',
-                                        textScaleFactor: 1.5,
-                                        style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                                      ),
-
-                                    ],
-                                  ) )),
-
-                        ),
-                      ),
+                      // Container(
+                      //   child: InkWell(
+                      //     onTap:() async {
+                      //       print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
+                      //       List<Map<String,dynamic>> list_of_m=[];
+                      //       SharedPreferences shared=await SharedPreferences.getInstance();
+                      //       var variation=shared.getStringList("variation");
+                      //       var cart=FlutterCart();
+                      //       for(int index=0;index<cart.cartItem.length;index++)
+                      //         {
+                      //
+                      //           Map<String,dynamic> product={
+                      //             "product_id":double.parse(cart.cartItem[index].productId),
+                      //             "variation_id":double.parse(variation![index]),
+                      //             "quantity": cart.cartItem[index].quantity,
+                      //             "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
+                      //           };
+                      //           list_of_m.add(product);
+                      //           // print(list_of_m);
+                      //         }
+                      //        if(shared.containsKey("modifiers")){
+                      //          if(shared.getString("modifiers")!=""){
+                      //         List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
+                      //         print(mod[0]);
+                      //         for(int i =0;i<mod.length;i++){
+                      //           list_of_m.add(mod[0]);
+                      //           // print(mod[0]["name"]);
+                      //         }}}
+                      //
+                      //       print(list_of_m);
+                      //       if(shared.getInt("order_id")==0)
+                      //       {
+                      //         Map<String,dynamic> api= {
+                      //           "sells":[
+                      //             {
+                      //               "table_id" :shared.getInt("table_id")??0,
+                      //               "location_id": shared.getInt("bid")??1,
+                      //               "contact_id": double.parse(shared.getString("customer_id")??""),
+                      //               // "status": "draft",
+                      //               "is_suspend": 1,
+                      //               "products":list_of_m,
+                      //               "payments": [
+                      //                 {
+                      //                   "amount":cart.getTotalAmount(),
+                      //                 }
+                      //               ]
+                      //             }
+                      //           ]
+                      //         };
+                      //         var dio=Dio();
+                      //         dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
+                      //         var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
+                      //         print(r);
+                      //         var v=r.data[0]["id"];
+                      //         print(v.toString());
+                      //         shared.setInt("order_id", v);
+                      //
+                      //         Fluttertoast.showToast(
+                      //             msg: "Order on hold and Your Order Id is $v",
+                      //             toastLength: Toast.LENGTH_LONG,
+                      //             gravity: ToastGravity.BOTTOM,
+                      //             textColor: Colors.green,
+                      //             timeInSecForIosWeb: 4);
+                      //       }
+                      //       shared.setString("modifiers", '');
+                      //       shared.setStringList("selectedmodifiers", []);
+                      //       shared.setStringList("selectedmodifiersprice", []);
+                      //       cart.deleteAllCart();
+                      //       shared.clear();
+                      //
+                      //       setState(() {
+                      //         shared.setString("customer_name", '');
+                      //         shared.setString("table_name", '');
+                      //         // get("");
+                      //       });
+                      //     },
+                      //     child: Container(
+                      //         decoration: BoxDecoration(
+                      //           borderRadius: BorderRadius.circular(35),
+                      //           boxShadow: [
+                      //             BoxShadow(
+                      //               color: Colors.grey,
+                      //               offset: const Offset(
+                      //                 1.0,
+                      //                 1.0,
+                      //               ), //Offset
+                      //               blurRadius: 6.0,
+                      //               spreadRadius: 2.0,
+                      //             ), //BoxShadow
+                      //             BoxShadow(
+                      //               color: Colors.white,
+                      //               offset: const Offset(0.0, 0.0),
+                      //               blurRadius: 0.0,
+                      //               spreadRadius: 0.0,
+                      //             ),],
+                      //           color :Color(0xFFFFD45F),
+                      //         ),
+                      //         margin: EdgeInsets.only(top: 10),
+                      //         width: 100,
+                      //         height: 45,
+                      //         child: Center(
+                      //             child:Row(
+                      //               mainAxisAlignment: MainAxisAlignment.center,
+                      //               children: [
+                      //                 Icon(Icons.pause_outlined),
+                      //                 Text(
+                      //                   'Hold',
+                      //                   textScaleFactor: 1.5,
+                      //                   style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
+                      //                 ),
+                      //
+                      //               ],
+                      //             ) )),
+                      //
+                      //   ),
+                      // ),
                       Container(
                         child: InkWell(
                           onTap:isEnabled ? () async {
@@ -1401,12 +1412,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 // print(list_of_m);
                               }
                             if(shared.containsKey("modifiers")){
-                              List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
-                              print(mod[0]);
-                              for(int i =0;i<mod.length;i++){
-                                list_of_m.add(mod[0]);
+                              if(shared.getString("modifiers")!="") {
+                                List<dynamic> mod = json.decode(
+                                    shared.getString("modifiers") ?? "");
+                                print(mod[0]);
+                                for (int i = 0; i < mod.length; i++) {
+                                  list_of_m.add(mod[0]);
+                                }
                               }
-
                             }
                             print(list_of_m);
 
@@ -1468,8 +1481,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print(v.toString());
                               shared.setInt("order_id", v);
                               cart.deleteAllCart();
-                              shared.setString("total",'0');
                               shared.clear();
+                              setState(() {
+                                shared.setString("total","0");
+                                shared.setInt("index", 0);
+                                shared.setInt("PAY_HOLD",1);
+                              });
+
                               Fluttertoast.showToast(
                                   msg: "Payment Successful and Your Order Id is $v",
                                   toastLength: Toast.LENGTH_LONG,
@@ -1518,7 +1536,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   ) )),
 
                         ),
-                      ),Container(
+                      ),
+                      SizedBox(width: 30),
+                      Container(
                         child: InkWell(
                           onTap:isEnabled ? ()=> print('hello'): null,
                           child: Container(

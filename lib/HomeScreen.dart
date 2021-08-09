@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:flutter_nav_bar/Category.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
+import 'package:flutter_nav_bar/main_drawer.dart';
 import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -101,9 +103,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MainDrawer(),
       appBar: AppBar(
 
-        leading: Icon(Icons.menu),
+        //leading: Icon(Icons.menu),
         title: Center(child: Image.asset("images/logo.png",height: MediaQuery.of(context).size.height/22,width: MediaQuery.of(context).size.width/3,)),
         backgroundColor: Color(0xffffd45f),
         actions: [
@@ -172,10 +175,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: EdgeInsets.zero,
                                   color: Colors.black,
                                   onPressed:(){
-                                    // Navigator.push(
-                                    //   context,
-                                    //   MaterialPageRoute(
-                                    //       builder: (context) => PersonalDetails()));
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => PersonalDetails()));
                                      } ,
                                 ),
                                 prefixIcon:  IconButton(
@@ -251,7 +254,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: MaterialButton(
                     minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    onPressed: () {},
+                    onPressed: () async {
+                      SharedPreferences shared=await SharedPreferences.getInstance();
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => CategoryScreen()));
+                      shared.setInt("index", 1);
+                    },
                     child: Text("Take Away",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.ptSans(fontSize: 18)),
