@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VoidBill extends StatefulWidget {
 
@@ -32,11 +34,6 @@ class _VoidBillState extends State<VoidBill> {
                       children: [
                         Text('VOID BILL',
                           style: GoogleFonts.ptSans(color: Colors.white,fontSize: 35,fontWeight: FontWeight.bold),
-                          // style: GoogleFonts.ptSans(
-                          //     color: Colors.white,
-                          //     fontSize: 35,
-                          //     fontWeight: FontWeight.bold
-                          // ),),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 80,right: 30,left: 30),
@@ -69,7 +66,7 @@ class _VoidBillState extends State<VoidBill> {
 
                                   ),
                                   decoration: BoxDecoration(
-                                    color: isClickedAdd ? Colors.white : Color(0xFFFFD45F),
+                                    color:  Color(0xFFFFD45F),
                                     borderRadius: BorderRadius.circular(45),
 
                                   ),
@@ -77,10 +74,23 @@ class _VoidBillState extends State<VoidBill> {
                                   width: 130,
                                 ),
                                 onTap: (){
-                                  setState(() {
-                                    isClickedAdd =! isClickedAdd;
+                                  setState(() async {
+                                    Navigator.pop(context);
                                     var cart=FlutterCart();
                                     cart.deleteAllCart();
+                                    SharedPreferences shared = await SharedPreferences.getInstance();
+                                    setState(() {
+                                      shared.setString("customer_name", "");
+                                      shared.setString("table_name", "");
+                                      shared.setString("total", "0");
+                                      shared.setInt("index", 0);
+                                    });
+                                    Fluttertoast.showToast(
+                                        msg:"Void bill has been generated",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        textColor: Colors.green,
+                                        timeInSecForIosWeb: 10);
                                   });
                                 },
                               ),
@@ -93,7 +103,7 @@ class _VoidBillState extends State<VoidBill> {
 
                                   ),
                                   decoration: BoxDecoration(
-                                    color: isClickedCancel ? Colors.white : Color(0xFFFFD45F),
+                                    color: Color(0xFFFFD45F),
                                     borderRadius: BorderRadius.circular(45),
                                   ),
                                   height: 60,

@@ -90,6 +90,7 @@ class _CartScreenState extends State<CartScreen> {
     }
     return Scaffold(
         appBar:AppBar(
+          //leading: Container(),
           flexibleSpace:  Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -491,12 +492,13 @@ class _CartScreenState extends State<CartScreen> {
                     List<Map<String,dynamic>> list_of_m=[];
                     SharedPreferences shared=await SharedPreferences.getInstance();
                     var variation=shared.getStringList("variation");
+                    print(variation);
                     var cart=FlutterCart();
                     for(int index=0;index<cart.cartItem.length;index++)
                     {
 
                       Map<String,dynamic> product={
-                        "product_id":double.parse(cart.cartItem[index].productId),
+                        "product_id":double.parse(cart.cartItem[index].productId.toString()),
                         "variation_id":double.parse(variation![index]),
                         "quantity": cart.cartItem[index].quantity,
                         "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
@@ -505,12 +507,13 @@ class _CartScreenState extends State<CartScreen> {
                       // print(list_of_m);
                     }
                     if(shared.containsKey("modifiers")){
+                      if(shared.getString("modifiers")!=""){
                       List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
                       print(mod[0]);
                       for(int i =0;i<mod.length;i++){
                         list_of_m.add(mod[0]);
                         // print(mod[0]["name"]);
-                      }}
+                      }}}
 
                     print(list_of_m);
 
@@ -520,9 +523,9 @@ class _CartScreenState extends State<CartScreen> {
                       Map<String,dynamic> api= {
                         "sells":[
                           {
-                            "table_id" :shared.getInt("table_id")??0,
+                            "table_id" :shared.getInt("table_id")??1,
                             "location_id": shared.getInt("bid")??1,
-                            "contact_id": double.parse(shared.getString("customer_id")??""),
+                            "contact_id": double.parse(shared.getString("customer_id")??"0"),
                             // "status": "draft",
                             "is_suspend": 1,
                             "products":list_of_m,
@@ -537,6 +540,7 @@ class _CartScreenState extends State<CartScreen> {
                       var dio=Dio();
                       dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
                       var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
+                      print(r);
                       var v=r.data[0]["id"];
                       print(v.toString());
                       shared.setInt("order_id", v);
@@ -552,14 +556,16 @@ class _CartScreenState extends State<CartScreen> {
                     shared.setStringList("selectedmodifiers", []);
                     shared.setStringList("selectedmodifiersprice", []);
                     cart.deleteAllCart();
-                    shared.clear();
+                    // shared.clear();
 
-                    setState(() {
-                      shared.setString("customer_name", '');
-                      shared.setString("table_name", '');
+                      // shared.setString("customer_name", '');
+                      // shared.setString("table_name", '');
+                      setState(() {
+                        shared.setString("total","0");
+                        shared.setInt("index", 0);
+                        shared.setInt("PAY_HOLD",1);
+                      });
                       // get("");
-                    });
-
                     },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all(
@@ -579,10 +585,14 @@ class _CartScreenState extends State<CartScreen> {
                 onPressed: () async {
                   SharedPreferences shared =await SharedPreferences.getInstance();
                   shared.setString("screen", "Payment");
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
-                  );
+                  // shared.setInt("index", 2);
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
+                  // );
+                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                      builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
+                      Route<dynamic> route) => true);
                 },
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all(

@@ -24,25 +24,7 @@ class _edit_item_State extends State<edit_item> {
   String  discountedAmount ='0';
   String dropdownValue ='Percentage';
   TextEditingController _discount = TextEditingController();
-  final _formKey = GlobalKey<FormState>();
   var cart = FlutterCart();
-  final _amountController = new TextEditingController();
-  // String totalAmounttype(){
-  //   discountAmount =double.parse(_amountController.text);
-  //   if(dropdownValue=='Percentage'){
-  //     double totalAmount = (widget.Balance - (widget.Balance*discountAmount/100));
-  //     setState(() {
-  //       discountedAmount = totalAmount.toStringAsFixed(2);
-  //     });}
-  //   else{
-  //     {
-  //       double totalAmount = (widget.Balance - discountAmount);
-  //       setState(() {
-  //         discountedAmount = totalAmount.toStringAsFixed(2);
-  //       });}
-  //   }
-  //   return discountedAmount;
-  // }
   @override
   Widget build(BuildContext context) {
     var dropdownValue1;

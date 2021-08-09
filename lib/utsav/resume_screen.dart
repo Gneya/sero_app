@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
@@ -225,11 +224,8 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                               gravity: ToastGravity.BOTTOM,
                                               textColor: Colors.green,
                                               timeInSecForIosWeb: 4);
+                                          shared.setInt("index", 2);
                                           Navigator.pop(context);
-                                          // Navigator.push(
-                                          //     context,
-                                          //     MaterialPageRoute(
-                                          //         builder: (context) => CartScreen()));
                                         },
                                       ),
                                       Container(
