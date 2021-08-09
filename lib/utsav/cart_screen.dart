@@ -585,6 +585,7 @@ class _CartScreenState extends State<CartScreen> {
                 onPressed: () async {
                   SharedPreferences shared =await SharedPreferences.getInstance();
                   shared.setString("screen", "Payment");
+                  // shared.setInt("index", 2);
                   // Navigator.push(
                   //   context,
                   //   MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),

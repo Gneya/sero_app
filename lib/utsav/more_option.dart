@@ -14,7 +14,6 @@ import '../selectable.dart';
 
 class MoreOptions extends StatefulWidget {
   const MoreOptions({Key? key}) : super(key: key);
-
   @override
   _MoreOptionsState createState() => _MoreOptionsState();
 }
@@ -48,8 +47,9 @@ class _MoreOptionsState extends State<MoreOptions> {
   @override
   Widget build(BuildContext context) {
     getIndex();
+    var cart =FlutterCart();
     return Scaffold(
-      body: index ==0 ? HomeScreen(title: 'title'): index ==1 ? CategoryScreen():CartScreen(),
+      body: index ==0 ? HomeScreen(title: 'title'): index ==1 ? CategoryScreen(): CartScreen(),
       bottomSheet: new Container(
         height: 70,
         decoration: BoxDecoration(
@@ -121,12 +121,12 @@ class _MoreOptionsState extends State<MoreOptions> {
               children: [
                 IconButton(
                   onPressed:(){
-                    // showDialog(
-                    //     context: context,
-                    //     builder: (context){
-                    // return VoidBill(Ammount: paymentAmount,);
-                    //     }
-                    // );
+                    showDialog(
+                        context: context,
+                        builder: (context){
+                    return VoidBill();
+                        }
+                    );
                   },
                   iconSize: 25,
                   icon: Icon(Icons.delete,

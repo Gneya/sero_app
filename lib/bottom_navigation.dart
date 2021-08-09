@@ -67,9 +67,15 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
         _tabSelectedIndex=1;
       });
     }
+    else if(i==2){
+      setState(() {
+        _tabSelectedIndex=2;
+      });
+    }
     setState(()  {
       total=shared.getString("total");
     });
+
   }
   @override
   Widget build(BuildContext context) {

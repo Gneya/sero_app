@@ -33,49 +33,52 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-  static double paymentAmount =0;
-  var size,height,width;
-  double tipAmount =0.0;
-  String toBePaid ='0';
+  static double paymentAmount = 0;
+  var size, height, width;
+  double tipAmount = 0.0;
+  String toBePaid = '0';
   int _currentIndex = 0;
   bool isClicked1 = false;
   bool isClicked2 = true;
   bool isClicked3 = true;
   bool isClicked4 = true;
   bool isClicked5 = true;
-  bool value =false;
+  bool value = false;
   bool isEnabled = false;
   bool isEnabledBalance = false;
-  bool _isloading =false;
-  String table_name='';
+  bool _isloading = false;
+  String table_name = '';
   final _tipController = new TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   final _Key = GlobalKey<FormState>();
 
-  setBottomBarIndex(index){
+  setBottomBarIndex(index) {
     setState(() {
       _currentIndex = index;
     });
   }
-  String totalAmount(){
-    if(_tipController.text != ''){
-      tipAmount =double.parse(_tipController.text);
+
+  String totalAmount() {
+    if (_tipController.text != '') {
+      tipAmount = double.parse(_tipController.text);
       setState(() {
         isEnabled ?
-        widget.Balance = ( widget.Balance+ tipAmount)
-            :widget.Balance = ( widget.Balance-tipAmount);
+        widget.Balance = (widget.Balance + tipAmount)
+            : widget.Balance = (widget.Balance - tipAmount);
       });
     }
 
     return widget.Balance.toStringAsFixed(2);
   }
 
-  List<String> _payMeth =["","","","","",];
+  List<String> _payMeth = ["", "", "", "", "",];
+
   _PaymentScreenState() {
-    fetchData().then((val) => setState(() {
-      _payMeth= val;
-    }));
+    fetchData().then((val) =>
+        setState(() {
+          _payMeth = val;
+        }));
   }
 
   Future<List<String>> fetchData() async {
@@ -149,7 +152,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     focusNode: new AlwaysDisabledFocusNode(),
                                     keyboardType:TextInputType.number,
                                     decoration: InputDecoration(
-                                      hintText: '\$'+paymentAmount.toStringAsFixed(2),
+                                      hintText: '\$'+widget.Ammount.toStringAsFixed(2),
                                       hintStyle: GoogleFonts.ptSans(
                                           fontWeight: FontWeight.bold
                                       ),
@@ -679,6 +682,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
     return Container();
   }
+  bool result = false;
+
+  getPD() async {
+    if(result){
+      SharedPreferences shared = await SharedPreferences.getInstance();
+      setState(() {
+        widget.Ammount = shared.getDouble("Ammount")!;
+        widget.Balance= shared.getDouble("Balance")!;
+        widget.Discountt =shared.getDouble("Discountt")!;
+        widget.Redeem =shared.getInt("Redeem")!;
+        print(widget.Ammount);
+        print(widget.Balance);
+        print(widget.Discountt);
+      });
+    }
+    result =false;
+  }
   @override
   void initState() {
     fetchData();
@@ -689,12 +709,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // testmethod();
+    getPD();
     int _counter = 1;
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
-    paymentAmount=widget.Ammount;
+    // paymentAmount=widget.Ammount;
     return Scaffold(
       appBar: AppBar(
         leading: Container(
@@ -779,13 +799,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               Column(
                                 children: [
                                   OutlineButton(
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      SharedPreferences shared = await SharedPreferences.getInstance();
                                       showDialog(
                                           context: context,
                                           builder: (context){
                                             return Discount(Ammount: widget.Ammount, Balance: widget.Balance, Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
+
                                       );
+
                                     },
                                     highlightedBorderColor: Colors.black87,
                                     textColor: Colors.black87,

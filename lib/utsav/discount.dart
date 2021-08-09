@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Discount extends StatefulWidget {
   double Ammount=0.0;
@@ -30,6 +31,7 @@ class _DiscountState extends State<Discount> {
   bool isClicked4= true;
   bool isClickedAdd= true;
   bool isClickedCancel= true;
+  bool _isloading =true;
   String  discountedAmount ='0';
   var num_list = ['5','10','15','20'];
   final _formKey = GlobalKey<FormState>();
@@ -68,7 +70,25 @@ class _DiscountState extends State<Discount> {
     }
     return discountted;
   }
-
+  // Future<void> getSharedPrefs() async {
+  //   setState(() {
+  //     _isloading =true;
+  //   });
+  //   SharedPreferences shared = await SharedPreferences.getInstance();
+  //   shared.getDouble("Ammount");
+  //   shared.getDouble("Balance");
+  //   shared.getDouble("Discountt");
+  //   shared.getInt("Redeem");
+  //   setState(() {
+  //     _isloading=false;
+  //   });
+  // }
+  // @override
+  // void initState() {
+  //   // TODO: implement initState
+  //   // getSharedPrefs();
+  //   super.initState();
+  // }
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -305,15 +325,20 @@ class _DiscountState extends State<Discount> {
                           height: 60,
                           width: 130,
                         ),
-                        onTap: (){
+                        onTap: () async {
+                          SharedPreferences shared = await SharedPreferences.getInstance() ;
                           setState(() {
                             if(_formKey.currentState!.validate()){
                               totalAmounttype();
                               DiscountAmount();
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: widget.Ammount, Balance: double.parse(discountedAmount), Discountt: discountted, Redeem: widget.Redeem,)),
-                              );}
+                              // shared.setDouble("Ammount",widget.Ammount );
+                              // shared.setDouble("Balance", double.parse(discountedAmount));
+                              // shared.setDouble("Discountt", discountted);
+                              // shared.setInt("Redeem",widget.Redeem);
+                              Navigator.push(context,
+                                MaterialPageRoute(builder: (context) =>  PaymentScreen(Ammount:widget.Ammount  , Discountt:discountted , Redeem:widget.Redeem , Balance: double.parse(discountedAmount),)),
+                              );
+                             }
                           });
                         },
                       ),
