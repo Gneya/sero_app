@@ -134,9 +134,11 @@ class _SelectTableState extends State<SelectTable> {
     for(var i in v["data"])
     {
     if(i["is_suspend"]==1 && i["res_table_id"]==id[index]) {
-      print(i["id"]);
-    cart.deleteAllCart();
       SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+      print(i["id"]);
+      sharedPreferences.setInt("order_id", i["id"]);
+    cart.deleteAllCart();
+      sharedPreferences.setInt("table_id", id[index]);
     for(var x in i["sell_lines"])
     {
     http.Response response = await http.get(
@@ -148,7 +150,7 @@ class _SelectTableState extends State<SelectTable> {
     var list=sharedPreferences.getStringList("variation");
     var v = (json.decode(response.body)["data"][0]["name"]);
     print(v);
-    list!.add(x["variation_id"]);
+    list!.add(x["variation_id"].toString());
     sharedPreferences.setStringList("variation", list);
     cart.addToCart(productId: x["product_id"], unitPrice: double.parse(x["unit_price_inc_tax"]),productName: v);
     }
@@ -167,6 +169,8 @@ class _SelectTableState extends State<SelectTable> {
                 //   "table_id":3,
                 //   "table_status":"occupied"
                 // }));
+                SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+                sharedPreferences.setInt("table_id", id[index]);
                 Map<String,dynamic> api={
                   "table_id":id[index],
                   "table_status":"occupied"

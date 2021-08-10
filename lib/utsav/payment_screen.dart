@@ -1418,8 +1418,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Container(
                         child: InkWell(
                           onTap:isEnabled ? () async {
+                            var dio=Dio();
                             List<Map<String,dynamic>> list_of_m=[];
                             SharedPreferences shared=await SharedPreferences.getInstance();
+                            var id = shared.getInt("table_id",);
+                            print(shared.getInt("table_id"));
+                            Map<String,dynamic> api1={
+                              "table_id":id,
+                              "table_status":"available"
+                            };
+                            dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
+                            var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                            print(r2);
+                            print(id);
                             var variation=shared.getStringList("variation");
                             var cart=FlutterCart();
                             for(int index=0;index<cart.cartItem.length;index++)
@@ -1453,7 +1464,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   {
                                     "table_id" :shared.getInt("table_id")??0,
                                     "location_id": shared.getInt("bid")??1,
-                                    "contact_id": double.parse(shared.getString("customer_id")??""),
+                                    "contact_id": double.parse(shared.getString("customer_id")??"1"),
                                     //"status": "draft",
                                     "products":list_of_m,
                                     "payments": [
@@ -1472,12 +1483,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print(v.toString());
                               shared.setInt("order_id", v);
                               shared.setInt("index",0);
+                              shared.setInt("PAY_HOLD",1);
+                              cart.deleteAllCart();
+                              shared.setString("total", "0");
                               Fluttertoast.showToast(
                                   msg: "Payment Successful and Your Order Id is $v",
                                   toastLength: Toast.LENGTH_LONG,
                                   gravity: ToastGravity.BOTTOM,
                                   textColor: Colors.green,
                                   timeInSecForIosWeb: 4);
+
+
                             }
                             else{
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
@@ -1504,7 +1520,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print(v.toString());
                               shared.setInt("order_id", v);
                               cart.deleteAllCart();
+
                               shared.clear();
+
                               setState(() {
                                 shared.setString("total","0");
                                 shared.setInt("index", 0);
@@ -1519,7 +1537,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   timeInSecForIosWeb: 4);
 
 
+
                             }
+
+
+
                           }:(){},
                           child: Container(
                               decoration: BoxDecoration(
@@ -1557,13 +1579,32 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ),
                                     ],
                                   ) )),
-
                         ),
                       ),
                       SizedBox(width: 30),
                       Container(
                         child: InkWell(
-                          onTap:isEnabled ? ()=> print('hello'): null,
+                          onTap:() async {
+                            SharedPreferences shared =await SharedPreferences.getInstance();
+                            var id = shared.getInt("table_id",);
+                            print(shared.getInt("table_id"));
+                            setState(() {
+                              _isloading=true;
+                            });
+                            Map<String,dynamic> api1={
+                              "table_id":id,
+                              "table_status":"billing"
+                            };
+                            var dio = Dio();
+                            dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
+                            var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                            print(r2);
+                            print(id);
+                            setState(() {
+                              _isloading=false;
+                            });
+
+                          },
                           child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(35),

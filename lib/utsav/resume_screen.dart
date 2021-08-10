@@ -263,7 +263,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                             var v = r.toString();
                                             print(v);
                                             Fluttertoast.showToast(
-                                                msg: v,
+                                                msg: "Order is deleted",
                                                 toastLength: Toast.LENGTH_LONG,
                                                 gravity: ToastGravity.BOTTOM,
                                                 textColor: Colors.green,

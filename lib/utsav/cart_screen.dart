@@ -525,7 +525,7 @@ class _CartScreenState extends State<CartScreen> {
                           {
                             "table_id" :shared.getInt("table_id")??1,
                             "location_id": shared.getInt("bid")??1,
-                            "contact_id": double.parse(shared.getString("customer_id")??"0"),
+                            "contact_id": double.parse(shared.getString("customer_id")??"1"),
                             // "status": "draft",
                             "is_suspend": 1,
                             "products":list_of_m,
