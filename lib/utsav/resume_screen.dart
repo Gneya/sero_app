@@ -173,7 +173,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
                                           Icon(Icons.money_outlined),
-                                          Text('Total Amount: '+list[index]["total_price"].toString()),
+                                          Text('Total Amount: '+double.parse(list[index]["total_price"].toString()).toStringAsFixed(2)),
                                         ],
                                       ),
                                       SizedBox(height: 10,),
@@ -237,7 +237,8 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                               Text('Delete',
                                               style: TextStyle(
                                                 color: Colors.white
-                                              ),),
+                                              ),
+                                              ),
                                               Icon(Icons.delete,
                                                 color: Colors.white,),
                                             ],
