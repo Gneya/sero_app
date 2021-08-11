@@ -48,6 +48,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
   var cart=FlutterCart();
 
   fetch() async {
+    _tabPopStack=false;
     SharedPreferences shared=await SharedPreferences.getInstance();
     var i=shared.getInt("index");
     if(i==0)
