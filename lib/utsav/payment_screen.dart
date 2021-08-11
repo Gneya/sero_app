@@ -774,6 +774,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ),
                         ]),
                       Container(
+                        padding: EdgeInsets.only(top: 8),
                         //width: MediaQuery.of(context).size.width,
                         child:  Padding(
                           padding: const EdgeInsets.only(top: 15,),

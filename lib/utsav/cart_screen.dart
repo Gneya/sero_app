@@ -504,7 +504,7 @@ class _CartScreenState extends State<CartScreen> {
                         "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
                       };
                       list_of_m.add(product);
-                      // print(list_of_m);
+                      print(list_of_m);
                     }
                     if(shared.containsKey("modifiers")){
                       if(shared.getString("modifiers")!=""){
