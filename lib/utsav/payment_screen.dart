@@ -615,22 +615,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       child: Container(
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(35),
-                                            // boxShadow: [
-                                            //   BoxShadow(
-                                            //     color: Colors.grey,
-                                            //     offset: const Offset(
-                                            //       1.0,
-                                            //       1.0,
-                                            //     ), //Offset
-                                            //     blurRadius: 6.0,
-                                            //     spreadRadius: 2.0,
-                                            //   ), //BoxShadow
-                                            //   BoxShadow(
-                                            //     color: Colors.white,
-                                            //     offset: const Offset(0.0, 0.0),
-                                            //     blurRadius: 0.0,
-                                            //     spreadRadius: 0.0,
-                                            //   ),],
                                             color :Color(0xFFFFD45F),
                                           ),
                                           width: MediaQuery.of(context).size.width/2.5,
