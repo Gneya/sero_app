@@ -117,7 +117,9 @@ class _SelectTableState extends State<SelectTable> {
               ),
             ),
             onTap: ()async {
+
               SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+              sharedPreferences.setString("table_name", _tablenos[index]);
               if(_table_status[index]=="occupied")
     {
     setState(() {
