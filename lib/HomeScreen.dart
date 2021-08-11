@@ -1,9 +1,11 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
+import 'package:flutter_nav_bar/edit_customer.dart';
 import 'package:flutter_nav_bar/main_drawer.dart';
 import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
@@ -100,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
     fetch();
     super.initState();
   }
+  var id="0";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -197,6 +200,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           },
                           onSuggestionSelected: (Customer? suggestion) async {
                             hint=suggestion!._name;
+                            id=suggestion.id;
+                            print("ID IS:$id");
                             _typeAheadController.text=suggestion._name;
                             Fluttertoast.showToast(
                                 msg:suggestion._name+" is selected",
@@ -280,7 +285,45 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: MaterialButton(
                     minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    onPressed: () {},
+                    onPressed: () async {
+                      setState(() {
+                        _isloading=true;
+                      });
+                      var response = await http.get(
+                          Uri.parse("https://pos.sero.app/connector/api/contactapi/$id"),
+                          headers: {
+                            'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
+                          });
+                      final d = json.decode(response.body)["data"][0];
+                      print(d);
+                      var fname=d["first_name"];
+                      var mname=d["middle_name"];
+                      var lname=d["last_name"];
+                      var email_id=d["email"];
+                      var phone=d["mobile"];
+                      var city=d["city"];
+                      var state=d["state"];
+                      var country=d["country"];
+                      var address=d["address_line_1"]??d["address_line_2"];
+                      var dob=d["dob"];
+                      if(address==null)
+                        {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => edit_customer(id:id,fname: fname,mname:mname,lname: lname,email_id: email_id,phone: phone,city: city,state: state,country: country,dob: dob)));
+                       setState(() {
+                         _isloading=false;
+                       });
+                        }
+                      else{
+                        SharedPreferences share=await SharedPreferences.getInstance();
+                        share.setInt("index", 1);
+                      }
+                      setState(() {
+                        _isloading=false;
+                      });
+                    },
                     child: Text("Home Delivery",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.ptSans(fontSize: 18)

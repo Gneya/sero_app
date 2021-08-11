@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:csc_picker/csc_picker.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -8,14 +9,38 @@ import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:sero_app/selecttable.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
-class PersonalDetails extends StatefulWidget {
-  PersonalDetails({Key ? key}) : super(key: key);
+class edit_customer extends StatefulWidget {
+  var  fname;
+  var mname;
+  var id;
+  var lname;
+  var email_id;
+  var phone;
+  var city;
+  var state;
+  var country;
+  var address;
+  var dob;
+  edit_customer({
+    this.id,
+     this.fname,
+    this.mname,
+    this.lname,
+    this.email_id,
+    this.phone,
+    this.city,
+    this.state,
+    this.country,
+    this.address,
+    this.dob
+});
   @override
-  _PersonalDetailsState createState() => _PersonalDetailsState();
+  edit_customerState createState() =>  edit_customerState();
 }
 
-class _PersonalDetailsState extends State<PersonalDetails> {
+class  edit_customerState extends State< edit_customer> {
   bool value = false;
   bool value1 = false;
   final _formKey = GlobalKey<FormState>();
@@ -24,6 +49,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
   var countryValue;
   var stateValue;
   var cityValue;
+  var id;
   TextEditingController fname=new TextEditingController();
   TextEditingController mname=new TextEditingController();
   TextEditingController lname=new TextEditingController();
@@ -51,35 +77,54 @@ class _PersonalDetailsState extends State<PersonalDetails> {
       setState(() {
         _isloading=true;
       });
-      var response = await http.post(
-          Uri.parse("https://pos.sero.app/connector/api/contactapi"), body: input,
-          headers: {
-            'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjlhNTYwNGYxZDAxMzU2NTRhY2YyYjE4MmEyOGUwMjA4M2QxOGUxY2Y1ZTY0MzM1MzdmNzc3MzFkMTMzZjNmNWQ5MTU3ZTEwOTQ5NDE3ZmQ3In0.eyJhdWQiOiIzIiwianRpIjoiOWE1NjA0ZjFkMDEzNTY1NGFjZjJiMTgyYTI4ZTAyMDgzZDE4ZTFjZjVlNjQzMzUzN2Y3NzczMWQxMzNmM2Y1ZDkxNTdlMTA5NDk0MTdmZDciLCJpYXQiOjE2MjM2NjAxMzksIm5iZiI6MTYyMzY2MDEzOSwiZXhwIjoxNjU1MTk2MTM5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WGLAu9KVi-jSt0q9yUyENDoEQnSLF1o0tezej5YozBFXJVQuEvSykvA9T6nnJghujQ2uU-nxUCRftLBhYzGjsu26YoKZBin70k1cqoYDfIWlVZ-fNkJi1vAXYOk9Pzxz7YFBa6hgz1MyUlDOI1LsSSsJh87hGBzIN6Ib_cYmGoo8KHVEfqbDtCNnZdOq68vjhwf6dwYEJUtxanaocuC-_XHkdM7769JiO48Ot93BqZjmRuVwvK9zE_8bilmhktlgD65ahgKOSS2yQlMdpgpsqP1W5Mfy_SBu32BkqTpAc5v2QWRTVhevES-blsfqdoZ59aw0OzrxyC8PvipyuhGQjs6V7eCrKK0jOei9g4RyhKlQueDXxxrWrqsStIsPzkn-kXA5k2NINIFgr2MlLtypTR76xnncWE5rCqm39K5V2_q3aXDQvCHdl3SVBKDqwNCUKq1CxbJlkF8r1R1mxXxN76TBZbcalO7wUX0F-D1j9oWkwXSZBe7L6vQQqvhC2AsQO2LB4QiByuFi1-J4h05vM3Kab0nmRvVeNYekhNP9HtTGWCH_UDuiDAp23VqUhMTrFygUAPEASU0fnw-rMKhrll_O0wMaBE33ZfItsV0o6pHCQhUjsDKwfmgVynOyYu0rX_huVN_PUBSYQVuCiabUMp8Q5Dv7n8Ky7_yI8XypQK4'
-          }
-      );
-      _customer = customer.fromJson(json.decode(response.body));
-      if (_customer.error != "null") {
-        setState(() {
-          _isloading = false;
-        });
+      // var response = await http.post(
+      //     Uri.parse("https://pos.sero.app/connector/api/contactapi/"), body: input,
+      //     headers: {
+      //       'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjlhNTYwNGYxZDAxMzU2NTRhY2YyYjE4MmEyOGUwMjA4M2QxOGUxY2Y1ZTY0MzM1MzdmNzc3MzFkMTMzZjNmNWQ5MTU3ZTEwOTQ5NDE3ZmQ3In0.eyJhdWQiOiIzIiwianRpIjoiOWE1NjA0ZjFkMDEzNTY1NGFjZjJiMTgyYTI4ZTAyMDgzZDE4ZTFjZjVlNjQzMzUzN2Y3NzczMWQxMzNmM2Y1ZDkxNTdlMTA5NDk0MTdmZDciLCJpYXQiOjE2MjM2NjAxMzksIm5iZiI6MTYyMzY2MDEzOSwiZXhwIjoxNjU1MTk2MTM5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WGLAu9KVi-jSt0q9yUyENDoEQnSLF1o0tezej5YozBFXJVQuEvSykvA9T6nnJghujQ2uU-nxUCRftLBhYzGjsu26YoKZBin70k1cqoYDfIWlVZ-fNkJi1vAXYOk9Pzxz7YFBa6hgz1MyUlDOI1LsSSsJh87hGBzIN6Ib_cYmGoo8KHVEfqbDtCNnZdOq68vjhwf6dwYEJUtxanaocuC-_XHkdM7769JiO48Ot93BqZjmRuVwvK9zE_8bilmhktlgD65ahgKOSS2yQlMdpgpsqP1W5Mfy_SBu32BkqTpAc5v2QWRTVhevES-blsfqdoZ59aw0OzrxyC8PvipyuhGQjs6V7eCrKK0jOei9g4RyhKlQueDXxxrWrqsStIsPzkn-kXA5k2NINIFgr2MlLtypTR76xnncWE5rCqm39K5V2_q3aXDQvCHdl3SVBKDqwNCUKq1CxbJlkF8r1R1mxXxN76TBZbcalO7wUX0F-D1j9oWkwXSZBe7L6vQQqvhC2AsQO2LB4QiByuFi1-J4h05vM3Kab0nmRvVeNYekhNP9HtTGWCH_UDuiDAp23VqUhMTrFygUAPEASU0fnw-rMKhrll_O0wMaBE33ZfItsV0o6pHCQhUjsDKwfmgVynOyYu0rX_huVN_PUBSYQVuCiabUMp8Q5Dv7n8Ky7_yI8XypQK4'
+      //     }
+      // );
+      var dio=Dio();
+      Map<String,dynamic> api1={
+        "type": "customer",
+        "first_name": fname.text??"",
+        "middle_name": mname.text??"",
+        "last_name": lname.text??"",
+        "mobile": phone_number.text??"",
+        "address_line_1": address.text??"",
+        "city": cityValue??'',
+        "state": stateValue??'',
+        "country": countryValue??'',
+        "customer_group_id": group.text??"",
+        "dob": selectedDate.toString(),
+        "email": email.text??""
+      };
+      dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
+      var r2=await dio.put("https://pos.sero.app/connector/api/contactapi/$id",data: json.encode(api1));
+      print(r2);
+      // if (_customer.error != "null") {
+      //   setState(() {
+      //     _isloading = false;
+      //   });
+      //   Fluttertoast.showToast(
+      //       msg: _customer.error,
+      //       toastLength: Toast.LENGTH_LONG,
+      //       gravity: ToastGravity.BOTTOM,
+      //       textColor: Colors.red,
+      //       timeInSecForIosWeb: 10);
+      // }
+      // else {
+      //   setState(() {
+      //     _isloading = false;
+      //     print(_customer.id);
+      //   });
         Fluttertoast.showToast(
-            msg: _customer.error,
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            textColor: Colors.red,
-            timeInSecForIosWeb: 10);
-      }
-      else {
-        setState(() {
-          _isloading = false;
-          print(_customer.id);
-        });
-        Fluttertoast.showToast(
-            msg: "Customer added Successfully",
+            msg: "Customer Updated Successfully",
             toastLength: Toast.LENGTH_LONG,
             gravity: ToastGravity.BOTTOM,
             textColor: Colors.green,
             timeInSecForIosWeb: 10);
+      SharedPreferences share=await SharedPreferences.getInstance();
+      share.setInt("index", 1);
         setState(() {
           _isloading = false;
         });
@@ -88,8 +133,21 @@ class _PersonalDetailsState extends State<PersonalDetails> {
         //     MaterialPageRoute(
         //       builder: (context) => SelectTable(),
         //     ));
-      }
     }
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    id=widget.id;
+    print("WIDGET ${widget.fname}");
+    fname.text=widget.fname??"";
+     mname.text=widget.mname??"";
+     lname.text=widget.lname??"";
+     email.text=widget.email_id??"";
+     phone_number.text=widget.phone??"";
+     address.text=widget.address??"";
+     group.text="";
+
   }
   @override
   Widget build(BuildContext context) {
@@ -97,7 +155,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
         appBar: AppBar(
 
           leading: Icon(Icons.menu,),
-          title: Center(child: Text("ADD CUSTOMER",style: TextStyle(fontSize: 18),)),
+          title: Center(child: Text("EDIT  CUSTOMER",style: TextStyle(fontSize: 18),)),
           backgroundColor: Color(0xffffd45f),
           actions: [
             Container(
@@ -444,19 +502,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                       height: 50,
                       child: CupertinoButton(
                         onPressed:(){
-                          input={
-                            "type": "customer",
-                            "first_name": fname.text,
-                            "middle_name": mname.text,
-                            "last_name": lname.text,
-                            "mobile": phone_number.text,
-                            "address_line_1": address.text,
-                            "city": cityValue??'',
-                            "state": stateValue??'',
-                            "country": countryValue??'',
-                            "customer_group_id": group.text,
-                            "dob": selectedDate.toString(),
-                            "email": email.text??""};
+
                           _sendData();
                         },
 

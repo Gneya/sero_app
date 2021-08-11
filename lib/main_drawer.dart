@@ -55,7 +55,7 @@ class MainDrawer extends StatelessWidget {
                         //     bu ilder: (BuildContext context) => HomePage()), (
                         //     Route<dynamic> route) => false);
                       },
-                      leading: Icon(Icons.home,color:Colors.amber,),
+                      leading: Icon(Icons.summarize_outlined,color:Colors.amber,),
                       title: Text('DSR(Daily Sale Report)',
                         style: TextStyle(
                             fontSize: 16,color: Colors.black54),
@@ -77,8 +77,8 @@ class MainDrawer extends StatelessWidget {
                       //     ),
                       //   );
                       },
-                      leading: Icon(Icons.local_fire_department_sharp,color:Colors.amber,),
-                      title: Text('Flames',
+                      leading: Icon(Icons.add_box_outlined,color:Colors.amber,),
+                      title: Text("Add/Edit Printer",
                         style: TextStyle(
                             fontSize: 16,color: Colors.black54),
                       ),
@@ -98,8 +98,8 @@ class MainDrawer extends StatelessWidget {
                         //   ),
                         // );
                       },
-                      leading: Icon(Icons.fire_extinguisher,color:Colors.amber,),
-                      title: Text('Gas',
+                      leading: Icon(Icons.app_registration_outlined,color:Colors.amber,),
+                      title: Text('Open/Close Register',
                         style: TextStyle(
                             fontSize: 16,color: Colors.black54),
                       ),
@@ -119,8 +119,8 @@ class MainDrawer extends StatelessWidget {
                         //   ),
                         // );
                       },
-                      leading: Icon(Icons.smoke_free,color:Colors.amber,),
-                      title: Text('Smoke',
+                      leading: Icon(Icons.edit_outlined,color:Colors.amber,),
+                      title: Text('Add/Edit Product',
                         style: TextStyle(
                             fontSize: 16,color: Colors.black54),
                       ),
@@ -140,8 +140,8 @@ class MainDrawer extends StatelessWidget {
                         //   ),
                         //);
                       },
-                      leading: Icon(Icons.surround_sound_outlined,color:Colors.amber,),
-                      title: Text('Sound',
+                      leading: Icon(Icons.local_printshop_outlined,color:Colors.amber,),
+                      title: Text('Reprint Bill',
                         style: TextStyle(
                             fontSize: 16,color: Colors.black54),
                       ),
@@ -161,8 +161,8 @@ class MainDrawer extends StatelessWidget {
                         //   ),
                         // );
                       },
-                      leading: Icon(Icons.thermostat_outlined,color:Colors.amber,),
-                      title: Text('Temperature',
+                      leading: Icon(Icons.view_list_outlined,color:Colors.amber,),
+                      title: Text('View Bookings',
                         style: TextStyle(
                             fontSize: 16,color: Colors.black54),
                       ),
@@ -182,50 +182,8 @@ class MainDrawer extends StatelessWidget {
                         //   ),
                         // );
                       },
-                      leading: Icon(Icons.multiple_stop,color:Colors.amber,),
-                      title: Text('Distance',
-                        style: TextStyle(
-                            fontSize: 16,color: Colors.black54),
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      child: Divider(thickness: 1,),
-                    ),
-                    ListTile(
-                      onTap: (){
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(
-                        //     builder: (BuildContext context){
-                        //       return WarningPage();
-                        //     },
-                        //   ),
-                        // );
-                      },
-                      leading: Icon(Icons.warning,color:Colors.amber,),
-                      title: Text('Warning',
-                        style: TextStyle(
-                            fontSize: 16,color: Colors.black54),
-                      ),
-                    ),
-                    Container(
-                      height: 1,
-                      margin: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      child: Divider(thickness: 1,),
-                    ),
-                    ListTile(
-                      onTap: (){
-                        // Navigator.of(context).push(
-                        //   MaterialPageRoute(
-                        //     builder: (BuildContext context){
-                        //       return EditProfilePage();
-                        //     },
-                        //   ),
-                        // );
-                      },
-                      leading: Icon(Icons.person,color:Colors.amber,),
-                      title: Text('Edit Profile',
+                      leading: Icon(Icons.kitchen,color:Colors.amber,),
+                      title: Text('KDS Screen (Kitchen Display Screen)',
                         style: TextStyle(
                             fontSize: 16,color: Colors.black54),
                       ),
