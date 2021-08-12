@@ -1505,7 +1505,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print(v.toString());
                               shared.setInt("order_id", v);
                               cart.deleteAllCart();
-
                               shared.clear();
 
                               setState(() {
