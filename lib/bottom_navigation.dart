@@ -89,7 +89,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
             TabItem(_tab1, HomeScreen(title: '')),
             TabItem(_tab2, CategoryScreen(title: '')),
             TabItem(_tab3, CartScreen()),
-            TabItem(_tab4, MoreOptions())
+            TabItem(_tab4,MoreOptions())
           ],
           selectedIndex: _tabSelectedIndex,
           popStack: _tabPopStack,
@@ -119,6 +119,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
                     }),
                 child:Icon(Icons.shopping_cart),),
               title: Text(''),
+
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.open_in_browser_outlined,),
@@ -181,19 +182,21 @@ class TabNavigatorState extends State<TabNavigator> {
     );
   }
 
-  Widget _buildTab(int index) {
-    return Offstage(
-      offstage: widget.selectedIndex != index,
-      child: Opacity(
-        opacity: widget.selectedIndex == index ? 1.0 : 0.0,
-        child: Navigator(
-          key: widget.tabs[index].key,
-          onGenerateRoute: (settings) => MaterialPageRoute(
-            settings: settings,
-            builder: (_) => widget.tabs[index].tab,
+  Widget _buildTab(int index) { {
+      return Offstage(
+        offstage: widget.selectedIndex != index,
+        child: Opacity(
+          opacity: widget.selectedIndex == index ? 1.0 : 0.0,
+          child: Navigator(
+            key: widget.tabs[index].key,
+            onGenerateRoute: (settings) =>
+                MaterialPageRoute(
+                  settings: settings,
+                  builder: (_) => widget.tabs[index].tab,
+                ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 }

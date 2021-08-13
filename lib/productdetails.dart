@@ -75,6 +75,7 @@ class _SelectItemState extends State<SelectItem> {
     v = (json.decode(response.body));
     for (var i in v["data"]) {
       if (i["category"] == widget.category) {
+        print(i);
         _product=product.fromJson(i);
         _productlist.add(_product);
         print(_productlist);
@@ -466,7 +467,7 @@ class _SelectItemState extends State<SelectItem> {
                 height: MediaQuery
                     .of(context)
                     .size
-                    .height / 4,
+                    .height,
                 //width: 550,
                 //width: 550,
                 decoration: BoxDecoration(
@@ -488,7 +489,7 @@ class _SelectItemState extends State<SelectItem> {
                       height: 6,
                     ),
                     Container(
-                        height: MediaQuery.of(context).size.height/14,
+                        height: MediaQuery.of(context).size.height/12,
                         width: MediaQuery.of(context).size.width,
                         child:Image.network(_productlist[index].url)
                     ),

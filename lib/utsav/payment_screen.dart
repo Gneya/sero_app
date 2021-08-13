@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -668,21 +669,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
   bool result = false;
 
-  getPD() async {
-    if(result){
-      SharedPreferences shared = await SharedPreferences.getInstance();
-      setState(() {
-        widget.Ammount = shared.getDouble("Ammount")!;
-        widget.Balance= shared.getDouble("Balance")!;
-        widget.Discountt =shared.getDouble("Discountt")!;
-        widget.Redeem =shared.getInt("Redeem")!;
-        print(widget.Ammount);
-        print(widget.Balance);
-        print(widget.Discountt);
-      });
-    }
-    result =false;
-  }
+  // Future<double> getPD() async {
+  //     SharedPreferences shared = await SharedPreferences.getInstance();
+  //       widget.Ammount = shared.getDouble("Ammount")!;
+  //       widget.Balance= shared.getDouble("Balance")!;
+  //       widget.Discountt =shared.getDouble("Discountt")!;
+  //       widget.Redeem =shared.getInt("Redeem")??0;
+  //       print(widget.Ammount);
+  //       print(widget.Balance);
+  //       return widget.Balance;
+  //       // print(widget.Discountt);
+  //  }
   @override
   void initState() {
     fetchData();
@@ -693,7 +690,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    getPD();
+
+    //print("this is build");
+    print("PRINT IN BUILD"+widget.Balance.toStringAsFixed(2));
     int _counter = 1;
     size = MediaQuery.of(context).size;
     height = size.height;
@@ -702,13 +701,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: Container(
-          margin: EdgeInsets.only(bottom:80,left:0),
-          child:IconButton(
-            icon:Icon(Icons.arrow_back),
-            onPressed: (){
-              Navigator.pop(context);
-            },
-          )
+            margin: EdgeInsets.only(bottom:80,left:0),
+            child:IconButton(
+              icon:Icon(Icons.arrow_back),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
         ),
         automaticallyImplyLeading: false,
         flexibleSpace:  Column(
@@ -785,14 +784,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 children: [
                                   OutlineButton(
                                     onPressed: () async {
+                                      var cart=FlutterCart();
                                       SharedPreferences shared = await SharedPreferences.getInstance();
                                       showDialog(
                                           context: context,
                                           builder: (context){
-                                            return Discount(Ammount: widget.Ammount, Balance: widget.Balance, Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                            return Discount(Ammount: widget.Ammount, Balance:widget.Balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
-
-                                      );
+                                      ).then((value){
+                                        setState(() {
+                                          widget.Balance=shared.getDouble("Balance")!;
+                                          print("PRINT:"+widget.Balance.toString());
+                                        });
+                                      });
 
                                     },
                                     highlightedBorderColor: Colors.black87,
@@ -810,7 +814,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     child: Text('Discount',
                                       style: GoogleFonts.ptSans(
                                           fontWeight: FontWeight.bold,
-                                        fontSize: 13
+                                          fontSize: 13
                                       ),),
                                   )
                                 ],
@@ -1419,17 +1423,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             var variation=shared.getStringList("variation");
                             var cart=FlutterCart();
                             for(int index=0;index<cart.cartItem.length;index++)
-                              {
+                            {
 
-                                Map<String,dynamic> product={
-                                  "product_id":double.parse(cart.cartItem[index].productId.toString()),
-                                  "variation_id":double.parse(variation![index]),
-                                  "quantity": cart.cartItem[index].quantity,
-                                  "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
-                                };
-                                list_of_m.add(product);
-                                // print(list_of_m);
-                              }
+                              Map<String,dynamic> product={
+                                "product_id":double.parse(cart.cartItem[index].productId.toString()),
+                                "variation_id":double.parse(variation![index]),
+                                "quantity": cart.cartItem[index].quantity,
+                                "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
+                              };
+                              list_of_m.add(product);
+                              // print(list_of_m);
+                            }
                             if(shared.containsKey("modifiers")){
                               if(shared.getString("modifiers")!="") {
                                 List<dynamic> mod = json.decode(
@@ -1454,7 +1458,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "products":list_of_m,
                                     "payments": [
                                       {
-                                        "amount":cart.getTotalAmount(),
+                                        "amount":widget.Balance,
                                       }
                                     ]
                                   }
@@ -1486,11 +1490,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 "products":list_of_m,
                                 "payments": [
                                   {
-                                    "amount":cart.getTotalAmount(),
+                                    "amount":widget.Balance,
                                   }
                                 ],
 
-                                    "is_suspend": 0,
+                                "is_suspend": 0,
                               };
                               print(json.encode(api));
 
@@ -1505,7 +1509,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print(v.toString());
                               shared.setInt("order_id", v);
                               cart.deleteAllCart();
-
                               shared.clear();
 
                               setState(() {
@@ -1769,6 +1772,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
     SharedPreferences indexData = await SharedPreferences.getInstance();
     _currentIndex = indexData.getInt('index')!;
   }
+
+  // Future<void> changeValue() async {
+  //   SharedPreferences shared=await SharedPreferences.getInstance();
+  //   setState(() {
+  //     widget.Balance=shared.getDouble("Balance")!;
+  //   });
+  // }
 }
 
 Future<Map<String, dynamic>> getData() async {
@@ -1784,4 +1794,5 @@ class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;
 }
+
 
