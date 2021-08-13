@@ -555,6 +555,7 @@ class _CartScreenState extends State<CartScreen> {
                     shared.setString("modifiers", '');
                     shared.setStringList("selectedmodifiers", []);
                     shared.setStringList("selectedmodifiersprice", []);
+                    shared.setStringList("variation", []);
                     cart.deleteAllCart();
                     // shared.clear();
 

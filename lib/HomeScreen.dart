@@ -55,7 +55,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });}
     var cart =FlutterCart();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setStringList("variation", []);
     sharedPreferences.setString("total",cart.getCartItemCount().toString());
     var list=sharedPreferences.getStringList("selected")??[];
     sharedPreferences.setInt("order_id",0);

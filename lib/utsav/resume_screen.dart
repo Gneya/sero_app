@@ -273,6 +273,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                             // }));
                                             var v = r.toString();
                                             print(v);
+                                            shared.setStringList("variation", []);
                                             var cart = FlutterCart();
                                             cart.deleteAllCart();
                                             Fluttertoast.showToast(

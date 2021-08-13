@@ -107,6 +107,7 @@ class _VoidBillState extends State<VoidBill> {
                                   print(r);
                                   var v = r.toString();
                                   print(v);
+
                                   Fluttertoast.showToast(
                                       msg: "Order Voided",
                                       toastLength: Toast.LENGTH_LONG,
@@ -114,6 +115,7 @@ class _VoidBillState extends State<VoidBill> {
                                       textColor: Colors.green,
                                       timeInSecForIosWeb: 4);
                                   Navigator.pop(context);
+                                  shared.setStringList("variation", []);
                                   setState(() {
                                     var cart=FlutterCart();
                                     cart.deleteAllCart();

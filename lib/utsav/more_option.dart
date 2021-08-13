@@ -158,6 +158,7 @@ class _MoreOptionsState extends State<MoreOptions> {
                     var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
                     print(r2);
                     print(id);
+                    shared.setStringList("variation", []);
                     var cart = FlutterCart();
                     cart.deleteAllCart();
                     setState(() {
