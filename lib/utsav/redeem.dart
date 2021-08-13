@@ -173,9 +173,9 @@ class _RedeemPointState extends State<RedeemPoint> {
                                     if(_formKey.currentState!.validate()){
                                       totalAmounttype();
                                       Redeemed();
-                                      Navigator.pop(
+                                      Navigator.push(
                                         context,
-                                        // MaterialPageRoute(builder: (context) => PaymentScreen(Ammount:widget.Ammount , Balance:double.parse(redeemedAmount), Discountt: widget.Discountt, Redeem: redeemed ,)),
+                                        MaterialPageRoute(builder: (context) => PaymentScreen(Ammount:widget.Ammount , Balance:double.parse(redeemedAmount), Discountt: widget.Discountt, Redeem: redeemed ,)),
                                       );}
                                   });
                                 },

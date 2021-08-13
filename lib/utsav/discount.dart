@@ -342,7 +342,7 @@ class _DiscountState extends State<Discount> {
                               //   MaterialPageRoute(builder: (context) =>  PaymentScreen(Ammount:widget.Ammount  , Discountt:discountted , Redeem:widget.Redeem , Balance: double.parse(discountedAmount),)),
                               // );
                               Navigator.pop(context,true);
-                             }
+                            }
                           });
                         },
                       ),
@@ -377,5 +377,6 @@ class _DiscountState extends State<Discount> {
     );
   }
 }
+
 
 

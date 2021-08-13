@@ -164,6 +164,7 @@ class _MoreOptionsState extends State<MoreOptions> {
                     setState(() {
                       shared.setString("customer_name", "");
                       shared.setString("table_name", "");
+                      shared.setInt("index", 0);
                       shared.setString("total", "0");
                     });
 

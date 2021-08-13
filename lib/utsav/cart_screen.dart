@@ -292,7 +292,7 @@ class _CartScreenState extends State<CartScreen> {
                                       setState(()  {
                                         cart.deleteItemFromCart(index);
                                         shared.setString("total", (cart.getCartItemCount()).toString());
-                                       var list = shared.getStringList("variation");
+                                        var list = shared.getStringList("variation");
                                         list!.removeAt(index);
                                         shared.setStringList("variation", list);
                                         paymentAmount = cart.getTotalAmount();
@@ -508,12 +508,12 @@ class _CartScreenState extends State<CartScreen> {
                     }
                     if(shared.containsKey("modifiers")){
                       if(shared.getString("modifiers")!=""){
-                      List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
-                      print(mod[0]);
-                      for(int i =0;i<mod.length;i++){
-                        list_of_m.add(mod[0]);
-                        // print(mod[0]["name"]);
-                      }}}
+                        List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
+                        print(mod[0]);
+                        for(int i =0;i<mod.length;i++){
+                          list_of_m.add(mod[0]);
+                          // print(mod[0]["name"]);
+                        }}}
 
                     print(list_of_m);
 
@@ -559,15 +559,15 @@ class _CartScreenState extends State<CartScreen> {
                     cart.deleteAllCart();
                     // shared.clear();
 
-                      // shared.setString("customer_name", '');
-                      // shared.setString("table_name", '');
-                      setState(() {
-                        shared.setString("total","0");
-                        shared.setInt("index", 0);
-                        shared.setInt("PAY_HOLD",1);
-                      });
-                      // get("");
-                    },
+                    // shared.setString("customer_name", '');
+                    // shared.setString("table_name", '');
+                    setState(() {
+                      shared.setString("total","0");
+                      shared.setInt("index", 0);
+                      shared.setInt("PAY_HOLD",1);
+                    });
+                    // get("");
+                  },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all(
                           RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
@@ -698,8 +698,4 @@ class Modi {
     _modi=m;
   }
 }
-
-
-
-
 
