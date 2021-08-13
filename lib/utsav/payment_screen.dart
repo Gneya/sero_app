@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -668,21 +669,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
   bool result = false;
 
-  getPD() async {
-    if(result){
-      SharedPreferences shared = await SharedPreferences.getInstance();
-      setState(() {
-        widget.Ammount = shared.getDouble("Ammount")!;
-        widget.Balance= shared.getDouble("Balance")!;
-        widget.Discountt =shared.getDouble("Discountt")!;
-        widget.Redeem =shared.getInt("Redeem")!;
-        print(widget.Ammount);
-        print(widget.Balance);
-        print(widget.Discountt);
-      });
-    }
-    result =false;
-  }
+  // Future<double> getPD() async {
+  //     SharedPreferences shared = await SharedPreferences.getInstance();
+  //       widget.Ammount = shared.getDouble("Ammount")!;
+  //       widget.Balance= shared.getDouble("Balance")!;
+  //       widget.Discountt =shared.getDouble("Discountt")!;
+  //       widget.Redeem =shared.getInt("Redeem")??0;
+  //       print(widget.Ammount);
+  //       print(widget.Balance);
+  //       return widget.Balance;
+  //       // print(widget.Discountt);
+  //  }
   @override
   void initState() {
     fetchData();
@@ -693,7 +690,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-    getPD();
+    changeValue();
+    //print("this is build");
+    print("PRINT IN BUILD"+widget.Balance.toStringAsFixed(2));
     int _counter = 1;
     size = MediaQuery.of(context).size;
     height = size.height;
@@ -785,14 +784,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 children: [
                                   OutlineButton(
                                     onPressed: () async {
+                                      var cart=FlutterCart();
                                       SharedPreferences shared = await SharedPreferences.getInstance();
-                                      showDialog(
+                                       showDialog(
                                           context: context,
                                           builder: (context){
-                                            return Discount(Ammount: widget.Ammount, Balance: widget.Balance, Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                            return Discount(Ammount: widget.Ammount, Balance:widget.Balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
-
-                                      );
+                                      ).then((value){
+                                        setState(() {
+                                          changeValue();
+                                          widget.Balance=shared.getDouble("Balance")!;
+                                          print("PRINT:"+widget.Balance.toString());
+                                        });
+                                      });
 
                                     },
                                     highlightedBorderColor: Colors.black87,
@@ -1454,7 +1459,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "products":list_of_m,
                                     "payments": [
                                       {
-                                        "amount":cart.getTotalAmount(),
+                                        "amount":widget.Balance,
                                       }
                                     ]
                                   }
@@ -1486,7 +1491,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 "products":list_of_m,
                                 "payments": [
                                   {
-                                    "amount":cart.getTotalAmount(),
+                                    "amount":widget.Balance,
                                   }
                                 ],
 
@@ -1767,6 +1772,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
   void testmethod() async {
     SharedPreferences indexData = await SharedPreferences.getInstance();
     _currentIndex = indexData.getInt('index')!;
+  }
+
+  Future<void> changeValue() async {
+    SharedPreferences shared=await SharedPreferences.getInstance();
+    setState(() {
+      widget.Balance=shared.getDouble("Balance")!;
+    });
   }
 }
 

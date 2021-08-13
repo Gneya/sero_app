@@ -234,7 +234,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: MaterialButton(
                     minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
-                    onPressed: () {
+                    onPressed: () async {
+                     SharedPreferences shared=await SharedPreferences.getInstance();
+                      if(shared.getString("customer_name")=="")
+                        {
+                            shared.setString("customer_name", "Walk-In Customer");
+                            shared.setString("customer_id","1");
+                        }
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -264,6 +270,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       //     context,
                       //     MaterialPageRoute(
                       //         builder: (context) => CategoryScreen()));
+                      if(shared.getString("customer_name")=="")
+                      {
+                        shared.setString("customer_name", "Walk-In Customer");
+                        shared.setString("customer_id","1");
+                      }
                       shared.setInt("index", 1);
                     },
                     child: Text("Take Away",

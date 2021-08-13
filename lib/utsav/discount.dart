@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -46,8 +47,8 @@ class _DiscountState extends State<Discount> {
       });}
     else{
       {
-        double totalAmount = (widget.Balance - discountAmount);
         setState(() {
+          double totalAmount = (widget.Balance - discountAmount);
           discountedAmount = totalAmount.toStringAsFixed(2);
         });}
     }
@@ -331,13 +332,16 @@ class _DiscountState extends State<Discount> {
                             if(_formKey.currentState!.validate()){
                               totalAmounttype();
                               DiscountAmount();
-                              // shared.setDouble("Ammount",widget.Ammount );
-                              // shared.setDouble("Balance", double.parse(discountedAmount));
-                              // shared.setDouble("Discountt", discountted);
+                              shared.setDouble("Ammount",widget.Ammount );
+                              var cart=FlutterCart();
+                              shared.setDouble("Balance", double.parse(discountedAmount));
+                              print("IN DISCOUNT SCREEN"+shared.getDouble("Balance").toString());
+                              shared.setDouble("Discountt", discountted);
                               // shared.setInt("Redeem",widget.Redeem);
-                              Navigator.push(context,
-                                MaterialPageRoute(builder: (context) =>  PaymentScreen(Ammount:widget.Ammount  , Discountt:discountted , Redeem:widget.Redeem , Balance: double.parse(discountedAmount),)),
-                              );
+                              // Navigator.push(context,
+                              //   MaterialPageRoute(builder: (context) =>  PaymentScreen(Ammount:widget.Ammount  , Discountt:discountted , Redeem:widget.Redeem , Balance: double.parse(discountedAmount),)),
+                              // );
+                              Navigator.pop(context,true);
                              }
                           });
                         },

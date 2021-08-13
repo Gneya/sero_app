@@ -184,7 +184,7 @@ class _SplitPayState extends State<SplitPay> {
                         sum=sum+double.parse(payment[i]);
                       }
                       print(sum);
-                      if(sum!= widget.Ammount){
+                      if(sum.toStringAsFixed(2)!= widget.Ammount.toStringAsFixed(2)){
                         Fluttertoast.showToast(
                             msg: "Total amount must be equal to balance amount",
                             toastLength: Toast.LENGTH_LONG,
@@ -192,6 +192,15 @@ class _SplitPayState extends State<SplitPay> {
                             textColor: Colors.green,
                             timeInSecForIosWeb: 4);
                       }
+                      else
+                        {
+                          Fluttertoast.showToast(
+                              msg: "Payment done",
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.BOTTOM,
+                              textColor: Colors.green,
+                              timeInSecForIosWeb: 4);
+                        }
                     },
                     child: Container(
                         decoration: BoxDecoration(

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:flutter_nav_bar/login.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,7 +41,10 @@ class MyHomePage extends StatefulWidget
 class _HomePage extends State<MyHomePage> with SingleTickerProviderStateMixin
 {
   checkLoginStatus() async {
+    var cart=FlutterCart();
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    sharedPreferences.setStringList("variation", []);
+    sharedPreferences.setString("total",cart.getCartItemCount().toString());
     sharedPreferences.setInt("index",0);
     print(sharedPreferences.getString('user_id'));
     if (sharedPreferences.getString('user_id') != null) {
