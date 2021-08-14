@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RedeemPoint extends StatefulWidget {
   double Ammount=0.0;
@@ -168,15 +169,17 @@ class _RedeemPointState extends State<RedeemPoint> {
                                   height: 60,
                                   width: 130,
                                 ),
-                                onTap: (){
+                                onTap: () async {
+                                  SharedPreferences shared =await SharedPreferences.getInstance();
                                   setState(() {
-                                    if(_formKey.currentState!.validate()){
+                                    if(_formKey.currentState!.validate()) {
                                       totalAmounttype();
                                       Redeemed();
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => PaymentScreen(Ammount:widget.Ammount , Balance:double.parse(redeemedAmount), Discountt: widget.Discountt, Redeem: redeemed ,)),
-                                      );}
+                                      shared.setDouble("Ammount",widget.Ammount );
+                                      shared.setDouble("Balance", double.parse(redeemedAmount));
+                                      shared.setInt("Redeemed Points",redeemAmount);
+                                      Navigator.of(context).pop(true);
+                                    }
                                   });
                                 },
                               ),
