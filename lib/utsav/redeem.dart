@@ -36,7 +36,7 @@ class _RedeemPointState extends State<RedeemPoint> {
     // balance =shared.getDouble("Balance")!;
     // print("hellllllllllllllllllllllllllllllllllllllll"+balance.toString());
     redeemAmount =int.parse(pointscontroller.text) ;
-    double totalAmount = (balance - redeemAmount);
+    double totalAmount = (widget.Balance - redeemAmount);
     setState(() {
       redeemedAmount =totalAmount.toStringAsFixed(2);
     });
