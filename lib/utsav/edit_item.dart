@@ -25,6 +25,14 @@ class _edit_item_State extends State<edit_item> {
   String dropdownValue ='Percentage';
   TextEditingController _discount = TextEditingController();
   var cart = FlutterCart();
+  String editPrice(){
+    var q = int.parse(widget.quantity);
+    var p =(double.parse(widget.price));
+    var total =0.0;
+    total =p*q;
+    print(total);
+    return total.toStringAsFixed(2);
+  }
   @override
   Widget build(BuildContext context) {
     var dropdownValue1;
@@ -107,7 +115,7 @@ class _edit_item_State extends State<edit_item> {
                                           icon: Icon(Icons.remove_circle,
                                             size: 17,),
                                         ),
-                                        Text(widget.quantity.toString(),
+                                        Text(widget.quantity,
                                           style: GoogleFonts.ptSans(
                                               fontSize: 12
                                           ),
@@ -132,9 +140,9 @@ class _edit_item_State extends State<edit_item> {
                                     Container(
                                         width: MediaQuery.of(context).size.width/9,
                                         child:Text(
-                                          '\$'+double.parse(widget.price).toStringAsFixed(2),
+                                          editPrice(),
                                           style: GoogleFonts.ptSans(
-                                              fontSize: 12,
+                                              fontSize: 10,
                                               fontWeight: FontWeight.bold
                                           ),
                                         )),
