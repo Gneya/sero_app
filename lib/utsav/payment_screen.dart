@@ -1537,6 +1537,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                               Map<String,dynamic> api= {
                                 "products":list_of_m,
+                                "discount_amount": discountt,
+                                "discount_type": shared.getString("DiscountType"),
+                                "rp_redeemed": shared.getInt("Redeemed Points"),
+                                "rp_redeemed_amount": shared.getInt("Redeemed Points")!.toDouble(),
+                                // "shipping_details": null,
+                                // "shipping_address": null,
+                                // "shipping_status": null,
+                                // "delivered_to": null,
+                                "shipping_charges": shared.getDouble("Shipping"),
                                 "payments": [
                                   {
                                     "amount":widget.Balance,
