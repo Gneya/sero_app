@@ -75,6 +75,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   double amount=0;
   double balance=0;
   double discountt=0;
+  String discount_type ="";
   int redeem=0;
   List<String> _payMeth = ["", "", "", "", "",];
 
@@ -804,6 +805,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           balance =shared.getDouble("Balance")!;
                                           amount=shared.getDouble("Ammount")!;
                                           discountt=shared.getDouble("Discountt")!;
+                                          discount_type = shared.getString("DiscountType")!;
+                                          print("ddddddddddddddddddddddd"+discount_type);
 
                                           print("PRINT:" + balance.toString());
                                         });
@@ -1466,7 +1469,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "location_id": shared.getInt("bid")??1,
                                     "contact_id": double.parse(shared.getString("customer_id")??"1"),
                                     "discount_amount": discountt,
-                                    //"status": "draft",
+                                    "discount_type": shared.getString("DiscountType"),
                                     "products":list_of_m,
                                     "payments": [
                                       {
