@@ -77,6 +77,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   double discountt=0;
   String discount_type ="";
   int redeemPoint =0;
+ double shipping_charge =0.0;
   int redeem=0;
   List<String> _payMeth = ["", "", "", "", "",];
 
@@ -912,14 +913,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               Column(
                                 children: [
                                   OutlineButton(
-                                    onPressed: () {
-                                      showDialog(
+                                    onPressed: () async {
+                                      SharedPreferences shared = await SharedPreferences.getInstance();
+                                      final _dialog=await showDialog(
                                           context: context,
                                           builder: (context){
                                             return Shipping(Ammount: widget.Ammount, Balance: widget.Balance,
                                               Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
                                       );
+                                      if(_dialog) {
+                                        print("Inside if");
+                                        setState(() {
+                                          balance =shared.getDouble("Balance")!;
+                                          amount=shared.getDouble("Ammount")!;
+                                          // redeemPoint =shared.getInt("Redeemed Points")!;
+                                          // print(redeemPoint);
+                                          shipping_charge =shared.getDouble("Shipping")!;
+                                          print("PRINT:" + balance.toString());
+                                        });
+                                      }
                                     },
                                     highlightedBorderColor: Colors.black87,
                                     textColor: Colors.black87,
@@ -1490,7 +1503,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_address": null,
                                     // "shipping_status": null,
                                     // "delivered_to": null,
-                                    "shipping_charges": "0.0000",
+                                    "shipping_charges": shared.getDouble("Shipping"),
                                     "products":list_of_m,
                                     "payments": [
                                       {

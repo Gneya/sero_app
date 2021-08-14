@@ -26,14 +26,17 @@ class _RedeemPointState extends State<RedeemPoint> {
   int redeemAmount =0;
   int redeemed=0;
   String redeemedAmount ='0';
-
+   double balance=0.0;
   final pointscontroller= new TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
-  String totalAmounttype(){
+  Future<String> totalAmounttype()async{
+    // SharedPreferences shared = await SharedPreferences.getInstance();
+    // balance =shared.getDouble("Balance")!;
+    // print("hellllllllllllllllllllllllllllllllllllllll"+balance.toString());
     redeemAmount =int.parse(pointscontroller.text) ;
-    double totalAmount = (widget.Balance - redeemAmount-widget.Discountt);
+    double totalAmount = (balance - redeemAmount);
     setState(() {
       redeemedAmount =totalAmount.toStringAsFixed(2);
     });
