@@ -276,19 +276,21 @@ class _ShippingState extends State<Shipping> {
                                   height: 60,
                                   width: 130,
                                 ),
-                                onTap: (){
+                                onTap: () async {
                                   input={
                                     'shipping_charges':_shipChargeController.text.toString(),
                                     'packing_charge':_packageChargeController.text.toString()
                                   };
+                                  SharedPreferences shared = await SharedPreferences.getInstance();
+
                                   setState(() {
                                     if(_formKey.currentState!.validate()){
                                       _sendData();
-                                    totalAmounttype();
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(builder: (context) => PaymentScreen(Ammount:widget.Ammount , Balance:double.parse(shippingCharge), Discountt: widget.Discountt, Redeem: widget.Redeem ,)),
-                                    );}
+                                      totalAmounttype();
+                                      shared.setDouble("Ammount",widget.Ammount );
+                                      shared.setDouble("Balance", double.parse(shippingCharge));
+                                      shared.setDouble("Shipping", shipAmount);
+                                      Navigator.of(context).pop(true);}
                                   });
                                 },
                               ),

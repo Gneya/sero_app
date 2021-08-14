@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RedeemPoint extends StatefulWidget {
   double Ammount=0.0;
@@ -25,14 +26,17 @@ class _RedeemPointState extends State<RedeemPoint> {
   int redeemAmount =0;
   int redeemed=0;
   String redeemedAmount ='0';
-
+   double balance=0.0;
   final pointscontroller= new TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
-  String totalAmounttype(){
+  Future<String> totalAmounttype()async{
+    // SharedPreferences shared = await SharedPreferences.getInstance();
+    // balance =shared.getDouble("Balance")!;
+    // print("hellllllllllllllllllllllllllllllllllllllll"+balance.toString());
     redeemAmount =int.parse(pointscontroller.text) ;
-    double totalAmount = (widget.Balance - redeemAmount-widget.Discountt);
+    double totalAmount = (widget.Balance - redeemAmount);
     setState(() {
       redeemedAmount =totalAmount.toStringAsFixed(2);
     });
@@ -168,15 +172,17 @@ class _RedeemPointState extends State<RedeemPoint> {
                                   height: 60,
                                   width: 130,
                                 ),
-                                onTap: (){
+                                onTap: () async {
+                                  SharedPreferences shared =await SharedPreferences.getInstance();
                                   setState(() {
-                                    if(_formKey.currentState!.validate()){
+                                    if(_formKey.currentState!.validate()) {
                                       totalAmounttype();
                                       Redeemed();
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => PaymentScreen(Ammount:widget.Ammount , Balance:double.parse(redeemedAmount), Discountt: widget.Discountt, Redeem: redeemed ,)),
-                                      );}
+                                      shared.setDouble("Ammount",widget.Ammount );
+                                      shared.setDouble("Balance", double.parse(redeemedAmount));
+                                      shared.setInt("Redeemed Points",redeemAmount);
+                                      Navigator.of(context).pop(true);
+                                    }
                                   });
                                 },
                               ),

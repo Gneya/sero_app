@@ -65,14 +65,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
       tipAmount = double.parse(_tipController.text);
       setState(() {
         isEnabled ?
-        widget.Balance = (widget.Balance + tipAmount)
-            : widget.Balance = (widget.Balance - tipAmount);
+        balance = (balance + tipAmount)
+            : balance = (balance - tipAmount);
       });
     }
 
-    return widget.Balance.toStringAsFixed(2);
+    return balance.toStringAsFixed(2);
   }
-
+  double amount=0;
+  double balance=0;
+  double discountt=0;
+  String discount_type ="";
+  int redeemPoint =0;
+ double shipping_charge =0.0;
+  int redeem=0;
   List<String> _payMeth = ["", "", "", "", "",];
 
   _PaymentScreenState() {
@@ -83,6 +89,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
   }
 
   Future<List<String>> fetchData() async {
+    amount=widget.Ammount;
+    balance=widget.Balance;
+    redeem=widget.Redeem;
     Map data = await getData();
     List<String> paymentMethod = [
       data['cash'],
@@ -206,7 +215,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         height: 50,
                                         child: Center(
                                             child: Text(
-                                              '\$'+widget.Discountt.toStringAsFixed(2),
+                                              '\$'+discountt.toStringAsFixed(2),
                                               textScaleFactor: 1.25,
                                               // style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
                                             ))),
@@ -240,7 +249,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       height: 50,
                                       child: Center(
                                           child: Text(
-                                            widget.Redeem.toString(),
+                                            redeemPoint.toString(),
                                             textScaleFactor: 1.25,
                                             // style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
                                           )
@@ -336,7 +345,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       height: 50,
                                       child: Center(
                                           child: Text(
-                                            '\$'+widget.Balance.toStringAsFixed(2),
+                                            '\$'+balance.toStringAsFixed(2),
                                             textScaleFactor: 1.25,
                                             style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
                                           ))),
@@ -543,7 +552,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           height: 50,
                                           child: Center(
                                               child: Text(
-                                                widget.Redeem.toString(),
+                                                redeemPoint.toString(),
                                                 textScaleFactor: 1.25,
                                               ))),
 
@@ -692,7 +701,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
 
     //print("this is build");
-    print("PRINT IN BUILD"+widget.Balance.toStringAsFixed(2));
+    print("PRINT IN BUILD"+balance.toStringAsFixed(2));
     int _counter = 1;
     size = MediaQuery.of(context).size;
     height = size.height;
@@ -786,17 +795,25 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     onPressed: () async {
                                       var cart=FlutterCart();
                                       SharedPreferences shared = await SharedPreferences.getInstance();
-                                      showDialog(
+                                      final _dialog=await showDialog(
                                           context: context,
                                           builder: (context){
                                             return Discount(Ammount: widget.Ammount, Balance:widget.Balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
-                                      ).then((value){
+                                      );
+                                      if(_dialog) {
+                                        print("Inside if");
                                         setState(() {
-                                          widget.Balance=shared.getDouble("Balance")!;
-                                          print("PRINT:"+widget.Balance.toString());
+                                          balance =shared.getDouble("Balance")!;
+                                          amount=shared.getDouble("Ammount")!;
+                                          discountt=shared.getDouble("Discountt")!;
+                                          discount_type = shared.getString("DiscountType")!;
+                                          print("ddddddddddddddddddddddd"+discount_type);
+                                          // redeemPoint =shared.getInt("Redeemed Points")!;
+                                          // print(redeemPoint);
+                                          print("PRINT:" + balance.toString());
                                         });
-                                      });
+                                      }
 
                                     },
                                     highlightedBorderColor: Colors.black87,
@@ -822,7 +839,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               Column(
                                 children: [
                                   OutlineButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       showDialog(
                                           context: context,
                                           builder: (context){
@@ -852,15 +869,27 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               Column(
                                 children: [
                                   OutlineButton(
-                                    onPressed: () {
-                                      showDialog(
+                                    onPressed: ()  async {
+                                      SharedPreferences shared = await SharedPreferences.getInstance();
+                                      final _dialog = await showDialog(
                                           context: context,
                                           builder: (context){
-                                            return RedeemPoint(Ammount: widget.Ammount,
-                                              Balance: widget.Ammount,
-                                              Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                            return RedeemPoint(Ammount: widget.Ammount, Balance:widget.Balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
                                       );
+                                      if(_dialog) {
+                                        print("Inside if");
+                                        setState(() {
+                                          balance =shared.getDouble("Balance")!;
+                                          amount=shared.getDouble("Ammount")!;
+                                          // discountt=shared.getDouble("Discountt")!;
+                                          // discount_type = shared.getString("DiscountType")!;
+                                          print("ddddddddddddddddddddddd"+redeemPoint!.toString());
+                                          redeemPoint =shared.getInt("Redeemed Points")!;
+                                          print(redeemPoint);
+                                          print("PRINT:" + balance.toString());
+                                        });
+                                      }
                                     },
                                     highlightedBorderColor: Colors.black87,
                                     textColor: Colors.black87,
@@ -884,14 +913,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               Column(
                                 children: [
                                   OutlineButton(
-                                    onPressed: () {
-                                      showDialog(
+                                    onPressed: () async {
+                                      SharedPreferences shared = await SharedPreferences.getInstance();
+                                      final _dialog=await showDialog(
                                           context: context,
                                           builder: (context){
                                             return Shipping(Ammount: widget.Ammount, Balance: widget.Balance,
                                               Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
                                       );
+                                      if(_dialog) {
+                                        print("Inside if");
+                                        setState(() {
+                                          balance =shared.getDouble("Balance")!;
+                                          amount=shared.getDouble("Ammount")!;
+                                          // redeemPoint =shared.getInt("Redeemed Points")!;
+                                          // print(redeemPoint);
+                                          shipping_charge =shared.getDouble("Shipping")!;
+                                          print("PRINT:" + balance.toString());
+                                        });
+                                      }
                                     },
                                     highlightedBorderColor: Colors.black87,
                                     textColor: Colors.black87,
@@ -1454,7 +1495,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "table_id" :shared.getInt("table_id")??0,
                                     "location_id": shared.getInt("bid")??1,
                                     "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                                    //"status": "draft",
+                                    "discount_amount": discountt,
+                                    "discount_type": shared.getString("DiscountType"),
+                                    "rp_redeemed": shared.getInt("Redeemed Points"),
+                                    "rp_redeemed_amount": shared.getInt("Redeemed Points")!.toDouble(),
+                                    // "shipping_details": null,
+                                    // "shipping_address": null,
+                                    // "shipping_status": null,
+                                    // "delivered_to": null,
+                                    "shipping_charges": shared.getDouble("Shipping"),
                                     "products":list_of_m,
                                     "payments": [
                                       {
@@ -1488,6 +1537,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                               Map<String,dynamic> api= {
                                 "products":list_of_m,
+                                "discount_amount": discountt,
+                                "discount_type": shared.getString("DiscountType"),
+                                "rp_redeemed": shared.getInt("Redeemed Points"),
+                                "rp_redeemed_amount": shared.getInt("Redeemed Points")!.toDouble(),
+                                // "shipping_details": null,
+                                // "shipping_address": null,
+                                // "shipping_status": null,
+                                // "delivered_to": null,
+                                "shipping_charges": shared.getDouble("Shipping"),
                                 "payments": [
                                   {
                                     "amount":widget.Balance,

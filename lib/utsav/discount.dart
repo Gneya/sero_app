@@ -333,15 +333,11 @@ class _DiscountState extends State<Discount> {
                               totalAmounttype();
                               DiscountAmount();
                               shared.setDouble("Ammount",widget.Ammount );
-                              var cart=FlutterCart();
                               shared.setDouble("Balance", double.parse(discountedAmount));
                               print("IN DISCOUNT SCREEN"+shared.getDouble("Balance").toString());
+                              shared.setString("DiscountType",dropdownValue );
                               shared.setDouble("Discountt", discountted);
-                              // shared.setInt("Redeem",widget.Redeem);
-                              // Navigator.push(context,
-                              //   MaterialPageRoute(builder: (context) =>  PaymentScreen(Ammount:widget.Ammount  , Discountt:discountted , Redeem:widget.Redeem , Balance: double.parse(discountedAmount),)),
-                              // );
-                              Navigator.pop(context,true);
+                              Navigator.of(context).pop(true);
                             }
                           });
                         },
