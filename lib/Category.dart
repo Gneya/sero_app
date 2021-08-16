@@ -179,7 +179,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                       spreadRadius: 0.0,
                     ),],
                 ),
-                height:150,
+                height:180,
                 child:Padding(
                   padding: const EdgeInsets.only(top:30),
                   child: Column(
@@ -325,7 +325,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
               ),
             ]
         ),
-        toolbarHeight: 130,
+        toolbarHeight: 170,
         backgroundColor: Colors.white,
       ),
       body: _isloading?Center(

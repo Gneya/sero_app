@@ -200,7 +200,7 @@ class _SelectItemState extends State<SelectItem> {
                         spreadRadius: 0.0,
                       ),],
                   ),
-                  height:150,
+                  height:180,
                   child:Padding(
                     padding: const EdgeInsets.only(top:30),
                     child: Column(
@@ -328,7 +328,7 @@ class _SelectItemState extends State<SelectItem> {
                 ),
               ]
           ),
-          toolbarHeight: 130,
+          toolbarHeight: 170,
           backgroundColor: Colors.white,
         ),
         /*'Select your food item'-*/
