@@ -278,11 +278,11 @@ class _CartScreenState extends State<CartScreen> {
                                     ],
                                   ),
                                   Container(
-                                      width: MediaQuery.of(context).size.width/8,
+                                      width: MediaQuery.of(context).size.width/9,
                                       child:Text(
-                                        double.parse((cart.cartItem[index].unitPrice*cart.cartItem[index].quantity).toString()).toStringAsFixed(1),
+                                        double.parse((cart.cartItem[index].unitPrice*cart.cartItem[index].quantity).toString()).toStringAsFixed(2),
                                         style: GoogleFonts.ptSans(
-                                            fontSize: 15,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.bold
                                         ),
                                       )),
