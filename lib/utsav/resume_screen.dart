@@ -63,7 +63,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
         price.add(sum);
         print(pid);
          map={
-          "order_id":i["id"],
+          "order_id":i["invoice_no"],
           "cus_name":json.decode(response.body)["data"][0]["name"].toString(),
           "pid":pid,
            "vid":vid,
@@ -195,8 +195,8 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                         ),
                                         onTap: () async {
                                           SharedPreferences shared=await SharedPreferences.getInstance();
-                                          shared.setInt("order_id", list[index]["order_id"]);
-                                          print("ORDER:"+shared.getInt("order_id").toString());
+                                          shared.setString("order_id", list[index]["order_id"]);
+                                          print(shared.getString("order_id"));
                                           var cart=FlutterCart();
                                           cart.deleteAllCart();
                                           for(int i=0;i<list[index]["pid"].length;i++) {

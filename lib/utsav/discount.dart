@@ -336,6 +336,7 @@ class _DiscountState extends State<Discount> {
                               shared.setDouble("Balance", double.parse(discountedAmount));
                               print("IN DISCOUNT SCREEN"+shared.getDouble("Balance").toString());
                               shared.setString("DiscountType",dropdownValue );
+                              print(shared.getString("DiscountType"));
                               shared.setDouble("Discountt", discountted);
                               Navigator.of(context).pop(true);
                             }
