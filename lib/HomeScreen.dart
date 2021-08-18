@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("total",cart.getCartItemCount().toString());
     var list=sharedPreferences.getStringList("selected")??[];
-    sharedPreferences.setInt("order_id",0);
+    sharedPreferences.setString("order_id","");
     if(list.length>0) {
       for (int i = 0; i < list.length; i++) {
         if (sharedPreferences.containsKey(list[i])) {

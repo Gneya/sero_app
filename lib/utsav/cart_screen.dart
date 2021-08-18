@@ -518,7 +518,7 @@ class _CartScreenState extends State<CartScreen> {
                     print(list_of_m);
 
 
-                    if(shared.getInt("order_id")==0)
+                    if(shared.getString("order_id")=="")
                     {
                       Map<String,dynamic> api= {
                         "sells":[
@@ -543,7 +543,7 @@ class _CartScreenState extends State<CartScreen> {
                       print(r);
                       var v=r.data[0]["id"];
                       print(v.toString());
-                      shared.setInt("order_id", v);
+                      shared.setString("order_id", v);
 
                       Fluttertoast.showToast(
                           msg: "Order on hold and Your Order Id is $v",
