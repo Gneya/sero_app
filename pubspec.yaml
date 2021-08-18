@@ -35,6 +35,7 @@ dependencies:
   provider: ^5.0.0
   flutter_cart: ^0.0.6
   dio: any
+  url_launcher: 6.0.0
   esc_pos_printer:
   ping_discover_network:
   # The following adds the Cupertino Icons font to your application.

@@ -16,6 +16,7 @@ import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
 import 'package:badges/badges.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 
 class PaymentScreen extends StatefulWidget {
@@ -95,10 +96,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
      payment mode values are not showing on the screen whenver below values are used or not commented
 
     */
+    Map data = await getData();
+    print("IN INITSTATE:"+widget.Ammount.toString());
     amount=widget.Ammount;
     balance=widget.Balance;
     redeem=widget.Redeem;
-    Map data = await getData();
     List<String> paymentMethod = [
       data['cash'],
       data['card'],
@@ -1638,6 +1640,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Container(
                         child: InkWell(
                           onTap:() async {
+                              const url = 'https://pos.sero.app/invoice/5cfd253329032c5597693c80b89828d9';
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              } else {
+                                throw 'Could not launch $url';
+                              }
                             SharedPreferences shared =await SharedPreferences.getInstance();
                             var id = shared.getInt("table_id",);
                             print(shared.getInt("table_id"));

@@ -591,6 +591,7 @@ class _CartScreenState extends State<CartScreen> {
                   //   context,
                   //   MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
                   // );
+                  print(paymentAmount);
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
                       builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
                       Route<dynamic> route) => true);
