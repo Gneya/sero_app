@@ -94,7 +94,7 @@ class _CartScreenState extends State<CartScreen> {
     }
     return Scaffold(
         floatingActionButton: SpeedDial(
-          marginBottom: 13, //margin bottom
+          marginBottom: 100, //margin bottom
           icon: Icons.open_in_browser_outlined, //icon on Floating action button
           activeIcon: Icons.close, //icon when menu is expanded on button
           backgroundColor: Colors.amber, //background color of button
@@ -110,7 +110,7 @@ class _CartScreenState extends State<CartScreen> {
           onOpen: () => print('OPENING DIAL'), // action when menu opens
           onClose: () => print('DIAL CLOSED'), //action when menu closes
 
-          elevation: 8.0, //shadow elevation of button
+          elevation: 8, //shadow elevation of button
           shape: CircleBorder(), //shape of button
 
           children: [
