@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 class edit_item extends StatefulWidget {
   String name;
   String quantity;
@@ -279,7 +280,11 @@ class _edit_item_State extends State<edit_item> {
                           width: 130,
                         ),
                         onTap :(){
-                          setState(() {
+                          setState(() async {
+                            // SharedPreferences shared = await SharedPreferences.getInstance();
+                            // shared.setString("DiscountType",dropdownValue );
+                            // print(shared.getString("DiscountType"));
+                            // shared.setDouble("Discountt", discountted);
                             if(dropdownValue == "Fixed"){
                               cart.cartItem[widget.index].unitPrice-= double.parse(_discount.text);
                               cart.cartItem[widget.index].subTotal-= double.parse(_discount.text);
