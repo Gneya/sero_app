@@ -137,12 +137,7 @@ class _HomeScreenState extends State<HomeScreen> {
            // label: 'table',
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () {
-              setState(() {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SelectTable()),
-                );
-              });
+
             },
             onLongPress: () => print('FIRST CHILD LONG PRESS'),
           ),
