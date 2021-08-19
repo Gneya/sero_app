@@ -89,7 +89,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
             TabItem(_tab1, HomeScreen(title: '')),
             TabItem(_tab2, CategoryScreen(title: '')),
             TabItem(_tab3, CartScreen()),
-            TabItem(_tab4,MoreOptions())
+            // TabItem(_tab4,MoreOptions())
           ],
           selectedIndex: _tabSelectedIndex,
           popStack: _tabPopStack,
@@ -121,10 +121,10 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
               title: Text(''),
 
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.open_in_browser_outlined,),
-              title: Text(''),
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.open_in_browser_outlined,),
+            //   title: Text(''),
+            // ),
           ],
         ),
       ),
