@@ -84,8 +84,8 @@ class _VoidBillState extends State<VoidBill> {
 
                                   SharedPreferences shared=await SharedPreferences.getInstance();
 
-                                  var  getOdID = shared.getInt("order_id")?? 0;
-                                  print("ORDER:"+shared.getInt("order_id").toString());
+                                  var  getOdID = shared.getString("order_id")?? 0;
+                                  print("ORDER:"+shared.getString("order_id").toString());
                                   Map<String,dynamic> api={
                                     "sell":getOdID
                                   };
