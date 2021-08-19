@@ -543,7 +543,7 @@ class _CartScreenState extends State<CartScreen> {
                       print(r);
                       var v=r.data[0]["id"];
                       print(v.toString());
-                      shared.setString("order_id", v);
+                      shared.setString("order_id", v.toString());
 
                       Fluttertoast.showToast(
                           msg: "Order on hold and Your Order Id is $v",
@@ -591,6 +591,7 @@ class _CartScreenState extends State<CartScreen> {
                   //   context,
                   //   MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
                   // );
+                  print(paymentAmount);
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
                       builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
                       Route<dynamic> route) => true);
