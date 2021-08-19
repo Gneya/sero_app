@@ -58,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences.setString("total",cart.getCartItemCount().toString());
     var list=sharedPreferences.getStringList("selected")??[];
     sharedPreferences.setString("order_id","");
+    sharedPreferences.setInt("Redeemed Points",0);
     if(list.length>0) {
       for (int i = 0; i < list.length; i++) {
         if (sharedPreferences.containsKey(list[i])) {

@@ -1505,7 +1505,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "discount_amount": discountt,
                                     "discount_type": shared.getString("DiscountType"),
                                     "rp_redeemed": shared.getInt("Redeemed Points"),
-                                    "rp_redeemed_amount": shared.getInt("Redeemed Points")!.toDouble(),
+                                    "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
                                     // "shipping_details": null,
                                     // "shipping_address": null,
                                     // "shipping_status": null,
@@ -1542,7 +1542,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             }
                             else{
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
-
+                              print(shared.getInt("Redeemed Points"));
                               Map<String,dynamic> api= {
                                 "sells":[
                                   {
@@ -1552,7 +1552,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "discount_amount": discountt,
                                     "discount_type": shared.getString("DiscountType"),
                                     "rp_redeemed": shared.getInt("Redeemed Points"),
-                                    "rp_redeemed_amount": shared.getInt("Redeemed Points")!.toDouble(),
+                                    "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString())??0,
                                     // "shipping_details": null,
                                     // "shipping_address": null,
                                     // "shipping_status": null,

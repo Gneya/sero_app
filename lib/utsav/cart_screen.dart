@@ -543,7 +543,7 @@ class _CartScreenState extends State<CartScreen> {
                       print(r);
                       var v=r.data[0]["id"];
                       print(v.toString());
-                      shared.setString("order_id", v);
+                      shared.setString("order_id", v.toString());
 
                       Fluttertoast.showToast(
                           msg: "Order on hold and Your Order Id is $v",
