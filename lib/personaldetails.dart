@@ -94,6 +94,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         appBar: AppBar(
 
           leading: Icon(Icons.menu,),
