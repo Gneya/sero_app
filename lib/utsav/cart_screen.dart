@@ -603,6 +603,18 @@ class _CartScreenState extends State<CartScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 30),
                 child: OutlinedButton.icon(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
+                      ),
+                      side: MaterialStateProperty.all(BorderSide(width: 2))
+                  ),
+                  icon: Icon(Icons.pause_outlined,
+                    color: Colors.black87,),
+                  label: Text("HOLD",style: GoogleFonts.ptSans(
+                    color: Colors.black87,
+                    fontSize: 20,
+                  ),),
                   onPressed: () async {
                     print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                     List<Map<String,dynamic>> list_of_m=[];
@@ -660,6 +672,9 @@ class _CartScreenState extends State<CartScreen> {
                       var v=r.data[0]["id"];
                       print(v.toString());
                       shared.setString("order_id", v.toString());
+                      var u=r.data[0]["invoice_no"];
+                      print(u);
+                      shared.setString("invoice_no", u);
 
                       Fluttertoast.showToast(
                           msg: "Order on hold and Your Order Id is $v",
@@ -687,7 +702,7 @@ class _CartScreenState extends State<CartScreen> {
                       print(json.encode(api));
 
                       var dio=Dio();
-                      var vid = shared.getString("order_id");
+                      var vid = shared.getString("invoice_no");
                       dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
                       print(vid);
                       var r=await dio.put("https://pos.sero.app/connector/api/sell/$vid",data: json.encode(api));
@@ -695,7 +710,7 @@ class _CartScreenState extends State<CartScreen> {
                       print(r.data);
                       var v=r.data["invoice_no"];
                       print(v);
-                      shared.setString("order_id", v);
+                      shared.setString("invoice_no", v);
                       cart.deleteAllCart();
                       shared.clear();
 
@@ -704,13 +719,6 @@ class _CartScreenState extends State<CartScreen> {
                         shared.setInt("index", 0);
                         shared.setInt("PAY_HOLD",1);
                       });
-
-                      Fluttertoast.showToast(
-                          msg: "Payment Successful and Your Order Id is $v",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.BOTTOM,
-                          textColor: Colors.green,
-                          timeInSecForIosWeb: 4);
                     }
                     shared.setString("modifiers", '');
                     shared.setStringList("selectedmodifiers", []);
@@ -728,18 +736,6 @@ class _CartScreenState extends State<CartScreen> {
                     });
                     // get("");
                   },
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
-                      ),
-                      side: MaterialStateProperty.all(BorderSide(width: 2))
-                  ),
-                  icon: Icon(Icons.pause_outlined,
-                    color: Colors.black87,),
-                  label: Text("HOLD",style: GoogleFonts.ptSans(
-                    color: Colors.black87,
-                    fontSize: 20,
-                  ),),
                 ),
               ),
               OutlinedButton.icon(

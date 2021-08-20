@@ -12,6 +12,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'main_drawer.dart';
 class SelectTable extends StatefulWidget {
   const SelectTable({Key ? key}) : super(key: key);
   @override
@@ -169,9 +171,8 @@ class _SelectTableState extends State<SelectTable> {
           //add more menu item childs here
         ],
       ),
+      drawer: MainDrawer(),
       appBar: AppBar(
-
-        leading: Icon(Icons.menu),
         title: Center(child: Text("SELECT TABLE",style: GoogleFonts.ptSans(color: Colors.black,fontSize: 18))),
         backgroundColor: Color(0xffffd45f),
         actions: [

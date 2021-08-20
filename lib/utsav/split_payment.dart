@@ -227,9 +227,14 @@ class _SplitPayState extends State<SplitPay> {
                             list_of_m.add(product);
                             // print(list_of_m);
                           }
-                          Map<String,dynamic> payment={
-                            "amount":cart.getTotalAmount()
-                          };
+                          for(int i=0;i<items;i++){
+                            Map<String,dynamic> payment1={
+                              "amount":payment[i],
+                              "method": paymentMode[i],
+                            };
+                            list_of_payment.add(payment1);
+                          }
+
                           if(shared.containsKey("modifiers")){
                             if(shared.getString("modifiers")!="") {
                               List<dynamic> mod = json.decode(
@@ -282,7 +287,7 @@ class _SplitPayState extends State<SplitPay> {
                                 gravity: ToastGravity.BOTTOM,
                                 textColor: Colors.green,
                                 timeInSecForIosWeb: 4);
-
+                            Navigator.pop(context);
 
                           }
                           else{
@@ -304,11 +309,7 @@ class _SplitPayState extends State<SplitPay> {
                                   // "delivered_to": null,
                                   "shipping_charges": shared.getDouble("Shipping"),
                                   "products":list_of_m,
-                                  "payments": [
-                                    {
-                                      "amount":cart.getTotalAmount()
-                                    }
-                                  ]
+                                  "payments": list_of_payment
                                 }
                               ]
                             };
@@ -339,8 +340,7 @@ class _SplitPayState extends State<SplitPay> {
                                 gravity: ToastGravity.BOTTOM,
                                 textColor: Colors.green,
                                 timeInSecForIosWeb: 4);
-
-
+                            Navigator.pop(context);
 
                           }
                         }

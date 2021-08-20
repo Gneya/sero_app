@@ -1,7 +1,10 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,8 +35,10 @@ class _ShippingState extends State<Shipping> {
   String shippingCharge ='0';
   TextEditingController _shipChargeController = new TextEditingController();
   TextEditingController _packageChargeController = new TextEditingController();
+  final TextEditingController _typeAheadController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  late customer _customer;
+  List<Customer> Cust = [];
+  // late customer _customer;
   String totalAmounttype(){
     shipAmount =double.parse(_shipChargeController.text);
     if(_packageChargeController.text != ''){
@@ -70,7 +75,6 @@ class _ShippingState extends State<Shipping> {
     }
     return charges;
   }
-
   Map input={};
   _sendData() async{
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
@@ -83,32 +87,54 @@ class _ShippingState extends State<Shipping> {
         }
     );
     print(response);
-    _customer = customer.fromJson(json.decode(response.body));
-    if (_customer.error != "null") {
-      setState(() {
-        _isloading = false;
-      });
-    }
-    else {
-      setState(() {
-        _isloading = false;
-        print(_customer.id);
-        _charges.clear();
-        print(_charges);
-      });
-      setState(() {
-        _isloading = false;
-      });
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => PaymentScreen(Ammount:widget.Ammount , Balance:double.parse(shippingCharge),
-              Discountt: widget.Discountt, Redeem: widget.Redeem ,),
-          ));
-    }
+    // _customer = customer.fromJson(json.decode(response.body));
+    // if (_customer.error != "null") {
+    //   setState(() {
+    //     _isloading = false;
+    //   });
+    // }
+    // else {
+    //   setState(() {
+    //     _isloading = false;
+    //     print(_customer.id);
+    //     _charges.clear();
+    //     print(_charges);
+    //   });
+    //   setState(() {
+    //     _isloading = false;
+    //   });
+    //   Navigator.push(
+    //       context,
+    //       MaterialPageRoute(
+    //         builder: (context) => PaymentScreen(Ammount:widget.Ammount , Balance:double.parse(shippingCharge),
+    //           Discountt: widget.Discountt, Redeem: widget.Redeem ,),
+    //       ));
+    // }
 
   }
+  Future<void> getDriverDetails() async {
+    setState(() {
+      _isloading=true;
+    });
+    var dio=Dio();
+    dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
+    var r=await dio.get("https://pos.sero.app/connector/api/user?user_role=driver");
+    print("hahah");
+    print(r.data);
+    for(var i in r.data["data"]){
+      Customer customer = Customer.fromJson(i);
+      Cust.add(customer);
+    }
+    setState(() {
+      _isloading=false;
+    });
+  }
+  @override
+  void initState() {
+    getDriverDetails();
 
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -219,7 +245,7 @@ class _ShippingState extends State<Shipping> {
                           padding: const EdgeInsets.only(top:4,bottom: 20),
                           child: Container(
                             height: 40,
-                            width: 280,
+                            width: 240,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(30),
@@ -227,32 +253,86 @@ class _ShippingState extends State<Shipping> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
                                   left: 25),
-                              child: DropdownButton<String>(
-                                value: dropdownValue1,
-                                items: [
-                                  DropdownMenuItem(
-                                    value: 'Driver Contact',
-                                    child: Text('Ramesh - 9804048393'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 'Driver Contact1',
-                                    child: Text('Suresh - 9804048393'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 'Driver Contact2',
-                                    child: Text('Manish - 9804048393'),
-                                  ),
-                                  DropdownMenuItem(
-                                    value: 'Driver Contact3 ',
-                                    child: Text('Hari - 9804048393'),
-                                  ),
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    dropdownValue1 = value!;
-                                  });
+                              child:
+                              TypeAheadField<Customer>(
+                                textFieldConfiguration: TextFieldConfiguration(
+                                    controller: _typeAheadController,
+                                    textAlign: TextAlign.center,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Select Driver",
+                                      // suffixIcon: IconButton(
+                                      //   icon:Icon(Icons.person_add_rounded),
+                                      //   padding: EdgeInsets.zero,
+                                      //   color: Colors.black,
+                                      //   onPressed:(){
+                                      //     Navigator.push(
+                                      //         context,
+                                      //         MaterialPageRoute(
+                                      //             builder: (context) => PersonalDetails()));
+                                      //   } ,
+                                      // ),
+                                      // prefixIcon:  IconButton(
+                                      //   padding: EdgeInsets.zero,
+                                      //   icon:Icon(Icons.search),
+                                      //   color: Colors.black,
+                                      //   onPressed:(){} ,
+                                      // ),
+                                    )
+                                ),
+                                itemBuilder: (BuildContext context,Customer? suggestion) {
+                                  final content=suggestion!;
+                                  return ListTile(
+                                    title: Text(content._name+"  ("+content._phone+")"),
+                                  );
                                 },
-                              ),
+                                onSuggestionSelected: (Customer? suggestion) async {
+
+                                  // hint=suggestion!._name;
+                                  var id=suggestion!.id;
+                                  print("ID IS:$id");
+                                  _typeAheadController.text=suggestion!._name;
+                                  Fluttertoast.showToast(
+                                      msg:suggestion._name+" is selected",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.BOTTOM,
+                                      textColor: Colors.green,
+                                      timeInSecForIosWeb: 10);
+                                  SharedPreferences prefs= await SharedPreferences.getInstance();
+                                  print(prefs.getString("customer_name"));
+                                  prefs.setString("customer_name",suggestion._name);
+                                  prefs.setString("customer_id",suggestion.id);
+                                },
+                                suggestionsCallback: CustomerApi.getUserSuggestion,
+                              )
+
+                              //
+                              // DropdownButton<String>(
+                              //   value: dropdownValue1,
+                              //   items: [
+                              //     DropdownMenuItem(
+                              //       value: 'Driver Contact',
+                              //       child: Text('Ramesh - 9804048393'),
+                              //     ),
+                              //     DropdownMenuItem(
+                              //       value: 'Driver Contact1',
+                              //       child: Text('Suresh - 9804048393'),
+                              //     ),
+                              //     DropdownMenuItem(
+                              //       value: 'Driver Contact2',
+                              //       child: Text('Manish - 9804048393'),
+                              //     ),
+                              //     DropdownMenuItem(
+                              //       value: 'Driver Contact3 ',
+                              //       child: Text('Hari - 9804048393'),
+                              //     ),
+                              //   ],
+                              //   onChanged: (value) {
+                              //     setState(() {
+                              //       dropdownValue1 = value!;
+                              //     });
+                              //   },
+                              // ),
                             ),
                           ),
                         ),
@@ -338,11 +418,56 @@ Future<Map<String, dynamic>> getData() async {
   });
   return json.decode(response.body);
 }
-class customer
+// class customer
+// {
+//   final String error;
+//   final String id;
+//   customer.fromJson(Map<String,dynamic> Json):
+//         this.error=Json["error"].toString(),
+//         this.id=Json["id"].toString();
+// }
+class Customer
 {
-  final String error;
+  final String _name;
+  final String _phone;
   final String id;
-  customer.fromJson(Map<String,dynamic> Json):
-        this.error=Json["error"].toString(),
-        this.id=Json["id"].toString();
+  Customer.fromJson(Map<String,dynamic> json):
+        this._name=json["first_name"],
+        this._phone=json["contact_no"]??"",
+        this.id=json["id"].toString();
+
+}
+class CustomerApi {
+  static Future<List<Customer>> getUserSuggestion(String query)
+  async {
+    int i = 1;
+    var pages;
+    List<Customer>name = [];
+
+    late Customer cus;
+    var response = await http.get(
+        Uri.parse("https://pos.sero.app/connector/api/user?user_role=driver"),
+        headers: {
+          'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
+        });
+    final List d = json.decode(response.body)["data"];
+    pages=json.decode(response.body);
+    print(d);
+    name.addAll(d.map((e) => Customer.fromJson(e)).where((element) {
+      final name = element._name.toLowerCase();
+      final _name = query.toLowerCase();
+      final phone = element._phone;
+      final _phone = query;
+      if (name.contains(_name))
+        return name.contains(_name);
+      else if(phone.contains(_phone))
+        return phone.contains(_phone);
+      else
+        return false;
+    }
+    ).toList());
+    print("naaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaammmmmmmmmmmmmmmmmmmmmmmmmeeeeeeeeeeeeeeeeeeee");
+    print(name);
+    return name;
+  }
 }
