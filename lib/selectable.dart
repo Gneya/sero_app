@@ -234,6 +234,7 @@ class _SelectTableState extends State<SelectTable> {
               sharedPreferences.setString("table_name", _tablenos[index]);
               if(_table_status[index]=="occupied")
     {
+      sharedPreferences.setInt("table_id", id[index]);
     setState(() {
     _isloading = true;
     });
@@ -252,7 +253,7 @@ class _SelectTableState extends State<SelectTable> {
       print(i["id"]);
       sharedPreferences.setInt("order_id", i["id"]);
     cart.deleteAllCart();
-      sharedPreferences.setInt("table_id", id[index]);
+    print(id[index]);
     for(var x in i["sell_lines"])
     {
     http.Response response = await http.get(
@@ -272,6 +273,7 @@ class _SelectTableState extends State<SelectTable> {
     break;
     }
     }
+    sharedPreferences.setInt("index", 2);
     setState(() {
     _isloading=false;
     });
