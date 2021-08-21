@@ -408,7 +408,7 @@ class _SelectItemState extends State<SelectItem> {
                                           var list = sharedPreferences.getStringList("variation");
                                           http.Response response = await http.get(
                                               Uri.parse("https://pos.sero.app/connector/api/variation/?name=${suggestion._name}"), headers: {
-                                            'Authorization': sharedPreferences.getString("Authorization")
+                                            'Authorization': sharedPreferences.getString("Authorization")??""
                                           });
                                           print("IDDDDDDDDDD");
                                           print(json.decode(response.body)["data"][0]["variation_id"].toString());
@@ -522,7 +522,7 @@ class _SelectItemState extends State<SelectItem> {
                               "https://pos.sero.app/connector/api/product/${_productlist[index]
                                   .id}")
                           , headers: {
-                        'Authorization': sharedPreferences.getString("Authorization")
+                        'Authorization': sharedPreferences.getString("Authorization")??""
                       });
                       var v = (json.decode(response.body));
                       //print(v["data"][0]["modifiers"]);
