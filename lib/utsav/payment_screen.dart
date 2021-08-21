@@ -1605,7 +1605,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             }
                             print(list_of_m);
 
-                            if(shared.getInt("order_id")=="")
+                            if(shared.getString("order_id")=="")
                             {
 
                               Map<String,dynamic> api= {
@@ -1682,7 +1682,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print(json.encode(api));
 
                               var dio=Dio();
-                              var vid = shared.getInt("order_id");
+                              var vid = shared.getString("order_id".toString());
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
                               print(vid);
                               var r=await dio.put("https://pos.sero.app/connector/api/sell/$vid",data: json.encode(api));

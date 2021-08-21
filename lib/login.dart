@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_nav_bar/forgetpassword.dart';
@@ -52,6 +53,13 @@ class loginState extends State<login> {
         };
         var s=_model.type+" "+m["Authorization"];
         sharedPreferences.setString("Authorization",s);
+        Map<String,dynamic> api={
+          "token":sharedPreferences.getString("Authorization")
+        };
+        var dio=Dio();
+        dio.options.headers["Authorization"]=sharedPreferences.getString("Authorization");
+        var r=await dio.post("https://pos.sero.app/connector/api/store-token",data: json.encode(api));
+        print("RESPONSE"+r.data.toString());
         print(sharedPreferences.getString("Authorization"));
         if(this.value==true) {
           sharedPreferences.setString("user_id", email.text);
