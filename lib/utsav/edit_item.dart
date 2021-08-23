@@ -285,8 +285,8 @@ class _edit_item_State extends State<edit_item> {
                           width: 130,
                         ),
                         onTap :(){
-                          setState(() async {
-                            SharedPreferences shared = await SharedPreferences.getInstance();
+                          setState(()  {
+                            // SharedPreferences shared = await SharedPreferences.getInstance();
 
                             if(dropdownValue == "Fixed"){
                               cart.cartItem[widget.index].unitPrice-= double.parse(_discount.text);
@@ -296,6 +296,8 @@ class _edit_item_State extends State<edit_item> {
                               print(cart.cartItem[widget.index].subTotal);
                             }
                             print(cart.getTotalAmount().toString());
+                            cart.cartItem[widget.index].productDetails=note.text;
+                            print(cart.cartItem[widget.index].productDetails);
                              Navigator.pop(context);
                           });
                         },

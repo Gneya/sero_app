@@ -432,7 +432,8 @@ class _CartScreenState extends State<CartScreen> {
                                         itemCount:1,
                                         itemBuilder: (context, i) {
                                           if(m[cart.cartItem[index].productName]!=null)
-                                            return Text(' - Extra '+m[cart.cartItem[index].productName].toString());
+                                            return Text(cart.cartItem[index].productDetails);
+                                              // Text(' - Extra '+m[cart.cartItem[index].productName].toString());
                                           else{
                                             return Text("");
                                           }
