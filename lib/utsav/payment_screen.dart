@@ -961,7 +961,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       showDialog(
                                           context: context,
                                           builder: (context){
-                                            return SplitPay(Ammount: widget.Ammount,);
+                                            return SplitPay( Balance: balance,);
                                           }
                                       );
                                     },

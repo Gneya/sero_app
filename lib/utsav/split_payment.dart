@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
@@ -8,9 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplitPay extends StatefulWidget {
-  double Ammount=0.0;
-
-  SplitPay({Key? key,required this.Ammount}) : super(key: key);
+  double Balance=0.0;
+  SplitPay({Key? key,required this.Balance}) : super(key: key);
 
   @override
   _SplitPayState createState() => _SplitPayState();
@@ -189,7 +187,7 @@ class _SplitPayState extends State<SplitPay> {
                         sum=sum+double.parse(payment[i]);
                       }
                       print(sum);
-                      if(sum.toStringAsFixed(2)!= widget.Ammount.toStringAsFixed(2)){
+                      if(sum.toStringAsFixed(2)!= widget.Balance.toStringAsFixed(2)){
                         Fluttertoast.showToast(
                             msg: "Total amount must be equal to balance amount",
                             toastLength: Toast.LENGTH_LONG,
@@ -370,7 +368,7 @@ class _SplitPayState extends State<SplitPay> {
                         height: 50,
                         child: Center(
                             child: Text(
-                              'Pay:\$'+widget.Ammount.toStringAsFixed(2),
+                              'Pay:\$'+widget.Balance.toStringAsFixed(2),
                               textScaleFactor: 2.0,
                               style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
                             ))),
@@ -411,7 +409,7 @@ class _SplitPayState extends State<SplitPay> {
               //         height: 60,
               //         child: Center(
               //             child: Text(
-              //               'Pay:\$'+widget.Ammount.toStringAsFixed(2),
+              //               'Pay:\$'+widget.Balance.toStringAsFixed(2),
               //               textScaleFactor: 2.0,
               //               style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
               //             ))),

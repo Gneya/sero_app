@@ -24,13 +24,17 @@ class _edit_item_State extends State<edit_item> {
   String  discountedAmount ='0';
   String dropdownValue ='Percentage';
   TextEditingController _discount = TextEditingController();
+  TextEditingController note = TextEditingController();
   var cart = FlutterCart();
   String editPrice(){
-    var q = int.parse(widget.quantity);
-    var p =(double.parse(widget.price));
+    var q = cart.cartItem[widget.index].quantity;
+    var p =cart.cartItem[widget.index].unitPrice;
     var total =0.0;
     total =p*q;
-    print(total);
+    // print(total);
+    print("000000000000000000");
+    print(cart.cartItem[widget.index].productName);
+
     return total.toStringAsFixed(2);
   }
   @override
@@ -140,7 +144,7 @@ class _edit_item_State extends State<edit_item> {
                                     Container(
                                         width: MediaQuery.of(context).size.width/9,
                                         child:Text(
-                                          editPrice(),
+                                          cart.cartItem[widget.index].subTotal.toString(),
                                           style: GoogleFonts.ptSans(
                                               fontSize: 10,
                                               fontWeight: FontWeight.bold
@@ -246,6 +250,7 @@ class _edit_item_State extends State<edit_item> {
                       child: TextField(
                         maxLines: 10,
                         enableInteractiveSelection: false,
+                        controller: note,
                         decoration: InputDecoration(
                           hintText: 'Cooking Instruction',
                           hintStyle: TextStyle(
@@ -281,13 +286,14 @@ class _edit_item_State extends State<edit_item> {
                         ),
                         onTap :(){
                           setState(() async {
-                            // SharedPreferences shared = await SharedPreferences.getInstance();
-                            // shared.setString("DiscountType",dropdownValue );
-                            // print(shared.getString("DiscountType"));
-                            // shared.setDouble("Discountt", discountted);
+                            SharedPreferences shared = await SharedPreferences.getInstance();
+
                             if(dropdownValue == "Fixed"){
                               cart.cartItem[widget.index].unitPrice-= double.parse(_discount.text);
-                              cart.cartItem[widget.index].subTotal-= double.parse(_discount.text);
+                              print(cart.cartItem[widget.index].unitPrice);
+                              cart.addToCart(productId: cart.cartItem[widget.index].productId, unitPrice: cart.cartItem[widget.index].unitPrice
+                                  ,productName: cart.cartItem[widget.index].productName);
+                              print(cart.cartItem[widget.index].subTotal);
                             }
                             print(cart.getTotalAmount().toString());
                              Navigator.pop(context);

@@ -657,6 +657,7 @@ class _CartScreenState extends State<CartScreen> {
                             // "status": "draft",
                             "is_suspend": 1,
                             "products":list_of_m,
+                            "tip":0,
                             "payments": [
                               {
                                 "amount":cart.getTotalAmount(),
@@ -844,7 +845,7 @@ class _CartScreenState extends State<CartScreen> {
   String getPaymentAmount() {
     var cart =FlutterCart();
     setState(() {
-      paymentAmount=cart.getTotalAmount()+p;
+      paymentAmount=cart.getTotalAmount();
     });
     return paymentAmount.toStringAsFixed(2);
   }
