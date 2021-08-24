@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,12 +22,14 @@ class RedeemPoint extends StatefulWidget {
 
 class _RedeemPointState extends State<RedeemPoint> {
   bool isClickedAdd = true;
+  bool _isloading = false;
   bool isClickedCancel = true;
   int points=250;
   int redeemAmount =0;
   int redeemed=0;
   String redeemedAmount ='0';
    double balance=0.0;
+   var pt =0;
   final pointscontroller= new TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -46,6 +49,29 @@ class _RedeemPointState extends State<RedeemPoint> {
     redeemed =int.parse(pointscontroller.text);
     return redeemed;
   }
+  getPoints() async {
+    setState(() {
+      _isloading =true;
+    });
+    var dio=Dio();
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var  cid = shared.getString("customer_id");
+    dio.options.headers["Authorization"]=shared.getString("Authorization");
+    print(cid);
+    var r=await dio.get("https://pos.sero.app/connector/api/contactapi/$cid");
+    print(r.data);
+    pt =r.data["data"][0]["total_rp"];
+
+    setState(() {
+      _isloading =false;
+    });
+  }
+  @override
+  void initState() {
+    getPoints();
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -64,7 +90,7 @@ class _RedeemPointState extends State<RedeemPoint> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text('$points POINTS',
+                        Text('$pt POINTS',
                           style: GoogleFonts.ptSans(
                               color: Colors.white,
                               fontSize: 35,

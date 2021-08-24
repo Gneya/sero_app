@@ -1624,6 +1624,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "delivered_to": null,
                                     "shipping_charges": shared.getDouble("Shipping"),
                                     "products":list_of_m,
+                                    "tip":_tipController.text,
                                     "payments": [
                                       {
                                         "amount":cart.getTotalAmount()
@@ -1671,6 +1672,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "delivered_to": null,
                                     "shipping_charges": shared.getDouble("Shipping"),
                                     "products":list_of_m,
+                                    "tip":_tipController.text,
                                     "payments": [
                                       {
                                         "amount":cart.getTotalAmount()
