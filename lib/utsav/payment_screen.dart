@@ -20,7 +20,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../selectable.dart';
 
-
 class PaymentScreen extends StatefulWidget {
   double Ammount=0.0;
   double Balance=0.0;
