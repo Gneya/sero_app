@@ -199,8 +199,8 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                         ),
                                         onTap: () async {
                                           SharedPreferences shared=await SharedPreferences.getInstance();
-                                          shared.setInt("order_id", list[index]["order_id"]);
-                                          print(shared.getInt("order_id"));
+                                          shared.setString("order_id", list[index]["order_id"].toString());
+                                          print(shared.getString("order_id"));
                                           shared.setString("invoice_no", list[index]["invoice_no"]);
                                           var cart=FlutterCart();
                                           cart.deleteAllCart();
@@ -278,8 +278,6 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                                         var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
                                                         print(r2);
                                                         print(id);
-                                                        var oid =shared.getString("order_id");
-                                                        print(oid);
                                                         dio.options.headers["Authorization"]=shared.getString("Authorization");
                                                         var r=await dio.delete("https://pos.sero.app/connector/api/sell/${list[index]["order_id"]}",data: json.encode(api));
                                                         print(r);

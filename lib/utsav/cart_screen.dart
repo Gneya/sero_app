@@ -646,7 +646,6 @@ class _CartScreenState extends State<CartScreen> {
 
                     print(list_of_m);
 
-
                     if(shared.getString("order_id")=="")
                     {
                       Map<String,dynamic> api= {
@@ -655,10 +654,9 @@ class _CartScreenState extends State<CartScreen> {
                             "table_id" :shared.getInt("table_id")??1,
                             "location_id": shared.getInt("bid")??1,
                             "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                            // "status": "draft",
                             "is_suspend": 1,
-                            "products":list_of_m,
                             "tip":0,
+                            "products":list_of_m,
                             "payments": [
                               {
                                 "amount":cart.getTotalAmount(),
@@ -677,7 +675,6 @@ class _CartScreenState extends State<CartScreen> {
                       var u=r.data[0]["invoice_no"];
                       print(u);
                       shared.setString("invoice_no", u);
-
                       Fluttertoast.showToast(
                           msg: "Order on hold and Your Order Id is $v",
                           toastLength: Toast.LENGTH_LONG,
@@ -686,26 +683,25 @@ class _CartScreenState extends State<CartScreen> {
                           timeInSecForIosWeb: 4);
                     }
                     else{
+
                       Map<String,dynamic> api= {
-                        "sells":[
-                          {
+
                             "table_id" :shared.getInt("table_id")??0,
                             "location_id": shared.getInt("bid")??1,
                             "is_suspend": 1,
+                            "tip":0,
                             "contact_id": double.parse(shared.getString("customer_id")??"1"),
                             "products":list_of_m,
                             "payments": [
                               {
                                 "amount":cart.getTotalAmount()
                               }
-                            ]
-                          }
-                        ]
+                              ]
                       };
                       print(json.encode(api));
 
                       var dio=Dio();
-                      var vid = shared.getString("invoice_no");
+                      var vid = shared.getString("order_id");
                       dio.options.headers["Authorization"]=shared.getString("Authorization");
                       print(vid);
                       var r=await dio.put("https://pos.sero.app/connector/api/sell/$vid",data: json.encode(api));

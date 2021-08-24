@@ -251,7 +251,7 @@ class _SelectTableState extends State<SelectTable> {
     if(i["is_suspend"]==1 && i["res_table_id"]==id[index]) {
       SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
       print(i["id"]);
-      sharedPreferences.setInt("order_id", i["id"]);
+      sharedPreferences.setString("order_id", i["id"].toString());
     cart.deleteAllCart();
     print(id[index]);
     for(var x in i["sell_lines"])

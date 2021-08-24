@@ -17,7 +17,6 @@ class edit_item extends StatefulWidget {
   @override
   _edit_item_State createState() => _edit_item_State();
 }
-
 class _edit_item_State extends State<edit_item> {
   double discountAmount =0.0;
   double discountted =0.0;
@@ -310,6 +309,3 @@ class _edit_item_State extends State<edit_item> {
         ));
   }
 }
-
-
-
