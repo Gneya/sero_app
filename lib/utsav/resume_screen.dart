@@ -202,6 +202,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                           shared.setString("order_id", list[index]["order_id"].toString());
                                           print(shared.getString("order_id"));
                                           shared.setString("invoice_no", list[index]["invoice_no"]);
+                                          print( list[index]["invoice_no"]);
                                           var cart=FlutterCart();
                                           cart.deleteAllCart();
                                           for(int i=0;i<list[index]["pid"].length;i++) {

@@ -10,6 +10,7 @@ import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -281,6 +282,8 @@ class _SelectItemState extends State<SelectItem> {
                     gravity: ToastGravity.BOTTOM,
                     textColor: Colors.green,
                     timeInSecForIosWeb: 10);
+                shared.setInt("seconds", 0);
+                Phoenix.rebirth(context);
               },
               onLongPress: () => print('THIRD CHILD LONG PRESS'),
             ),

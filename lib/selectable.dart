@@ -6,14 +6,15 @@ import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'main_drawer.dart';
+
 class SelectTable extends StatefulWidget {
   const SelectTable({Key ? key}) : super(key: key);
   @override
@@ -155,7 +156,7 @@ class _SelectTableState extends State<SelectTable> {
               setState(() {
                 shared.setString("customer_name", "");
                 shared.setString("table_name", "");
-                shared.setInt("index", 0);
+                // shared.setInt("index", 0);
                 shared.setString("total", "0");
               });
 
@@ -165,6 +166,8 @@ class _SelectTableState extends State<SelectTable> {
                   gravity: ToastGravity.BOTTOM,
                   textColor: Colors.green,
                   timeInSecForIosWeb: 10);
+              shared.setInt("seconds", 0);
+              Phoenix.rebirth(context);
             },
             onLongPress: () => print('THIRD CHILD LONG PRESS'),
           ),
@@ -229,7 +232,7 @@ class _SelectTableState extends State<SelectTable> {
               ),
             ),
             onTap: ()async {
-
+              // Phoenix.rebirth(context);
               SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
               sharedPreferences.setString("table_name", _tablenos[index]);
               if(_table_status[index]=="occupied")
@@ -273,7 +276,10 @@ class _SelectTableState extends State<SelectTable> {
     break;
     }
     }
-    sharedPreferences.setInt("index", 2);
+    if(cart.getCartItemCount()!=0){
+      sharedPreferences.setInt("index", 2);
+    }
+
     setState(() {
     _isloading=false;
     });

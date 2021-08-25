@@ -11,6 +11,7 @@ import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -37,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   bool _isloading = false;
   late String _name;
-  String hint="Search Customer";
+  String hint="Walk In Customer";
   final List<String> _suggestions = [
     'Alligator',
     'Buffalo',
@@ -207,6 +208,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   gravity: ToastGravity.BOTTOM,
                   textColor: Colors.green,
                   timeInSecForIosWeb: 10);
+              shared.setInt("seconds", 0);
+              Phoenix.rebirth(context);
             },
             onLongPress: () => print('THIRD CHILD LONG PRESS'),
           ),
@@ -342,6 +345,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
                     onPressed: () async {
+                      // Phoenix.rebirth(context);
                      SharedPreferences shared=await SharedPreferences.getInstance();
                       if(shared.getString("customer_name")=="")
                         {
