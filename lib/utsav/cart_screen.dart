@@ -3,12 +3,18 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_nav_bar/utsav/edit_item.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
+import 'package:flutter_nav_bar/utsav/resume_screen.dart';
+import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../main_drawer.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -89,6 +95,116 @@ class _CartScreenState extends State<CartScreen> {
       }
     }
     return Scaffold(
+        floatingActionButton: SpeedDial(
+          marginBottom: 100, //margin bottom
+          icon: Icons.open_in_browser_outlined, //icon on Floating action button
+          activeIcon: Icons.close, //icon when menu is expanded on button
+          backgroundColor: Colors.amber, //background color of button
+          foregroundColor: Colors.white, //font color, icon color in button
+          activeBackgroundColor: Colors.amber, //background color when menu is expanded
+          activeForegroundColor: Colors.white,
+          buttonSize: 50.0, //button size
+          visible: true,
+          closeManually: false,
+          curve: Curves.bounceIn,
+          overlayColor: Colors.black,
+          overlayOpacity: 0.5,
+          onOpen: () => print('OPENING DIAL'), // action when menu opens
+          onClose: () => print('DIAL CLOSED'), //action when menu closes
+
+          elevation: 8, //shadow elevation of button
+          shape: CircleBorder(), //shape of button
+
+          children: [
+            SpeedDialChild( //speed dial child
+              child: Icon(Icons.table_chart_sharp),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.amber,
+              // label: 'table',
+              labelStyle: TextStyle(fontSize: 18.0),
+              onTap: () {
+                setState(() {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SelectTable()),
+                  );
+                });
+              },
+              onLongPress: () => print('FIRST CHILD LONG PRESS'),
+            ),
+            SpeedDialChild(
+              child: Icon(Icons.play_arrow_sharp),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.amber,
+              // label: 'resume',
+              labelStyle: TextStyle(fontSize: 18.0),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResumeScreen()));
+              },
+              onLongPress: () => print('SECOND CHILD LONG PRESS'),
+            ),
+            SpeedDialChild(
+              child: Icon(Icons.delete),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.amber,
+              // label: 'void',
+              labelStyle: TextStyle(fontSize: 18.0),
+              onTap: (){
+                showDialog(
+                    context: context,
+                    builder: (context){
+                      return VoidBill();
+                    }
+                );
+              },
+              onLongPress: () => print('THIRD CHILD LONG PRESS'),
+            ),
+            SpeedDialChild(
+              child: Icon(Icons.clear_all),
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.amber,
+              // label: 'clear',
+              labelStyle: TextStyle(fontSize: 18.0),
+              onTap: () async {
+                var dio = Dio();
+                SharedPreferences shared=await SharedPreferences.getInstance();
+                var id = shared.getInt("table_id",);
+                print(shared.getInt("table_id"));
+                Map<String,dynamic> api1={
+                  "table_id":id,
+                  "table_status":"available"
+                };
+                dio.options.headers["Authorization"]=shared.getString("Authorization");
+                var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                print(r2);
+                print(id);
+                shared.setStringList("variation", []);
+                var cart = FlutterCart();
+                cart.deleteAllCart();
+                setState(() {
+                  shared.setString("customer_name", "");
+                  shared.setString("table_name", "");
+                  shared.setInt("index", 0);
+                  shared.setString("total", "0");
+                  shared.setInt("PAY_HOLD",1);
+                });
+
+                Fluttertoast.showToast(
+                    msg:"Order has been cleared you can go to home screen",
+                    toastLength: Toast.LENGTH_LONG,
+                    gravity: ToastGravity.BOTTOM,
+                    textColor: Colors.green,
+                    timeInSecForIosWeb: 10);
+              },
+              onLongPress: () => print('THIRD CHILD LONG PRESS'),
+            ),
+            //add more menu item childs here
+          ],
+        ),
+        drawer: MainDrawer(),
         appBar:AppBar(
           //leading: Container(),
           flexibleSpace:  Column(
@@ -316,7 +432,8 @@ class _CartScreenState extends State<CartScreen> {
                                         itemCount:1,
                                         itemBuilder: (context, i) {
                                           if(m[cart.cartItem[index].productName]!=null)
-                                            return Text(' - Extra '+m[cart.cartItem[index].productName].toString());
+                                            return Text(cart.cartItem[index].productDetails);
+                                              // Text(' - Extra '+m[cart.cartItem[index].productName].toString());
                                           else{
                                             return Text("");
                                           }
@@ -487,6 +604,18 @@ class _CartScreenState extends State<CartScreen> {
               Padding(
                 padding: const EdgeInsets.only(right: 30),
                 child: OutlinedButton.icon(
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
+                      ),
+                      side: MaterialStateProperty.all(BorderSide(width: 2))
+                  ),
+                  icon: Icon(Icons.pause_outlined,
+                    color: Colors.black87,),
+                  label: Text("HOLD",style: GoogleFonts.ptSans(
+                    color: Colors.black87,
+                    fontSize: 20,
+                  ),),
                   onPressed: () async {
                     print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                     List<Map<String,dynamic>> list_of_m=[];
@@ -517,7 +646,6 @@ class _CartScreenState extends State<CartScreen> {
 
                     print(list_of_m);
 
-
                     if(shared.getString("order_id")=="")
                     {
                       Map<String,dynamic> api= {
@@ -526,8 +654,8 @@ class _CartScreenState extends State<CartScreen> {
                             "table_id" :shared.getInt("table_id")??1,
                             "location_id": shared.getInt("bid")??1,
                             "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                            // "status": "draft",
                             "is_suspend": 1,
+                            "tip":0,
                             "products":list_of_m,
                             "payments": [
                               {
@@ -538,19 +666,58 @@ class _CartScreenState extends State<CartScreen> {
                         ]
                       };
                       var dio=Dio();
-                      dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
+                      dio.options.headers["Authorization"]=shared.getString("Authorization");
                       var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
                       print(r);
                       var v=r.data[0]["id"];
                       print(v.toString());
-                      shared.setString("order_id", v);
-
+                      shared.setString("order_id", v.toString());
+                      var u=r.data[0]["invoice_no"];
+                      print(u);
+                      shared.setString("invoice_no", u);
                       Fluttertoast.showToast(
                           msg: "Order on hold and Your Order Id is $v",
                           toastLength: Toast.LENGTH_LONG,
                           gravity: ToastGravity.BOTTOM,
                           textColor: Colors.green,
                           timeInSecForIosWeb: 4);
+                    }
+                    else{
+
+                      Map<String,dynamic> api= {
+
+                            "table_id" :shared.getInt("table_id")??0,
+                            "location_id": shared.getInt("bid")??1,
+                            "is_suspend": 1,
+                            "tip":0,
+                            "contact_id": double.parse(shared.getString("customer_id")??"1"),
+                            "products":list_of_m,
+                            "payments": [
+                              {
+                                "amount":cart.getTotalAmount()
+                              }
+                              ]
+                      };
+                      print(json.encode(api));
+
+                      var dio=Dio();
+                      var vid = shared.getString("order_id");
+                      dio.options.headers["Authorization"]=shared.getString("Authorization");
+                      print(vid);
+                      var r=await dio.put("https://pos.sero.app/connector/api/sell/$vid",data: json.encode(api));
+                      print("hahah");
+                      print(r.data);
+                      var v=r.data["invoice_no"];
+                      print(v);
+                      shared.setString("invoice_no", v);
+                      cart.deleteAllCart();
+                      shared.clear();
+
+                      setState(() {
+                        shared.setString("total","0");
+                        shared.setInt("index", 0);
+                        shared.setInt("PAY_HOLD",1);
+                      });
                     }
                     shared.setString("modifiers", '');
                     shared.setStringList("selectedmodifiers", []);
@@ -568,18 +735,6 @@ class _CartScreenState extends State<CartScreen> {
                     });
                     // get("");
                   },
-                  style: ButtonStyle(
-                      shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
-                      ),
-                      side: MaterialStateProperty.all(BorderSide(width: 2))
-                  ),
-                  icon: Icon(Icons.pause_outlined,
-                    color: Colors.black87,),
-                  label: Text("HOLD",style: GoogleFonts.ptSans(
-                    color: Colors.black87,
-                    fontSize: 20,
-                  ),),
                 ),
               ),
               OutlinedButton.icon(
@@ -591,6 +746,7 @@ class _CartScreenState extends State<CartScreen> {
                   //   context,
                   //   MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
                   // );
+                  print(paymentAmount);
                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
                       builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
                       Route<dynamic> route) => true);
@@ -686,7 +842,7 @@ class _CartScreenState extends State<CartScreen> {
   String getPaymentAmount() {
     var cart =FlutterCart();
     setState(() {
-      paymentAmount=cart.getTotalAmount()+p;
+      paymentAmount=cart.getTotalAmount();
     });
     return paymentAmount.toStringAsFixed(2);
   }

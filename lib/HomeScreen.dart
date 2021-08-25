@@ -9,6 +9,9 @@ import 'package:flutter_nav_bar/edit_customer.dart';
 import 'package:flutter_nav_bar/main_drawer.dart';
 import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
+import 'package:flutter_nav_bar/utsav/resume_screen.dart';
+import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -58,6 +61,8 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences.setString("total",cart.getCartItemCount().toString());
     var list=sharedPreferences.getStringList("selected")??[];
     sharedPreferences.setString("order_id","");
+    sharedPreferences.setString("invoice", "");
+    sharedPreferences.setInt("Redeemed Points",0);
     if(list.length>0) {
       for (int i = 0; i < list.length; i++) {
         if (sharedPreferences.containsKey(list[i])) {
@@ -74,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var Response = await http.get(
         Uri.parse("https://pos.sero.app/connector/api/user/loggedin"),
         headers: {
-          'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
+          'Authorization': sharedPreferences.getString("Authorization")??""
         });
     var d = json.decode(Response.body.toString());
     if(mounted){
@@ -105,6 +110,109 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: SpeedDial(
+        marginBottom: 13, //margin bottom
+        icon: Icons.open_in_browser_outlined, //icon on Floating action button
+        activeIcon: Icons.close, //icon when menu is expanded on button
+        backgroundColor: Colors.amber, //background color of button
+        foregroundColor: Colors.white, //font color, icon color in button
+        activeBackgroundColor: Colors.amber, //background color when menu is expanded
+        activeForegroundColor: Colors.white,
+        buttonSize: 50.0, //button size
+        visible: true,
+        closeManually: false,
+        curve: Curves.bounceIn,
+        overlayColor: Colors.black,
+        overlayOpacity: 0.5,
+        onOpen: () => print('OPENING DIAL'), // action when menu opens
+        onClose: () => print('DIAL CLOSED'), //action when menu closes
+
+        elevation: 8.0, //shadow elevation of button
+        shape: CircleBorder(), //shape of button
+
+        children: [
+          SpeedDialChild( //speed dial child
+            child: Icon(Icons.table_chart_sharp),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.amber,
+           // label: 'table',
+            labelStyle: TextStyle(fontSize: 18.0),
+            onTap: () {
+
+            },
+            onLongPress: () => print('FIRST CHILD LONG PRESS'),
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.play_arrow_sharp),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.amber,
+           // label: 'resume',
+            labelStyle: TextStyle(fontSize: 18.0),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => ResumeScreen()));
+            },
+            onLongPress: () => print('SECOND CHILD LONG PRESS'),
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.delete),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.amber,
+           // label: 'void',
+            labelStyle: TextStyle(fontSize: 18.0),
+            onTap: (){
+              showDialog(
+                  context: context,
+                  builder: (context){
+                    return VoidBill();
+                  }
+              );
+            },
+            onLongPress: () => print('THIRD CHILD LONG PRESS'),
+          ),
+          SpeedDialChild(
+            child: Icon(Icons.clear_all),
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.amber,
+           // label: 'clear',
+            labelStyle: TextStyle(fontSize: 18.0),
+            onTap: () async {
+              var dio = Dio();
+              SharedPreferences shared=await SharedPreferences.getInstance();
+              var id = shared.getInt("table_id",);
+              print(shared.getInt("table_id"));
+              Map<String,dynamic> api1={
+                "table_id":id,
+                "table_status":"available"
+              };
+              dio.options.headers["Authorization"]=shared.getString("Authorization");
+              var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+              print(r2);
+              print(id);
+              shared.setStringList("variation", []);
+              var cart = FlutterCart();
+              cart.deleteAllCart();
+              setState(() {
+                shared.setString("customer_name", "");
+                shared.setString("table_name", "");
+                shared.setInt("index", 0);
+                shared.setString("total", "0");
+              });
+
+              Fluttertoast.showToast(
+                  msg:"Order has been cleared you can go to home screen",
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.BOTTOM,
+                  textColor: Colors.green,
+                  timeInSecForIosWeb: 10);
+            },
+            onLongPress: () => print('THIRD CHILD LONG PRESS'),
+          ),
+          //add more menu item childs here
+        ],
+      ),
       drawer: MainDrawer(),
       appBar: AppBar(
 
@@ -134,7 +242,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(height: 10,),
-
         ],
       ),
       backgroundColor: Color(0xfff5f5f5),
@@ -296,13 +403,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     minWidth: MediaQuery.of(context).size.width,
                     padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     onPressed: () async {
+                      SharedPreferences shared=await SharedPreferences.getInstance();
                       setState(() {
                         _isloading=true;
                       });
                       var response = await http.get(
                           Uri.parse("https://pos.sero.app/connector/api/contactapi/$id"),
                           headers: {
-                            'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
+                            'Authorization': shared.getString("Authorization")??""
                           });
                       final d = json.decode(response.body)["data"][0];
                       print(d);
@@ -373,12 +481,12 @@ class CustomerApi {
     int i = 1;
     var pages;
     List<Customer>name = [];
-
+    SharedPreferences shared=await SharedPreferences.getInstance();
     late Customer cus;
       var response = await http.get(
           Uri.parse("https://pos.sero.app/connector/api/contactapi/?per_page=-1"),
           headers: {
-            'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
+            'Authorization': shared.getString("Authorization")??""
           });
       final List d = json.decode(response.body)["data"];
       pages=json.decode(response.body);
