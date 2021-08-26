@@ -14,8 +14,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../main.dart';
 import '../main_drawer.dart';
 
 class CartScreen extends StatefulWidget {
@@ -679,6 +677,14 @@ class _CartScreenState extends State<CartScreen> {
                       var u=r.data[0]["invoice_no"];
                       print(u);
                       shared.setString("invoice_no", u);
+                      var inid =shared.getString("invoice_no");
+                      print(inid);
+                      Map<String,dynamic> api2={
+                        "invoice_number":inid
+                      };
+                      dio.options.headers["Authorization"]=shared.getString("Authorization");
+                      var r1=await dio.post("https://pos.sero.app/connector/api/get-invoice-url",data: json.encode(api2));
+                      print(r1);
                       Fluttertoast.showToast(
                           msg: "Order on hold and Your Order Id is $v",
                           toastLength: Toast.LENGTH_LONG,
@@ -715,17 +721,10 @@ class _CartScreenState extends State<CartScreen> {
                       print(v);
                       shared.setString("invoice_no", v);
                       cart.deleteAllCart();
-                      // shared.clear();
-/*
-*
-*
-all changes are done here today **********************************************************************
-*
-*
-*/
+
                       setState(() {
                         shared.setString("total","0");
-                        shared.setInt("index", 1);
+                        shared.setInt("index", 0);
                         shared.setInt("PAY_HOLD",1);
                       });
                     }
@@ -866,4 +865,3 @@ class Modi {
     _modi=m;
   }
 }
-

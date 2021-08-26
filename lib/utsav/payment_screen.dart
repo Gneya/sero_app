@@ -1044,7 +1044,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       final _dialog=await showDialog(
                                           context: context,
                                           builder: (context){
-                                            return Shipping(Ammount: widget.Ammount, Balance: widget.Balance,
+                                            return Shipping(Ammount: widget.Ammount, Balance: balance,
                                               Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
                                       );
@@ -1665,27 +1665,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                               print(shared.getInt("Redeemed Points"));
                               Map<String,dynamic> api= {
-                                "sells":[
+                                "table_id": shared.getInt("table_id") ?? 0,
+                                "location_id": shared.getInt("bid") ?? 1,
+                                "contact_id": double.parse(
+                                    shared.getString("customer_id") ?? "1"),
+                                "discount_amount": discountt,
+                                "discount_type": shared.getString(
+                                    "DiscountType"),
+                                "is_suspend":0,
+                                "rp_redeemed": shared.getInt("Redeemed Points"),
+                                "rp_redeemed_amount": double.parse(
+                                    shared.getInt("Redeemed Points")
+                                        .toString()) ?? 0,
+                                // "shipping_details": null,
+                                // "shipping_address": null,
+                                // "shipping_status": null,
+                                // "delivered_to": null,
+                                "shipping_charges": shared.getDouble(
+                                    "Shipping"),
+                                "products": list_of_m,
+                                "tip": _tipController.text,
+                                "payments": [
                                   {
-                                    "table_id" :shared.getInt("table_id")??0,
-                                    "location_id": shared.getInt("bid")??1,
-                                    "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                                    "discount_amount": discountt,
-                                    "discount_type": shared.getString("DiscountType"),
-                                    "rp_redeemed": shared.getInt("Redeemed Points"),
-                                    "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString())??0,
-                                    // "shipping_details": null,
-                                    // "shipping_address": null,
-                                    // "shipping_status": null,
-                                    // "delivered_to": null,
-                                    "shipping_charges": shared.getDouble("Shipping"),
-                                    "products":list_of_m,
-                                    "tip":_tipController.text,
-                                    "payments": [
-                                      {
-                                        "amount":cart.getTotalAmount()
-                                      }
-                                    ]
+                                    "amount": cart.getTotalAmount()
                                   }
                                 ]
                               };
@@ -1766,23 +1768,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Container(
                         child: InkWell(
                           onTap:() async {
-                            SharedPreferences shared =await SharedPreferences.getInstance();
-                            var inid =shared.getString("invoice_no");
-                            print(inid);
-                            Map<String,dynamic> api2={
-                              "invoice_number":inid
-                            };
-                            var dio = Dio();
-                            dio.options.headers["Authorization"]=shared.getString("Authorization");
-                            var r1=await dio.post("https://pos.sero.app/connector/api/get-invoice-url",data: json.encode(api2));
-                            print(r1);
-                            var  url = r1.data["url"];
-                            if (await canLaunch(url)) {
-                              await launch(url);
-                            } else {
-                              throw 'Could not launch $url';
-                            }
 
+                            // var  url = r1.data["url"];
+                            // if (await canLaunch(url)) {
+                            //   await launch(url);
+                            // } else {
+                            //   throw 'Could not launch $url';
+                            // }
+                            SharedPreferences shared=await SharedPreferences.getInstance();
                             var id = shared.getInt("table_id",);
                             print(shared.getInt("table_id"));
                             setState(() {
@@ -1792,6 +1785,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "table_id":id,
                               "table_status":"billing"
                             };
+                            var dio=Dio();
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
                             var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
                             print(r2);
