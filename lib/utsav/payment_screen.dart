@@ -1630,6 +1630,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_address": null,
                                     // "shipping_status": null,
                                     // "delivered_to": null,
+                                    // "res_order_status":"POS",
                                     "shipping_charges": shared.getDouble("Shipping"),
                                     "products":list_of_m,
                                     "tip":_tipController.text,
@@ -1645,6 +1646,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
                               var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
                               print(r.data);
+                              // var y =r.data["id"];
                               var v=r.data[0]["invoice_no"];
                               print(v.toString());
                               shared.setString("order_id", v);
@@ -1672,6 +1674,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 "discount_amount": discountt,
                                 "discount_type": shared.getString(
                                     "DiscountType"),
+                                "tip":_tipController.text,
                                 "is_suspend":0,
                                 "rp_redeemed": shared.getInt("Redeemed Points"),
                                 "rp_redeemed_amount": double.parse(
@@ -1684,7 +1687,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 "shipping_charges": shared.getDouble(
                                     "Shipping"),
                                 "products": list_of_m,
-                                "tip": _tipController.text,
                                 "payments": [
                                   {
                                     "amount": cart.getTotalAmount()
