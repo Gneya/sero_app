@@ -416,6 +416,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           headers: {
                             'Authorization': shared.getString("Authorization")??""
                           });
+                      print(json.decode(response.body));
                       final d = json.decode(response.body)["data"][0];
                       print(d);
                       var fname=d["first_name"];

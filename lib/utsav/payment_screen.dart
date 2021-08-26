@@ -1657,27 +1657,29 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                               print(shared.getInt("Redeemed Points"));
                               Map<String,dynamic> api= {
-                                "sells":[
+                                "table_id": shared.getInt("table_id") ?? 0,
+                                "location_id": shared.getInt("bid") ?? 1,
+                                "contact_id": double.parse(
+                                    shared.getString("customer_id") ?? "1"),
+                                "discount_amount": discountt,
+                                "discount_type": shared.getString(
+                                    "DiscountType"),
+                                "is_suspend":0,
+                                "rp_redeemed": shared.getInt("Redeemed Points"),
+                                "rp_redeemed_amount": double.parse(
+                                    shared.getInt("Redeemed Points")
+                                        .toString()) ?? 0,
+                                // "shipping_details": null,
+                                // "shipping_address": null,
+                                // "shipping_status": null,
+                                // "delivered_to": null,
+                                "shipping_charges": shared.getDouble(
+                                    "Shipping"),
+                                "products": list_of_m,
+                                "tip": _tipController.text,
+                                "payments": [
                                   {
-                                    "table_id" :shared.getInt("table_id")??0,
-                                    "location_id": shared.getInt("bid")??1,
-                                    "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                                    "discount_amount": discountt,
-                                    "discount_type": shared.getString("DiscountType"),
-                                    "rp_redeemed": shared.getInt("Redeemed Points"),
-                                    "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString())??0,
-                                    // "shipping_details": null,
-                                    // "shipping_address": null,
-                                    // "shipping_status": null,
-                                    // "delivered_to": null,
-                                    "shipping_charges": shared.getDouble("Shipping"),
-                                    "products":list_of_m,
-                                    "tip":_tipController.text,
-                                    "payments": [
-                                      {
-                                        "amount":cart.getTotalAmount()
-                                      }
-                                    ]
+                                    "amount": cart.getTotalAmount()
                                   }
                                 ]
                               };

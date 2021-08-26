@@ -14,8 +14,6 @@ import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../main.dart';
 import '../main_drawer.dart';
 
 class CartScreen extends StatefulWidget {
@@ -715,7 +713,6 @@ class _CartScreenState extends State<CartScreen> {
                       print(v);
                       shared.setString("invoice_no", v);
                       cart.deleteAllCart();
-                      shared.clear();
 
                       setState(() {
                         shared.setString("total","0");
