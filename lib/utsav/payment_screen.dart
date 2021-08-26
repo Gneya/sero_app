@@ -9,6 +9,7 @@ import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/shipping.dart';
 import 'package:flutter_nav_bar/utsav/split_payment.dart';
 import 'package:flutter_nav_bar/utsav/discount.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -1690,10 +1691,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print("hahah");
                               print(r.data);
                               var v=r.data["invoice_no"];
+                              var y =r.data["id"];
+                              print(y);
                               print(v);
                               shared.setString("order_id", v);
                               cart.deleteAllCart();
-                              shared.clear();
 
                               setState(() {
                                 shared.setString("total","0");
@@ -1702,17 +1704,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               });
 
                               Fluttertoast.showToast(
-                                  msg: "Payment Successful and Your Order Id is $v",
+                                  msg: "Payment Successful and Your Order Id is $y",
                                   toastLength: Toast.LENGTH_LONG,
                                   gravity: ToastGravity.BOTTOM,
                                   textColor: Colors.green,
                                   timeInSecForIosWeb: 4);
 
 
-
                             }
-
-
+                            shared.setInt("seconds", 0);
+                            Phoenix.rebirth(context);
 
                           }:(){},
                           child: Container(
@@ -1758,7 +1759,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         child: InkWell(
                           onTap:() async {
                             SharedPreferences shared =await SharedPreferences.getInstance();
-                            var inid =shared.getString("order_id");
+                            var inid =shared.getString("invoice_no");
                             print(inid);
                             Map<String,dynamic> api2={
                               "invoice_number":inid

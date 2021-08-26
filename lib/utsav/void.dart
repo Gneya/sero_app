@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -123,6 +124,8 @@ class _VoidBillState extends State<VoidBill> {
                                     shared.setInt("PAY_HOLD", 1);
                                     shared.setString("total", "0");
                                   });
+                                  shared.setInt("seconds", 0);
+                                  Phoenix.rebirth(context);
                                 },
 
                               ),

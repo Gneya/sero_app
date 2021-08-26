@@ -9,11 +9,13 @@ import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../main.dart';
 import '../main_drawer.dart';
 
 class CartScreen extends StatefulWidget {
@@ -198,6 +200,8 @@ class _CartScreenState extends State<CartScreen> {
                     gravity: ToastGravity.BOTTOM,
                     textColor: Colors.green,
                     timeInSecForIosWeb: 10);
+                shared.setInt("seconds", 0);
+                Phoenix.rebirth(context);
               },
               onLongPress: () => print('THIRD CHILD LONG PRESS'),
             ),
@@ -733,6 +737,8 @@ class _CartScreenState extends State<CartScreen> {
                       shared.setInt("index", 0);
                       shared.setInt("PAY_HOLD",1);
                     });
+                    shared.setInt("seconds", 0);
+                    Phoenix.rebirth(context);
                     // get("");
                   },
                 ),
@@ -742,14 +748,14 @@ class _CartScreenState extends State<CartScreen> {
                   SharedPreferences shared =await SharedPreferences.getInstance();
                   shared.setString("screen", "Payment");
                   // shared.setInt("index", 2);
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
+                  );
                   print(paymentAmount);
-                  Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                      builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
-                      Route<dynamic> route) => true);
+                  // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                  //     builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
+                  //     Route<dynamic> route) => true);
                 },
                 style: ButtonStyle(
                     shape: MaterialStateProperty.all(
