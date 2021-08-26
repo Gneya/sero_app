@@ -43,13 +43,13 @@ class _ShippingState extends State<Shipping> {
     shipAmount =double.parse(_shipChargeController.text);
     if(_packageChargeController.text != ''){
       packageAmount =double.parse(_packageChargeController.text);
-      double totalAmount = (widget.Ammount + shipAmount+packageAmount);
+      double totalAmount = (widget.Balance + shipAmount+packageAmount);
       setState(() {
         shippingCharge =totalAmount.toStringAsFixed(2);
       });
     }
     else{
-      double totalAmount = (widget.Ammount + shipAmount);
+      double totalAmount = (widget.Balance + shipAmount);
       setState(() {
         shippingCharge =totalAmount.toStringAsFixed(2);
       });
@@ -390,7 +390,7 @@ class _ShippingState extends State<Shipping> {
                                 ),
                                 onTap :(){
                                   Navigator.pop(
-                                    context,
+                                    context,true
                                   );
                                 },
                               ),

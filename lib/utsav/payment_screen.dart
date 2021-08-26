@@ -1036,7 +1036,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       final _dialog=await showDialog(
                                           context: context,
                                           builder: (context){
-                                            return Shipping(Ammount: widget.Ammount, Balance: widget.Balance,
+                                            return Shipping(Ammount: widget.Ammount, Balance: balance,
                                               Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
                                       );
@@ -1760,23 +1760,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Container(
                         child: InkWell(
                           onTap:() async {
-                            SharedPreferences shared =await SharedPreferences.getInstance();
-                            var inid =shared.getString("invoice_no");
-                            print(inid);
-                            Map<String,dynamic> api2={
-                              "invoice_number":inid
-                            };
-                            var dio = Dio();
-                            dio.options.headers["Authorization"]=shared.getString("Authorization");
-                            var r1=await dio.post("https://pos.sero.app/connector/api/get-invoice-url",data: json.encode(api2));
-                            print(r1);
-                            var  url = r1.data["url"];
-                            if (await canLaunch(url)) {
-                              await launch(url);
-                            } else {
-                              throw 'Could not launch $url';
-                            }
 
+                            // var  url = r1.data["url"];
+                            // if (await canLaunch(url)) {
+                            //   await launch(url);
+                            // } else {
+                            //   throw 'Could not launch $url';
+                            // }
+                            SharedPreferences shared=await SharedPreferences.getInstance();
                             var id = shared.getInt("table_id",);
                             print(shared.getInt("table_id"));
                             setState(() {
@@ -1786,6 +1777,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "table_id":id,
                               "table_status":"billing"
                             };
+                            var dio=Dio();
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
                             var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
                             print(r2);

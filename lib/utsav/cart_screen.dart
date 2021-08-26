@@ -677,6 +677,14 @@ class _CartScreenState extends State<CartScreen> {
                       var u=r.data[0]["invoice_no"];
                       print(u);
                       shared.setString("invoice_no", u);
+                      var inid =shared.getString("invoice_no");
+                      print(inid);
+                      Map<String,dynamic> api2={
+                        "invoice_number":inid
+                      };
+                      dio.options.headers["Authorization"]=shared.getString("Authorization");
+                      var r1=await dio.post("https://pos.sero.app/connector/api/get-invoice-url",data: json.encode(api2));
+                      print(r1);
                       Fluttertoast.showToast(
                           msg: "Order on hold and Your Order Id is $v",
                           toastLength: Toast.LENGTH_LONG,
