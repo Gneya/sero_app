@@ -820,6 +820,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   gravity: ToastGravity.BOTTOM,
                   textColor: Colors.green,
                   timeInSecForIosWeb: 10);
+              shared.setInt("seconds", 0);
+              Phoenix.rebirth(context);
+              /*
+               *
+               * here the rebirth thing is added
+               *
+               *
+               * */
             },
             onLongPress: () => print('THIRD CHILD LONG PRESS'),
           ),

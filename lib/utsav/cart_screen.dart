@@ -715,11 +715,17 @@ class _CartScreenState extends State<CartScreen> {
                       print(v);
                       shared.setString("invoice_no", v);
                       cart.deleteAllCart();
-                      shared.clear();
-
+                      // shared.clear();
+/*
+*
+*
+all changes are done here today **********************************************************************
+*
+*
+*/
                       setState(() {
                         shared.setString("total","0");
-                        shared.setInt("index", 0);
+                        shared.setInt("index", 1);
                         shared.setInt("PAY_HOLD",1);
                       });
                     }
