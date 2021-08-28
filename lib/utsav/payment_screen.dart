@@ -1,4 +1,4 @@
-import 'dart:convert';
+x1import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -1630,8 +1630,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_address": null,
                                     // "shipping_status": null,
                                     // "delivered_to": null,
-                                    // "res_order_status":"POS",
                                     "shipping_charges": shared.getDouble("Shipping"),
+                                    "is_suspend":0,
                                     "products":list_of_m,
                                     "tip":_tipController.text,
                                     "payments": [
