@@ -262,23 +262,6 @@ class _ShippingState extends State<Shipping> {
                                     decoration: InputDecoration(
                                       border: InputBorder.none,
                                       hintText: "Select Driver",
-                                      // suffixIcon: IconButton(
-                                      //   icon:Icon(Icons.person_add_rounded),
-                                      //   padding: EdgeInsets.zero,
-                                      //   color: Colors.black,
-                                      //   onPressed:(){
-                                      //     Navigator.push(
-                                      //         context,
-                                      //         MaterialPageRoute(
-                                      //             builder: (context) => PersonalDetails()));
-                                      //   } ,
-                                      // ),
-                                      // prefixIcon:  IconButton(
-                                      //   padding: EdgeInsets.zero,
-                                      //   icon:Icon(Icons.search),
-                                      //   color: Colors.black,
-                                      //   onPressed:(){} ,
-                                      // ),
                                     )
                                 ),
                                 itemBuilder: (BuildContext context,Customer? suggestion) {
@@ -288,8 +271,6 @@ class _ShippingState extends State<Shipping> {
                                   );
                                 },
                                 onSuggestionSelected: (Customer? suggestion) async {
-
-                                  // hint=suggestion!._name;
                                   var id=suggestion!.id;
                                   print("ID IS:$id");
                                   _typeAheadController.text=suggestion!._name;
@@ -306,7 +287,6 @@ class _ShippingState extends State<Shipping> {
                                 },
                                 suggestionsCallback: CustomerApi.getUserSuggestion,
                               )
-
                               //
                               // DropdownButton<String>(
                               //   value: dropdownValue1,

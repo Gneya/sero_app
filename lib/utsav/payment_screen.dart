@@ -1514,8 +1514,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_address": null,
                                     // "shipping_status": null,
                                     // "delivered_to": null,
-                                    "shipping_charges": shared.getDouble("Shipping"),
+                                    "res_order_status":"POS",
                                     "is_suspend":0,
+                                    "shipping_charges": shared.getDouble("Shipping"),
                                     "products":list_of_m,
                                     "tip":_tipController.text,
                                     "payments": [
@@ -1536,6 +1537,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               shared.setString("order_id", v);
                               shared.setInt("index",0);
                               shared.setInt("PAY_HOLD",1);
+                              shared.setDouble("Shipping", 0.0);
                               cart.deleteAllCart();
                               shared.setString("total", "0");
                               Fluttertoast.showToast(
@@ -1550,32 +1552,33 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             else{
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                               print(shared.getInt("Redeemed Points"));
-                              Map<String,dynamic> api= {
-                                "table_id": shared.getInt("table_id") ?? 0,
-                                "location_id": shared.getInt("bid") ?? 1,
-                                "contact_id": double.parse(
-                                    shared.getString("customer_id") ?? "1"),
-                                "discount_amount": discountt,
-                                "discount_type": shared.getString(
-                                    "DiscountType"),
-                                "tip":_tipController.text,
-                                "is_suspend":0,
-                                "rp_redeemed": shared.getInt("Redeemed Points"),
-                                "rp_redeemed_amount": double.parse(
-                                    shared.getInt("Redeemed Points")
-                                        .toString()) ?? 0,
-                                // "shipping_details": null,
-                                // "shipping_address": null,
-                                // "shipping_status": null,
-                                // "delivered_to": null,
-                                "shipping_charges": shared.getDouble(
-                                    "Shipping"),
-                                "products": list_of_m,
-                                "payments": [
-                                  {
-                                    "amount": cart.getTotalAmount()
-                                  }
+                              Map<String,dynamic> api=
+                              {
+                                "sells":[
+                              {
+                              "table_id": shared.getInt("table_id") ?? 0,
+                              "location_id": shared.getInt("bid") ?? 1,
+                              "contact_id": double.parse(shared.getString("customer_id") ?? "1"),
+                              "discount_amount": discountt,
+                              "discount_type": shared.getString("DiscountType"),
+                              "tip":_tipController.text,
+                              "is_suspend":0,
+                              "rp_redeemed": shared.getInt("Redeemed Points"),
+                              "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()) ?? 0,
+                              // "shipping_details": null,
+                              // "shipping_address": null,
+                              // "shipping_status": null,
+                              // "delivered_to": null,
+                              "shipping_charges": shared.getDouble("Shipping"),
+                              "products": list_of_m,
+                              "payments": [
+                              {
+                              "amount": cart.getTotalAmount()
+                              }
+                              ]
+                              }
                                 ]
+
                               };
                               print(json.encode(api));
 
@@ -1587,8 +1590,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print("hahah");
                               print(r.data);
                               var v=r.data["invoice_no"];
-                              // var y =r.data["id"];
-                              // print(y);
                               print(v);
                               shared.setString("order_id", v);
                               cart.deleteAllCart();
@@ -1596,6 +1597,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 shared.setString("total","0");
                                 shared.setInt("index", 0);
                                 shared.setInt("PAY_HOLD",1);
+                                shared.setDouble("Shipping", 0.0);
                               });
 
                               Fluttertoast.showToast(
@@ -1728,130 +1730,130 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ],
         ),
       ),
-      bottomSheet:_currentIndex == 3 ? new Container(
-        height: 70,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey,
-              offset: const Offset(
-                1.0,
-                1.0,
-              ), //Offset
-              blurRadius: 6.0,
-              spreadRadius: 2.0,
-            ), //BoxShadow
-            BoxShadow(
-              color: Colors.white,
-              offset: const Offset(0.0, 0.0),
-              blurRadius: 0.0,
-              spreadRadius: 0.0,
-            ),],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Column(
-              children: [
-                IconButton(
-                  onPressed:(){
-                    setState(() {
-                    });
-                  },
-                  iconSize: 25,
-                  icon: Icon(Icons.table_chart_outlined,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                Text('Tables',
-                  style: GoogleFonts.ptSans(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),)
-              ],
-            ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed:(){
-                    setState(() {
-                    });
-                  },
-                  iconSize: 29,
-                  icon: Icon(Icons.play_arrow_sharp,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                Text('Resume',
-                  style: GoogleFonts.ptSans(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),
-                )
-              ],
-            ),Column(
-              children: [
-                IconButton(
-                  onPressed:(){
-                    showDialog(
-                        context: context,
-                        builder: (context){
-                          return VoidBill();
-                        }
-                    );
-                  },
-                  iconSize: 25,
-                  icon: Icon(Icons.delete,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                Text('Void',
-                  style: GoogleFonts.ptSans(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),)
-              ],
-            ),Column(
-              children: [
-                IconButton(
-                  onPressed:(){
-                    setState(() {
-                    });
-                  },
-                  iconSize: 25,
-                  icon: Icon(Icons.clear_all_sharp,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                Text('Clear',
-                  style: GoogleFonts.ptSans(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),)
-              ],
-            ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed:(){
-                    setState(() {
-                      Navigator.push(context,
-                        MaterialPageRoute(builder: (context) =>  PaymentScreen(Ammount: widget.Ammount, Balance: widget.Balance,
-                          Discountt: widget.Discountt, Redeem: widget.Redeem,)),
-                      );
-                    });
-                  },
-                  iconSize: 40,
-                  icon: Icon(Icons.keyboard_arrow_down_outlined,
-                    color: Colors.grey[800],
-                  ),
-                ),
-              ],
-            ),
-
-          ],
-        ),
-      ):null ,
+      // bottomSheet:_currentIndex == 3 ? new Container(
+      //   height: 70,
+      //   decoration: BoxDecoration(
+      //     boxShadow: [
+      //       BoxShadow(
+      //         color: Colors.grey,
+      //         offset: const Offset(
+      //           1.0,
+      //           1.0,
+      //         ), //Offset
+      //         blurRadius: 6.0,
+      //         spreadRadius: 2.0,
+      //       ), //BoxShadow
+      //       BoxShadow(
+      //         color: Colors.white,
+      //         offset: const Offset(0.0, 0.0),
+      //         blurRadius: 0.0,
+      //         spreadRadius: 0.0,
+      //       ),],
+      //   ),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //     children: [
+      //       Column(
+      //         children: [
+      //           IconButton(
+      //             onPressed:(){
+      //               setState(() {
+      //               });
+      //             },
+      //             iconSize: 25,
+      //             icon: Icon(Icons.table_chart_outlined,
+      //               color: Colors.grey[800],
+      //             ),
+      //           ),
+      //           Text('Tables',
+      //             style: GoogleFonts.ptSans(
+      //               fontWeight: FontWeight.bold,
+      //               color: Colors.grey[800],
+      //             ),)
+      //         ],
+      //       ),
+      //       Column(
+      //         children: [
+      //           IconButton(
+      //             onPressed:(){
+      //               setState(() {
+      //               });
+      //             },
+      //             iconSize: 29,
+      //             icon: Icon(Icons.play_arrow_sharp,
+      //               color: Colors.grey[800],
+      //             ),
+      //           ),
+      //           Text('Resume',
+      //             style: GoogleFonts.ptSans(
+      //               fontWeight: FontWeight.bold,
+      //               color: Colors.grey[800],
+      //             ),
+      //           )
+      //         ],
+      //       ),Column(
+      //         children: [
+      //           IconButton(
+      //             onPressed:(){
+      //               showDialog(
+      //                   context: context,
+      //                   builder: (context){
+      //                     return VoidBill();
+      //                   }
+      //               );
+      //             },
+      //             iconSize: 25,
+      //             icon: Icon(Icons.delete,
+      //               color: Colors.grey[800],
+      //             ),
+      //           ),
+      //           Text('Void',
+      //             style: GoogleFonts.ptSans(
+      //               fontWeight: FontWeight.bold,
+      //               color: Colors.grey[800],
+      //             ),)
+      //         ],
+      //       ),Column(
+      //         children: [
+      //           IconButton(
+      //             onPressed:(){
+      //               setState(() {
+      //               });
+      //             },
+      //             iconSize: 25,
+      //             icon: Icon(Icons.clear_all_sharp,
+      //               color: Colors.grey[800],
+      //             ),
+      //           ),
+      //           Text('Clear',
+      //             style: GoogleFonts.ptSans(
+      //               fontWeight: FontWeight.bold,
+      //               color: Colors.grey[800],
+      //             ),)
+      //         ],
+      //       ),
+      //       Column(
+      //         children: [
+      //           IconButton(
+      //             onPressed:(){
+      //               setState(() {
+      //                 Navigator.push(context,
+      //                   MaterialPageRoute(builder: (context) =>  PaymentScreen(Ammount: widget.Ammount, Balance: widget.Balance,
+      //                     Discountt: widget.Discountt, Redeem: widget.Redeem,)),
+      //                 );
+      //               });
+      //             },
+      //             iconSize: 40,
+      //             icon: Icon(Icons.keyboard_arrow_down_outlined,
+      //               color: Colors.grey[800],
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //
+      //     ],
+      //   ),
+      // ):null ,
     );
   }
 
