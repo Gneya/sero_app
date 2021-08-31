@@ -51,8 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _typeAheadController = TextEditingController();
   String _selectedCity="";
   fetch()
-
   async {
+    print("round"+(3.4).round().toString());
     if(mounted){
     setState(() {
       _isloading = true;
