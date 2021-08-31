@@ -695,7 +695,8 @@ class _CartScreenState extends State<CartScreen> {
                     else{
 
                       Map<String,dynamic> api= {
-
+                        "sells":[
+                          {
                             "table_id" :shared.getInt("table_id")??0,
                             "location_id": shared.getInt("bid")??1,
                             "is_suspend": 1,
@@ -706,7 +707,11 @@ class _CartScreenState extends State<CartScreen> {
                               {
                                 "amount":cart.getTotalAmount()
                               }
-                              ]
+                            ]
+                          }
+                        ]
+
+
                       };
                       print(json.encode(api));
 
@@ -714,8 +719,9 @@ class _CartScreenState extends State<CartScreen> {
                       var vid = shared.getString("order_id");
                       dio.options.headers["Authorization"]=shared.getString("Authorization");
                       print(vid);
-                      var r=await dio.put("https://pos.sero.app/connector/api/sell/$vid",data: json.encode(api));
                       print("hahah");
+                      var r=await dio.put("https://pos.sero.app/connector/api/sell/$vid",data: json.encode(api));
+
                       print(r.data);
                       var v=r.data["invoice_no"];
                       print(v);
