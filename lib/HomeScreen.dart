@@ -347,6 +347,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onPressed: () async {
                       // Phoenix.rebirth(context);
                      SharedPreferences shared=await SharedPreferences.getInstance();
+                     shared.setInt("types_of_service_id",1);
                       if(shared.getString("customer_name")=="")
                         {
                             shared.setString("customer_name", "Walk-In Customer");
@@ -381,6 +382,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       //     context,
                       //     MaterialPageRoute(
                       //         builder: (context) => CategoryScreen()));
+                      shared.setInt("types_of_service_id",2);
                       if(shared.getString("customer_name")=="")
                       {
                         shared.setString("customer_name", "Walk-In Customer");
@@ -408,6 +410,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
                     onPressed: () async {
                       SharedPreferences shared=await SharedPreferences.getInstance();
+                      shared.setInt("types_of_service_id",3);
                       setState(() {
                         _isloading=true;
                       });
