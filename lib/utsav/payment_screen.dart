@@ -1308,7 +1308,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "res_order_status":"POS",
                                     "types_of_service_id":sar,
                                     "is_suspend":0,
-                                    "shipping_charges": shared.getDouble("Shipping")!.toStringAsFixed(2),
+                                    "shipping_charges": shared.getDouble("Shipping"),
                                     "products":list_of_m,
                                     "tip":_tipController.text,
                                     "payments": [
