@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:flutter_nav_bar/main.dart';
 import 'package:flutter_nav_bar/utsav/redeem.dart';
 import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/shipping.dart';
@@ -53,7 +54,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool _isloading = false;
   String table_name = '';
   final _tipController = new TextEditingController();
-
+  List<String> paymentMethod =[];
   final _formKey = GlobalKey<FormState>();
   final _Key = GlobalKey<FormState>();
 
@@ -95,19 +96,26 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   Future<List<String>> fetchData() async {
     /*
-     payment mode values are not showing on the screen whenver below values are used or not commented
+     payment mode values are not showing on the screen whenever below values are used or not commented
     */
 
     Map data = await getData();
     amount=widget.Ammount;
     balance=widget.Balance;
     redeem=widget.Redeem;
-    List<String> paymentMethod = [
+    paymentMethod = [
       data['cash'],
       data['card'],
       data['cheque'],
-      data['bank_transfer'],
+      data['Reward Points'],
       data['other'],
+      data['custom_pay_1'],
+      data['custom_pay_2'],
+      data['custom_pay_3'],
+      data['custom_pay_4'],
+      data['custom_pay_5'],
+      data['custom_pay_6'],
+      data['custom_pay_7'],
     ];
     print(paymentMethod[1]);
     return paymentMethod;
@@ -820,6 +828,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   gravity: ToastGravity.BOTTOM,
                   textColor: Colors.green,
                   timeInSecForIosWeb: 10);
+              shared.setInt("seconds", 0);
+              Phoenix.rebirth(context);
+              /*
+               *
+               * here the rebirth thing is added
+               *
+               *
+               * */
             },
             onLongPress: () => print('THIRD CHILD LONG PRESS'),
           ),
@@ -1036,7 +1052,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       final _dialog=await showDialog(
                                           context: context,
                                           builder: (context){
-                                            return Shipping(Ammount: widget.Ammount, Balance: widget.Balance,
+                                            return Shipping(Ammount: widget.Ammount, Balance: balance,
                                               Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
                                       );
@@ -1048,6 +1064,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           // redeemPoint =shared.getInt("Redeemed Points")!;
                                           // print(redeemPoint);
                                           shipping_charge =shared.getDouble("Shipping")!;
+                                          print(shipping_charge);
                                           print("PRINT:" + balance.toString());
                                         });
                                       }
@@ -1088,7 +1105,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: Column(
           children: [
             Container(
-              height: 170 ,
+              height: 180,
               width: width,
               color:Colors.white54,
               child: Padding(
@@ -1105,288 +1122,68 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left:10),
+                    Container(
+                      height: 140,
+                      child:  SingleChildScrollView(
+                        child: Wrap(
+                          children: paymentMethod.map((f) => GestureDetector(
                             child: Container(
-                              child: GestureDetector(
-                                child: Container(
-                                  child:Center(
-                                    child: _payMeth[0].length>6 ?
-                                    Text(
-                                      _payMeth[0].substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
-                                    ):Text(
-                                      _payMeth[0],
-                                      style: GoogleFonts.ptSans(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                                    ),
+                              constraints: BoxConstraints(
+                                  minHeight: 50,
+                                  minWidth: 100,
+                                  maxHeight: 50,
+                                  maxWidth: 100),
+                              padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.only(
+                                  left: 5.0, right: 5.0, top: 10.0, bottom: 10.0),
+                              decoration: BoxDecoration(
+                                color: isClicked1 ? Colors.white : Color(0xFFFFD45F),
+                                borderRadius: BorderRadius.circular(35),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: const Offset(
+                                      1.0,
+                                      1.0,
+                                    ), //Offset
+                                    blurRadius: 6.0,
+                                    spreadRadius: 2.0,
+                                  ), //BoxShadow
+                                  BoxShadow(
+                                    color: Colors.white,
+                                    offset: const Offset(0.0, 0.0),
+                                    blurRadius: 0.0,
+                                    spreadRadius: 0.0,
+                                  ),],
+                              ),
+                              child: f.length>6 ?
+                              Center(
+                                child: Text(f.substring(0,6),
+                                  style: GoogleFonts.ptSans(
+                                    fontWeight:FontWeight.w600,
+                                    fontSize: 18,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: isClicked1 ? Colors.white : Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  height: 45,
-                                  width: 100,
                                 ),
-                                onTap: (){
-                                  setState(() {
-                                    isClicked1 =! isClicked1;
-                                    isClicked2 = true;
-                                    isClicked3 = true;
-                                    isClicked4 = true;
-                                    isClicked5=true;
-                                  });
-                                },
+                              ):
+                              Center(
+                                child: Text(
+                                  f,
+                                  style: GoogleFonts.ptSans(
+                                    fontWeight:FontWeight.w600,
+                                    fontSize: 18,
+                                  ),
+
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left:15),
-                            child: Container(
-                              child: GestureDetector(
-                                child: Container(
-                                  child:Center(
-                                    child: _payMeth[1].length>6 ?
-                                    Text(
-                                      _payMeth[1].substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
-                                    ):Text(
-                                      _payMeth[1],
-                                      style: GoogleFonts.ptSans(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isClicked2 ? Colors.white : Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  height: 45,
-                                  width: 100,
-                                ),
-                                onTap: (){
-                                  setState(() {
-                                    isClicked2 =! isClicked2;
-                                    isClicked1 = true;
-                                    isClicked3 = true;
-                                    isClicked4 = true;
-                                    isClicked5=true;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left:15),
-                            child: Container(
-                              child: GestureDetector(
-                                child: Container(
-                                  child:Center(
-                                    child: _payMeth[2].length>6 ?
-                                    Text(
-                                      _payMeth[2].substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
-                                    ):Text(
-                                      _payMeth[2],
-                                      style: GoogleFonts.ptSans(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isClicked3 ? Colors.white : Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  height: 45,
-                                  width: 100,
-                                ),
-                                onTap: (){
-                                  setState(() {
-                                    isClicked3 =! isClicked3;
-                                    isClicked2 = true;
-                                    isClicked4 = true;
-                                    isClicked1 = true;
-                                    isClicked5=true;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
+                            onTap: () {
+
+                            },
+                          ))
+                              .toList(),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left:10),
-                            child: Container(
-                              child: GestureDetector(
-                                child: Container(
-                                  child:Center(
-                                    child: _payMeth[3].length>6 ?
-                                    Text(
-                                      _payMeth[3].substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
-                                    ):Text(
-                                      _payMeth[3],
-                                      style: GoogleFonts.ptSans(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isClicked4 ? Colors.white : Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  height: 45,
-                                  width: 100,
-                                ),
-                                onTap: (){
-                                  setState(() {
-                                    isClicked4 =! isClicked4;
-                                    isClicked2 = true;
-                                    isClicked3= true;
-                                    isClicked1 = true;
-                                    isClicked5=true;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left:15),
-                            child: Container(
-                              child: GestureDetector(
-                                child: Container(
-                                  child:Center(
-                                    child: _payMeth[4].length>6 ?
-                                    Text(
-                                      _payMeth[4].substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
-                                    ):Text(
-                                      _payMeth[4],
-                                      style: GoogleFonts.ptSans(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isClicked5 ? Colors.white : Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  height: 45,
-                                  width: 100,
-                                ),
-                                onTap: (){
-                                  setState(() {
-                                    isClicked5 =! isClicked5;
-                                    isClicked2 = true;
-                                    isClicked3= true;
-                                    isClicked1 = true;
-                                    isClicked4=true;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                    ) ],
                 ),
               ),
             ),
@@ -1447,122 +1244,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Container(
-                      //   child: InkWell(
-                      //     onTap:() async {
-                      //       print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
-                      //       List<Map<String,dynamic>> list_of_m=[];
-                      //       SharedPreferences shared=await SharedPreferences.getInstance();
-                      //       var variation=shared.getStringList("variation");
-                      //       var cart=FlutterCart();
-                      //       for(int index=0;index<cart.cartItem.length;index++)
-                      //         {
-                      //
-                      //           Map<String,dynamic> product={
-                      //             "product_id":double.parse(cart.cartItem[index].productId),
-                      //             "variation_id":double.parse(variation![index]),
-                      //             "quantity": cart.cartItem[index].quantity,
-                      //             "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
-                      //           };
-                      //           list_of_m.add(product);
-                      //           // print(list_of_m);
-                      //         }
-                      //        if(shared.containsKey("modifiers")){
-                      //          if(shared.getString("modifiers")!=""){
-                      //         List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
-                      //         print(mod[0]);
-                      //         for(int i =0;i<mod.length;i++){
-                      //           list_of_m.add(mod[0]);
-                      //           // print(mod[0]["name"]);
-                      //         }}}
-                      //
-                      //       print(list_of_m);
-                      //       if(shared.getInt("order_id")==0)
-                      //       {
-                      //         Map<String,dynamic> api= {
-                      //           "sells":[
-                      //             {
-                      //               "table_id" :shared.getInt("table_id")??0,
-                      //               "location_id": shared.getInt("bid")??1,
-                      //               "contact_id": double.parse(shared.getString("customer_id")??""),
-                      //               // "status": "draft",
-                      //               "is_suspend": 1,
-                      //               "products":list_of_m,
-                      //               "payments": [
-                      //                 {
-                      //                   "amount":cart.getTotalAmount(),
-                      //                 }
-                      //               ]
-                      //             }
-                      //           ]
-                      //         };
-                      //         var dio=Dio();
-                      //         dio.options.headers["Authorization"]="Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8";
-                      //         var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
-                      //         print(r);
-                      //         var v=r.data[0]["id"];
-                      //         print(v.toString());
-                      //         shared.setInt("order_id", v);
-                      //
-                      //         Fluttertoast.showToast(
-                      //             msg: "Order on hold and Your Order Id is $v",
-                      //             toastLength: Toast.LENGTH_LONG,
-                      //             gravity: ToastGravity.BOTTOM,
-                      //             textColor: Colors.green,
-                      //             timeInSecForIosWeb: 4);
-                      //       }
-                      //       shared.setString("modifiers", '');
-                      //       shared.setStringList("selectedmodifiers", []);
-                      //       shared.setStringList("selectedmodifiersprice", []);
-                      //       cart.deleteAllCart();
-                      //       shared.clear();
-                      //
-                      //       setState(() {
-                      //         shared.setString("customer_name", '');
-                      //         shared.setString("table_name", '');
-                      //         // get("");
-                      //       });
-                      //     },
-                      //     child: Container(
-                      //         decoration: BoxDecoration(
-                      //           borderRadius: BorderRadius.circular(35),
-                      //           boxShadow: [
-                      //             BoxShadow(
-                      //               color: Colors.grey,
-                      //               offset: const Offset(
-                      //                 1.0,
-                      //                 1.0,
-                      //               ), //Offset
-                      //               blurRadius: 6.0,
-                      //               spreadRadius: 2.0,
-                      //             ), //BoxShadow
-                      //             BoxShadow(
-                      //               color: Colors.white,
-                      //               offset: const Offset(0.0, 0.0),
-                      //               blurRadius: 0.0,
-                      //               spreadRadius: 0.0,
-                      //             ),],
-                      //           color :Color(0xFFFFD45F),
-                      //         ),
-                      //         margin: EdgeInsets.only(top: 10),
-                      //         width: 100,
-                      //         height: 45,
-                      //         child: Center(
-                      //             child:Row(
-                      //               mainAxisAlignment: MainAxisAlignment.center,
-                      //               children: [
-                      //                 Icon(Icons.pause_outlined),
-                      //                 Text(
-                      //                   'Hold',
-                      //                   textScaleFactor: 1.5,
-                      //                   style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                      //                 ),
-                      //
-                      //               ],
-                      //             ) )),
-                      //
-                      //   ),
-                      // ),
                       Container(
                         child: InkWell(
                           onTap:isEnabled ? () async {
@@ -1604,6 +1285,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               }
                             }
                             print(list_of_m);
+                             var sar =shared.getInt("types_of_service_id");
 
                             if(shared.getString("order_id")=="")
                             {
@@ -1622,7 +1304,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_address": null,
                                     // "shipping_status": null,
                                     // "delivered_to": null,
-                                    "shipping_charges": shared.getDouble("Shipping"),
+                                    "res_order_status":"POS",
+                                    "types_of_service_id":sar,
+                                    "is_suspend":0,
+                                    "shipping_charges": shared.getDouble("Shipping")!.toStringAsFixed(2),
                                     "products":list_of_m,
                                     "tip":_tipController.text,
                                     "payments": [
@@ -1637,11 +1322,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
                               var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
                               print(r.data);
+                              // var y =r.data["id"];
                               var v=r.data[0]["invoice_no"];
                               print(v.toString());
                               shared.setString("order_id", v);
                               shared.setInt("index",0);
                               shared.setInt("PAY_HOLD",1);
+                              shared.setDouble("Shipping", 0.0);
                               cart.deleteAllCart();
                               shared.setString("total", "0");
                               Fluttertoast.showToast(
@@ -1656,30 +1343,34 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             else{
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                               print(shared.getInt("Redeemed Points"));
-                              Map<String,dynamic> api= {
+                              Map<String,dynamic> api=
+                              {
                                 "sells":[
-                                  {
-                                    "table_id" :shared.getInt("table_id")??0,
-                                    "location_id": shared.getInt("bid")??1,
-                                    "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                                    "discount_amount": discountt,
-                                    "discount_type": shared.getString("DiscountType"),
-                                    "rp_redeemed": shared.getInt("Redeemed Points"),
-                                    "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString())??0,
-                                    // "shipping_details": null,
-                                    // "shipping_address": null,
-                                    // "shipping_status": null,
-                                    // "delivered_to": null,
-                                    "shipping_charges": shared.getDouble("Shipping"),
-                                    "products":list_of_m,
-                                    "tip":_tipController.text,
-                                    "payments": [
-                                      {
-                                        "amount":cart.getTotalAmount()
-                                      }
-                                    ]
-                                  }
+                              {
+                              "table_id": shared.getInt("table_id") ?? 0,
+                              "location_id": shared.getInt("bid") ?? 1,
+                              "contact_id": double.parse(shared.getString("customer_id") ?? "1"),
+                              "discount_amount": discountt,
+                              "discount_type": shared.getString("DiscountType"),
+                              "tip":_tipController.text,
+                              "is_suspend":0,
+                              "rp_redeemed": shared.getInt("Redeemed Points"),
+                              "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()) ?? 0,
+                              // "shipping_details": null,
+                              // "shipping_address": null,
+                              // "shipping_status": null,
+                              // "delivered_to": null,
+                              "shipping_charges": shared.getDouble("Shipping"),
+                                "types_of_service_id":sar,
+                              "products": list_of_m,
+                              "payments": [
+                              {
+                              "amount": cart.getTotalAmount()
+                              }
+                              ]
+                              }
                                 ]
+
                               };
                               print(json.encode(api));
 
@@ -1691,21 +1382,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               print("hahah");
                               print(r.data);
                               var v=r.data["invoice_no"];
-                              var y =r.data["id"];
-                              print(y);
                               print(v);
                               shared.setString("order_id", v);
                               cart.deleteAllCart();
-                              shared.clear();
-
                               setState(() {
                                 shared.setString("total","0");
                                 shared.setInt("index", 0);
                                 shared.setInt("PAY_HOLD",1);
+                                shared.setDouble("Shipping", 0.0);
                               });
 
                               Fluttertoast.showToast(
-                                  msg: "Payment Successful and Your Order Id is $y",
+                                  msg: "Payment Successful and Your Order Id is $vid",
                                   toastLength: Toast.LENGTH_LONG,
                                   gravity: ToastGravity.BOTTOM,
                                   textColor: Colors.green,
@@ -1759,17 +1447,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Container(
                         child: InkWell(
                           onTap:() async {
-                            SharedPreferences shared =await SharedPreferences.getInstance();
-                            var inid =shared.getString("invoice_no");
-                            print(inid);
-                            Map<String,dynamic> api2={
-                              "invoice_number":inid
-                            };
-                            var dio = Dio();
+                            var dio=Dio();
+                            SharedPreferences shared=await SharedPreferences.getInstance();
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
-                            var r1=await dio.post("https://pos.sero.app/connector/api/get-invoice-url",data: json.encode(api2));
-                            print(r1);
-                            var  url = r1.data["url"];
+                            var oid = shared.getString("order_id");
+                            var r=await dio.get("https://pos.sero.app/connector/api/sell/$oid");
+                            print(oid);
+                            print(r.data['data'][0]['invoice_token']);
+                            var  url = "https://pos.sero.app/invoice/"+r.data['data'][0]['invoice_token'];
                             if (await canLaunch(url)) {
                               await launch(url);
                             } else {
@@ -1842,130 +1527,130 @@ class _PaymentScreenState extends State<PaymentScreen> {
           ],
         ),
       ),
-      bottomSheet:_currentIndex == 3 ? new Container(
-        height: 70,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey,
-              offset: const Offset(
-                1.0,
-                1.0,
-              ), //Offset
-              blurRadius: 6.0,
-              spreadRadius: 2.0,
-            ), //BoxShadow
-            BoxShadow(
-              color: Colors.white,
-              offset: const Offset(0.0, 0.0),
-              blurRadius: 0.0,
-              spreadRadius: 0.0,
-            ),],
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Column(
-              children: [
-                IconButton(
-                  onPressed:(){
-                    setState(() {
-                    });
-                  },
-                  iconSize: 25,
-                  icon: Icon(Icons.table_chart_outlined,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                Text('Tables',
-                  style: GoogleFonts.ptSans(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),)
-              ],
-            ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed:(){
-                    setState(() {
-                    });
-                  },
-                  iconSize: 29,
-                  icon: Icon(Icons.play_arrow_sharp,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                Text('Resume',
-                  style: GoogleFonts.ptSans(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),
-                )
-              ],
-            ),Column(
-              children: [
-                IconButton(
-                  onPressed:(){
-                    showDialog(
-                        context: context,
-                        builder: (context){
-                          return VoidBill();
-                        }
-                    );
-                  },
-                  iconSize: 25,
-                  icon: Icon(Icons.delete,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                Text('Void',
-                  style: GoogleFonts.ptSans(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),)
-              ],
-            ),Column(
-              children: [
-                IconButton(
-                  onPressed:(){
-                    setState(() {
-                    });
-                  },
-                  iconSize: 25,
-                  icon: Icon(Icons.clear_all_sharp,
-                    color: Colors.grey[800],
-                  ),
-                ),
-                Text('Clear',
-                  style: GoogleFonts.ptSans(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.grey[800],
-                  ),)
-              ],
-            ),
-            Column(
-              children: [
-                IconButton(
-                  onPressed:(){
-                    setState(() {
-                      Navigator.push(context,
-                        MaterialPageRoute(builder: (context) =>  PaymentScreen(Ammount: widget.Ammount, Balance: widget.Balance,
-                          Discountt: widget.Discountt, Redeem: widget.Redeem,)),
-                      );
-                    });
-                  },
-                  iconSize: 40,
-                  icon: Icon(Icons.keyboard_arrow_down_outlined,
-                    color: Colors.grey[800],
-                  ),
-                ),
-              ],
-            ),
-
-          ],
-        ),
-      ):null ,
+      // bottomSheet:_currentIndex == 3 ? new Container(
+      //   height: 70,
+      //   decoration: BoxDecoration(
+      //     boxShadow: [
+      //       BoxShadow(
+      //         color: Colors.grey,
+      //         offset: const Offset(
+      //           1.0,
+      //           1.0,
+      //         ), //Offset
+      //         blurRadius: 6.0,
+      //         spreadRadius: 2.0,
+      //       ), //BoxShadow
+      //       BoxShadow(
+      //         color: Colors.white,
+      //         offset: const Offset(0.0, 0.0),
+      //         blurRadius: 0.0,
+      //         spreadRadius: 0.0,
+      //       ),],
+      //   ),
+      //   child: Row(
+      //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //     children: [
+      //       Column(
+      //         children: [
+      //           IconButton(
+      //             onPressed:(){
+      //               setState(() {
+      //               });
+      //             },
+      //             iconSize: 25,
+      //             icon: Icon(Icons.table_chart_outlined,
+      //               color: Colors.grey[800],
+      //             ),
+      //           ),
+      //           Text('Tables',
+      //             style: GoogleFonts.ptSans(
+      //               fontWeight: FontWeight.bold,
+      //               color: Colors.grey[800],
+      //             ),)
+      //         ],
+      //       ),
+      //       Column(
+      //         children: [
+      //           IconButton(
+      //             onPressed:(){
+      //               setState(() {
+      //               });
+      //             },
+      //             iconSize: 29,
+      //             icon: Icon(Icons.play_arrow_sharp,
+      //               color: Colors.grey[800],
+      //             ),
+      //           ),
+      //           Text('Resume',
+      //             style: GoogleFonts.ptSans(
+      //               fontWeight: FontWeight.bold,
+      //               color: Colors.grey[800],
+      //             ),
+      //           )
+      //         ],
+      //       ),Column(
+      //         children: [
+      //           IconButton(
+      //             onPressed:(){
+      //               showDialog(
+      //                   context: context,
+      //                   builder: (context){
+      //                     return VoidBill();
+      //                   }
+      //               );
+      //             },
+      //             iconSize: 25,
+      //             icon: Icon(Icons.delete,
+      //               color: Colors.grey[800],
+      //             ),
+      //           ),
+      //           Text('Void',
+      //             style: GoogleFonts.ptSans(
+      //               fontWeight: FontWeight.bold,
+      //               color: Colors.grey[800],
+      //             ),)
+      //         ],
+      //       ),Column(
+      //         children: [
+      //           IconButton(
+      //             onPressed:(){
+      //               setState(() {
+      //               });
+      //             },
+      //             iconSize: 25,
+      //             icon: Icon(Icons.clear_all_sharp,
+      //               color: Colors.grey[800],
+      //             ),
+      //           ),
+      //           Text('Clear',
+      //             style: GoogleFonts.ptSans(
+      //               fontWeight: FontWeight.bold,
+      //               color: Colors.grey[800],
+      //             ),)
+      //         ],
+      //       ),
+      //       Column(
+      //         children: [
+      //           IconButton(
+      //             onPressed:(){
+      //               setState(() {
+      //                 Navigator.push(context,
+      //                   MaterialPageRoute(builder: (context) =>  PaymentScreen(Ammount: widget.Ammount, Balance: widget.Balance,
+      //                     Discountt: widget.Discountt, Redeem: widget.Redeem,)),
+      //                 );
+      //               });
+      //             },
+      //             iconSize: 40,
+      //             icon: Icon(Icons.keyboard_arrow_down_outlined,
+      //               color: Colors.grey[800],
+      //             ),
+      //           ),
+      //         ],
+      //       ),
+      //
+      //     ],
+      //   ),
+      // ):null ,
     );
   }
 
