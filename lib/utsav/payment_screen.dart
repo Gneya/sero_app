@@ -19,7 +19,6 @@ import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../selectable.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -1286,6 +1285,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             }
                             print(list_of_m);
                              var sar =shared.getInt("types_of_service_id");
+                             var dar = shared.getString("DiscountType");
+                             print (dar);
 
                             if(shared.getString("order_id")=="")
                             {
@@ -1297,7 +1298,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "location_id": shared.getInt("bid")??1,
                                     "contact_id": double.parse(shared.getString("customer_id")??"1"),
                                     "discount_amount": discountt,
-                                    "discount_type": shared.getString("DiscountType"),
+                                    "discount_type": dar,
                                     "rp_redeemed": shared.getInt("Redeemed Points"),
                                     "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
                                     // "shipping_details": null,
