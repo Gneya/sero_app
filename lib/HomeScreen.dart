@@ -351,6 +351,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         {
                             shared.setString("customer_name", "Walk-In Customer");
                             shared.setString("customer_id","1");
+                            shared.setInt("types_of_service_id",1);
                         }
                       Navigator.push(
                           context,
@@ -385,6 +386,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       {
                         shared.setString("customer_name", "Walk-In Customer");
                         shared.setString("customer_id","1");
+                        shared.setInt("types_of_service_id",2);
                       }
                       shared.setInt("index", 1);
                     },
@@ -411,6 +413,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       setState(() {
                         _isloading=true;
                       });
+                      shared.setInt("types_of_service_id",3);
                       var response = await http.get(
                           Uri.parse("https://pos.sero.app/connector/api/contactapi/$id"),
                           headers: {
@@ -442,6 +445,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       else{
                         SharedPreferences share=await SharedPreferences.getInstance();
                         share.setInt("index", 1);
+
                       }
                       setState(() {
                         _isloading=false;
