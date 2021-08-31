@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cart/flutter_cart.dart';
+import 'package:flutter_nav_bar/main.dart';
 import 'package:flutter_nav_bar/utsav/redeem.dart';
 import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/shipping.dart';
@@ -18,7 +19,6 @@ import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../selectable.dart';
 
 class PaymentScreen extends StatefulWidget {
@@ -53,7 +53,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool _isloading = false;
   String table_name = '';
   final _tipController = new TextEditingController();
-
+  List<String> paymentMethod =[];
   final _formKey = GlobalKey<FormState>();
   final _Key = GlobalKey<FormState>();
 
@@ -102,12 +102,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
     amount=widget.Ammount;
     balance=widget.Balance;
     redeem=widget.Redeem;
-    List<String> paymentMethod = [
+    paymentMethod = [
       data['cash'],
       data['card'],
       data['cheque'],
       data['Reward Points'],
       data['other'],
+      data['custom_pay_1'],
+      data['custom_pay_2'],
+      data['custom_pay_3'],
+      data['custom_pay_4'],
+      data['custom_pay_5'],
+      data['custom_pay_6'],
+      data['custom_pay_7'],
     ];
     print(paymentMethod[1]);
     return paymentMethod;
@@ -1056,6 +1063,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                           // redeemPoint =shared.getInt("Redeemed Points")!;
                                           // print(redeemPoint);
                                           shipping_charge =shared.getDouble("Shipping")!;
+                                          print(shipping_charge);
                                           print("PRINT:" + balance.toString());
                                         });
                                       }
@@ -1096,7 +1104,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: Column(
           children: [
             Container(
-              height: 170 ,
+              height: 180,
               width: width,
               color:Colors.white54,
               child: Padding(
@@ -1113,288 +1121,68 @@ class _PaymentScreenState extends State<PaymentScreen> {
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left:10),
+                    Container(
+                      height: 140,
+                      child:  SingleChildScrollView(
+                        child: Wrap(
+                          children: paymentMethod.map((f) => GestureDetector(
                             child: Container(
-                              child: GestureDetector(
-                                child: Container(
-                                  child:Center(
-                                    child: _payMeth[0].length>6 ?
-                                    Text(
-                                      _payMeth[0].substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
-                                    ):Text(
-                                      _payMeth[0],
-                                      style: GoogleFonts.ptSans(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                                    ),
+                              constraints: BoxConstraints(
+                                  minHeight: 50,
+                                  minWidth: 100,
+                                  maxHeight: 50,
+                                  maxWidth: 100),
+                              padding: EdgeInsets.all(10),
+                              margin: EdgeInsets.only(
+                                  left: 5.0, right: 5.0, top: 10.0, bottom: 10.0),
+                              decoration: BoxDecoration(
+                                color: isClicked1 ? Colors.white : Color(0xFFFFD45F),
+                                borderRadius: BorderRadius.circular(35),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: const Offset(
+                                      1.0,
+                                      1.0,
+                                    ), //Offset
+                                    blurRadius: 6.0,
+                                    spreadRadius: 2.0,
+                                  ), //BoxShadow
+                                  BoxShadow(
+                                    color: Colors.white,
+                                    offset: const Offset(0.0, 0.0),
+                                    blurRadius: 0.0,
+                                    spreadRadius: 0.0,
+                                  ),],
+                              ),
+                              child: f.length>6 ?
+                              Center(
+                                child: Text(f.substring(0,6),
+                                  style: GoogleFonts.ptSans(
+                                    fontWeight:FontWeight.w600,
+                                    fontSize: 18,
                                   ),
-                                  decoration: BoxDecoration(
-                                    color: isClicked1 ? Colors.white : Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  height: 45,
-                                  width: 100,
                                 ),
-                                onTap: (){
-                                  setState(() {
-                                    isClicked1 =! isClicked1;
-                                    isClicked2 = true;
-                                    isClicked3 = true;
-                                    isClicked4 = true;
-                                    isClicked5=true;
-                                  });
-                                },
+                              ):
+                              Center(
+                                child: Text(
+                                  f,
+                                  style: GoogleFonts.ptSans(
+                                    fontWeight:FontWeight.w600,
+                                    fontSize: 18,
+                                  ),
+
+                                ),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left:15),
-                            child: Container(
-                              child: GestureDetector(
-                                child: Container(
-                                  child:Center(
-                                    child: _payMeth[1].length>6 ?
-                                    Text(
-                                      _payMeth[1].substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
-                                    ):Text(
-                                      _payMeth[1],
-                                      style: GoogleFonts.ptSans(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isClicked2 ? Colors.white : Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  height: 45,
-                                  width: 100,
-                                ),
-                                onTap: (){
-                                  setState(() {
-                                    isClicked2 =! isClicked2;
-                                    isClicked1 = true;
-                                    isClicked3 = true;
-                                    isClicked4 = true;
-                                    isClicked5=true;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left:15),
-                            child: Container(
-                              child: GestureDetector(
-                                child: Container(
-                                  child:Center(
-                                    child: _payMeth[2].length>6 ?
-                                    Text(
-                                      _payMeth[2].substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
-                                    ):Text(
-                                      _payMeth[2],
-                                      style: GoogleFonts.ptSans(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isClicked3 ? Colors.white : Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  height: 45,
-                                  width: 100,
-                                ),
-                                onTap: (){
-                                  setState(() {
-                                    isClicked3 =! isClicked3;
-                                    isClicked2 = true;
-                                    isClicked4 = true;
-                                    isClicked1 = true;
-                                    isClicked5=true;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
+                            onTap: () {
+
+                            },
+                          ))
+                              .toList(),
+                        ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left:10),
-                            child: Container(
-                              child: GestureDetector(
-                                child: Container(
-                                  child:Center(
-                                    child: _payMeth[3].length>6 ?
-                                    Text(
-                                      _payMeth[3].substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
-                                    ):Text(
-                                      _payMeth[3],
-                                      style: GoogleFonts.ptSans(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isClicked4 ? Colors.white : Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  height: 45,
-                                  width: 100,
-                                ),
-                                onTap: (){
-                                  setState(() {
-                                    isClicked4 =! isClicked4;
-                                    isClicked2 = true;
-                                    isClicked3= true;
-                                    isClicked1 = true;
-                                    isClicked5=true;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left:15),
-                            child: Container(
-                              child: GestureDetector(
-                                child: Container(
-                                  child:Center(
-                                    child: _payMeth[4].length>6 ?
-                                    Text(
-                                      _payMeth[4].substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
-                                    ):Text(
-                                      _payMeth[4],
-                                      style: GoogleFonts.ptSans(color: Colors.black, fontWeight: FontWeight.w600,fontSize: 18),
-                                    ),
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: isClicked5 ? Colors.white : Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  height: 45,
-                                  width: 100,
-                                ),
-                                onTap: (){
-                                  setState(() {
-                                    isClicked5 =! isClicked5;
-                                    isClicked2 = true;
-                                    isClicked3= true;
-                                    isClicked1 = true;
-                                    isClicked4=true;
-                                  });
-                                },
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                    ) ],
                 ),
               ),
             ),
@@ -1496,6 +1284,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               }
                             }
                             print(list_of_m);
+                             var sar =shared.getInt("types_of_service_id");
+                             var dar = shared.getString("DiscountType");
+                             print (dar);
 
                             if(shared.getString("order_id")=="")
                             {
@@ -1507,7 +1298,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "location_id": shared.getInt("bid")??1,
                                     "contact_id": double.parse(shared.getString("customer_id")??"1"),
                                     "discount_amount": discountt,
-                                    "discount_type": shared.getString("DiscountType"),
+                                    "discount_type": dar,
                                     "rp_redeemed": shared.getInt("Redeemed Points"),
                                     "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
                                     // "shipping_details": null,
@@ -1515,6 +1306,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_status": null,
                                     // "delivered_to": null,
                                     "res_order_status":"POS",
+                                    "types_of_service_id":sar,
                                     "is_suspend":0,
                                     "shipping_charges": shared.getDouble("Shipping"),
                                     "products":list_of_m,
@@ -1570,6 +1362,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               // "shipping_status": null,
                               // "delivered_to": null,
                               "shipping_charges": shared.getDouble("Shipping"),
+                                "types_of_service_id":sar,
                               "products": list_of_m,
                               "payments": [
                               {
@@ -1655,14 +1448,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       Container(
                         child: InkWell(
                           onTap:() async {
-
-                            // var  url = r1.data["url"];
-                            // if (await canLaunch(url)) {
-                            //   await launch(url);
-                            // } else {
-                            //   throw 'Could not launch $url';
-                            // }
+                            var dio=Dio();
                             SharedPreferences shared=await SharedPreferences.getInstance();
+                            dio.options.headers["Authorization"]=shared.getString("Authorization");
+                            var oid = shared.getString("order_id");
+                            var r=await dio.get("https://pos.sero.app/connector/api/sell/$oid");
+                            print(oid);
+                            print(r.data['data'][0]['invoice_token']);
+                            var  url = "https://pos.sero.app/invoice/"+r.data['data'][0]['invoice_token'];
+                            if (await canLaunch(url)) {
+                              await launch(url);
+                            } else {
+                              throw 'Could not launch $url';
+                            }
+
                             var id = shared.getInt("table_id",);
                             print(shared.getInt("table_id"));
                             setState(() {
@@ -1672,7 +1471,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "table_id":id,
                               "table_status":"billing"
                             };
-                            var dio=Dio();
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
                             var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
                             print(r2);
