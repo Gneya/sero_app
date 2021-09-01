@@ -369,12 +369,24 @@ class _ShippingState extends State<Shipping> {
                                       setState(() {
                                         _isloading =false;
                                       });
-                                      totalAmounttype();
+                                      shipAmount =double.parse(_shipChargeController.text);
+                                      if(_packageChargeController.text != ''){
+                                        packageAmount =double.parse(_packageChargeController.text);
+                                        double totalAmount = (widget.Balance + shipAmount+packageAmount);
+                                        setState(() {
+                                          shippingCharge =totalAmount.toStringAsFixed(2);
+                                        });
+                                      }
+                                      else{
+                                        double totalAmount = (widget.Balance + shipAmount);
+                                        setState(() {
+                                          shippingCharge =totalAmount.toStringAsFixed(2);
+                                        });
+                                      }
                                       shared.setDouble("Ammount",widget.Ammount );
                                       shared.setDouble("Balance", double.parse(shippingCharge));
                                       shared.setDouble("Shipping", shipAmount);
                                       Navigator.of(context).pop(true);
-
                                     }
                                   });
                                 },

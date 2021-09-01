@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences.setString("customer_name", "");
     sharedPreferences.setStringList("quantity", []);
     sharedPreferences.setString("modifiers","");
+    sharedPreferences.setInt("table_id", 0);
     var Response = await http.get(
         Uri.parse("https://pos.sero.app/connector/api/user/loggedin"),
         headers: {
