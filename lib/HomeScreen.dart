@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences.setString("order_id","");
     sharedPreferences.setString("invoice", "");
     sharedPreferences.setInt("Redeemed Points",0);
+    sharedPreferences.setDouble("Shipping", 0.0);
     if(list.length>0) {
       for (int i = 0; i < list.length; i++) {
         if (sharedPreferences.containsKey(list[i])) {
@@ -77,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences.setString("customer_name", "");
     sharedPreferences.setStringList("quantity", []);
     sharedPreferences.setString("modifiers","");
+    sharedPreferences.setInt("table_id", 0);
     var Response = await http.get(
         Uri.parse("https://pos.sero.app/connector/api/user/loggedin"),
         headers: {

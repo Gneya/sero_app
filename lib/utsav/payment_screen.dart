@@ -931,7 +931,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       final _dialog=await showDialog(
                                           context: context,
                                           builder: (context){
-                                            return Discount(Ammount: widget.Ammount, Balance:widget.Balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                            return Discount(Ammount: widget.Ammount, Balance:balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
                                       );
                                       if(_dialog) {
@@ -1305,7 +1305,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_address": null,
                                     // "shipping_status": null,
                                     // "delivered_to": null,
-                                    "res_order_status":"POS",
+                                    "shipping_status":"offline",
                                     "types_of_service_id":sar,
                                     "is_suspend":0,
                                     "shipping_charges": shared.getDouble("Shipping"),
@@ -1330,6 +1330,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               shared.setInt("index",0);
                               shared.setInt("PAY_HOLD",1);
                               shared.setDouble("Shipping", 0.0);
+                              shared.setDouble("Discountt", 0.0);
                               cart.deleteAllCart();
                               shared.setString("total", "0");
                               Fluttertoast.showToast(
@@ -1363,6 +1364,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               // "delivered_to": null,
                               "shipping_charges": shared.getDouble("Shipping"),
                                 "types_of_service_id":sar,
+                                "shipping_status":"offline",
                               "products": list_of_m,
                               "payments": [
                               {
@@ -1391,6 +1393,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 shared.setInt("index", 0);
                                 shared.setInt("PAY_HOLD",1);
                                 shared.setDouble("Shipping", 0.0);
+                                shared.setDouble("Discountt", 0.0);
                               });
 
                               Fluttertoast.showToast(
