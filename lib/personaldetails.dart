@@ -4,6 +4,7 @@ import 'package:csc_picker/csc_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:sero_app/selecttable.dart';
@@ -82,14 +83,16 @@ class _PersonalDetailsState extends State<PersonalDetails> {
             gravity: ToastGravity.BOTTOM,
             textColor: Colors.green,
             timeInSecForIosWeb: 10);
+        shared.setString("customer_name", _customer.name);
+        shared.setString("customer_id", _customer.id);
         setState(() {
           _isloading = false;
         });
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //       builder: (context) => SelectTable(),
-        //     ));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SelectTable(),
+            ));
       }
     }
   }
@@ -618,8 +621,10 @@ class customer
 {
   final String error;
   final String id;
+  final String name;
   customer.fromJson(Map<String,dynamic> Json):
         this.error=Json["error"].toString(),
+        this.name=Json["data"]["name"],
         this.id=Json["data"]["id"].toString();
 }
 
