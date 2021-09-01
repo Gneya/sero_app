@@ -57,24 +57,26 @@ class _ShippingState extends State<Shipping> {
 
     return shippingCharge;
   }
-  List<String> _charges =[];
-  _ShippingState() {
-    fetchData().then((val) => setState(() {
-      _charges= val;
-    }));
-  }
+  // List<String> _charges =[];
+  // _ShippingState() {
+  //   fetchData().then((val) => setState(() {
+  //     _charges= val;
+  //   }));
+  // }
 
-  Future<List<String>> fetchData() async {
-    Map data = await getData();
-    List<String> charges =[];
-    for(var i in data['data'])
-    {
-      charges.add(i['shipping_charges']);
-      charges.add(i['packing_charge']);
-      print(charges);
-    }
-    return charges;
-  }
+  // Future<List<String>> fetchData() async {
+  //   Map data = await getData();
+  //   List<String> charges =[];
+  //   for(var i in data['data'])
+  //   {
+  //     charges.add(i['shipping_charges']);
+  //     charges.add(i['packing_charge']);
+  //     widget.Balance -= double.parse(i['shipping_charges']);
+  //     print("WIDGETTTTTTTTTTTTTTTTTTTT"+widget.Balance.toString());
+  //     print(charges);
+  //   }
+  //   return charges;
+  // }
   Map input={};
   _sendData() async{
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
@@ -130,10 +132,18 @@ class _ShippingState extends State<Shipping> {
       _isloading=false;
     });
   }
+  setShip() async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    var SH = shared.getDouble("Shipping");
+    print("Shhhhhhhhhhhhhhhhhhhhh"+SH.toString());
+    if(SH !=0.0){
+      widget.Balance-=SH!;
+      shared.setDouble("Balance", widget.Balance);
+    }
+  }
   @override
   void initState() {
     getDriverDetails();
-
     super.initState();
   }
   @override
@@ -345,13 +355,27 @@ class _ShippingState extends State<Shipping> {
                                   SharedPreferences shared = await SharedPreferences.getInstance();
 
                                   setState(() {
+
                                     if(_formKey.currentState!.validate()){
-                                      _sendData();
+                                      setState(() {
+                                        _isloading =true;
+                                      });
+                                      var SH = shared.getDouble("Shipping");
+                                      print("Shhhhhhhhhhhhhhhhhhhhh"+SH.toString());
+                                      if(SH !=0.0){
+                                        widget.Balance-=SH!;
+                                        shared.setDouble("Balance", widget.Balance);
+                                      }
+                                      setState(() {
+                                        _isloading =false;
+                                      });
                                       totalAmounttype();
                                       shared.setDouble("Ammount",widget.Ammount );
                                       shared.setDouble("Balance", double.parse(shippingCharge));
                                       shared.setDouble("Shipping", shipAmount);
-                                      Navigator.of(context).pop(true);}
+                                      Navigator.of(context).pop(true);
+
+                                    }
                                   });
                                 },
                               ),
@@ -387,18 +411,18 @@ class _ShippingState extends State<Shipping> {
     );
   }
 }
-Future<Map<String, dynamic>> getData() async {
-  SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-   var id = sharedPreferences.getString("customer_id");
-   print(id);
-
-  String myUrl = "https://pos.sero.app/connector/api/sell/$id";
-  http.Response response = await http.get(Uri.parse(myUrl), headers: {
-    'Authorization':
-    sharedPreferences.getString("Authorization") ?? ''
-  });
-  return json.decode(response.body);
-}
+// Future<Map<String, dynamic>> getData() async {
+//   SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+//    var id = sharedPreferences.getString("customer_id");
+//    print(id);
+//
+//   String myUrl = "https://pos.sero.app/connector/api/sell/$id";
+//   http.Response response = await http.get(Uri.parse(myUrl), headers: {
+//     'Authorization':
+//     sharedPreferences.getString("Authorization") ?? ''
+//   });
+//   return json.decode(response.body);
+// }
 // class customer
 // {
 //   final String error;

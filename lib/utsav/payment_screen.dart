@@ -931,7 +931,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       final _dialog=await showDialog(
                                           context: context,
                                           builder: (context){
-                                            return Discount(Ammount: widget.Ammount, Balance:widget.Balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                            return Discount(Ammount: widget.Ammount, Balance:balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
                                           }
                                       );
                                       if(_dialog) {
