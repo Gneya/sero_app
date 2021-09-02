@@ -108,7 +108,56 @@ class _PaymentScreenState extends State<PaymentScreen> {
       'Authorization':shared.getString("Authorization")??""
     });
     var v=json.decode(response.body);
-    print( v["data"]["locations"]["default_payment_accounts"]);
+    var i =v["data"]["locations"][0]["default_payment_accounts"];
+    print( v["data"]["locations"][0]["default_payment_accounts"]);
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
+    if(i["card"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["card"]);
+    }
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
+    if(i["cash"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["cash"]);
+    }
     paymentMethod = [
       data['cash'],
       data['card'],
@@ -1301,7 +1350,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               Map<String,dynamic> api= {
                                 "sells":[
                                   {
-                                    "table_id" :shared.getInt("table_id")??0,
+                                    "table_id" :shared.getInt("table_id")??null,
                                     "location_id": shared.getInt("bid")??1,
                                     "contact_id": double.parse(shared.getString("customer_id")??"1"),
                                     "discount_amount": discountt,
