@@ -102,6 +102,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
     amount=widget.Ammount;
     balance=widget.Balance;
     redeem=widget.Redeem;
+    SharedPreferences shared=await SharedPreferences.getInstance();
+    String myUrl = "https://pos.sero.app/connector/api/business-details";
+    http.Response response = await http.get((Uri.parse(myUrl)), headers: {
+      'Authorization':shared.getString("Authorization")??""
+    });
+    var v=json.decode(response.body);
+    print( v["data"]["locations"]["default_payment_accounts"]);
     paymentMethod = [
       data['cash'],
       data['card'],
