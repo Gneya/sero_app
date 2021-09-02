@@ -38,15 +38,18 @@ class _DiscountState extends State<Discount> {
   final _formKey = GlobalKey<FormState>();
   String dropdownValue ='Percentage %';
   final _amountController = new TextEditingController();
+  var dis_type ;
   String totalAmounttype(){
     discountAmount =double.parse(_amountController.text);
     if(dropdownValue=='Percentage %'){
+      dis_type ="percentage";
       double totalAmount = (widget.Balance - (widget.Balance*discountAmount/100));
       setState(() {
         discountedAmount = totalAmount.toStringAsFixed(2);
       });}
     else{
       {
+        dis_type ="fixed";
         setState(() {
           double totalAmount = (widget.Balance - discountAmount);
           discountedAmount = totalAmount.toStringAsFixed(2);
@@ -58,6 +61,7 @@ class _DiscountState extends State<Discount> {
   {
     discountted=double.parse(_amountController.text) ;
     if(dropdownValue=='Percentage %'){
+
       double totalAmount = (widget.Balance*discountAmount/100);
       setState(() {
         discountted = totalAmount;
@@ -335,7 +339,7 @@ class _DiscountState extends State<Discount> {
                               shared.setDouble("Ammount",widget.Ammount );
                               shared.setDouble("Balance", double.parse(discountedAmount));
                               print("IN DISCOUNT SCREEN"+shared.getDouble("Balance").toString());
-                              shared.setString("DiscountType",dropdownValue );
+                              shared.setString("DiscountType",dis_type);
                               print(shared.getString("DiscountType"));
                               shared.setDouble("Discountt", discountted);
                               Navigator.of(context).pop(true);

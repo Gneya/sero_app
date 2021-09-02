@@ -368,7 +368,7 @@ class _SplitPayState extends State<SplitPay> {
                         height: 50,
                         child: Center(
                             child: Text(
-                              'Pay:\$'+widget.Balance.toStringAsFixed(2),
+                              "Continue",
                               textScaleFactor: 2.0,
                               style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
                             ))),
@@ -376,45 +376,6 @@ class _SplitPayState extends State<SplitPay> {
                   ),
                 ),
               ),
-              // Container(
-              //   child: GestureDetector(
-              //     onTap: () {
-              //       setState((){
-              //         print('active');
-              //       } );
-              //     },
-              //     child: Container(
-              //         decoration: BoxDecoration(
-              //           borderRadius: BorderRadius.circular(35),
-              //           boxShadow: [
-              //             BoxShadow(
-              //               color: Colors.grey,
-              //               offset: const Offset(
-              //                 1.0,
-              //                 1.0,
-              //               ), //Offset
-              //               blurRadius: 6.0,
-              //               spreadRadius: 2.0,
-              //             ), //BoxShadow
-              //             BoxShadow(
-              //               color: Colors.white,
-              //               offset: const Offset(0.0, 0.0),
-              //               blurRadius: 0.0,
-              //               spreadRadius: 0.0,
-              //             ),],
-              //           color : const Color(0xFFFFD45F),
-              //         ),
-              //         margin: EdgeInsets.only(top: 10),
-              //         width: 330,
-              //         height: 60,
-              //         child: Center(
-              //             child: Text(
-              //               'Pay:\$'+widget.Balance.toStringAsFixed(2),
-              //               textScaleFactor: 2.0,
-              //               style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-              //             ))),
-              //   ),
-              // )
             ],
           ),
         )
