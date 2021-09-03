@@ -29,7 +29,7 @@ class _CartScreenState extends State<CartScreen> {
   bool _isloading =false;
   List<String> counter=[];
   int points=0;
-
+  List<dynamic> list_of_products=[];
   var size,height,width;
   int table_id=0;
 
@@ -349,6 +349,7 @@ class _CartScreenState extends State<CartScreen> {
                               ),],
                           ),
                           child:Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -408,6 +409,13 @@ class _CartScreenState extends State<CartScreen> {
                                     onPressed:() async {
                                       SharedPreferences shared = await SharedPreferences.getInstance();
                                       setState(()  {
+                                        for(int i=0;i<list_of_products.length;i++)
+                                        {
+                                          if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
+                                            {
+                                              list_of_products.removeAt(i);
+                                            }
+                                        }
                                         cart.deleteItemFromCart(index);
                                         shared.setString("total", (cart.getCartItemCount()).toString());
                                         var list = shared.getStringList("variation");
@@ -424,26 +432,23 @@ class _CartScreenState extends State<CartScreen> {
                                   ),
                                 ],
                               ),
-
                               Container(
                                 height: 20,
+                                alignment: Alignment.centerLeft,
+                                padding: EdgeInsets.only(left: 10),
                                 child:FutureBuilder(
                                     future:get(cart.cartItem[index].productName) ,
                                     builder: (context,snapshot){
                                       return ListView.builder(
                                         itemCount:1,
                                         itemBuilder: (context, i) {
-                                          if(m[cart.cartItem[index].productName]!=null)
-                                            return Text(cart.cartItem[index].productDetails);
-                                              // Text(' - Extra '+m[cart.cartItem[index].productName].toString());
-                                          else{
-                                            return Text("");
-                                          }
+                                            return Text(list_of_products[index]["note"]??"");
+
                                         },
                                       );}),
-                              )
+                              ),
                             ] ,
-                          )
+                          ),
                       ),
                     ),
                   );})),
@@ -834,6 +839,7 @@ class _CartScreenState extends State<CartScreen> {
     p=0;
     var cart =FlutterCart();
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    list_of_products=json.decode(sharedPreferences.getString("products")!);
     setState(() {
       customer_name=sharedPreferences.getString("customer_name")??"";
       table_name=sharedPreferences.getString("table_name")??"";

@@ -35,6 +35,7 @@ class SelectItem extends StatefulWidget {
 class _SelectItemState extends State<SelectItem> {
   var v;
   //List<String> selectedReportList = [];
+  Map m={};
   var cart=FlutterCart();
   late product _product;
   List<Map<String,dynamic>> list_of_m=[];
@@ -44,6 +45,7 @@ class _SelectItemState extends State<SelectItem> {
   List<String> searchresultImages = [];
   List<String> searchresultprice=[];
   List<String> images = [];
+  List<dynamic> list_of_products=[];
   List<String> price=[];
   List<String> _selectedItems = [];
   List<String> _selectedItemsprice = [];
@@ -649,7 +651,27 @@ class _SelectItemState extends State<SelectItem> {
                         }
                       cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
                     sharedPreferences.setString("total", cart.getCartItemCount().toString());
-                         http.Response response = await http.get(
+                    if(sharedPreferences.getString("products")!=""){
+                    list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
+                   m={
+                     "pid":_productlist[index].id,
+                     "tax_id":_productlist[index].tax_id
+                   };
+                    int flag=0;
+                    for(int i=0;i<list_of_products.length;i++)
+                      {
+                        if(list_of_products[i]["pid"]==_productlist[index].id)
+                          {
+                            flag=1;
+                            break;
+                            print("Yes product id exist");
+                          }
+                      }
+                    if(flag==0)
+                   list_of_products.add(m);
+                   print(list_of_products);
+                   sharedPreferences.setString("products", json.encode(list_of_products));
+                   http.Response response = await http.get(
                           Uri.parse(
                               "https://pos.sero.app/connector/api/product/${_productlist[index].id}")
                           ,  headers: {
@@ -681,12 +703,14 @@ class product
   final String price;
   final String url;
   final String variation_id;
+  final int tax_id;
   product.fromJson(Map<String,dynamic> json):
         price=json["sell_price_inc_tax"],
         name=json["product_name"],
         url=json["product_image_url"],
         id=json["product_id"].toString(),
-        variation_id=json["variation_id"].toString();
+        variation_id=json["variation_id"].toString(),
+    this.tax_id=json["tax_id"];
 }
 class Customer
 {
@@ -699,6 +723,7 @@ class Customer
         this._phone=json["product_variations"][0]["variations"][0]["sell_price_inc_tax"],
         this.id=json["id"].toString(),
       this.variation_id=json["product_variation_id"].toString();
+
 
 }
 class CustomerApi {

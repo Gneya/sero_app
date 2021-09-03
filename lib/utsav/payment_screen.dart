@@ -122,9 +122,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
       print("yes");
       paymentMethod.add(data["cash"]);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["cheque"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["cheque"]);
     }
     if(i["cash"]["is_enabled"]=="1"){
       print("yes");
@@ -1305,6 +1305,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             var dio=Dio();
                             List<Map<String,dynamic>> list_of_m=[];
                             SharedPreferences shared=await SharedPreferences.getInstance();
+                            List<dynamic> list_of_products=json.decode(shared.getString("products")!);
                             var id = shared.getInt("table_id",);
                             print(shared.getInt("table_id"));
                             Map<String,dynamic> api1={
@@ -1319,12 +1320,21 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             var cart=FlutterCart();
                             for(int index=0;index<cart.cartItem.length;index++)
                             {
-
+                              var note=null;
+                              for(int i=0;i<list_of_products.length;i++)
+                                {
+                                  if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
+                                    {
+                                      note=list_of_products[i]["note"];
+                                      break;
+                                    }
+                                }
                               Map<String,dynamic> product={
                                 "product_id":double.parse(cart.cartItem[index].productId.toString()),
                                 "variation_id":double.parse(variation![index]),
                                 "quantity": cart.cartItem[index].quantity,
                                 "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
+                                "sell_line_note":note
                               };
                               list_of_m.add(product);
                               // print(list_of_m);

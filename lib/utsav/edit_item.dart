@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
@@ -283,10 +285,9 @@ class _edit_item_State extends State<edit_item> {
                           height: 40,
                           width: 130,
                         ),
-                        onTap :(){
+                        onTap :() async {
+                           SharedPreferences shared = await SharedPreferences.getInstance();
                           setState(()  {
-                            // SharedPreferences shared = await SharedPreferences.getInstance();
-
                             if(dropdownValue == "Fixed"){
                               cart.cartItem[widget.index].unitPrice-= double.parse(_discount.text);
                               print(cart.cartItem[widget.index].unitPrice);
@@ -297,8 +298,19 @@ class _edit_item_State extends State<edit_item> {
                             print(cart.getTotalAmount().toString());
                             cart.cartItem[widget.index].productDetails=note.text;
                             print(cart.cartItem[widget.index].productDetails);
-                             Navigator.pop(context);
                           });
+                          List<dynamic> list_of_products=[];
+                          list_of_products=json.decode(shared.getString("products")!);
+                          for(int i=0;i<list_of_products.length;i++)
+                            {
+                              if(list_of_products[i]["pid"]==cart.cartItem[widget.index].productId)
+                                {
+                                  list_of_products[i]["note"]=note.text;
+                                }
+                            }
+                          print(list_of_products);
+                          shared.setString("products", json.encode(list_of_products));
+                          Navigator.pop(context);
                         },
                       ),
                     ),
