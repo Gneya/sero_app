@@ -1321,11 +1321,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             for(int index=0;index<cart.cartItem.length;index++)
                             {
                               String note="";
+                              int tax_id=0;
                               for(int i=0;i<list_of_products.length;i++)
                                 {
                                   if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
                                     {
                                       note=list_of_products[i]["note"]??"";
+                                      tax_id=list_of_products[i]["tax_id"]??0;
                                       print(note);
                                       break;
                                     }
@@ -1335,6 +1337,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 "variation_id":double.parse(variation![index]),
                                 "quantity": cart.cartItem[index].quantity,
                                 "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
+                                "tax_rate_id":tax_id,
                                 "note":note
                               };
                               print(product);

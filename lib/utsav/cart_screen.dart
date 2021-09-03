@@ -437,7 +437,7 @@ class _CartScreenState extends State<CartScreen> {
                                 alignment: Alignment.centerLeft,
                                 padding: EdgeInsets.only(left: 10),
                                 child:FutureBuilder(
-                                    future:get(cart.cartItem[index].productName) ,
+                                    future:get(cart.cartItem[index].productName),
                                     builder: (context,snapshot){
                                       return ListView.builder(
                                         itemCount:1,
