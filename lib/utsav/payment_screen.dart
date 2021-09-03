@@ -1320,12 +1320,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             var cart=FlutterCart();
                             for(int index=0;index<cart.cartItem.length;index++)
                             {
-                              var note=null;
+                              String note="";
                               for(int i=0;i<list_of_products.length;i++)
                                 {
                                   if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
                                     {
-                                      note=list_of_products[i]["note"];
+                                      note=list_of_products[i]["note"]??"";
+                                      print(note);
                                       break;
                                     }
                                 }
@@ -1334,8 +1335,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 "variation_id":double.parse(variation![index]),
                                 "quantity": cart.cartItem[index].quantity,
                                 "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
-                                "sell_line_note":note
+                                "note":note
                               };
+                              print(product);
                               list_of_m.add(product);
                               // print(list_of_m);
                             }
