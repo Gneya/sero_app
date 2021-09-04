@@ -248,16 +248,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
     });
     return paymentMethod;
   }
-  Future<void> getSharedPrefs() async {
-    setState(() {
-      _isloading =true;
-    });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    table_name =prefs.getString("table_name")??"";
-    setState(() {
-      _isloading =false;
-    });
-  }
+  // Future<void> getSharedPrefs() async {
+  //   setState(() {
+  //     _isloading =true;
+  //   });
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   table_name =prefs.getString("table_name")??"";
+  //   setState(() {
+  //     _isloading =false;
+  //   });
+  // }
   Widget selectPaymentMode(){
     if(isClicked1 ==true){
       return Container(
@@ -565,7 +565,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         focusNode: new AlwaysDisabledFocusNode(),
                                         keyboardType:TextInputType.number,
                                         decoration: InputDecoration(
-                                          hintText: '\$'+paymentAmount.toStringAsFixed(2),
+                                          hintText: '\$'+widget.Ammount.toStringAsFixed(2),
                                           hintStyle: GoogleFonts.ptSans(
                                               fontWeight: FontWeight.bold
                                           ),
@@ -838,7 +838,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     fetchData();
-    getSharedPrefs();
+    //getSharedPrefs();
     super.initState();
 
   }
@@ -1360,7 +1360,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       activeColor: Color(0xFFFFD45F),
                       onChanged: (value) {
                         setState(() {
-                          if(isClicked2==false)
+                          if(isClicked2==true)
                           {
                             if( _Key.currentState!.validate())
                             {
@@ -1368,7 +1368,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               totalAmount();
                             }
                           }
-                          else if(isClicked1 ==false){
+                          else if(isClicked1 ==true){
                             {
                               this.isEnabled = value!;
                               totalAmount();
