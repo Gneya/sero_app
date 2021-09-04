@@ -632,12 +632,25 @@ class _CartScreenState extends State<CartScreen> {
                     var cart=FlutterCart();
                     for(int index=0;index<cart.cartItem.length;index++)
                     {
-
+                      String note="";
+                      int tax_id=0;
+                      for(int i=0;i<list_of_products.length;i++)
+                      {
+                        if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
+                        {
+                          note=list_of_products[i]["note"]??"";
+                          tax_id=list_of_products[i]["tax_id"]??0;
+                          print(note);
+                          break;
+                        }
+                      }
                       Map<String,dynamic> product={
                         "product_id":double.parse(cart.cartItem[index].productId.toString()),
                         "variation_id":double.parse(variation![index]),
                         "quantity": cart.cartItem[index].quantity,
                         "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
+                        "tax_rate_id":tax_id,
+                        "note":note
                       };
                       list_of_m.add(product);
                       print(list_of_m);
