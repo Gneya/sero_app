@@ -19,6 +19,7 @@ class ResumeScreen extends StatefulWidget {
 class _ResumeScreenState extends State<ResumeScreen> {
   List<int> id=[];
   List<Map<String,dynamic>> list=[];
+  List<dynamic> list_of_products=[];
   Map<String,dynamic> map={};
   List<int> total_list=[];
   List<double> price=[];
@@ -46,9 +47,13 @@ class _ResumeScreenState extends State<ResumeScreen> {
         List<double> price_of_indiviual=[];
         List<int> pid=[];
         List<String> vid=[];
+        List<int> tax=[];
+        List<String> note=[];
         for(var c in i["sell_lines"])
         {
           count++;
+          tax.add(c["tax_id"]??0);
+          note.add(c["sell_line_note"]??"");
           price_of_indiviual.add(double.parse(c["unit_price"].toString()));
           sum+=double.parse(c["unit_price"]);
           pid.add(c["product_id"]??0);
@@ -72,6 +77,8 @@ class _ResumeScreenState extends State<ResumeScreen> {
           "pid":pid,
            "vid":vid,
           "total_price":sum,
+           "tax_id":tax,
+           "note":note,
           "price_of_indiviual":price_of_indiviual,
           "count":count
         };
@@ -206,6 +213,12 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                           var cart=FlutterCart();
                                           cart.deleteAllCart();
                                           for(int i=0;i<list[index]["pid"].length;i++) {
+                                            Map m={
+                                              "pid":list[index]["pid"][i],
+                                              "tax_id":list[index]["tax_id"][i],
+                                             "note":list[index]["note"][i]??""
+                                            };
+                                            list_of_products.add(m);
                                             http.Response response = await http.get(
                                                 Uri.parse(
                                                     "https://pos.sero.app/connector/api/product/${list[index]["pid"][i]}")
@@ -220,6 +233,9 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                                 productName: v
                                             );
                                           }
+                                          shared.setString("products", json.encode(list_of_products));
+                                          print("LIST OF PRODUCTS");
+                                          print(list_of_products);
                                           shared.setStringList("variation",list[index]["vid"]);
                                           shared.setString("total", cart.getCartItemCount().toString());
                                           shared.setString("customer_name",list[index]["cus_name"]);

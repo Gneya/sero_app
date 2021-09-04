@@ -66,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences.setString("invoice", "");
     sharedPreferences.setInt("Redeemed Points",0);
     sharedPreferences.setDouble("Shipping", 0.0);
+    sharedPreferences.setString("products","");
     if(list.length>0) {
       for (int i = 0; i < list.length; i++) {
         if (sharedPreferences.containsKey(list[i])) {
