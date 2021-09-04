@@ -42,11 +42,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
   double tipAmount = 0.0;
   String toBePaid = '0';
   int _currentIndex = 0;
-  bool isClicked1 = false;
-  bool isClicked2 = true;
-  bool isClicked3 = true;
-  bool isClicked4 = true;
-  bool isClicked5 = true;
+  bool isClicked1 = true;
+  bool isClicked2 = false;
+  bool isClicked3 = false;
+  bool isClicked4 = false;
+  bool isClicked5 = false;
+  bool isClicked6 = false;
+  bool isClicked7 = false;
+  bool isClicked8 = false;
+  bool isClicked9 = false;
+  bool isClicked10 = false;
+  bool isClicked11 = false;
+  bool isClicked12 = false;
+  bool isClicked13 = false;
+  var flag=false;
   bool value = false;
   bool isEnabled = false;
   bool isEnabledBalance = false;
@@ -54,6 +63,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   String table_name = '';
   final _tipController = new TextEditingController();
   List<String> paymentMethod =[];
+  List<bool> isclicked =[];
   final _formKey = GlobalKey<FormState>();
   final _Key = GlobalKey<FormState>();
 
@@ -92,12 +102,56 @@ class _PaymentScreenState extends State<PaymentScreen> {
           print(_payMeth);
         }));
   }
+  void select(String name)
+  {
+    print("NAME="+name);
+    if(name=="Cash")
+      {
+        isClicked1=true;
+      }
+    else if(name=="Card")
+      {
+        setState(() {
+          isClicked1=false;
+          isClicked2=true;
+        });
+      }
+    else
+      {
+        setState(() {
+          isClicked1=false;
+          isClicked4=true;
+          isClicked2=false;
+        });
+      }
+  }
+  bool func(String f)
+  {
+    bool flag=false;
+    for(int i=0;i<paymentMethod.length;i++)
+      {
+        if(paymentMethod[i]==f) {
+          if (i < isclicked.length) {
+            if (isclicked[i] == true) {
+              flag = true;
+              break;
+            }
+            else {
+              flag = false;
+            }
+          }
+        }
+      }
+      return flag;
+  }
 
   Future<List<String>> fetchData() async {
     /*
      payment mode values are not showing on the screen whenever below values are used or not commented
     */
-
+    setState(() {
+      _isloading=true;
+    });
     Map data = await getData();
     amount=widget.Ammount;
     balance=widget.Balance;
@@ -110,69 +164,88 @@ class _PaymentScreenState extends State<PaymentScreen> {
     var v=json.decode(response.body);
     var i =v["data"]["locations"][0]["default_payment_accounts"];
     print( v["data"]["locations"][0]["default_payment_accounts"]);
+    paymentMethod=[];
+    print(paymentMethod);
     if(i["cash"]["is_enabled"]=="1"){
       print("yes");
       paymentMethod.add(data["cash"]);
+      isclicked.add(true);
     }
     if(i["card"]["is_enabled"]=="1"){
       print("yes");
       paymentMethod.add(data["card"]);
-    }
-    if(i["cash"]["is_enabled"]=="1"){
-      print("yes");
-      paymentMethod.add(data["cash"]);
+      isclicked.add(false);
     }
     if(i["cheque"]["is_enabled"]=="1"){
       print("yes");
       paymentMethod.add(data["cheque"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["paytm"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["paytm"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["other"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["other"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_1"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_1"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_2"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_2"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_3"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_3"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_4"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_4"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_5"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_5"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_6"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_6"]);
+      isclicked.add(false);
     }
-    paymentMethod = [
-      data['cash'],
-      data['card'],
-      data['cheque'],
-      data['Reward Points'],
-      data['other'],
-      data['custom_pay_1'],
-      data['custom_pay_2'],
-      data['custom_pay_3'],
-      data['custom_pay_4'],
-      data['custom_pay_5'],
-      data['custom_pay_6'],
-      data['custom_pay_7'],
-    ];
+    if(i["custom_pay_7"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["custom_pay_7"]);
+      isclicked.add(false);
+    }
+    print(paymentMethod.length);
+    print(isclicked.length);
+    // paymentMethod = [
+    //   data['cash'],
+    //   data['card'],
+    //   data['cheque'],
+    //   data['Reward Points'],
+    //   data['other'],
+    //   data['custom_pay_1'],
+    //   data['custom_pay_2'],
+    //   data['custom_pay_3'],
+    //   data['custom_pay_4'],
+    //   data['custom_pay_5'],
+    //   data['custom_pay_6'],
+    //   data['custom_pay_7'],
+    // ];
     print(paymentMethod[1]);
+    setState(() {
+      _isloading=false;
+    });
     return paymentMethod;
   }
   Future<void> getSharedPrefs() async {
@@ -186,7 +259,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     });
   }
   Widget selectPaymentMode(){
-    if(isClicked1 ==false){
+    if(isClicked1 ==true){
       return Container(
         height: 320 ,
         color:Colors.white,
@@ -441,7 +514,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
 
 
-    else if(isClicked2==false){
+    else if(isClicked2==true){
       return  Container(
           height: 320 ,
           color:Colors.white,
@@ -723,7 +796,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),)
       );
     }
-    else if(isClicked3==false){
+    else if(isClicked3==true){
       return Container(
         height: 300,
         child: Center(
@@ -731,7 +804,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
       );
     }
-    else if(isClicked4==false){
+    else if(isClicked4==true){
       return Container(
         height: 300,
         child: Center(
@@ -739,7 +812,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
       );
     }
-    else if(isClicked5==false){
+    else if(isClicked5==true){
       return Container(
         height: 300,
         child: Center(
@@ -1160,7 +1233,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: Column(
           children: [
             Container(
-              height: 180,
+              height: paymentMethod.length*45,
               width: width,
               color:Colors.white54,
               child: Padding(
@@ -1178,7 +1251,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ],
                     ),
                     Container(
-                      height: 140,
+                      height: paymentMethod.length*25,
                       child:  SingleChildScrollView(
                         child: Wrap(
                           children: paymentMethod.map((f) => GestureDetector(
@@ -1192,7 +1265,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               margin: EdgeInsets.only(
                                   left: 5.0, right: 5.0, top: 10.0, bottom: 10.0),
                               decoration: BoxDecoration(
-                                color: isClicked1 ? Colors.white : Color(0xFFFFD45F),
+                                color:  func(f) ?Color(0xFFFFD45F):Colors.white ,
                                 borderRadius: BorderRadius.circular(35),
                                 boxShadow: [
                                   BoxShadow(
@@ -1232,7 +1305,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               ),
                             ),
                             onTap: () {
-
+                              int res=0;
+                              for(int i=0;i<paymentMethod.length;i++)
+                                {
+                                  if(paymentMethod[i]==f)
+                                    {
+                                      isclicked[i]=true;
+                                      res=i;
+                                      flag=true;
+                                    }
+                                  else
+                                    {
+                                      isclicked[i]=false;
+                                      flag=false;
+                                    }
+                                  print("METHODS");
+                                }
+                              select(f);
                             },
                           ))
                               .toList(),
@@ -1741,7 +1830,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   //   });
   // }
 }
-
 Future<Map<String, dynamic>> getData() async {
   SharedPreferences shared=await SharedPreferences.getInstance();
   String myUrl = "https://pos.sero.app/connector/api/payment-methods";
