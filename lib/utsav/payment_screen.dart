@@ -166,9 +166,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
     print( v["data"]["locations"][0]["default_payment_accounts"]);
     paymentMethod=[];
     print(paymentMethod);
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["Reward Points"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["Reward Points"]);
       isclicked.add(true);
     }
     if(i["card"]["is_enabled"]=="1"){
