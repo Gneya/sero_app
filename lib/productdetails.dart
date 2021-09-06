@@ -655,8 +655,9 @@ class _SelectItemState extends State<SelectItem> {
                         cart.addToCart(productId: _productlist[index].id,
                             unitPrice: double.parse(_productlist[index].price),
                             productName: _productlist[index].name,
-                            quantity: cart.cartItem[i].quantity++);
+                            quantity: ++cart.cartItem[i].quantity);
                         flag1 =1;
+                        print("&&&&&&&&&&&&&&&&&**************(())))))))))))))))))");
                         break;
                       }
 
