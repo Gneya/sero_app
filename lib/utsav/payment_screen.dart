@@ -102,15 +102,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
           print(_payMeth);
         }));
   }
-  void select(String name)
-  {
+  Future<void> select(String name)
+  async {
+    SharedPreferences shared=await SharedPreferences.getInstance();
     print("NAME="+name);
     if(name=="Cash")
       {
+        shared.setString("method","cash");
         isClicked1=true;
       }
     else if(name=="Card")
       {
+        shared.setString("method","card");
         setState(() {
           isClicked1=false;
           isClicked2=true;
@@ -1473,7 +1476,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "tip":_tipController.text,
                                     "payments": [
                                       {
-                                        "amount":cart.getTotalAmount()
+                                        "amount":cart.getTotalAmount(),
+                                        "method":shared.getString("method")
                                       }
                                     ]
                                   }

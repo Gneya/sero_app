@@ -62,6 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("total",cart.getCartItemCount().toString());
     var list=sharedPreferences.getStringList("selected")??[];
+    sharedPreferences.setString("method", "cash");
     sharedPreferences.setString("order_id","");
     sharedPreferences.setString("invoice", "");
     sharedPreferences.setInt("Redeemed Points",0);
