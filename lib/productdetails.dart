@@ -649,7 +649,22 @@ class _SelectItemState extends State<SelectItem> {
                         {
                           print("NOOOO");
                         }
+                      int flag1 =0;
+                    for (int i =0 ;i<cart.cartItem.length;i++){
+                      if(cart.cartItem[i].productId==_productlist[index].id){
+                        cart.addToCart(productId: _productlist[index].id,
+                            unitPrice: double.parse(_productlist[index].price),
+                            productName: _productlist[index].name,
+                            quantity: cart.cartItem[i].quantity++);
+                        flag1 =1;
+                        break;
+                      }
+
+                    }
+                    if( flag1 ==0){
                       cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
+                    }
+
                     sharedPreferences.setString("total", cart.getCartItemCount().toString());
                     if(sharedPreferences.getString("products")!=""){
                     list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
