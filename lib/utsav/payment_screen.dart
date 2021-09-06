@@ -102,15 +102,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
           print(_payMeth);
         }));
   }
-  void select(String name)
-  {
+  Future<void> select(String name)
+  async {
+    SharedPreferences shared=await SharedPreferences.getInstance();
     print("NAME="+name);
     if(name=="Cash")
       {
+        shared.setString("method","cash");
         isClicked1=true;
       }
     else if(name=="Card")
       {
+        shared.setString("method","card");
         setState(() {
           isClicked1=false;
           isClicked2=true;
@@ -1473,7 +1476,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "tip":_tipController.text,
                                     "payments": [
                                       {
-                                        "amount":cart.getTotalAmount()
+                                        "amount":cart.getTotalAmount(),
+                                        "method":shared.getString("method")
                                       }
                                     ]
                                   }
@@ -1528,7 +1532,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "products": list_of_m,
                               "payments": [
                               {
-                              "amount": cart.getTotalAmount()
+                              "amount": cart.getTotalAmount(),
+                                "method":shared.getString("method")
                               }
                               ]
                               }
@@ -1536,7 +1541,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
                               };
                               print(json.encode(api));
-
                               var dio=Dio();
                               var vid = shared.getString("order_id".toString());
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
@@ -1562,8 +1566,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   gravity: ToastGravity.BOTTOM,
                                   textColor: Colors.green,
                                   timeInSecForIosWeb: 4);
-
-
                             }
                             shared.setInt("seconds", 0);
                             Phoenix.rebirth(context);
