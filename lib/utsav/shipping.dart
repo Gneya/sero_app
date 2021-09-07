@@ -162,48 +162,80 @@ class _ShippingState extends State<Shipping> {
                 height: 550,
                 child: ListView(
                   children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Text('ADD SHIPPING',
-                            style: GoogleFonts.ptSans(color: Colors.white,fontSize: 35,fontWeight: FontWeight.bold),)
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
-                              child: Text('Shipping Cost',
-                                style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
-                            )),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top:4,left: 45,bottom: 20,right: 45),
-                          child: Form(
-                            key: _formKey,
+                    SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Text('ADD SHIPPING',
+                              style: GoogleFonts.ptSans(color: Colors.white,fontSize: 35,fontWeight: FontWeight.bold),)
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
+                                child: Text('Shipping Cost',
+                                  style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
+                              )),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top:4,left: 45,bottom: 20,right: 45),
+                            child: Form(
+                              key: _formKey,
+                              child: TextFormField(
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter the shipping cost';
+                                  }
+                                  return null;
+                                },
+                                controller: _shipChargeController,
+                                keyboardType:TextInputType.number,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white, filled: true,
+                                  errorStyle:
+                                  GoogleFonts.ptSans(color: Color(0xFFFFD45F),fontSize: 12,fontWeight: FontWeight.bold),
+
+                                  prefix:  Text('\$'),
+                                  hintText: 'Enter Shipping Cost here',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    borderSide: BorderSide(color:Colors.brown),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(30),
+                                    borderSide: BorderSide(color:Colors.brown),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
+                                child: Text('Packaging Cost',
+                                  style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top:4,left: 45,bottom: 20,right: 45),
                             child: TextFormField(
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter the shipping cost';
-                                }
-                                return null;
-                              },
-                              controller: _shipChargeController,
+                              controller: _packageChargeController,
                               keyboardType:TextInputType.number,
                               decoration: InputDecoration(
                                 fillColor: Colors.white, filled: true,
-                                errorStyle:
-                                GoogleFonts.ptSans(color: Color(0xFFFFD45F),fontSize: 12,fontWeight: FontWeight.bold),
-
                                 prefix:  Text('\$'),
-                                hintText: 'Enter Shipping Cost here',
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30),
                                   borderSide: BorderSide(color:Colors.brown),
                                 ),
+                                hintText: 'Enter Packaging Cost here',
                                 focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(30),
                                   borderSide: BorderSide(color:Colors.brown),
@@ -211,209 +243,181 @@ class _ShippingState extends State<Shipping> {
                               ),
                             ),
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
-                              child: Text('Packaging Cost',
-                                style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top:4,left: 45,bottom: 20,right: 45),
-                          child: TextFormField(
-                            controller: _packageChargeController,
-                            keyboardType:TextInputType.number,
-                            decoration: InputDecoration(
-                              fillColor: Colors.white, filled: true,
-                              prefix:  Text('\$'),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(color:Colors.brown),
-                              ),
-                              hintText: 'Enter Packaging Cost here',
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(30),
-                                borderSide: BorderSide(color:Colors.brown),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
-                              child: Text('Select Driver',
-                                style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top:4,bottom: 20),
-                          child: Container(
-                            height: 40,
-                            width: 240,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(30),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
-                                  left: 25),
-                              child:
-                              TypeAheadField<Customer>(
-                                textFieldConfiguration: TextFieldConfiguration(
-                                    controller: _typeAheadController,
-                                    textAlign: TextAlign.center,
-                                    decoration: InputDecoration(
-                                      border: InputBorder.none,
-                                      hintText: "Select Driver",
-                                    )
-                                ),
-                                itemBuilder: (BuildContext context,Customer? suggestion) {
-                                  final content=suggestion!;
-                                  return ListTile(
-                                    title: Text(content._name+"  ("+content._phone+")"),
-                                  );
-                                },
-                                onSuggestionSelected: (Customer? suggestion) async {
-                                  var id=suggestion!.id;
-                                  print("ID IS:$id");
-                                  _typeAheadController.text=suggestion!._name;
-                                  Fluttertoast.showToast(
-                                      msg:suggestion._name+" is selected",
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.BOTTOM,
-                                      textColor: Colors.green,
-                                      timeInSecForIosWeb: 10);
-                                  SharedPreferences prefs= await SharedPreferences.getInstance();
-                                  print(prefs.getString("customer_name"));
-                                  prefs.setString("customer_name",suggestion._name);
-                                  prefs.setString("customer_id",suggestion.id);
-                                },
-                                suggestionsCallback: CustomerApi.getUserSuggestion,
-                              )
-                              //
-                              // DropdownButton<String>(
-                              //   value: dropdownValue1,
-                              //   items: [
-                              //     DropdownMenuItem(
-                              //       value: 'Driver Contact',
-                              //       child: Text('Ramesh - 9804048393'),
-                              //     ),
-                              //     DropdownMenuItem(
-                              //       value: 'Driver Contact1',
-                              //       child: Text('Suresh - 9804048393'),
-                              //     ),
-                              //     DropdownMenuItem(
-                              //       value: 'Driver Contact2',
-                              //       child: Text('Manish - 9804048393'),
-                              //     ),
-                              //     DropdownMenuItem(
-                              //       value: 'Driver Contact3 ',
-                              //       child: Text('Hari - 9804048393'),
-                              //     ),
-                              //   ],
-                              //   onChanged: (value) {
-                              //     setState(() {
-                              //       dropdownValue1 = value!;
-                              //     });
-                              //   },
-                              // ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 40),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              GestureDetector(
-                                child: Container(
-                                  child:Center(child: Text('Ship',
-                                    style: GoogleFonts.ptSans(fontSize: 30,fontWeight: FontWeight.bold),
-                                  ),
-                                  ),
-
-                                  decoration: BoxDecoration(
-                                    color:Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(45),
-
-                                  ),
-                                  height: 60,
-                                  width: 130,
-                                ),
-                                onTap: () async {
-                                  input={
-                                    'shipping_charges':_shipChargeController.text.toString(),
-                                    'packing_charge':_packageChargeController.text.toString()
-                                  };
-                                  SharedPreferences shared = await SharedPreferences.getInstance();
-
-                                  setState(() {
-
-                                    if(_formKey.currentState!.validate()){
-                                      setState(() {
-                                        _isloading =true;
-                                      });
-                                      var SH = shared.getDouble("Shipping");
-                                      print("Shhhhhhhhhhhhhhhhhhhhh"+SH.toString());
-                                      if(SH !=0.0){
-                                        widget.Balance-=SH!;
-                                        shared.setDouble("Balance", widget.Balance);
-                                      }
-                                      setState(() {
-                                        _isloading =false;
-                                      });
-                                      shipAmount =double.parse(_shipChargeController.text);
-                                      if(_packageChargeController.text != ''){
-                                        packageAmount =double.parse(_packageChargeController.text);
-                                        double totalAmount = (widget.Balance + shipAmount+packageAmount);
-                                        setState(() {
-                                          shippingCharge =totalAmount.toStringAsFixed(2);
-                                        });
-                                      }
-                                      else{
-                                        double totalAmount = (widget.Balance + shipAmount);
-                                        setState(() {
-                                          shippingCharge =totalAmount.toStringAsFixed(2);
-                                        });
-                                      }
-                                      shared.setDouble("Ammount",widget.Ammount );
-                                      shared.setDouble("Balance", double.parse(shippingCharge));
-                                      shared.setDouble("Shipping", shipAmount);
-                                      Navigator.of(context).pop(true);
-                                    }
-                                  });
-                                },
-                              ),
-                              GestureDetector(
-                                child: Container(
-                                  child:Center(child: Text('Cancel',style: GoogleFonts.ptSans(fontSize: 30,fontWeight: FontWeight.bold),
-                                  ),
-
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color:  Color(0xFFFFD45F),
-                                    borderRadius: BorderRadius.circular(45),
-                                  ),
-                                  height: 60,
-                                  width: 130,
-                                ),
-                                onTap :(){
-                                  Navigator.pop(
-                                    context,true
-                                  );
-                                },
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
+                                child: Text('Select Driver',
+                                  style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
                               ),
                             ],
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(top:4,bottom: 20),
+                            child: Container(
+                              height: 40,
+                              width: 240,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
+                                    left: 25),
+                                child:
+                                TypeAheadField<Customer>(
+                                  textFieldConfiguration: TextFieldConfiguration(
+                                      controller: _typeAheadController,
+                                      textAlign: TextAlign.center,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        hintText: "Select Driver",
+                                      )
+                                  ),
+                                  itemBuilder: (BuildContext context,Customer? suggestion) {
+                                    final content=suggestion!;
+                                    return ListTile(
+                                      title: Text(content._name+"  ("+content._phone+")"),
+                                    );
+                                  },
+                                  onSuggestionSelected: (Customer? suggestion) async {
+                                    var id=suggestion!.id;
+                                    print("ID IS:$id");
+                                    print(suggestion!._name);
+                                    _typeAheadController.text=suggestion!._name;
+                                    Fluttertoast.showToast(
+                                        msg:suggestion._name+" is selected",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        textColor: Colors.green,
+                                        timeInSecForIosWeb: 10);
+                                    SharedPreferences prefs= await SharedPreferences.getInstance();
+                                    print(prefs.getString("customer_name"));
+                                    prefs.setString("customer_name",suggestion._name);
+                                    prefs.setString("customer_id",suggestion.id);
+                                  },
+                                  suggestionsCallback: CustomerApi.getUserSuggestion,
+                                )
+                                //
+                                // DropdownButton<String>(
+                                //   value: dropdownValue1,
+                                //   items: [
+                                //     DropdownMenuItem(
+                                //       value: 'Driver Contact',
+                                //       child: Text('Ramesh - 9804048393'),
+                                //     ),
+                                //     DropdownMenuItem(
+                                //       value: 'Driver Contact1',
+                                //       child: Text('Suresh - 9804048393'),
+                                //     ),
+                                //     DropdownMenuItem(
+                                //       value: 'Driver Contact2',
+                                //       child: Text('Manish - 9804048393'),
+                                //     ),
+                                //     DropdownMenuItem(
+                                //       value: 'Driver Contact3 ',
+                                //       child: Text('Hari - 9804048393'),
+                                //     ),
+                                //   ],
+                                //   onChanged: (value) {
+                                //     setState(() {
+                                //       dropdownValue1 = value!;
+                                //     });
+                                //   },
+                                // ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 40),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                GestureDetector(
+                                  child: Container(
+                                    child:Center(child: Text('Ship',
+                                      style: GoogleFonts.ptSans(fontSize: 30,fontWeight: FontWeight.bold),
+                                    ),
+                                    ),
+
+                                    decoration: BoxDecoration(
+                                      color:Color(0xFFFFD45F),
+                                      borderRadius: BorderRadius.circular(45),
+
+                                    ),
+                                    height: 60,
+                                    width: 130,
+                                  ),
+                                  onTap: () async {
+                                    input={
+                                      'shipping_charges':_shipChargeController.text.toString(),
+                                      'packing_charge':_packageChargeController.text.toString()
+                                    };
+                                    SharedPreferences shared = await SharedPreferences.getInstance();
+
+                                    setState(() {
+
+                                      if(_formKey.currentState!.validate()){
+                                        setState(() {
+                                          _isloading =true;
+                                        });
+                                        var SH = shared.getDouble("Shipping");
+                                        print("Shhhhhhhhhhhhhhhhhhhhh"+SH.toString());
+                                        if(SH !=0.0){
+                                          widget.Balance-=SH!;
+                                          shared.setDouble("Balance", widget.Balance);
+                                        }
+                                        setState(() {
+                                          _isloading =false;
+                                        });
+                                        shipAmount =double.parse(_shipChargeController.text);
+                                        if(_packageChargeController.text != ''){
+                                          packageAmount =double.parse(_packageChargeController.text);
+                                          double totalAmount = (widget.Balance + shipAmount+packageAmount);
+                                          setState(() {
+                                            shippingCharge =totalAmount.toStringAsFixed(2);
+                                          });
+                                        }
+                                        else{
+                                          double totalAmount = (widget.Balance + shipAmount);
+                                          setState(() {
+                                            shippingCharge =totalAmount.toStringAsFixed(2);
+                                          });
+                                        }
+                                        shared.setDouble("Ammount",widget.Ammount );
+                                        shared.setDouble("Balance", double.parse(shippingCharge));
+                                        shared.setDouble("Shipping", shipAmount);
+                                        shared.setDouble("packing_charge", packageAmount);
+                                        Navigator.of(context).pop(true);
+                                      }
+                                    });
+                                  },
+                                ),
+                                GestureDetector(
+                                  child: Container(
+                                    child:Center(child: Text('Cancel',style: GoogleFonts.ptSans(fontSize: 30,fontWeight: FontWeight.bold),
+                                    ),
+
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color:  Color(0xFFFFD45F),
+                                      borderRadius: BorderRadius.circular(45),
+                                    ),
+                                    height: 60,
+                                    width: 130,
+                                  ),
+                                  onTap :(){
+                                    Navigator.pop(
+                                      context,true
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 )
