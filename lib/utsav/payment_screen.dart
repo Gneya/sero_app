@@ -55,6 +55,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool isClicked11 = false;
   bool isClicked12 = false;
   bool isClicked13 = false;
+  TextEditingController pay=new TextEditingController();
   var flag=false;
   bool value = false;
   bool isEnabled = false;
@@ -62,6 +63,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   bool _isloading = false;
   String table_name = '';
   final _tipController = new TextEditingController();
+  final change_return = new TextEditingController();
   List<String> paymentMethod =[];
   List<bool> isclicked =[];
   final _formKey = GlobalKey<FormState>();
@@ -169,14 +171,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
     print( v["data"]["locations"][0]["default_payment_accounts"]);
     paymentMethod=[];
     print(paymentMethod);
-    if(i["Reward Points"]["is_enabled"]=="1"){
+    if(i["cash"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["Reward Points"]);
+      paymentMethod.add(data["cash"]);
       isclicked.add(true);
     }
     if(i["card"]["is_enabled"]=="1"){
       print("yes");
       paymentMethod.add(data["card"]);
+      isclicked.add(false);
+    }
+    if(i["Reward Points"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["Reward Points"]);
       isclicked.add(false);
     }
     if(i["cheque"]["is_enabled"]=="1"){
@@ -264,94 +271,138 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget selectPaymentMode(){
     if(isClicked1 ==true){
       return Container(
-        height: 320 ,
+        height: 385 ,
         color:Colors.white,
         width: width,
         child: Padding(
           padding: const EdgeInsets.only(top: 10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('CASH',
-                      style: GoogleFonts.ptSans(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold
-                      )
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20,right: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8,left: 8),
-                                  child: Text('Payment Amount',
-                                    style:GoogleFonts.ptSans(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400
-                                    ) ,),
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: TextField(
-                                    enableInteractiveSelection: false,
-                                    focusNode: new AlwaysDisabledFocusNode(),
-                                    keyboardType:TextInputType.number,
-                                    decoration: InputDecoration(
-                                      hintText: '\$'+widget.Ammount.toStringAsFixed(2),
-                                      hintStyle: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('CASH',
+                        style: GoogleFonts.ptSans(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold
+                        )
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20,right: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8,left: 8),
+                                    child: Text('Payment Amount',
+                                      style:GoogleFonts.ptSans(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400
+                                      ) ,),
+                                  ),
+                                  Container(
+                                    height: 50,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: TextField(
+                                      enableInteractiveSelection: false,
+                                      //focusNode: new AlwaysDisabledFocusNode(),
+                                      controller: pay,
+                                      keyboardType:TextInputType.number,
+                                      decoration: InputDecoration(
+                                        hintText: "00.00",
+                                        hintStyle: GoogleFonts.ptSans(
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(30),
+                                          borderSide: BorderSide(color:Colors.brown),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(30),
+                                          borderSide: BorderSide(color:Colors.brown),
+                                        ),
                                       ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                        borderSide: BorderSide(color:Colors.brown),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                        borderSide: BorderSide(color:Colors.brown),
-                                      ),
+                                      onSubmitted: (value){
+                                        print("Hii");
+                                        setState(() {
+                                          print(pay.text);
+                                          change_return.text=(double.parse(pay.text)-balance).toStringAsFixed(2);
+                                          print(change_return.text);
+                                        });
+                                      },
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
 
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8,right: 30,left: 23),
-                                  child: Text('Discount Amount',
-                                    style:GoogleFonts.ptSans(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                    ) ,),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: Container(
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8,right: 30,left: 23),
+                                    child: Text('Discount Amount',
+                                      style:GoogleFonts.ptSans(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+                                      ) ,),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Container(
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                            ),
+                                            borderRadius: BorderRadius.circular(35),
+                                            color :Colors.white,
+                                          ),
+                                          width: MediaQuery.of(context).size.width/2.5,
+                                          height: 50,
+                                          child: Center(
+                                              child: Text(
+                                                '\$'+discountt.toStringAsFixed(2),
+                                                textScaleFactor: 1.25,
+                                                // style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
+                                              ))),
+                                    ),
+                                  ),
+                                ]
+                            ),
+                          ),
+                          Expanded(
+                            child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8,right:8),
+                                    child: Text('Redeemed Points',
+                                      style:GoogleFonts.ptSans(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+
+                                      ) ,),
+                                  ),
+                                  Container(
                                     child: Container(
                                         decoration: BoxDecoration(
                                           border: Border.all(
@@ -364,151 +415,157 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         height: 50,
                                         child: Center(
                                             child: Text(
-                                              '\$'+discountt.toStringAsFixed(2),
+                                              redeemPoint.toString(),
                                               textScaleFactor: 1.25,
                                               // style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                                            ))),
+                                            )
+                                        )
+                                    ),
                                   ),
-                                ),
-                              ]
+                                ]
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8,right:8),
-                                  child: Text('Redeemed Points',
-                                    style:GoogleFonts.ptSans(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-
-                                    ) ,),
-                                ),
-                                Container(
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                        ),
-                                        borderRadius: BorderRadius.circular(35),
-                                        color :Colors.white,
-                                      ),
-                                      width: MediaQuery.of(context).size.width/2.5,
-                                      height: 50,
-                                      child: Center(
-                                          child: Text(
-                                            redeemPoint.toString(),
-                                            textScaleFactor: 1.25,
-                                            // style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                                          )
-                                      )
-                                  ),
-                                ),
-                              ]
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20,),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8,left: 8),
-                                  child: Text('Tip Amount',
-                                    style:GoogleFonts.ptSans(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400
-                                    ) ,),
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: MediaQuery.of(context).size.width/2.5,
-                                  child: Form(
-                                    key: _formKey,
-                                    child: TextFormField(
-                                      readOnly: isEnabled,
-                                      controller: _tipController,
-                                      keyboardType:TextInputType.number,
-                                      decoration: InputDecoration(
-                                        prefix: Text('\$'),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: BorderSide(color:Colors.brown),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: BorderSide(color:Colors.brown),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20,),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8,left: 8),
+                                    child: Text('Tip Amount',
+                                      style:GoogleFonts.ptSans(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400
+                                      ) ,),
+                                  ),
+                                  Container(
+                                    height: 50,
+                                    width: MediaQuery.of(context).size.width/2.5,
+                                    child: Form(
+                                      key: _formKey,
+                                      child: TextFormField(
+                                        readOnly: isEnabled,
+                                        controller: _tipController,
+                                        keyboardType:TextInputType.number,
+                                        decoration: InputDecoration(
+                                          prefix: Text('\$'),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                            borderSide: BorderSide(color:Colors.brown),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                            borderSide: BorderSide(color:Colors.brown),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8),
-                                  child: Text('Balance Amount',
-                                    style:GoogleFonts.ptSans(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
+                          Expanded(
+                            child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8,left: 20),
+                                    child: Text('Change Return',
+                                      style:GoogleFonts.ptSans(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
 
-                                    ) ,),
-                                ),
-                                Container(
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(35),
-                                        // boxShadow: [
-                                        //   BoxShadow(
-                                        //     color: Colors.grey,
-                                        //     offset: const Offset(
-                                        //       1.0,
-                                        //       1.0,
-                                        //     ), //Offset
-                                        //     blurRadius: 6.0,
-                                        //     spreadRadius: 2.0,
-                                        //   ), //BoxShadow
-                                        //   BoxShadow(
-                                        //     color: Colors.white,
-                                        //     offset: const Offset(0.0, 0.0),
-                                        //     blurRadius: 0.0,
-                                        //     spreadRadius: 0.0,
-                                        //   ),],
-                                        color :Color(0xFFFFD45F),
-                                      ),
-                                      width: MediaQuery.of(context).size.width/2.5,
-                                      height: 50,
-                                      child: Center(
-                                          child: Text(
-                                            '\$'+balance.toStringAsFixed(2),
-                                            textScaleFactor: 1.25,
-                                            style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                                          ))),
-
-                                ),
-                              ]
+                                      ) ,),
+                                  ),
+                                  Container(
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                          ),
+                                          borderRadius: BorderRadius.circular(35),
+                                          color :Colors.white,
+                                        ),
+                                        width: MediaQuery.of(context).size.width/2.5,
+                                        height: 50,
+                                        child: Center(
+                                            child: Text(
+                                              '\$'+(change_return.text),
+                                              textScaleFactor: 1.25,
+                                            ))),
+                                  ),
+                                ]
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: Text('Final Amount',
+                                      style:GoogleFonts.ptSans(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+
+                                      ) ,),
+                                  ),
+                                  Container(
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(35),
+                                          // boxShadow: [
+                                          //   BoxShadow(
+                                          //     color: Colors.grey,
+                                          //     offset: const Offset(
+                                          //       1.0,
+                                          //       1.0,
+                                          //     ), //Offset
+                                          //     blurRadius: 6.0,
+                                          //     spreadRadius: 2.0,
+                                          //   ), //BoxShadow
+                                          //   BoxShadow(
+                                          //     color: Colors.white,
+                                          //     offset: const Offset(0.0, 0.0),
+                                          //     blurRadius: 0.0,
+                                          //     spreadRadius: 0.0,
+                                          //   ),],
+                                          color :Color(0xFFFFD45F),
+                                        ),
+                                        width: MediaQuery.of(context).size.width/2.5,
+                                        height: 50,
+                                        child: Center(
+                                            child: Text(
+                                              '\$'+balance.toStringAsFixed(2),
+                                              textScaleFactor: 1.25,
+                                              style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
+                                            ))),
+
+                                  ),
+                                ]
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );
@@ -563,12 +620,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     Container(
                                       height: 50,
                                       width: MediaQuery.of(context).size.width/2.5,
-                                      child: TextField(
-                                        enableInteractiveSelection: false,
-                                        focusNode: new AlwaysDisabledFocusNode(),
+                                      child: TextFormField(
                                         keyboardType:TextInputType.number,
                                         decoration: InputDecoration(
-                                          hintText: '\$'+widget.Ammount.toStringAsFixed(2),
+                                          hintText: '\$'+pay.text,
                                           hintStyle: GoogleFonts.ptSans(
                                               fontWeight: FontWeight.bold
                                           ),
@@ -581,6 +636,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             borderSide: BorderSide(color:Colors.brown),
                                           ),
                                         ),
+                                        onFieldSubmitted: (value){
+                                          print("Hii");
+                                          setState(() {
+                                            change_return.text=(double.parse(pay.text)-balance).toStringAsFixed(2);
+                                            print(change_return.text);
+                                          });
+                                        },
                                       ),
                                     ),
                                   ],
@@ -1428,7 +1490,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 "product_id":double.parse(cart.cartItem[index].productId.toString()),
                                 "variation_id":double.parse(variation![index]),
                                 "quantity": cart.cartItem[index].quantity,
-                                "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
+                                "unit_price": cart.cartItem[index].unitPrice,
                                 "tax_rate_id":tax_id,
                                 "note":note
                               };
@@ -1474,9 +1536,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "shipping_charges": shared.getDouble("Shipping"),
                                     "products":list_of_m,
                                     "tip":_tipController.text,
+                                    "change_return":double.parse(change_return.text),
                                     "payments": [
                                       {
-                                        "amount":cart.getTotalAmount(),
+                                        "amount":double.parse(pay.text),
                                         "method":shared.getString("method")
                                       }
                                     ]
@@ -1529,10 +1592,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "shipping_charges": shared.getDouble("Shipping"),
                                 "types_of_service_id":sar,
                                 "shipping_status":"offline",
+                                "change_return":double.parse(change_return.text),
                               "products": list_of_m,
                               "payments": [
                               {
-                              "amount": cart.getTotalAmount(),
+                              "amount": double.parse(pay.text),
                                 "method":shared.getString("method")
                               }
                               ]
