@@ -42,18 +42,30 @@ class _PaymentScreenState extends State<PaymentScreen> {
   double tipAmount = 0.0;
   String toBePaid = '0';
   int _currentIndex = 0;
-  bool isClicked1 = false;
-  bool isClicked2 = true;
-  bool isClicked3 = true;
-  bool isClicked4 = true;
-  bool isClicked5 = true;
+  bool isClicked1 = true;
+  bool isClicked2 = false;
+  bool isClicked3 = false;
+  bool isClicked4 = false;
+  bool isClicked5 = false;
+  bool isClicked6 = false;
+  bool isClicked7 = false;
+  bool isClicked8 = false;
+  bool isClicked9 = false;
+  bool isClicked10 = false;
+  bool isClicked11 = false;
+  bool isClicked12 = false;
+  bool isClicked13 = false;
+  TextEditingController pay=new TextEditingController();
+  var flag=false;
   bool value = false;
   bool isEnabled = false;
   bool isEnabledBalance = false;
   bool _isloading = false;
   String table_name = '';
   final _tipController = new TextEditingController();
+  final change_return = new TextEditingController();
   List<String> paymentMethod =[];
+  List<bool> isclicked =[];
   final _formKey = GlobalKey<FormState>();
   final _Key = GlobalKey<FormState>();
 
@@ -92,12 +104,59 @@ class _PaymentScreenState extends State<PaymentScreen> {
           print(_payMeth);
         }));
   }
+  Future<void> select(String name)
+  async {
+    SharedPreferences shared=await SharedPreferences.getInstance();
+    print("NAME="+name);
+    if(name=="Cash")
+      {
+        shared.setString("method","cash");
+        isClicked1=true;
+      }
+    else if(name=="Card")
+      {
+        shared.setString("method","card");
+        setState(() {
+          isClicked1=false;
+          isClicked2=true;
+        });
+      }
+    else
+      {
+        setState(() {
+          isClicked1=false;
+          isClicked4=true;
+          isClicked2=false;
+        });
+      }
+  }
+  bool func(String f)
+  {
+    bool flag=false;
+    for(int i=0;i<paymentMethod.length;i++)
+      {
+        if(paymentMethod[i]==f) {
+          if (i < isclicked.length) {
+            if (isclicked[i] == true) {
+              flag = true;
+              break;
+            }
+            else {
+              flag = false;
+            }
+          }
+        }
+      }
+      return flag;
+  }
 
   Future<List<String>> fetchData() async {
     /*
      payment mode values are not showing on the screen whenever below values are used or not commented
     */
-
+    setState(() {
+      _isloading=true;
+    });
     Map data = await getData();
     amount=widget.Ammount;
     balance=widget.Balance;
@@ -110,172 +169,240 @@ class _PaymentScreenState extends State<PaymentScreen> {
     var v=json.decode(response.body);
     var i =v["data"]["locations"][0]["default_payment_accounts"];
     print( v["data"]["locations"][0]["default_payment_accounts"]);
+    paymentMethod=[];
+    print(paymentMethod);
     if(i["cash"]["is_enabled"]=="1"){
       print("yes");
       paymentMethod.add(data["cash"]);
+      isclicked.add(true);
     }
     if(i["card"]["is_enabled"]=="1"){
       print("yes");
       paymentMethod.add(data["card"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["Reward Points"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["Reward Points"]);
+      isclicked.add(false);
     }
     if(i["cheque"]["is_enabled"]=="1"){
       print("yes");
       paymentMethod.add(data["cheque"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["paytm"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["paytm"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["other"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["other"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_1"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_1"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_2"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_2"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_3"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_3"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_4"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_4"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_5"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_5"]);
+      isclicked.add(false);
     }
-    if(i["cash"]["is_enabled"]=="1"){
+    if(i["custom_pay_6"]["is_enabled"]=="1"){
       print("yes");
-      paymentMethod.add(data["cash"]);
+      paymentMethod.add(data["custom_pay_6"]);
+      isclicked.add(false);
     }
-    paymentMethod = [
-      data['cash'],
-      data['card'],
-      data['cheque'],
-      data['Reward Points'],
-      data['other'],
-      data['custom_pay_1'],
-      data['custom_pay_2'],
-      data['custom_pay_3'],
-      data['custom_pay_4'],
-      data['custom_pay_5'],
-      data['custom_pay_6'],
-      data['custom_pay_7'],
-    ];
+    if(i["custom_pay_7"]["is_enabled"]=="1"){
+      print("yes");
+      paymentMethod.add(data["custom_pay_7"]);
+      isclicked.add(false);
+    }
+    print(paymentMethod.length);
+    print(isclicked.length);
+    // paymentMethod = [
+    //   data['cash'],
+    //   data['card'],
+    //   data['cheque'],
+    //   data['Reward Points'],
+    //   data['other'],
+    //   data['custom_pay_1'],
+    //   data['custom_pay_2'],
+    //   data['custom_pay_3'],
+    //   data['custom_pay_4'],
+    //   data['custom_pay_5'],
+    //   data['custom_pay_6'],
+    //   data['custom_pay_7'],
+    // ];
     print(paymentMethod[1]);
+    setState(() {
+      _isloading=false;
+    });
     return paymentMethod;
   }
-  Future<void> getSharedPrefs() async {
-    setState(() {
-      _isloading =true;
-    });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    table_name =prefs.getString("table_name")??"";
-    setState(() {
-      _isloading =false;
-    });
-  }
+  // Future<void> getSharedPrefs() async {
+  //   setState(() {
+  //     _isloading =true;
+  //   });
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   table_name =prefs.getString("table_name")??"";
+  //   setState(() {
+  //     _isloading =false;
+  //   });
+  // }
   Widget selectPaymentMode(){
-    if(isClicked1 ==false){
+    if(isClicked1 ==true){
       return Container(
-        height: 320 ,
+        height: 385 ,
         color:Colors.white,
         width: width,
         child: Padding(
           padding: const EdgeInsets.only(top: 10),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('CASH',
-                      style: GoogleFonts.ptSans(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold
-                      )
-                  ),
-                ],
-              ),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20,right: 20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8,left: 8),
-                                  child: Text('Payment Amount',
-                                    style:GoogleFonts.ptSans(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400
-                                    ) ,),
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: MediaQuery.of(context).size.width,
-                                  child: TextField(
-                                    enableInteractiveSelection: false,
-                                    focusNode: new AlwaysDisabledFocusNode(),
-                                    keyboardType:TextInputType.number,
-                                    decoration: InputDecoration(
-                                      hintText: '\$'+widget.Ammount.toStringAsFixed(2),
-                                      hintStyle: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('CASH',
+                        style: GoogleFonts.ptSans(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold
+                        )
+                    ),
+                  ],
+                ),
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20,right: 20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8,left: 8),
+                                    child: Text('Payment Amount',
+                                      style:GoogleFonts.ptSans(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400
+                                      ) ,),
+                                  ),
+                                  Container(
+                                    height: 50,
+                                    width: MediaQuery.of(context).size.width,
+                                    child: TextField(
+                                      enableInteractiveSelection: false,
+                                      //focusNode: new AlwaysDisabledFocusNode(),
+                                      controller: pay,
+                                      keyboardType:TextInputType.number,
+                                      decoration: InputDecoration(
+                                        hintText: "00.00",
+                                        hintStyle: GoogleFonts.ptSans(
+                                            fontWeight: FontWeight.bold
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(30),
+                                          borderSide: BorderSide(color:Colors.brown),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(30),
+                                          borderSide: BorderSide(color:Colors.brown),
+                                        ),
                                       ),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                        borderSide: BorderSide(color:Colors.brown),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(30),
-                                        borderSide: BorderSide(color:Colors.brown),
-                                      ),
+                                      onSubmitted: (value){
+                                        print("Hii");
+                                        setState(() {
+                                          print(pay.text);
+                                          change_return.text=(double.parse(pay.text)-balance).toStringAsFixed(2);
+                                          print(change_return.text);
+                                        });
+                                      },
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
 
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8,right: 30,left: 23),
-                                  child: Text('Discount Amount',
-                                    style:GoogleFonts.ptSans(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-                                    ) ,),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 8),
-                                  child: Container(
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8,right: 30,left: 23),
+                                    child: Text('Discount Amount',
+                                      style:GoogleFonts.ptSans(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+                                      ) ,),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8),
+                                    child: Container(
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                            ),
+                                            borderRadius: BorderRadius.circular(35),
+                                            color :Colors.white,
+                                          ),
+                                          width: MediaQuery.of(context).size.width/2.5,
+                                          height: 50,
+                                          child: Center(
+                                              child: Text(
+                                                '\$'+discountt.toStringAsFixed(2),
+                                                textScaleFactor: 1.25,
+                                                // style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
+                                              ))),
+                                    ),
+                                  ),
+                                ]
+                            ),
+                          ),
+                          Expanded(
+                            child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8,right:8),
+                                    child: Text('Redeemed Points',
+                                      style:GoogleFonts.ptSans(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+
+                                      ) ,),
+                                  ),
+                                  Container(
                                     child: Container(
                                         decoration: BoxDecoration(
                                           border: Border.all(
@@ -288,151 +415,157 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                         height: 50,
                                         child: Center(
                                             child: Text(
-                                              '\$'+discountt.toStringAsFixed(2),
+                                              redeemPoint.toString(),
                                               textScaleFactor: 1.25,
                                               // style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                                            ))),
+                                            )
+                                        )
+                                    ),
                                   ),
-                                ),
-                              ]
+                                ]
+                            ),
                           ),
-                        ),
-                        Expanded(
-                          child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8,right:8),
-                                  child: Text('Redeemed Points',
-                                    style:GoogleFonts.ptSans(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
-
-                                    ) ,),
-                                ),
-                                Container(
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                        border: Border.all(
-                                          color: Colors.grey,
-                                        ),
-                                        borderRadius: BorderRadius.circular(35),
-                                        color :Colors.white,
-                                      ),
-                                      width: MediaQuery.of(context).size.width/2.5,
-                                      height: 50,
-                                      child: Center(
-                                          child: Text(
-                                            redeemPoint.toString(),
-                                            textScaleFactor: 1.25,
-                                            // style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                                          )
-                                      )
-                                  ),
-                                ),
-                              ]
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20,),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8,left: 8),
-                                  child: Text('Tip Amount',
-                                    style:GoogleFonts.ptSans(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400
-                                    ) ,),
-                                ),
-                                Container(
-                                  height: 50,
-                                  width: MediaQuery.of(context).size.width/2.5,
-                                  child: Form(
-                                    key: _formKey,
-                                    child: TextFormField(
-                                      readOnly: isEnabled,
-                                      controller: _tipController,
-                                      keyboardType:TextInputType.number,
-                                      decoration: InputDecoration(
-                                        prefix: Text('\$'),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: BorderSide(color:Colors.brown),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: BorderSide(color:Colors.brown),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20,),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8,left: 8),
+                                    child: Text('Tip Amount',
+                                      style:GoogleFonts.ptSans(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400
+                                      ) ,),
+                                  ),
+                                  Container(
+                                    height: 50,
+                                    width: MediaQuery.of(context).size.width/2.5,
+                                    child: Form(
+                                      key: _formKey,
+                                      child: TextFormField(
+                                        readOnly: isEnabled,
+                                        controller: _tipController,
+                                        keyboardType:TextInputType.number,
+                                        decoration: InputDecoration(
+                                          prefix: Text('\$'),
+                                          border: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                            borderSide: BorderSide(color:Colors.brown),
+                                          ),
+                                          focusedBorder: OutlineInputBorder(
+                                            borderRadius: BorderRadius.circular(30),
+                                            borderSide: BorderSide(color:Colors.brown),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(bottom: 8),
-                                  child: Text('Balance Amount',
-                                    style:GoogleFonts.ptSans(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400,
+                          Expanded(
+                            child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8,left: 20),
+                                    child: Text('Change Return',
+                                      style:GoogleFonts.ptSans(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
 
-                                    ) ,),
-                                ),
-                                Container(
-                                  child: Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(35),
-                                        // boxShadow: [
-                                        //   BoxShadow(
-                                        //     color: Colors.grey,
-                                        //     offset: const Offset(
-                                        //       1.0,
-                                        //       1.0,
-                                        //     ), //Offset
-                                        //     blurRadius: 6.0,
-                                        //     spreadRadius: 2.0,
-                                        //   ), //BoxShadow
-                                        //   BoxShadow(
-                                        //     color: Colors.white,
-                                        //     offset: const Offset(0.0, 0.0),
-                                        //     blurRadius: 0.0,
-                                        //     spreadRadius: 0.0,
-                                        //   ),],
-                                        color :Color(0xFFFFD45F),
-                                      ),
-                                      width: MediaQuery.of(context).size.width/2.5,
-                                      height: 50,
-                                      child: Center(
-                                          child: Text(
-                                            '\$'+balance.toStringAsFixed(2),
-                                            textScaleFactor: 1.25,
-                                            style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                                          ))),
-
-                                ),
-                              ]
+                                      ) ,),
+                                  ),
+                                  Container(
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.grey,
+                                          ),
+                                          borderRadius: BorderRadius.circular(35),
+                                          color :Colors.white,
+                                        ),
+                                        width: MediaQuery.of(context).size.width/2.5,
+                                        height: 50,
+                                        child: Center(
+                                            child: Text(
+                                              '\$'+(change_return.text),
+                                              textScaleFactor: 1.25,
+                                            ))),
+                                  ),
+                                ]
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                ],
-              )
-            ],
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: Text('Final Amount',
+                                      style:GoogleFonts.ptSans(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+
+                                      ) ,),
+                                  ),
+                                  Container(
+                                    child: Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(35),
+                                          // boxShadow: [
+                                          //   BoxShadow(
+                                          //     color: Colors.grey,
+                                          //     offset: const Offset(
+                                          //       1.0,
+                                          //       1.0,
+                                          //     ), //Offset
+                                          //     blurRadius: 6.0,
+                                          //     spreadRadius: 2.0,
+                                          //   ), //BoxShadow
+                                          //   BoxShadow(
+                                          //     color: Colors.white,
+                                          //     offset: const Offset(0.0, 0.0),
+                                          //     blurRadius: 0.0,
+                                          //     spreadRadius: 0.0,
+                                          //   ),],
+                                          color :Color(0xFFFFD45F),
+                                        ),
+                                        width: MediaQuery.of(context).size.width/2.5,
+                                        height: 50,
+                                        child: Center(
+                                            child: Text(
+                                              '\$'+balance.toStringAsFixed(2),
+                                              textScaleFactor: 1.25,
+                                              style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
+                                            ))),
+
+                                  ),
+                                ]
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );
@@ -441,7 +574,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
 
 
-    else if(isClicked2==false){
+    else if(isClicked2==true){
       return  Container(
           height: 320 ,
           color:Colors.white,
@@ -487,12 +620,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     Container(
                                       height: 50,
                                       width: MediaQuery.of(context).size.width/2.5,
-                                      child: TextField(
-                                        enableInteractiveSelection: false,
-                                        focusNode: new AlwaysDisabledFocusNode(),
+                                      child: TextFormField(
                                         keyboardType:TextInputType.number,
                                         decoration: InputDecoration(
-                                          hintText: '\$'+paymentAmount.toStringAsFixed(2),
+                                          hintText: '\$'+pay.text,
                                           hintStyle: GoogleFonts.ptSans(
                                               fontWeight: FontWeight.bold
                                           ),
@@ -505,6 +636,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                             borderSide: BorderSide(color:Colors.brown),
                                           ),
                                         ),
+                                        onFieldSubmitted: (value){
+                                          print("Hii");
+                                          setState(() {
+                                            change_return.text=(double.parse(pay.text)-balance).toStringAsFixed(2);
+                                            print(change_return.text);
+                                          });
+                                        },
                                       ),
                                     ),
                                   ],
@@ -723,7 +861,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
             ),)
       );
     }
-    else if(isClicked3==false){
+    else if(isClicked3==true){
       return Container(
         height: 300,
         child: Center(
@@ -731,7 +869,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
       );
     }
-    else if(isClicked4==false){
+    else if(isClicked4==true){
       return Container(
         height: 300,
         child: Center(
@@ -739,7 +877,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         ),
       );
     }
-    else if(isClicked5==false){
+    else if(isClicked5==true){
       return Container(
         height: 300,
         child: Center(
@@ -765,7 +903,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   void initState() {
     fetchData();
-    getSharedPrefs();
+    //getSharedPrefs();
     super.initState();
 
   }
@@ -1160,7 +1298,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
         child: Column(
           children: [
             Container(
-              height: 180,
+              height: paymentMethod.length*45,
               width: width,
               color:Colors.white54,
               child: Padding(
@@ -1178,7 +1316,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       ],
                     ),
                     Container(
-                      height: 140,
+                      height: paymentMethod.length*25,
                       child:  SingleChildScrollView(
                         child: Wrap(
                           children: paymentMethod.map((f) => GestureDetector(
@@ -1192,7 +1330,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               margin: EdgeInsets.only(
                                   left: 5.0, right: 5.0, top: 10.0, bottom: 10.0),
                               decoration: BoxDecoration(
-                                color: isClicked1 ? Colors.white : Color(0xFFFFD45F),
+                                color:  func(f) ?Color(0xFFFFD45F):Colors.white ,
                                 borderRadius: BorderRadius.circular(35),
                                 boxShadow: [
                                   BoxShadow(
@@ -1232,7 +1370,23 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               ),
                             ),
                             onTap: () {
-
+                              int res=0;
+                              for(int i=0;i<paymentMethod.length;i++)
+                                {
+                                  if(paymentMethod[i]==f)
+                                    {
+                                      isclicked[i]=true;
+                                      res=i;
+                                      flag=true;
+                                    }
+                                  else
+                                    {
+                                      isclicked[i]=false;
+                                      flag=false;
+                                    }
+                                  print("METHODS");
+                                }
+                              select(f);
                             },
                           ))
                               .toList(),
@@ -1271,7 +1425,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                       activeColor: Color(0xFFFFD45F),
                       onChanged: (value) {
                         setState(() {
-                          if(isClicked2==false)
+                          if(isClicked2==true)
                           {
                             if( _Key.currentState!.validate())
                             {
@@ -1279,7 +1433,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               totalAmount();
                             }
                           }
-                          else if(isClicked1 ==false){
+                          else if(isClicked1 ==true){
                             {
                               this.isEnabled = value!;
                               totalAmount();
@@ -1333,10 +1487,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     }
                                 }
                               Map<String,dynamic> product={
-                                "product_id":double.parse(cart.cartItem[index].productId.toString()),
+                                "product_id":int.parse(cart.cartItem[index].productId.toString()),
                                 "variation_id":double.parse(variation![index]),
                                 "quantity": cart.cartItem[index].quantity,
-                                "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
+                                "unit_price": cart.cartItem[index].unitPrice,
                                 "tax_rate_id":tax_id,
                                 "note":note
                               };
@@ -1368,7 +1522,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "table_id" :shared.getInt("table_id")??null,
                                     "location_id": shared.getInt("bid")??1,
                                     "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                                    "discount_amount": discountt,
+                                    "discount_amount": shared.getDouble("Discountt_for_db")??0,
                                     "discount_type": dar,
                                     "rp_redeemed": shared.getInt("Redeemed Points"),
                                     "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
@@ -1382,9 +1536,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "shipping_charges": shared.getDouble("Shipping"),
                                     "products":list_of_m,
                                     "tip":_tipController.text,
+                                    "change_return":double.parse(change_return.text),
                                     "payments": [
                                       {
-                                        "amount":cart.getTotalAmount()
+                                        "amount":double.parse(pay.text),
+                                        "method":shared.getString("method")
                                       }
                                     ]
                                   }
@@ -1436,10 +1592,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "shipping_charges": shared.getDouble("Shipping"),
                                 "types_of_service_id":sar,
                                 "shipping_status":"offline",
+                                "change_return":double.parse(change_return.text),
                               "products": list_of_m,
                               "payments": [
                               {
-                              "amount": cart.getTotalAmount()
+                              "amount": double.parse(pay.text),
+                                "method":shared.getString("method")
                               }
                               ]
                               }
@@ -1447,7 +1605,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
                               };
                               print(json.encode(api));
-
                               var dio=Dio();
                               var vid = shared.getString("order_id".toString());
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
@@ -1473,8 +1630,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   gravity: ToastGravity.BOTTOM,
                                   textColor: Colors.green,
                                   timeInSecForIosWeb: 4);
-
-
                             }
                             shared.setInt("seconds", 0);
                             Phoenix.rebirth(context);
@@ -1741,7 +1896,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
   //   });
   // }
 }
-
 Future<Map<String, dynamic>> getData() async {
   SharedPreferences shared=await SharedPreferences.getInstance();
   String myUrl = "https://pos.sero.app/connector/api/payment-methods";

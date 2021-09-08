@@ -39,10 +39,12 @@ class _DiscountState extends State<Discount> {
   String dropdownValue ='Percentage %';
   final _amountController = new TextEditingController();
   var dis_type ;
+  var dis_per;
   String totalAmounttype(){
     discountAmount =double.parse(_amountController.text);
     if(dropdownValue=='Percentage %'){
       dis_type ="percentage";
+      dis_per=discountAmount;
       double totalAmount = (widget.Balance - (widget.Balance*discountAmount/100));
       setState(() {
         discountedAmount = totalAmount.toStringAsFixed(2);
@@ -61,7 +63,7 @@ class _DiscountState extends State<Discount> {
   {
     discountted=double.parse(_amountController.text) ;
     if(dropdownValue=='Percentage %'){
-
+      dis_per=discountAmount;
       double totalAmount = (widget.Balance*discountAmount/100);
       setState(() {
         discountted = totalAmount;
@@ -341,7 +343,14 @@ class _DiscountState extends State<Discount> {
                               print("IN DISCOUNT SCREEN"+shared.getDouble("Balance").toString());
                               shared.setString("DiscountType",dis_type);
                               print(shared.getString("DiscountType"));
-                              shared.setDouble("Discountt", discountted);
+                              if(dis_type=="percentage") {
+                                shared.setDouble("Discountt_for_db", dis_per);
+                                shared.setDouble("Discountt", discountted);
+                              }
+                              else{
+                                shared.setDouble("Discountt_for_db", discountted);
+                                shared.setDouble("Discountt", discountted);
+                              }
                               Navigator.of(context).pop(true);
                             }
                           });

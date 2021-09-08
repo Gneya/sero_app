@@ -128,9 +128,9 @@ class _SelectItemState extends State<SelectItem> {
       sharedPreferences.setStringList("variation", []);
       sharedPreferences.setStringList("variation", list);
       String s=v["data"][0]["name"]+" added to cart";
-      var price=v["data"][0]["product_variations"][0]["variations"][0]["sell_price_inc_tax"];
+      var price=v["data"][0]["product_variations"][0]["variations"][0]["default_sell_price"];
       print(price);
-      cart.addToCart(productId:v["data"][0]["id"], unitPrice: double.parse(v["data"][0]["product_variations"][0]["variations"][0]["sell_price_inc_tax"]),productName: v["data"][0]["name"]);
+      cart.addToCart(productId:v["data"][0]["id"], unitPrice: double.parse(v["data"][0]["product_variations"][0]["variations"][0]["default_sell_price"]),productName: v["data"][0]["name"]);
       Fluttertoast.showToast(
           msg: s,
           toastLength: Toast.LENGTH_LONG,
@@ -649,7 +649,23 @@ class _SelectItemState extends State<SelectItem> {
                         {
                           print("NOOOO");
                         }
+                      int flag1 =0;
+                    for (int i =0 ;i<cart.cartItem.length;i++){
+                      if(cart.cartItem[i].productId==_productlist[index].id){
+                        cart.addToCart(productId: _productlist[index].id,
+                            unitPrice: double.parse(_productlist[index].price),
+                            productName: _productlist[index].name,
+                            quantity: ++cart.cartItem[i].quantity);
+                        flag1 =1;
+                        print("&&&&&&&&&&&&&&&&&**************(())))))))))))))))))");
+                        break;
+                      }
+
+                    }
+                    if( flag1 ==0){
                       cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
+                    }
+
                     sharedPreferences.setString("total", cart.getCartItemCount().toString());
                     if(sharedPreferences.getString("products")!=""){
                     list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
@@ -705,7 +721,7 @@ class product
   final String variation_id;
   final int tax_id;
   product.fromJson(Map<String,dynamic> json):
-        price=json["sell_price_inc_tax"],
+        price=json["default_sell_price"],
         name=json["product_name"],
         url=json["product_image_url"],
         id=json["product_id"].toString(),
@@ -720,7 +736,7 @@ class Customer
   final String variation_id;
   Customer.fromJson(Map<String,dynamic> json):
         this._name=json["name"],
-        this._phone=json["product_variations"][0]["variations"][0]["sell_price_inc_tax"],
+        this._phone=json["product_variations"][0]["variations"][0]["default_sell_price"],
         this.id=json["id"].toString(),
       this.variation_id=json["product_variation_id"].toString();
 

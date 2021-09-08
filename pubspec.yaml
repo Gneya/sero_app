@@ -37,6 +37,7 @@ dependencies:
   flutter_cart: ^0.0.6
   dio: any
   url_launcher: 6.0.0
+  enhanced_drop_down: ^0.1.7+1
   esc_pos_printer:
   ping_discover_network:
   flutter_svg:

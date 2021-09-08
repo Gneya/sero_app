@@ -48,11 +48,13 @@ class _ResumeScreenState extends State<ResumeScreen> {
         List<int> pid=[];
         List<String> vid=[];
         List<int> tax=[];
+        List<int> quantity=[];
         List<String> note=[];
         for(var c in i["sell_lines"])
         {
           count++;
           tax.add(c["tax_id"]??0);
+          quantity.add(c["quantity"]??1);
           note.add(c["sell_line_note"]??"");
           price_of_indiviual.add(double.parse(c["unit_price"].toString()));
           sum+=double.parse(c["unit_price"]);
@@ -78,6 +80,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
            "vid":vid,
           "total_price":sum,
            "tax_id":tax,
+           "quantity":quantity,
            "note":note,
           "price_of_indiviual":price_of_indiviual,
           "count":count
@@ -230,6 +233,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                             cart.addToCart(
                                                 productId: list[index]["pid"][i],
                                                 unitPrice: list[index]["price_of_indiviual"][i],
+                                                quantity: list[index]["quantity"][i],
                                                 productName: v
                                             );
                                           }

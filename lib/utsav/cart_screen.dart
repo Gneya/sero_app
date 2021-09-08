@@ -645,10 +645,10 @@ class _CartScreenState extends State<CartScreen> {
                         }
                       }
                       Map<String,dynamic> product={
-                        "product_id":double.parse(cart.cartItem[index].productId.toString()),
+                        "product_id":int.parse(cart.cartItem[index].productId.toString()),
                         "variation_id":double.parse(variation![index]),
                         "quantity": cart.cartItem[index].quantity,
-                        "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
+                        "unit_price": cart.cartItem[index].unitPrice,
                         "tax_rate_id":tax_id,
                         "note":note
                       };
