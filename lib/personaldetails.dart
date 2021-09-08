@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:csc_picker/csc_picker.dart';
+import 'package:dio/dio.dart';
 import 'package:enhanced_drop_down/enhanced_drop_down.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -102,20 +103,23 @@ class _PersonalDetailsState extends State<PersonalDetails> {
     }
   }
   Future<void> getSWData() async {
-    String url = "https://pos.sero.app/connector/api/customer-groups";
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var res = await http
-        .get(Uri.parse(url), headers: {
-      "Authorization": sharedPreferences.getString("Authorization")!
+    setState(() {
+      _isloading=true;
     });
-    var resBody = json.decode(res.body);
-    for(var v in resBody[0])
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var dio=Dio();
+    dio.options.headers["Authorization"]=sharedPreferences.getString("Authorization");
+    var r=await dio.get("https://pos.sero.app/connector/api/customer-groups");
+    print(r.data);
+    for(var v in r.data["data"])
       {
+        print(v["name"]);
         id.add(v["id"]);
         name.add(v["name"]);
       }
-
-    print(resBody);
+    setState(() {
+      _isloading=false;
+    });
   }
   @override
   void initState() {
@@ -414,14 +418,33 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         text: 'Home address',
                         hintText:
                         'Flat number, apartment name, locality, city, pin code'),
-                    ConstContainer(
-                      textcontroller:group,
-                      hintText: '',
-                      text: 'Customer group',
+                    Container(
+                      alignment: Alignment.centerLeft,
+                    child:
+                    Text(
+                      "Customer group",
+                      style: TextStyle(
+                        fontFamily: 'AirbnbCerealMedium',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: EnhancedDropDown.withData(
+                          dropdownLabelTitle: "",
+                          dataSource: name,
+                          defaultOptionText: "Customer group",
+                          valueReturned: (chosen) {
+                            print(chosen);
+                          },
+
+                          ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -472,14 +495,6 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                     SizedBox(
                       height: 10,
                     ),
-                    EnhancedDropDown.withData(
-                        dropdownLabelTitle: "My Things",
-                        dataSource: name,
-                        defaultOptionText: "Choose",
-                        valueReturned: (chosen) {
-                          print(chosen);
-                        }),
-                    SizedBox(height: 50,),
                     SizedBox(
                       width: 180,
                       height: 50,
