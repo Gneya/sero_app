@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:csc_picker/csc_picker.dart';
+import 'package:enhanced_drop_down/enhanced_drop_down.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -20,7 +21,9 @@ class PersonalDetails extends StatefulWidget {
 class _PersonalDetailsState extends State<PersonalDetails> {
   bool value = false;
   bool value1 = false;
+  String _mySelection="";
   final _formKey = GlobalKey<FormState>();
+  List data = [];
   DateTime selectedDate = DateTime.now();
   bool value3 = false;
   var countryValue;
@@ -32,6 +35,8 @@ class _PersonalDetailsState extends State<PersonalDetails> {
   TextEditingController email=new TextEditingController();
   TextEditingController phone_number=new TextEditingController();
   TextEditingController address=new TextEditingController();
+  List<int> id=[];
+  List<String> name=[];
   TextEditingController group=new TextEditingController();
   late customer _customer;
   var _isloading=false;
@@ -95,6 +100,28 @@ class _PersonalDetailsState extends State<PersonalDetails> {
             ));
       }
     }
+  }
+  Future<void> getSWData() async {
+    String url = "https://pos.sero.app/connector/api/customer-groups";
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var res = await http
+        .get(Uri.parse(url), headers: {
+      "Authorization": sharedPreferences.getString("Authorization")!
+    });
+    var resBody = json.decode(res.body);
+    for(var v in resBody[0])
+      {
+        id.add(v["id"]);
+        name.add(v["name"]);
+      }
+
+    print(resBody);
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    getSWData();
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -445,6 +472,14 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                     SizedBox(
                       height: 10,
                     ),
+                    EnhancedDropDown.withData(
+                        dropdownLabelTitle: "My Things",
+                        dataSource: name,
+                        defaultOptionText: "Choose",
+                        valueReturned: (chosen) {
+                          print(chosen);
+                        }),
+                    SizedBox(height: 50,),
                     SizedBox(
                       width: 180,
                       height: 50,
