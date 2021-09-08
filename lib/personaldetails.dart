@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:csc_picker/csc_picker.dart';
+import 'package:dio/dio.dart';
+import 'package:enhanced_drop_down/enhanced_drop_down.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -20,7 +22,9 @@ class PersonalDetails extends StatefulWidget {
 class _PersonalDetailsState extends State<PersonalDetails> {
   bool value = false;
   bool value1 = false;
+  String _mySelection="";
   final _formKey = GlobalKey<FormState>();
+  List data = [];
   DateTime selectedDate = DateTime.now();
   bool value3 = false;
   var countryValue;
@@ -32,6 +36,8 @@ class _PersonalDetailsState extends State<PersonalDetails> {
   TextEditingController email=new TextEditingController();
   TextEditingController phone_number=new TextEditingController();
   TextEditingController address=new TextEditingController();
+  List<int> id=[];
+  List<String> name=[];
   TextEditingController group=new TextEditingController();
   late customer _customer;
   var _isloading=false;
@@ -95,6 +101,31 @@ class _PersonalDetailsState extends State<PersonalDetails> {
             ));
       }
     }
+  }
+  Future<void> getSWData() async {
+    setState(() {
+      _isloading=true;
+    });
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var dio=Dio();
+    dio.options.headers["Authorization"]=sharedPreferences.getString("Authorization");
+    var r=await dio.get("https://pos.sero.app/connector/api/customer-groups");
+    print(r.data);
+    for(var v in r.data["data"])
+      {
+        print(v["name"]);
+        id.add(v["id"]);
+        name.add(v["name"]);
+      }
+    setState(() {
+      _isloading=false;
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    getSWData();
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -387,14 +418,33 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         text: 'Home address',
                         hintText:
                         'Flat number, apartment name, locality, city, pin code'),
-                    ConstContainer(
-                      textcontroller:group,
-                      hintText: '',
-                      text: 'Customer group',
+                    Container(
+                      alignment: Alignment.centerLeft,
+                    child:
+                    Text(
+                      "Customer group",
+                      style: TextStyle(
+                        fontFamily: 'AirbnbCerealMedium',
+                        fontWeight: FontWeight.w500,
+                        fontSize: 16,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: EnhancedDropDown.withData(
+                          dropdownLabelTitle: "",
+                          dataSource: name,
+                          defaultOptionText: "Customer group",
+                          valueReturned: (chosen) {
+                            print(chosen);
+                          },
+
+                          ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(

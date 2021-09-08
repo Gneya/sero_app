@@ -233,6 +233,7 @@ class _SelectTableState extends State<SelectTable> {
             ),
             onTap: ()async {
               // Phoenix.rebirth(context);
+              List<dynamic> list_of_products=[];
               SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
               sharedPreferences.setString("table_name", _tablenos[index]);
               if(_table_status[index]=="occupied")
@@ -259,6 +260,12 @@ class _SelectTableState extends State<SelectTable> {
     print(id[index]);
     for(var x in i["sell_lines"])
     {
+      Map m={
+        "pid":x["product_id"],
+        "tax_id":x["tax_id"],
+        "note":x["sell_line_note"]??""
+      };
+      list_of_products.add(m);
     http.Response response = await http.get(
     Uri.parse(
     "https://pos.sero.app/connector/api/product/${x["product_id"]}")
@@ -273,6 +280,9 @@ class _SelectTableState extends State<SelectTable> {
     cart.addToCart(productId: x["product_id"], unitPrice: double.parse(x["unit_price_inc_tax"]),productName: v);
     }
     sharedPreferences.setString("total", cart.getCartItemCount().toString());
+      sharedPreferences.setString("products", json.encode(list_of_products));
+      print("LIST OF PRODUCTS");
+      print(list_of_products);
     break;
     }
     }

@@ -1495,7 +1495,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     }
                                 }
                               Map<String,dynamic> product={
-                                "product_id":double.parse(cart.cartItem[index].productId.toString()),
+                                "product_id":int.parse(cart.cartItem[index].productId.toString()),
                                 "variation_id":double.parse(variation![index]),
                                 "quantity": cart.cartItem[index].quantity,
                                 "unit_price": cart.cartItem[index].unitPrice,
@@ -1532,7 +1532,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "table_id" :shared.getInt("table_id")??null,
                                     "location_id": shared.getInt("bid")??1,
                                     "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                                    "discount_amount": discountt,
+                                    "discount_amount": shared.getDouble("Discountt_for_db")??0,
                                     "discount_type": dar,
                                     "rp_redeemed": shared.getInt("Redeemed Points"),
                                     "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
