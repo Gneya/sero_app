@@ -772,33 +772,42 @@ class _CartScreenState extends State<CartScreen> {
                   },
                 ),
               ),
-              OutlinedButton.icon(
-                onPressed: () async {
-                  SharedPreferences shared =await SharedPreferences.getInstance();
-                  shared.setString("screen", "Payment");
-                  // shared.setInt("index", 2);
-                  Navigator.push(
+              FutureBuilder(
+                  future:getPaymentAmount(),
+                  builder: (context,snapshot){
+                    return OutlinedButton.icon(
+                    onPressed: () async {
+                    SharedPreferences shared =await SharedPreferences.getInstance();
+                    shared.setString("screen", "Payment");
+                    // shared.setInt("index", 2);
+                    print("ONPRESSED"+paymentAmount.toStringAsFixed(2));
+                    shared.setDouble("balance",paymentAmount);
+                    Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
-                  );
-                  print(paymentAmount);
-                  // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                  //     builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
-                  //     Route<dynamic> route) => true);
-                },
-                style: ButtonStyle(
+                    );
+                    print(paymentAmount);
+                    // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                    //     builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
+                    //     Route<dynamic> route) => true);
+                    },
+                    style: ButtonStyle(
                     shape: MaterialStateProperty.all(
-                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
+                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
                     ),
                     side: MaterialStateProperty.all(BorderSide(width: 2))
-                ),
-                icon: Icon(Icons.payment,
-                  color: Colors.black87,),
-                label: Text("PAY:\$${getPaymentAmount()}",style: GoogleFonts.ptSans(
+                    ),
+                    icon: Icon(Icons.payment,
+                    color: Colors.black87,),
+                    label: Text("PAY:\$${snapshot.data}",style: GoogleFonts.ptSans(
                     color: Colors.black87,
-                    fontSize: 20
-                ),),
-              )
+    fontSize: 20
+    ),),
+    );
+
+                      },
+                    )
+
             ],
           ),
         )
@@ -875,11 +884,19 @@ class _CartScreenState extends State<CartScreen> {
       return [];
     }
   }
-  String getPaymentAmount() {
-    var cart =FlutterCart();
-    setState(() {
-      paymentAmount=cart.getTotalAmount();
-    });
+  Future<String> getPaymentAmount() async {
+    paymentAmount=0;
+   SharedPreferences shared=await SharedPreferences.getInstance();
+   if(shared.getString("products")!=""){
+   List<dynamic> products=json.decode(shared.getString("products")??"")??"";
+   print(products);
+   for(int i=0;i<products.length;i++)
+     {
+       setState(() {
+         paymentAmount+=double.parse(products[i]["price_inc_tax"]);
+       });
+     }
+   print(paymentAmount);}
     return paymentAmount.toStringAsFixed(2);
   }
 }
