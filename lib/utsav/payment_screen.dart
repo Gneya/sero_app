@@ -159,9 +159,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
     });
     Map data = await getData();
     amount=widget.Ammount;
-    balance=widget.Balance;
     redeem=widget.Redeem;
     SharedPreferences shared=await SharedPreferences.getInstance();
+    balance=shared.getDouble("balance")!;
+    print(balance.toStringAsFixed(2)+" Balance in payment");
     String myUrl = "https://pos.sero.app/connector/api/business-details";
     http.Response response = await http.get((Uri.parse(myUrl)), headers: {
       'Authorization':shared.getString("Authorization")??""
@@ -1585,39 +1586,37 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             else{
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                               print(shared.getInt("Redeemed Points"));
-                              Map<String,dynamic> api=
-                              {
+                              Map<String,dynamic> api= {
                                 "sells":[
-                              {
-                              "table_id": shared.getInt("table_id") ?? 0,
-                              "location_id": shared.getInt("bid") ?? 1,
-                              "contact_id": double.parse(shared.getString("customer_id") ?? "1"),
-                              "discount_amount": discountt,
-                              "discount_type": shared.getString("DiscountType"),
-                              "tip":_tipController.text,
-                              "is_suspend":0,
-                              "rp_redeemed": shared.getInt("Redeemed Points"),
-                              "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()) ?? 0,
-                              // "shipping_details": null,
-                              // "shipping_address": null,
-                              // "shipping_status": null,
-                              // "delivered_to": null,
-                              "shipping_charges": shared.getDouble("Shipping"),
-                                "delivered_to":car,
-                                "packing_charge":shared.getDouble("packing_charge")?? 0.0,
-                                "types_of_service_id":sar,
-                                "shipping_status":"offline",
-                                "change_return":double.parse(change_return.text),
-                              "products": list_of_m,
-                              "payments": [
-                              {
-                              "amount": double.parse(pay.text),
-                                "method":shared.getString("method")
-                              }
-                              ]
-                              }
+                                  {
+                                    "table_id" :shared.getInt("table_id")??null,
+                                    "location_id": shared.getInt("bid")??1,
+                                    "contact_id": double.parse(shared.getString("customer_id")??"1"),
+                                    "discount_amount": shared.getDouble("Discountt_for_db")??0,
+                                    "discount_type": dar,
+                                    "rp_redeemed": shared.getInt("Redeemed Points"),
+                                    "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
+                                    // "shipping_details": null,
+                                    // "shipping_address": null,
+                                    // "shipping_status": null,
+                                    // "delivered_to": null,
+                                    "shipping_status":"offline",
+                                    "delivered_to":car,
+                                    "types_of_service_id":sar,
+                                    "is_suspend":0,
+                                    "shipping_charges": shared.getDouble("Shipping"),
+                                    "packing_charge":shared.getDouble("packing_charge")?? 0.0,
+                                    "products":list_of_m,
+                                    "tip":_tipController.text,
+                                    "change_return":double.parse(change_return.text),
+                                    "payments": [
+                                      {
+                                        "amount":double.parse(pay.text),
+                                        "method":shared.getString("method")
+                                      }
+                                    ]
+                                  }
                                 ]
-
                               };
                               print(json.encode(api));
                               var dio=Dio();
