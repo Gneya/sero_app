@@ -1523,7 +1523,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                              var car = shared.getString("customer_name");
                              print(car!*10);
                              print (dar);
-
+                             var service_id=shared.getInt("types_of_service_id");
+                             print(service_id.toString()+"servvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv" );
+                             String typ_ser ;
+                             if(service_id == 3){
+                               typ_ser = "ordered";
+                             }
+                             else{
+                               typ_ser = "offline";
+                             }
+                            Map<String,dynamic> driver={
+                              "order_id":shared.getString("order_id"),
+                              // "driver_id":
+                            };
                             if(shared.getString("order_id")=="")
                             {
 
@@ -1541,7 +1553,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_address": null,
                                     // "shipping_status": null,
                                     // "delivered_to": null,
-                                    "shipping_status":"offline",
+                                    "shipping_status":typ_ser,
                                     "delivered_to":car,
                                     "types_of_service_id":sar,
                                     "is_suspend":0,
@@ -1586,7 +1598,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             else{
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                               print(shared.getInt("Redeemed Points"));
-                              Map<String,dynamic> api= {
+                              Map<String,dynamic> api=
+                              {
                                 "sells":[
                                   {
                                     "table_id" :shared.getInt("table_id")??null,
@@ -1600,7 +1613,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_address": null,
                                     // "shipping_status": null,
                                     // "delivered_to": null,
-                                    "shipping_status":"offline",
+                                    "shipping_status":typ_ser,
                                     "delivered_to":car,
                                     "types_of_service_id":sar,
                                     "is_suspend":0,
