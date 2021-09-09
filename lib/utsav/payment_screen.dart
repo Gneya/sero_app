@@ -1479,6 +1479,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
                             print(r2);
                             print(id);
+
+
                             var variation=shared.getStringList("variation");
                             var cart=FlutterCart();
                             for(int index=0;index<cart.cartItem.length;index++)
@@ -1532,10 +1534,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                              else{
                                typ_ser = "offline";
                              }
-                            Map<String,dynamic> driver={
-                              "order_id":shared.getString("order_id"),
-                              // "driver_id":
-                            };
+
                             if(shared.getString("order_id")=="")
                             {
 
@@ -1651,6 +1650,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 shared.setDouble("packing_charge", 0.0);
                                 shared.setDouble("Discountt", 0.0);
                               });
+
+                              Map<String,dynamic> driver={
+                                "order_id":shared.getString("order_id"),
+                                "driver_id":9
+                              };
+
+                              dio.options.headers["Authorization"]=shared.getString("Authorization");
+                              var r3=await dio.post("https://pos.sero.app/connector/api/assign-order",data: json.encode(driver));
+                              print("order is assigned");
+                              print(r3);
 
                               Fluttertoast.showToast(
                                   msg: "Payment Successful and Your Order Id is $vid",
