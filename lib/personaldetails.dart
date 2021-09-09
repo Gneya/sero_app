@@ -94,11 +94,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
         setState(() {
           _isloading = false;
         });
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SelectTable(),
-            ));
+        Navigator.pop(context);
       }
     }
   }
@@ -438,6 +434,16 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                           defaultOptionText: "Customer group",
                           valueReturned: (chosen) {
                             print(chosen);
+                            for(int i=0;i<name.length;i++)
+                              {
+                                if(name[i]==chosen)
+                                  {
+                                    print(name[i]);
+                                    group.text=id[i].toString();
+                                    print(id[i]);
+                                    break;
+                                  }
+                              }
                           },
 
                           ),
