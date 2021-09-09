@@ -671,7 +671,8 @@ class _SelectItemState extends State<SelectItem> {
                     list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
                    m={
                      "pid":_productlist[index].id,
-                     "tax_id":_productlist[index].tax_id
+                     "tax_id":_productlist[index].tax_id,
+                     "price_inc_tax":_productlist[index].price_inc_tax
                    };
                     int flag=0;
                     for(int i=0;i<list_of_products.length;i++)
@@ -718,6 +719,7 @@ class product
   final String name;
   final String price;
   final String url;
+  final String price_inc_tax;
   final String variation_id;
   final int tax_id;
   product.fromJson(Map<String,dynamic> json):
@@ -726,6 +728,7 @@ class product
         url=json["product_image_url"],
         id=json["product_id"].toString(),
         variation_id=json["variation_id"].toString(),
+  price_inc_tax=json["sell_price_inc_tax"],
     this.tax_id=json["tax_id"];
 }
 class Customer
