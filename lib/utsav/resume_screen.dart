@@ -45,6 +45,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
         id.add(i["id"]);
         double sum=0;
         List<double> price_of_indiviual=[];
+        List<String> price_of_indiviual_with_tax=[];
         List<int> pid=[];
         List<String> vid=[];
         List<int> tax=[];
@@ -54,6 +55,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
         {
           count++;
           tax.add(c["tax_id"]??0);
+          price_of_indiviual_with_tax.add(c["unit_price_inc_tax"]??0);
           quantity.add(c["quantity"]??1);
           note.add(c["sell_line_note"]??"");
           price_of_indiviual.add(double.parse(c["unit_price"].toString()));
@@ -83,6 +85,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
            "quantity":quantity,
            "note":note,
           "price_of_indiviual":price_of_indiviual,
+           "price_of_indiviual_with_tax":price_of_indiviual_with_tax,
           "count":count
         };
         list.add(map);
@@ -219,6 +222,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                             Map m={
                                               "pid":list[index]["pid"][i],
                                               "tax_id":list[index]["tax_id"][i],
+                                              "price_inc_tax":list[index]["price_of_indiviual_with_tax"][i],
                                              "note":list[index]["note"][i]??""
                                             };
                                             list_of_products.add(m);
