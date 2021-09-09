@@ -263,7 +263,8 @@ class _SelectTableState extends State<SelectTable> {
       Map m={
         "pid":x["product_id"],
         "tax_id":x["tax_id"],
-        "note":x["sell_line_note"]??""
+        "note":x["sell_line_note"]??"",
+        "price_inc_tax":x["unit_price_inc_tax"]
       };
       list_of_products.add(m);
     http.Response response = await http.get(
@@ -277,7 +278,7 @@ class _SelectTableState extends State<SelectTable> {
     print(v);
     list!.add(x["variation_id"].toString());
     sharedPreferences.setStringList("variation", list);
-    cart.addToCart(productId: x["product_id"], unitPrice: double.parse(x["unit_price_inc_tax"]),productName: v);
+    cart.addToCart(productId: x["product_id"], unitPrice: double.parse(x["unit_price"]),productName: v);
     }
     sharedPreferences.setString("total", cart.getCartItemCount().toString());
       sharedPreferences.setString("products", json.encode(list_of_products));
