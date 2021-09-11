@@ -28,8 +28,8 @@ class _RedeemPointState extends State<RedeemPoint> {
   int redeemAmount =0;
   int redeemed=0;
   String redeemedAmount ='0';
-   double balance=0.0;
-   var pt =0;
+  double balance=0.0;
+  var pt =0;
   final pointscontroller= new TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
@@ -58,7 +58,7 @@ class _RedeemPointState extends State<RedeemPoint> {
     var  cid = shared.getString("customer_id");
     dio.options.headers["Authorization"]=shared.getString("Authorization");
     print(cid);
-    var r=await dio.get("https://pos.sero.app/connector/api/contactapi/$cid");
+    var r=await dio.get("https://seropos.app/connector/api/contactapi/$cid");
     print(r.data);
     pt =r.data["data"][0]["total_rp"];
 
@@ -246,3 +246,5 @@ class _RedeemPointState extends State<RedeemPoint> {
     );;;
   }
 }
+
+

@@ -25,7 +25,7 @@ class edit_customer extends StatefulWidget {
   var dob;
   edit_customer({
     this.id,
-     this.fname,
+    this.fname,
     this.mname,
     this.lname,
     this.email_id,
@@ -35,7 +35,7 @@ class edit_customer extends StatefulWidget {
     this.country,
     this.address,
     this.dob
-});
+  });
   @override
   edit_customerState createState() =>  edit_customerState();
 }
@@ -78,7 +78,7 @@ class  edit_customerState extends State< edit_customer> {
         _isloading=true;
       });
       // var response = await http.post(
-      //     Uri.parse("https://pos.sero.app/connector/api/contactapi/"), body: input,
+      //     Uri.parse("https://seropos.app/connector/api/contactapi/"), body: input,
       //     headers: {
       //       'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjlhNTYwNGYxZDAxMzU2NTRhY2YyYjE4MmEyOGUwMjA4M2QxOGUxY2Y1ZTY0MzM1MzdmNzc3MzFkMTMzZjNmNWQ5MTU3ZTEwOTQ5NDE3ZmQ3In0.eyJhdWQiOiIzIiwianRpIjoiOWE1NjA0ZjFkMDEzNTY1NGFjZjJiMTgyYTI4ZTAyMDgzZDE4ZTFjZjVlNjQzMzUzN2Y3NzczMWQxMzNmM2Y1ZDkxNTdlMTA5NDk0MTdmZDciLCJpYXQiOjE2MjM2NjAxMzksIm5iZiI6MTYyMzY2MDEzOSwiZXhwIjoxNjU1MTk2MTM5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WGLAu9KVi-jSt0q9yUyENDoEQnSLF1o0tezej5YozBFXJVQuEvSykvA9T6nnJghujQ2uU-nxUCRftLBhYzGjsu26YoKZBin70k1cqoYDfIWlVZ-fNkJi1vAXYOk9Pzxz7YFBa6hgz1MyUlDOI1LsSSsJh87hGBzIN6Ib_cYmGoo8KHVEfqbDtCNnZdOq68vjhwf6dwYEJUtxanaocuC-_XHkdM7769JiO48Ot93BqZjmRuVwvK9zE_8bilmhktlgD65ahgKOSS2yQlMdpgpsqP1W5Mfy_SBu32BkqTpAc5v2QWRTVhevES-blsfqdoZ59aw0OzrxyC8PvipyuhGQjs6V7eCrKK0jOei9g4RyhKlQueDXxxrWrqsStIsPzkn-kXA5k2NINIFgr2MlLtypTR76xnncWE5rCqm39K5V2_q3aXDQvCHdl3SVBKDqwNCUKq1CxbJlkF8r1R1mxXxN76TBZbcalO7wUX0F-D1j9oWkwXSZBe7L6vQQqvhC2AsQO2LB4QiByuFi1-J4h05vM3Kab0nmRvVeNYekhNP9HtTGWCH_UDuiDAp23VqUhMTrFygUAPEASU0fnw-rMKhrll_O0wMaBE33ZfItsV0o6pHCQhUjsDKwfmgVynOyYu0rX_huVN_PUBSYQVuCiabUMp8Q5Dv7n8Ky7_yI8XypQK4'
       //     }
@@ -100,7 +100,7 @@ class  edit_customerState extends State< edit_customer> {
       };
       SharedPreferences shared=await SharedPreferences.getInstance();
       dio.options.headers["Authorization"]=shared.getString("Authorization");
-      var r2=await dio.put("https://pos.sero.app/connector/api/contactapi/$id",data: json.encode(api1));
+      var r2=await dio.put("https://seropos.app/connector/api/contactapi/$id",data: json.encode(api1));
       print(r2);
       // if (_customer.error != "null") {
       //   setState(() {
@@ -118,22 +118,22 @@ class  edit_customerState extends State< edit_customer> {
       //     _isloading = false;
       //     print(_customer.id);
       //   });
-        Fluttertoast.showToast(
-            msg: "Customer Updated Successfully",
-            toastLength: Toast.LENGTH_LONG,
-            gravity: ToastGravity.BOTTOM,
-            textColor: Colors.green,
-            timeInSecForIosWeb: 10);
+      Fluttertoast.showToast(
+          msg: "Customer Updated Successfully",
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          textColor: Colors.green,
+          timeInSecForIosWeb: 10);
       SharedPreferences share=await SharedPreferences.getInstance();
       share.setInt("index", 1);
-        setState(() {
-          _isloading = false;
-        });
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //       builder: (context) => SelectTable(),
-        //     ));
+      setState(() {
+        _isloading = false;
+      });
+      // Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => SelectTable(),
+      //     ));
     }
   }
   @override
@@ -142,12 +142,12 @@ class  edit_customerState extends State< edit_customer> {
     id=widget.id;
     print("WIDGET ${widget.fname}");
     fname.text=widget.fname??"";
-     mname.text=widget.mname??"";
-     lname.text=widget.lname??"";
-     email.text=widget.email_id??"";
-     phone_number.text=widget.phone??"";
-     address.text=widget.address??"";
-     group.text="";
+    mname.text=widget.mname??"";
+    lname.text=widget.lname??"";
+    email.text=widget.email_id??"";
+    phone_number.text=widget.phone??"";
+    address.text=widget.address??"";
+    group.text="";
 
   }
   @override
@@ -666,4 +666,6 @@ class customer
         this.error=Json["error"].toString(),
         this.id=Json["data"]["id"].toString();
 }
+
+
 

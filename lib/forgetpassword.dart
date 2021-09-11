@@ -135,7 +135,7 @@ class ForgetPasswordState extends State<ForgetPassword> {
     if (_formKey.currentState!.validate()) {
       SharedPreferences shared=await SharedPreferences.getInstance();
       var response = await http.post(
-          Uri.parse("https://pos.sero.app/connector/api/forget-password"), body: input,headers: {
+          Uri.parse("https://seropos.app/connector/api/forget-password"), body: input,headers: {
         'Authorization': shared.getString("Authorization")??""
       });
       var v = json.decode(response.body);
@@ -152,3 +152,5 @@ class ForgetPasswordState extends State<ForgetPassword> {
   }
 
 }
+
+

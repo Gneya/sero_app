@@ -99,12 +99,12 @@ class _VoidBillState extends State<VoidBill> {
                                     "table_status":"available"
                                   };
                                   dio.options.headers["Authorization"]=shared.getString("Authorization");
-                                  var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                                  var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
                                   print(r2);
                                   print(id);
 
                                   dio.options.headers["Authorization"]=shared.getString("Authorization");
-                                  var r=await dio.delete("https://pos.sero.app/connector/api/sell/${getOdID}",data: json.encode(api));
+                                  var r=await dio.delete("https://seropos.app/connector/api/sell/${getOdID}",data: json.encode(api));
                                   print(r);
                                   var v = r.toString();
                                   print(v);
@@ -163,5 +163,7 @@ class _VoidBillState extends State<VoidBill> {
     );
   }
 }
+
+
 
 

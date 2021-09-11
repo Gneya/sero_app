@@ -40,7 +40,7 @@ class loginState extends State<login> {
         _isloading = true;
       });
       var response = await http.post(
-          Uri.parse("https://pos.sero.app/oauth/token"), body: input);
+          Uri.parse("https://seropos.app/oauth/token"), body: input);
       var v= json.decode(response.body);
       print(v);
       //print(m["Authorization"]);
@@ -59,7 +59,7 @@ class loginState extends State<login> {
         };
         var dio=Dio();
         dio.options.headers["Authorization"]=sharedPreferences.getString("Authorization");
-        var r=await dio.post("https://pos.sero.app/connector/api/store-token",data: json.encode(api));
+        var r=await dio.post("https://seropos.app/connector/api/store-token",data: json.encode(api));
         print("RESPONSE"+r.data.toString());
         print(sharedPreferences.getString("Authorization"));
         if(this.value==true) {
@@ -119,7 +119,7 @@ class loginState extends State<login> {
                   ),
                   //welcome back
                   Text(
-                    'Welcome back',
+                      'Welcome back',
                       style: GoogleFonts.ptSans(color: Color(0xff000000),fontSize: 22)
                   ),
                   SizedBox(
@@ -134,27 +134,27 @@ class loginState extends State<login> {
                       SizedBox(
                         height: 10,
                       ),
-                     TextFormField(
-                          controller: email,
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'This Field cannot be Empty';
-                            }
-                            return null;
-                          },
-                          autofocus: false,
-                          decoration: InputDecoration(
-                              prefixIcon: new Icon(Icons.email, color: Colors.grey),
-                              hintText: 'Enter your email',
-                              fillColor: Colors.white,
-                              filled: true,
-                              contentPadding:
-                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  borderSide: BorderSide(
-                                      color: Colors.white, width: 3.0))),
-                        ),
+                      TextFormField(
+                        controller: email,
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'This Field cannot be Empty';
+                          }
+                          return null;
+                        },
+                        autofocus: false,
+                        decoration: InputDecoration(
+                            prefixIcon: new Icon(Icons.email, color: Colors.grey),
+                            hintText: 'Enter your email',
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                                borderSide: BorderSide(
+                                    color: Colors.white, width: 3.0))),
+                      ),
                     ],
                   ),
                   //password
@@ -171,27 +171,27 @@ class loginState extends State<login> {
                         height: 10,
                       ),
                       TextFormField(
-                          controller: password,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'This Field cannot be Empty';
-                            }
-                            return null;
-                          },
-                          obscureText: true,
-                          autofocus: false,
-                          decoration: InputDecoration(
-                              prefixIcon: new Icon(Icons.lock, color: Colors.grey),
-                              hintText: 'Password',
-                              fillColor: Colors.white,
-                              filled: true,
-                              contentPadding:
-                              EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(32.0),
-                                  borderSide: BorderSide(
-                                      color: Colors.white, width: 3.0))),
-                        ),
+                        controller: password,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'This Field cannot be Empty';
+                          }
+                          return null;
+                        },
+                        obscureText: true,
+                        autofocus: false,
+                        decoration: InputDecoration(
+                            prefixIcon: new Icon(Icons.lock, color: Colors.grey),
+                            hintText: 'Password',
+                            fillColor: Colors.white,
+                            filled: true,
+                            contentPadding:
+                            EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(32.0),
+                                borderSide: BorderSide(
+                                    color: Colors.white, width: 3.0))),
+                      ),
                     ],
                   ),
                   SizedBox(height: 10,),
@@ -229,16 +229,16 @@ class loginState extends State<login> {
                     borderRadius: BorderRadius.circular(15.0),
                     color: Color(0xff1b2d61),
                     child: MaterialButton(
-                      minWidth: MediaQuery
-                          .of(context)
-                          .size
-                          .width/3,
-                      padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
-                      onPressed: _authenticate,
-                      child: Text("LOG IN",
-                          textAlign: TextAlign.center,
-                          style:GoogleFonts.ptSans(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20)
-                             )),
+                        minWidth: MediaQuery
+                            .of(context)
+                            .size
+                            .width/3,
+                        padding: EdgeInsets.fromLTRB(10.0, 10.0, 10.0, 10.0),
+                        onPressed: _authenticate,
+                        child: Text("LOG IN",
+                            textAlign: TextAlign.center,
+                            style:GoogleFonts.ptSans(fontWeight: FontWeight.bold,color: Colors.white,fontSize: 20)
+                        )),
                   ),
                   SizedBox(
                     height: 10,
@@ -294,5 +294,7 @@ class Model
         access_token=Json["access_token"];
 
 }
+
+
 
 
