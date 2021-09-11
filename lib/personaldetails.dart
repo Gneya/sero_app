@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:csc_picker/csc_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:enhanced_drop_down/enhanced_drop_down.dart';
@@ -12,6 +11,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:sero_app/selecttable.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 class PersonalDetails extends StatefulWidget {
   PersonalDetails({Key ? key}) : super(key: key);
@@ -61,7 +61,7 @@ class _PersonalDetailsState extends State<PersonalDetails> {
       });
       SharedPreferences shared=await SharedPreferences.getInstance();
       var response = await http.post(
-          Uri.parse("https://pos.sero.app/connector/api/contactapi"), body: input,
+          Uri.parse("https://seropos.app/connector/api/contactapi"), body: input,
           headers: {
             'Authorization': shared.getString("Authorization")??""
           }
@@ -105,14 +105,14 @@ class _PersonalDetailsState extends State<PersonalDetails> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     var dio=Dio();
     dio.options.headers["Authorization"]=sharedPreferences.getString("Authorization");
-    var r=await dio.get("https://pos.sero.app/connector/api/customer-groups");
+    var r=await dio.get("https://seropos.app/connector/api/customer-groups");
     print(r.data);
     for(var v in r.data["data"])
-      {
-        print(v["name"]);
-        id.add(v["id"]);
-        name.add(v["name"]);
-      }
+    {
+      print(v["name"]);
+      id.add(v["id"]);
+      name.add(v["name"]);
+    }
     setState(() {
       _isloading=false;
     });
@@ -416,37 +416,37 @@ class _PersonalDetailsState extends State<PersonalDetails> {
                         'Flat number, apartment name, locality, city, pin code'),
                     Container(
                       alignment: Alignment.centerLeft,
-                    child:
-                    Text(
-                      "Customer group",
-                      style: TextStyle(
-                        fontFamily: 'AirbnbCerealMedium',
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
-                        color: Colors.grey.shade600,
-                      ),
-                    ),),
+                      child:
+                      Text(
+                        "Customer group",
+                        style: TextStyle(
+                          fontFamily: 'AirbnbCerealMedium',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),),
                     Container(
                       alignment: Alignment.centerLeft,
                       child: EnhancedDropDown.withData(
-                          dropdownLabelTitle: "",
-                          dataSource: name,
-                          defaultOptionText: "Customer group",
-                          valueReturned: (chosen) {
-                            print(chosen);
-                            for(int i=0;i<name.length;i++)
-                              {
-                                if(name[i]==chosen)
-                                  {
-                                    print(name[i]);
-                                    group.text=id[i].toString();
-                                    print(id[i]);
-                                    break;
-                                  }
-                              }
-                          },
+                        dropdownLabelTitle: "",
+                        dataSource: name,
+                        defaultOptionText: "Customer group",
+                        valueReturned: (chosen) {
+                          print(chosen);
+                          for(int i=0;i<name.length;i++)
+                          {
+                            if(name[i]==chosen)
+                            {
+                              print(name[i]);
+                              group.text=id[i].toString();
+                              print(id[i]);
+                              break;
+                            }
+                          }
+                        },
 
-                          ),
+                      ),
                     ),
                     // SizedBox(
                     //   height: 10,
@@ -683,4 +683,6 @@ class customer
         this.name=Json["data"]["name"],
         this.id=Json["data"]["id"].toString();
 }
+
+
 

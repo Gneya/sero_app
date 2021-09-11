@@ -178,7 +178,7 @@ class _CartScreenState extends State<CartScreen> {
                   "table_status":"available"
                 };
                 dio.options.headers["Authorization"]=shared.getString("Authorization");
-                var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
                 print(r2);
                 print(id);
                 shared.setStringList("variation", []);
@@ -328,127 +328,127 @@ class _CartScreenState extends State<CartScreen> {
                       padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
                       child: Container(
                         // height:MediaQuery.of(context).size.height/10 ,
-                          padding: EdgeInsets.only(left:10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey,
-                                offset: const Offset(
-                                  1.0,
-                                  1.0,
-                                ), //Offset
-                                blurRadius: 6.0,
-                                spreadRadius: 2.0,
-                              ), //BoxShadow
-                              BoxShadow(
-                                color: Colors.white,
-                                offset: const Offset(0.0, 0.0),
-                                blurRadius: 0.0,
-                                spreadRadius: 0.0,
-                              ),],
-                          ),
-                          child:Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                children: [
-                                  Container(
-                                    width: MediaQuery.of(context).size.width/2.8,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(left: 0),
-                                      child: Text(cart.cartItem[index].productName.toString(),
-                                        style: GoogleFonts.ptSans(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold
-                                        ),
+                        padding: EdgeInsets.only(left:10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              offset: const Offset(
+                                1.0,
+                                1.0,
+                              ), //Offset
+                              blurRadius: 6.0,
+                              spreadRadius: 2.0,
+                            ), //BoxShadow
+                            BoxShadow(
+                              color: Colors.white,
+                              offset: const Offset(0.0, 0.0),
+                              blurRadius: 0.0,
+                              spreadRadius: 0.0,
+                            ),],
+                        ),
+                        child:Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                Container(
+                                  width: MediaQuery.of(context).size.width/2.8,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 0),
+                                    child: Text(cart.cartItem[index].productName.toString(),
+                                      style: GoogleFonts.ptSans(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold
                                       ),
                                     ),
                                   ),
-                                  Row(
-                                    //mainAxisAlignment: MainAxisAlignment.,
-                                    children: [
-                                      IconButton(
-                                        onPressed:(){
-                                          setState(() {
-                                            cart.decrementItemFromCart(index);
-                                          });
-                                        },
-                                        icon: Icon(Icons.remove_circle,
-                                          size: 17,),
+                                ),
+                                Row(
+                                  //mainAxisAlignment: MainAxisAlignment.,
+                                  children: [
+                                    IconButton(
+                                      onPressed:(){
+                                        setState(() {
+                                          cart.decrementItemFromCart(index);
+                                        });
+                                      },
+                                      icon: Icon(Icons.remove_circle,
+                                        size: 17,),
+                                    ),
+                                    Text(cart.cartItem[index].quantity.toString(),
+                                      style: GoogleFonts.ptSans(
+                                          fontSize: 15
                                       ),
-                                      Text(cart.cartItem[index].quantity.toString(),
-                                        style: GoogleFonts.ptSans(
-                                            fontSize: 15
-                                        ),
+                                    ),
+                                    IconButton(
+                                      onPressed:(){
+                                        print(cart.cartItem[index].productId);
+                                        setState(() {
+                                          cart.incrementItemToCart(index);
+                                        });
+                                      },
+                                      icon: Icon(Icons.add_circle_outlined,
+                                        size: 17,
                                       ),
-                                      IconButton(
-                                        onPressed:(){
-                                          print(cart.cartItem[index].productId);
-                                          setState(() {
-                                            cart.incrementItemToCart(index);
-                                          });
-                                        },
-                                        icon: Icon(Icons.add_circle_outlined,
-                                          size: 17,
-                                        ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                    width: MediaQuery.of(context).size.width/9,
+                                    child:Text(
+                                      double.parse((cart.cartItem[index].unitPrice*cart.cartItem[index].quantity).toString()).toStringAsFixed(2),
+                                      style: GoogleFonts.ptSans(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold
                                       ),
-                                    ],
-                                  ),
-                                  Container(
-                                      width: MediaQuery.of(context).size.width/9,
-                                      child:Text(
-                                        double.parse((cart.cartItem[index].unitPrice*cart.cartItem[index].quantity).toString()).toStringAsFixed(2),
-                                        style: GoogleFonts.ptSans(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                      )),
-                                  IconButton(
-                                    onPressed:() async {
-                                      SharedPreferences shared = await SharedPreferences.getInstance();
-                                      setState(()  {
-                                        for(int i=0;i<list_of_products.length;i++)
+                                    )),
+                                IconButton(
+                                  onPressed:() async {
+                                    SharedPreferences shared = await SharedPreferences.getInstance();
+                                    setState(()  {
+                                      for(int i=0;i<list_of_products.length;i++)
+                                      {
+                                        if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
                                         {
-                                          if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
-                                            {
-                                              list_of_products.removeAt(i);
-                                            }
+                                          list_of_products.removeAt(i);
                                         }
-                                        cart.deleteItemFromCart(index);
-                                        shared.setString("total", (cart.getCartItemCount()).toString());
-                                        var list = shared.getStringList("variation");
-                                        list!.removeAt(index);
-                                        shared.setStringList("variation", list);
-                                        paymentAmount = cart.getTotalAmount();
-                                        print(cart.getCartItemCount());
-                                      });
-                                      // delete(cart.cartItem[index].productName);
-                                    },
-                                    icon: Icon(Icons.delete,
-                                      color: Colors.red,
-                                      size: 25,),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                height: 20,
-                                alignment: Alignment.centerLeft,
-                                padding: EdgeInsets.only(left: 10),
-                                child:FutureBuilder(
-                                    future:get(cart.cartItem[index].productName),
-                                    builder: (context,snapshot){
-                                      return ListView.builder(
-                                        itemCount:1,
-                                        itemBuilder: (context, i) {
-                                            return Text(list_of_products[index]["note"]??"");
+                                      }
+                                      cart.deleteItemFromCart(index);
+                                      shared.setString("total", (cart.getCartItemCount()).toString());
+                                      var list = shared.getStringList("variation");
+                                      list!.removeAt(index);
+                                      shared.setStringList("variation", list);
+                                      paymentAmount = cart.getTotalAmount();
+                                      print(cart.getCartItemCount());
+                                    });
+                                    // delete(cart.cartItem[index].productName);
+                                  },
+                                  icon: Icon(Icons.delete,
+                                    color: Colors.red,
+                                    size: 25,),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              height: 20,
+                              alignment: Alignment.centerLeft,
+                              padding: EdgeInsets.only(left: 10),
+                              child:FutureBuilder(
+                                  future:get(cart.cartItem[index].productName),
+                                  builder: (context,snapshot){
+                                    return ListView.builder(
+                                      itemCount:1,
+                                      itemBuilder: (context, i) {
+                                        return Text(list_of_products[index]["note"]??"");
 
-                                        },
-                                      );}),
-                              ),
-                            ] ,
-                          ),
+                                      },
+                                    );}),
+                            ),
+                          ] ,
+                        ),
                       ),
                     ),
                   );})),
@@ -687,7 +687,7 @@ class _CartScreenState extends State<CartScreen> {
                       };
                       var dio=Dio();
                       dio.options.headers["Authorization"]=shared.getString("Authorization");
-                      var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
+                      var r=await dio.post("https://seropos.app/connector/api/sell",data: json.encode(api));
                       print(r);
                       var v=r.data[0]["id"];
                       print(v.toString());
@@ -701,7 +701,7 @@ class _CartScreenState extends State<CartScreen> {
                         "invoice_number":inid
                       };
                       dio.options.headers["Authorization"]=shared.getString("Authorization");
-                      var r1=await dio.post("https://pos.sero.app/connector/api/get-invoice-url",data: json.encode(api2));
+                      var r1=await dio.post("https://seropos.app/connector/api/get-invoice-url",data: json.encode(api2));
                       print(r1);
                       Fluttertoast.showToast(
                           msg: "Order on hold and Your Order Id is $v",
@@ -738,7 +738,7 @@ class _CartScreenState extends State<CartScreen> {
                       dio.options.headers["Authorization"]=shared.getString("Authorization");
                       print(vid);
                       print("hahah");
-                      var r=await dio.put("https://pos.sero.app/connector/api/sell/$vid",data: json.encode(api));
+                      var r=await dio.put("https://seropos.app/connector/api/sell/$vid",data: json.encode(api));
 
                       print(r.data);
                       var v=r.data["invoice_no"];
@@ -773,40 +773,40 @@ class _CartScreenState extends State<CartScreen> {
                 ),
               ),
               FutureBuilder(
-                  future:getPaymentAmount(),
-                  builder: (context,snapshot){
-                    return OutlinedButton.icon(
+                future:getPaymentAmount(),
+                builder: (context,snapshot){
+                  return OutlinedButton.icon(
                     onPressed: () async {
-                    SharedPreferences shared =await SharedPreferences.getInstance();
-                    shared.setString("screen", "Payment");
-                    // shared.setInt("index", 2);
-                    print("ONPRESSED"+paymentAmount.toStringAsFixed(2));
-                    shared.setDouble("balance",paymentAmount);
-                    Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
-                    );
-                    print(paymentAmount);
-                    // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
-                    //     builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
-                    //     Route<dynamic> route) => true);
+                      SharedPreferences shared =await SharedPreferences.getInstance();
+                      shared.setString("screen", "Payment");
+                      // shared.setInt("index", 2);
+                      print("ONPRESSED"+paymentAmount.toStringAsFixed(2));
+                      shared.setDouble("balance",paymentAmount);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
+                      );
+                      print(paymentAmount);
+                      // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                      //     builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
+                      //     Route<dynamic> route) => true);
                     },
                     style: ButtonStyle(
-                    shape: MaterialStateProperty.all(
-                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
-                    ),
-                    side: MaterialStateProperty.all(BorderSide(width: 2))
+                        shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
+                        ),
+                        side: MaterialStateProperty.all(BorderSide(width: 2))
                     ),
                     icon: Icon(Icons.payment,
-                    color: Colors.black87,),
+                      color: Colors.black87,),
                     label: Text("PAY:\$${snapshot.data}",style: GoogleFonts.ptSans(
-                    color: Colors.black87,
-    fontSize: 20
-    ),),
-    );
+                        color: Colors.black87,
+                        fontSize: 20
+                    ),),
+                  );
 
-                      },
-                    )
+                },
+              )
 
             ],
           ),
@@ -886,17 +886,17 @@ class _CartScreenState extends State<CartScreen> {
   }
   Future<String> getPaymentAmount() async {
     paymentAmount=0;
-   SharedPreferences shared=await SharedPreferences.getInstance();
-   if(shared.getString("products")!=""){
-   List<dynamic> products=json.decode(shared.getString("products")??"")??"";
-   print(products);
-   for(int i=0;i<products.length;i++)
-     {
-       setState(() {
-         paymentAmount+=double.parse(products[i]["price_inc_tax"]);
-       });
-     }
-   print(paymentAmount);}
+    SharedPreferences shared=await SharedPreferences.getInstance();
+    if(shared.getString("products")!=""){
+      List<dynamic> products=json.decode(shared.getString("products")??"")??"";
+      print(products);
+      for(int i=0;i<products.length;i++)
+      {
+        setState(() {
+          paymentAmount+=double.parse(products[i]["price_inc_tax"]);
+        });
+      }
+      print(paymentAmount);}
     return paymentAmount.toStringAsFixed(2);
   }
 }
@@ -907,3 +907,4 @@ class Modi {
     _modi=m;
   }
 }
+

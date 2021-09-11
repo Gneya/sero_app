@@ -92,7 +92,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   double discountt=0;
   String discount_type ="";
   int redeemPoint =0;
- double shipping_charge =0.0;
+  double shipping_charge =0.0;
   int redeem=0;
   List<String> _payMeth = ["", "", "", "", "",];
 
@@ -109,51 +109,51 @@ class _PaymentScreenState extends State<PaymentScreen> {
     SharedPreferences shared=await SharedPreferences.getInstance();
     print("NAME="+name);
     if(name=="Cash")
-      {
-        shared.setString("method","cash");
-        isClicked1=true;
-      }
+    {
+      shared.setString("method","cash");
+      isClicked1=true;
+    }
     else if(name=="Card")
-      {
-        shared.setString("method","card");
-        setState(() {
-          isClicked1=false;
-          isClicked2=true;
-        });
-      }
+    {
+      shared.setString("method","card");
+      setState(() {
+        isClicked1=false;
+        isClicked2=true;
+      });
+    }
     else
-      {
-        setState(() {
-          isClicked1=false;
-          isClicked4=true;
-          isClicked2=false;
-        });
-      }
+    {
+      setState(() {
+        isClicked1=false;
+        isClicked4=true;
+        isClicked2=false;
+      });
+    }
   }
   bool func(String f)
   {
     bool flag=false;
     for(int i=0;i<paymentMethod.length;i++)
-      {
-        if(paymentMethod[i]==f) {
-          if (i < isclicked.length) {
-            if (isclicked[i] == true) {
-              flag = true;
-              break;
-            }
-            else {
-              flag = false;
-            }
+    {
+      if(paymentMethod[i]==f) {
+        if (i < isclicked.length) {
+          if (isclicked[i] == true) {
+            flag = true;
+            break;
+          }
+          else {
+            flag = false;
           }
         }
       }
-      return flag;
+    }
+    return flag;
   }
 
   Future<List<String>> fetchData() async {
     /*
-     payment mode values are not showing on the screen whenever below values are used or not commented
-    */
+    payment mode values are not showing on the screen whenever below values are used or not commented
+   */
     setState(() {
       _isloading=true;
     });
@@ -163,7 +163,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     SharedPreferences shared=await SharedPreferences.getInstance();
     balance=shared.getDouble("balance")!;
     print(balance.toStringAsFixed(2)+" Balance in payment");
-    String myUrl = "https://pos.sero.app/connector/api/business-details";
+    String myUrl = "https://seropos.app/connector/api/business-details";
     http.Response response = await http.get((Uri.parse(myUrl)), headers: {
       'Authorization':shared.getString("Authorization")??""
     });
@@ -1010,7 +1010,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 "table_status":"available"
               };
               dio.options.headers["Authorization"]=shared.getString("Authorization");
-              var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+              var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
               print(r2);
               print(id);
               shared.setStringList("variation", []);
@@ -1032,11 +1032,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
               shared.setInt("seconds", 0);
               Phoenix.rebirth(context);
               /*
-               *
-               * here the rebirth thing is added
-               *
-               *
-               * */
+              *
+              * here the rebirth thing is added
+              *
+              *
+              * */
             },
             onLongPress: () => print('THIRD CHILD LONG PRESS'),
           ),
@@ -1380,20 +1380,20 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             onTap: () {
                               int res=0;
                               for(int i=0;i<paymentMethod.length;i++)
+                              {
+                                if(paymentMethod[i]==f)
                                 {
-                                  if(paymentMethod[i]==f)
-                                    {
-                                      isclicked[i]=true;
-                                      res=i;
-                                      flag=true;
-                                    }
-                                  else
-                                    {
-                                      isclicked[i]=false;
-                                      flag=false;
-                                    }
-                                  print("METHODS");
+                                  isclicked[i]=true;
+                                  res=i;
+                                  flag=true;
                                 }
+                                else
+                                {
+                                  isclicked[i]=false;
+                                  flag=false;
+                                }
+                                print("METHODS");
+                              }
                               select(f);
                             },
                           ))
@@ -1476,7 +1476,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "table_status":"available"
                             };
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
-                            var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                            var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
                             print(r2);
                             print(id);
                             var variation=shared.getStringList("variation");
@@ -1486,15 +1486,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               String note="";
                               int tax_id=0;
                               for(int i=0;i<list_of_products.length;i++)
+                              {
+                                if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
                                 {
-                                  if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
-                                    {
-                                      note=list_of_products[i]["note"]??"";
-                                      tax_id=list_of_products[i]["tax_id"]??0;
-                                      print(note);
-                                      break;
-                                    }
+                                  note=list_of_products[i]["note"]??"";
+                                  tax_id=list_of_products[i]["tax_id"]??0;
+                                  print(note);
+                                  break;
                                 }
+                              }
                               Map<String,dynamic> product={
                                 "product_id":int.parse(cart.cartItem[index].productId.toString()),
                                 "variation_id":double.parse(variation![index]),
@@ -1518,11 +1518,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               }
                             }
                             print(list_of_m);
-                             var sar =shared.getInt("types_of_service_id");
-                             var dar = shared.getString("DiscountType");
-                             var car = shared.getString("customer_name");
-                             print(car!*10);
-                             print (dar);
+                            var sar =shared.getInt("types_of_service_id");
+                            var dar = shared.getString("DiscountType");
+                            var car = shared.getString("customer_name");
+                            print(car!*10);
+                            print (dar);
 
                             if(shared.getString("order_id")=="")
                             {
@@ -1561,7 +1561,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               };
                               var dio=Dio();
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
-                              var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
+                              var r=await dio.post("https://seropos.app/connector/api/sell",data: json.encode(api));
                               print(r.data);
                               // var y =r.data["id"];
                               var v=r.data[0]["invoice_no"];
@@ -1623,7 +1623,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               var vid = shared.getString("order_id".toString());
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
                               print(vid);
-                              var r=await dio.put("https://pos.sero.app/connector/api/sell/$vid",data: json.encode(api));
+                              var r=await dio.put("https://seropos.app/connector/api/sell/$vid",data: json.encode(api));
                               print("hahah");
                               print(r.data);
                               var v=r.data["invoice_no"];
@@ -1696,10 +1696,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             SharedPreferences shared=await SharedPreferences.getInstance();
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
                             var oid = shared.getString("order_id");
-                            var r=await dio.get("https://pos.sero.app/connector/api/sell/$oid");
+                            var r=await dio.get("https://seropos.app/connector/api/sell/$oid");
                             print(oid);
                             print(r.data['data'][0]['invoice_token']);
-                            var  url = "https://pos.sero.app/invoice/"+r.data['data'][0]['invoice_token'];
+                            var  url = "https://seropos.app/invoice/"+r.data['data'][0]['invoice_token'];
                             if (await canLaunch(url)) {
                               await launch(url);
                             } else {
@@ -1716,7 +1716,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "table_status":"billing"
                             };
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
-                            var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                            var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
                             print(r2);
                             print(id);
                             setState(() {
@@ -1904,16 +1904,16 @@ class _PaymentScreenState extends State<PaymentScreen> {
     _currentIndex = indexData.getInt('index')!;
   }
 
-  // Future<void> changeValue() async {
-  //   SharedPreferences shared=await SharedPreferences.getInstance();
-  //   setState(() {
-  //     widget.Balance=shared.getDouble("Balance")!;
-  //   });
-  // }
+// Future<void> changeValue() async {
+//   SharedPreferences shared=await SharedPreferences.getInstance();
+//   setState(() {
+//     widget.Balance=shared.getDouble("Balance")!;
+//   });
+// }
 }
 Future<Map<String, dynamic>> getData() async {
   SharedPreferences shared=await SharedPreferences.getInstance();
-  String myUrl = "https://pos.sero.app/connector/api/payment-methods";
+  String myUrl = "https://seropos.app/connector/api/payment-methods";
   http.Response response = await http.get((Uri.parse(myUrl)), headers: {
     'Authorization':shared.getString("Authorization")??""
   });
@@ -1925,5 +1925,7 @@ class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;
 }
+
+
 
 

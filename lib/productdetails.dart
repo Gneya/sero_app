@@ -76,7 +76,7 @@ class _SelectItemState extends State<SelectItem> {
     int i=1;
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     http.Response response = await http.get(
-        Uri.parse("https://pos.sero.app/connector/api/variation/?per_page=-1"), headers: {
+        Uri.parse("https://seropos.app/connector/api/variation/?per_page=-1"), headers: {
       'Authorization': sharedPreferences.getString("Authorization")??""
     });
     v = (json.decode(response.body));
@@ -109,7 +109,7 @@ class _SelectItemState extends State<SelectItem> {
     print(barcodeScanRes);
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     http.Response response = await http.get(
-        Uri.parse("https://pos.sero.app/connector/api/product?sku=$barcodeScanRes"), headers: {
+        Uri.parse("https://seropos.app/connector/api/product?sku=$barcodeScanRes"), headers: {
       'Authorization': sharedPreferences.getString("Authorization")??""
     });
     var cart=FlutterCart();
@@ -118,7 +118,7 @@ class _SelectItemState extends State<SelectItem> {
     {
       var list = sharedPreferences.getStringList("variation");
       http.Response response = await http.get(
-          Uri.parse("https://pos.sero.app/connector/api/variation/?name=${v["data"][0]["name"]}"), headers: {
+          Uri.parse("https://seropos.app/connector/api/variation/?name=${v["data"][0]["name"]}"), headers: {
         'Authorization': sharedPreferences.getString("Authorization")??""
       });
       print("IDDDDDDDDDD");
@@ -267,7 +267,7 @@ class _SelectItemState extends State<SelectItem> {
                   "table_status":"available"
                 };
                 dio.options.headers["Authorization"]=shared.getString("Authorization");
-                var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
                 print(r2);
                 print(id);
                 shared.setStringList("variation", []);
@@ -357,8 +357,8 @@ class _SelectItemState extends State<SelectItem> {
                             ),
                           ]),
                         /*Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [*/
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [*/
                         Container(
                           width: MediaQuery.of(context).size.width/1.3,
                           child:
@@ -414,7 +414,7 @@ class _SelectItemState extends State<SelectItem> {
                                           //_typeAheadController.text=suggestion._name;
                                           var list = sharedPreferences.getStringList("variation");
                                           http.Response response = await http.get(
-                                              Uri.parse("https://pos.sero.app/connector/api/variation/?name=${suggestion._name}"), headers: {
+                                              Uri.parse("https://seropos.app/connector/api/variation/?name=${suggestion._name}"), headers: {
                                             'Authorization': sharedPreferences.getString("Authorization")??""
                                           });
                                           print("IDDDDDDDDDD");
@@ -429,7 +429,7 @@ class _SelectItemState extends State<SelectItem> {
                                               toastLength: Toast.LENGTH_LONG,
                                               gravity: ToastGravity.BOTTOM,
                                               textColor: Colors.green,
-                                               timeInSecForIosWeb: 4);
+                                              timeInSecForIosWeb: 4);
                                         },
                                         suggestionsCallback: CustomerApi.getUserSuggestion,
                                       )),
@@ -526,7 +526,7 @@ class _SelectItemState extends State<SelectItem> {
                       print(_productlist[index].id);
                       http.Response response = await http.get(
                           Uri.parse(
-                              "https://pos.sero.app/connector/api/product/${_productlist[index]
+                              "https://seropos.app/connector/api/product/${_productlist[index]
                                   .id}")
                           , headers: {
                         'Authorization': sharedPreferences.getString("Authorization")??""
@@ -635,21 +635,21 @@ class _SelectItemState extends State<SelectItem> {
                     SharedPreferences sharedPreferences = await SharedPreferences
                         .getInstance();
 
-                      var list = sharedPreferences.getStringList("variation");
-                      list!.add(_productlist[index].variation_id);
-                      print(_productlist[index].variation_id);
-                      sharedPreferences.setStringList("variation", []);
-                      sharedPreferences.setStringList("variation", list);
-                      Map<String,dynamic> product={};
-                      if(cart.cartItem.contains( _productlist[index].id))
-                        {
-                          print("YESSSSSS");
-                        }
-                      else
-                        {
-                          print("NOOOO");
-                        }
-                      int flag1 =0;
+                    var list = sharedPreferences.getStringList("variation");
+                    list!.add(_productlist[index].variation_id);
+                    print(_productlist[index].variation_id);
+                    sharedPreferences.setStringList("variation", []);
+                    sharedPreferences.setStringList("variation", list);
+                    Map<String,dynamic> product={};
+                    if(cart.cartItem.contains( _productlist[index].id))
+                    {
+                      print("YESSSSSS");
+                    }
+                    else
+                    {
+                      print("NOOOO");
+                    }
+                    int flag1 =0;
                     for (int i =0 ;i<cart.cartItem.length;i++){
                       if(cart.cartItem[i].productId==_productlist[index].id){
                         cart.addToCart(productId: _productlist[index].id,
@@ -668,46 +668,46 @@ class _SelectItemState extends State<SelectItem> {
 
                     sharedPreferences.setString("total", cart.getCartItemCount().toString());
                     if(sharedPreferences.getString("products")!=""){
-                    list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
-                   m={
-                     "pid":_productlist[index].id,
-                     "tax_id":_productlist[index].tax_id,
-                     "price_inc_tax":_productlist[index].price_inc_tax
-                   };
+                      list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
+                    m={
+                      "pid":_productlist[index].id,
+                      "tax_id":_productlist[index].tax_id,
+                      "price_inc_tax":_productlist[index].price_inc_tax
+                    };
                     int flag=0;
                     for(int i=0;i<list_of_products.length;i++)
+                    {
+                      if(list_of_products[i]["pid"]==_productlist[index].id)
                       {
-                        if(list_of_products[i]["pid"]==_productlist[index].id)
-                          {
-                            flag=1;
-                            break;
-                            print("Yes product id exist");
-                          }
+                        flag=1;
+                        break;
+                        print("Yes product id exist");
                       }
-                    if(flag==0)
-                   list_of_products.add(m);
-                   print(list_of_products);
-                   sharedPreferences.setString("products", json.encode(list_of_products));
-                   http.Response response = await http.get(
-                          Uri.parse(
-                              "https://pos.sero.app/connector/api/product/${_productlist[index].id}")
-                          ,  headers: {
-                        'Authorization': sharedPreferences.getString("Authorization")??""
-                      });
-                      var v = (json.decode(response.body));
-                      List<dynamic> check = v["data"][0]["modifiers"];
-                      if (check.isNotEmpty) {
-                        showDialog(context: context, builder: (context) {
-                          return add(product: _productlist[index].name);
-                        });
-                      }
-                      Fluttertoast.showToast(
-                          msg: "Item added to cart",
-                          toastLength: Toast.LENGTH_LONG,
-                          gravity: ToastGravity.BOTTOM,
-                          textColor: Colors.green,
-                          timeInSecForIosWeb: 4);
                     }
+                    if(flag==0)
+                      list_of_products.add(m);
+                    print(list_of_products);
+                    sharedPreferences.setString("products", json.encode(list_of_products));
+                    http.Response response = await http.get(
+                        Uri.parse(
+                            "https://seropos.app/connector/api/product/${_productlist[index].id}")
+                        ,  headers: {
+                      'Authorization': sharedPreferences.getString("Authorization")??""
+                    });
+                    var v = (json.decode(response.body));
+                    List<dynamic> check = v["data"][0]["modifiers"];
+                    if (check.isNotEmpty) {
+                      showDialog(context: context, builder: (context) {
+                        return add(product: _productlist[index].name);
+                      });
+                    }
+                    Fluttertoast.showToast(
+                        msg: "Item added to cart",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        textColor: Colors.green,
+                        timeInSecForIosWeb: 4);
+                  }
               );
             })
     );
@@ -728,8 +728,8 @@ class product
         url=json["product_image_url"],
         id=json["product_id"].toString(),
         variation_id=json["variation_id"].toString(),
-  price_inc_tax=json["sell_price_inc_tax"],
-    this.tax_id=json["tax_id"];
+        price_inc_tax=json["sell_price_inc_tax"],
+        this.tax_id=json["tax_id"];
 }
 class Customer
 {
@@ -741,7 +741,7 @@ class Customer
         this._name=json["name"],
         this._phone=json["product_variations"][0]["variations"][0]["default_sell_price"],
         this.id=json["id"].toString(),
-      this.variation_id=json["product_variation_id"].toString();
+        this.variation_id=json["product_variation_id"].toString();
 
 
 }
@@ -754,7 +754,7 @@ class CustomerApi {
     late Customer cus;
     SharedPreferences shared  = await SharedPreferences.getInstance();
     var response = await http.get(
-        Uri.parse("https://pos.sero.app/connector/api/product/?per_page=-1"),
+        Uri.parse("https://seropos.app/connector/api/product/?per_page=-1"),
         headers: {
           'Authorization': shared.getString("Authorization")??""
         });
@@ -770,3 +770,5 @@ class CustomerApi {
     return name;
   }
 }
+
+

@@ -82,7 +82,7 @@ class _ShippingState extends State<Shipping> {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     var id = sharedPreferences.getString("customer_id");
     var response = await http.put(
-        Uri.parse("https://pos.sero.app/connector/api/sell/$id"), body: input,
+        Uri.parse("https://seropos.app/connector/api/sell/$id"), body: input,
         headers: {
           'Authorization':
           sharedPreferences.getString("Authorization") ?? ''
@@ -121,7 +121,7 @@ class _ShippingState extends State<Shipping> {
     SharedPreferences shared=await SharedPreferences.getInstance();
     var dio=Dio();
     dio.options.headers["Authorization"]=shared.getString("Authorization");
-    var r=await dio.get("https://pos.sero.app/connector/api/user?user_role=driver");
+    var r=await dio.get("https://seropos.app/connector/api/user?user_role=driver");
     print("hahah");
     print(r.data);
     for(var i in r.data["data"]){
@@ -167,18 +167,18 @@ class _ShippingState extends State<Shipping> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: Text('ADD SHIPPING',
-                              style: GoogleFonts.ptSans(color: Colors.white,fontSize: 35,fontWeight: FontWeight.bold),)
+                              padding: const EdgeInsets.only(top: 20),
+                              child: Text('ADD SHIPPING',
+                                style: GoogleFonts.ptSans(color: Colors.white,fontSize: 35,fontWeight: FontWeight.bold),)
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
-                                child: Text('Shipping Cost',
-                                  style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
-                              )),
+                                  padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
+                                  child: Text('Shipping Cost',
+                                    style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),
+                                  )),
                             ],
                           ),
                           Padding(
@@ -217,9 +217,9 @@ class _ShippingState extends State<Shipping> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
-                                child: Text('Packaging Cost',
-                                  style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
+                                  padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
+                                  child: Text('Packaging Cost',
+                                    style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
                               ),
                             ],
                           ),
@@ -247,9 +247,9 @@ class _ShippingState extends State<Shipping> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
-                                child: Text('Select Driver',
-                                  style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
+                                  padding: const EdgeInsets.only(top: 15,left: 50,bottom: 8),
+                                  child: Text('Select Driver',
+                                    style: GoogleFonts.ptSans(color: Colors.white,fontSize: 20,fontWeight: FontWeight.bold),)
                               ),
                             ],
                           ),
@@ -263,42 +263,42 @@ class _ShippingState extends State<Shipping> {
                                 borderRadius: BorderRadius.circular(30),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
-                                    left: 25),
-                                child:
-                                TypeAheadField<Customer>(
-                                  textFieldConfiguration: TextFieldConfiguration(
-                                      controller: _typeAheadController,
-                                      textAlign: TextAlign.center,
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        hintText: "Select Driver",
-                                      )
-                                  ),
-                                  itemBuilder: (BuildContext context,Customer? suggestion) {
-                                    final content=suggestion!;
-                                    return ListTile(
-                                      title: Text(content._name+"  ("+content._phone+")"),
-                                    );
-                                  },
-                                  onSuggestionSelected: (Customer? suggestion) async {
-                                    var id=suggestion!.id;
-                                    print("ID IS:$id");
-                                    print(suggestion!._name);
-                                    _typeAheadController.text=suggestion!._name;
-                                    Fluttertoast.showToast(
-                                        msg:suggestion._name+" is selected",
-                                        toastLength: Toast.LENGTH_LONG,
-                                        gravity: ToastGravity.BOTTOM,
-                                        textColor: Colors.green,
-                                        timeInSecForIosWeb: 10);
-                                    SharedPreferences prefs= await SharedPreferences.getInstance();
-                                    print(prefs.getString("customer_name"));
-                                    prefs.setString("customer_name",suggestion._name);
-                                    prefs.setString("customer_id",suggestion.id);
-                                  },
-                                  suggestionsCallback: CustomerApi.getUserSuggestion,
-                                )
+                                  padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,
+                                      left: 25),
+                                  child:
+                                  TypeAheadField<Customer>(
+                                    textFieldConfiguration: TextFieldConfiguration(
+                                        controller: _typeAheadController,
+                                        textAlign: TextAlign.center,
+                                        decoration: InputDecoration(
+                                          border: InputBorder.none,
+                                          hintText: "Select Driver",
+                                        )
+                                    ),
+                                    itemBuilder: (BuildContext context,Customer? suggestion) {
+                                      final content=suggestion!;
+                                      return ListTile(
+                                        title: Text(content._name+"  ("+content._phone+")"),
+                                      );
+                                    },
+                                    onSuggestionSelected: (Customer? suggestion) async {
+                                      var id=suggestion!.id;
+                                      print("ID IS:$id");
+                                      print(suggestion!._name);
+                                      _typeAheadController.text=suggestion!._name;
+                                      Fluttertoast.showToast(
+                                          msg:suggestion._name+" is selected",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          gravity: ToastGravity.BOTTOM,
+                                          textColor: Colors.green,
+                                          timeInSecForIosWeb: 10);
+                                      SharedPreferences prefs= await SharedPreferences.getInstance();
+                                      print(prefs.getString("customer_name"));
+                                      prefs.setString("customer_name",suggestion._name);
+                                      prefs.setString("customer_id",suggestion.id);
+                                    },
+                                    suggestionsCallback: CustomerApi.getUserSuggestion,
+                                  )
                                 //
                                 // DropdownButton<String>(
                                 //   value: dropdownValue1,
@@ -409,7 +409,7 @@ class _ShippingState extends State<Shipping> {
                                   ),
                                   onTap :(){
                                     Navigator.pop(
-                                      context,true
+                                        context,true
                                     );
                                   },
                                 ),
@@ -432,7 +432,7 @@ class _ShippingState extends State<Shipping> {
 //    var id = sharedPreferences.getString("customer_id");
 //    print(id);
 //
-//   String myUrl = "https://pos.sero.app/connector/api/sell/$id";
+//   String myUrl = "https://seropos.app/connector/api/sell/$id";
 //   http.Response response = await http.get(Uri.parse(myUrl), headers: {
 //     'Authorization':
 //     sharedPreferences.getString("Authorization") ?? ''
@@ -467,7 +467,7 @@ class CustomerApi {
     SharedPreferences shared = await SharedPreferences.getInstance();
     late Customer cus;
     var response = await http.get(
-        Uri.parse("https://pos.sero.app/connector/api/user?user_role=driver"),
+        Uri.parse("https://seropos.app/connector/api/user?user_role=driver"),
         headers: {
           "Authorization": shared.getString("Authorization")?? ""
         });
@@ -492,3 +492,5 @@ class CustomerApi {
     return name;
   }
 }
+
+
