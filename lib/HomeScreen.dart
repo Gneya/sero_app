@@ -55,9 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
   async {
     print("round"+(3.4).round().toString());
     if(mounted){
-    setState(() {
-      _isloading = true;
-    });}
+      setState(() {
+        _isloading = true;
+      });}
     var cart =FlutterCart();
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("total",cart.getCartItemCount().toString());
@@ -84,26 +84,26 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences.setString("modifiers","");
     sharedPreferences.setInt("table_id", 0);
     var Response = await http.get(
-        Uri.parse("https://pos.sero.app/connector/api/user/loggedin"),
+        Uri.parse("https://seropos.app/connector/api/user/loggedin"),
         headers: {
           'Authorization': sharedPreferences.getString("Authorization")??""
         });
     var d = json.decode(Response.body.toString());
     if(mounted){
-    setState(() {
-      _name = d["data"]["first_name"];
-      sharedPreferences.setInt("bid",d["data"]["business_id"]);
-      print("BIDDDDDDDDD:"+sharedPreferences.getInt("bid").toString());
-    });}
+      setState(() {
+        _name = d["data"]["first_name"];
+        sharedPreferences.setInt("bid",d["data"]["business_id"]);
+        print("BIDDDDDDDDD:"+sharedPreferences.getInt("bid").toString());
+      });}
     if(mounted){
-    setState(() {
-      _isloading = false;
-    });}
+      setState(() {
+        _isloading = false;
+      });}
   } setBottomBarIndex(index) {
     if(mounted){
-    setState(() {
-      _currentIndex = index;
-    });}
+      setState(() {
+        _currentIndex = index;
+      });}
   }
 
   @override
@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Icon(Icons.table_chart_sharp),
             foregroundColor: Colors.white,
             backgroundColor: Colors.amber,
-           // label: 'table',
+            // label: 'table',
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () {
 
@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Icon(Icons.play_arrow_sharp),
             foregroundColor: Colors.white,
             backgroundColor: Colors.amber,
-           // label: 'resume',
+            // label: 'resume',
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () {
               Navigator.push(
@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Icon(Icons.delete),
             foregroundColor: Colors.white,
             backgroundColor: Colors.amber,
-           // label: 'void',
+            // label: 'void',
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: (){
               showDialog(
@@ -183,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Icon(Icons.clear_all),
             foregroundColor: Colors.white,
             backgroundColor: Colors.amber,
-           // label: 'clear',
+            // label: 'clear',
             labelStyle: TextStyle(fontSize: 18.0),
             onTap: () async {
               var dio = Dio();
@@ -195,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 "table_status":"available"
               };
               dio.options.headers["Authorization"]=shared.getString("Authorization");
-              var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+              var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
               print(r2);
               print(id);
               shared.setStringList("variation", []);
@@ -265,8 +265,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 60.0,
               ),
               Text(
-                _name,
-                style:GoogleFonts.ptSans(fontSize: 22)),
+                  _name,
+                  style:GoogleFonts.ptSans(fontSize: 22)),
               SizedBox(
                 height: 30,
               ),
@@ -294,10 +294,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   color: Colors.black,
                                   onPressed:(){
                                     Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => PersonalDetails()));
-                                     } ,
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => PersonalDetails()));
+                                  } ,
                                 ),
                                 prefixIcon:  IconButton(
                                   padding: EdgeInsets.zero,
@@ -352,14 +352,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
                     onPressed: () async {
                       // Phoenix.rebirth(context);
-                     SharedPreferences shared=await SharedPreferences.getInstance();
-                     shared.setInt("types_of_service_id",1);
+                      SharedPreferences shared=await SharedPreferences.getInstance();
+                      shared.setInt("types_of_service_id",1);
                       if(shared.getString("customer_name")=="")
-                        {
-                            shared.setString("customer_name", "Walk-In Customer");
-                            shared.setString("customer_id","1");
-                            shared.setInt("types_of_service_id",1);
-                        }
+                      {
+                        shared.setString("customer_name", "Walk-In Customer");
+                        shared.setString("customer_id","1");
+                        shared.setInt("types_of_service_id",1);
+                      }
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -420,15 +420,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       print(id);
                       SharedPreferences shared=await SharedPreferences.getInstance();
                       if(id!="0") {
-                      shared.setInt("types_of_service_id",3);
-                      setState(() {
-                        _isloading=true;
-                      });
-                      print(id);
+                        shared.setInt("types_of_service_id",3);
+                        setState(() {
+                          _isloading=true;
+                        });
+                        print(id);
                         shared.setInt("types_of_service_id", 3);
                         var response = await http.get(
                             Uri.parse(
-                                "https://pos.sero.app/connector/api/contactapi/$id"),
+                                "https://seropos.app/connector/api/contactapi/$id"),
                             headers: {
                               'Authorization': shared.getString(
                                   "Authorization") ?? ""
@@ -472,10 +472,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           share.setInt("index", 1);
                         }
 
-                      setState(() {
-                        _isloading=false;
-                      });
-                    }},
+                        setState(() {
+                          _isloading=false;
+                        });
+                      }},
                     child: Text("Home Delivery",
                         textAlign: TextAlign.center,
                         style: GoogleFonts.ptSans(fontSize: 18)
@@ -517,27 +517,29 @@ class CustomerApi {
     List<Customer>name = [];
     SharedPreferences shared=await SharedPreferences.getInstance();
     late Customer cus;
-      var response = await http.get(
-          Uri.parse("https://pos.sero.app/connector/api/contactapi/?per_page=-1"),
-          headers: {
-            'Authorization': shared.getString("Authorization")??""
-          });
-      final List d = json.decode(response.body)["data"];
-      pages=json.decode(response.body);
-      print(d);
-      name.addAll(d.map((e) => Customer.fromJson(e)).where((element) {
-        final name = element._name.toLowerCase();
-        final _name = query.toLowerCase();
-        final phone = element._phone;
-        final _phone = query;
-        if (name.contains(_name))
-          return name.contains(_name);
-        else if(phone.contains(_phone))
-          return phone.contains(_phone);
-        else
-          return false;
-      }
-      ).toList());
+    var response = await http.get(
+        Uri.parse("https://seropos.app/connector/api/contactapi/?per_page=-1"),
+        headers: {
+          'Authorization': shared.getString("Authorization")??""
+        });
+    final List d = json.decode(response.body)["data"];
+    pages=json.decode(response.body);
+    print(d);
+    name.addAll(d.map((e) => Customer.fromJson(e)).where((element) {
+      final name = element._name.toLowerCase();
+      final _name = query.toLowerCase();
+      final phone = element._phone;
+      final _phone = query;
+      if (name.contains(_name))
+        return name.contains(_name);
+      else if(phone.contains(_phone))
+        return phone.contains(_phone);
+      else
+        return false;
+    }
+    ).toList());
     return name;
   }
 }
+
+

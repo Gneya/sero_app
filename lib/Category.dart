@@ -78,8 +78,8 @@ class _CategoryScreenState extends State<CategoryScreen> {
     print(barcodeScanRes);
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     http.Response response = await http.get(
-        Uri.parse("https://pos.sero.app/connector/api/product?sku=$barcodeScanRes"), headers: {
-        'Authorization': sharedPreferences.getString("Authorization")??""
+        Uri.parse("https://seropos.app/connector/api/product?sku=$barcodeScanRes"), headers: {
+      'Authorization': sharedPreferences.getString("Authorization")??""
     });
     var cart=FlutterCart();
     v = (json.decode(response.body));
@@ -112,21 +112,21 @@ class _CategoryScreenState extends State<CategoryScreen> {
         _isloading=true;
       });}
     int i=1;
-      http.Response response = await http.get(
-          Uri.parse("https://pos.sero.app/connector/api/variation?per_page=-1"), headers: {
-        'Authorization': sharedPreferences.getString("Authorization")??""
-      });
-      v = (json.decode(response.body));
-      for(var i in v["data"])
-      {
-        if(_datalist.contains(i["category"])){
-        }
-        else {
-          if(i["category"]!=null)
-            _datalist.add(i["category"]);
-          print(_datalist);
-        }
+    http.Response response = await http.get(
+        Uri.parse("https://seropos.app/connector/api/variation?per_page=-1"), headers: {
+      'Authorization': sharedPreferences.getString("Authorization")??""
+    });
+    v = (json.decode(response.body));
+    for(var i in v["data"])
+    {
+      if(_datalist.contains(i["category"])){
       }
+      else {
+        if(i["category"]!=null)
+          _datalist.add(i["category"]);
+        print(_datalist);
+      }
+    }
     if(mounted){
       setState(() {
         _isloading=false;
@@ -243,7 +243,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                   "table_status":"available"
                 };
                 dio.options.headers["Authorization"]=shared.getString("Authorization");
-                var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
                 print(r2);
                 print(id);
                 shared.setStringList("variation", []);
@@ -270,330 +270,330 @@ class _CategoryScreenState extends State<CategoryScreen> {
             //add more menu item childs here
           ],
         ),
-      appBar: AppBar(
-        flexibleSpace:  Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.only(bottomLeft:Radius.circular(30),bottomRight:Radius.circular(30),),
-                  color :const Color(0xffffd45f),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      offset: const Offset(
-                        1.0,
-                        1.0,
-                      ), //Offset
-                      blurRadius: 0.0,
-                      spreadRadius: 2.0,
-                    ), //BoxShadow
-                    BoxShadow(
-                      color: Colors.white,
-                      offset: const Offset(0.0, 0.0),
-                      blurRadius: 0.0,
-                      spreadRadius: 0.0,
-                    ),],
-                ),
-                height:180,
-                child:Padding(
-                  padding: const EdgeInsets.only(top:30),
-                  child: Column(
-                    children:[Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            alignment: Alignment.topLeft,
-                            icon: const Icon(Icons.menu),
-                            onPressed: () {
-                            },
-                          ),
-                          Center(child: Text("CATEGORY",style: GoogleFonts.ptSans(fontSize: 18),)),
-
-                          Row(
-                            children: [
-                              Container(
-                                margin: EdgeInsets.only(right: 0),
-                                child: IconButton(
-                                  icon: const Icon(Icons.notifications,
-                                  ),
-                                  onPressed: () {
-                                    showDialog(
-                                        context: context,
-                                        builder: (context){
-                                          return OnlineOrder();
-                                        }
-                                    );
-                                  },
-                                ),),
-                              CircleAvatar(
-                                  backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
-                              ),
-                            ],
-                          ),
-
-                        ]),
-                      /*Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [*/
-                      Container(
-                        width: MediaQuery.of(context).size.width/1.3,
-                        child:
-                        Material(
-                          elevation: 5.0,
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: Colors.white,
-                          child: MaterialButton(
-                            minWidth:MediaQuery.of(context).size.width/3,
-                            height: MediaQuery.of(context).size.height/20,
-                            padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                            onPressed: () {},
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Container(
-                                    height: MediaQuery.of(context).size.height/20,
-                                    width: MediaQuery.of(context).size.width/1.6,
-                                    child:TypeAheadField<Customer>(
-                                      textFieldConfiguration: TextFieldConfiguration(
-                                        //controller: _typeAheadController,
-                                          textAlign: TextAlign.center,
-                                          decoration: InputDecoration(
-                                            border: InputBorder.none,
-                                            hintText: "Search Product",
-                                            suffixIcon: IconButton(
-                                                icon:Image.asset("images/barcode.png",height: 20,width: 20,),
-                                                padding: EdgeInsets.zero,
-                                                color: Colors.black,
-                                                onPressed:_scanQR
-                                            ),
-                                            prefixIcon:  IconButton(
-                                              padding: EdgeInsets.zero,
-                                              icon:Icon(Icons.search),
-                                              color: Colors.black,
-                                              onPressed:(){} ,
-                                            ),
-                                          )
-                                      ),
-                                      itemBuilder: (BuildContext context,Customer? suggestion) {
-                                        final content=suggestion!;
-                                        return ListTile(
-                                          title: Text(content._name),
-                                        );
-                                      },
-                                      onSuggestionSelected: (Customer? suggestion) async {
-                                        print("IDDDDDDDDDD");
-                                        SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-                                        var cart=FlutterCart();
-                                        print(suggestion!.id);
-                                        cart.addToCart(productId: double.parse(suggestion!.id), unitPrice: double.parse(suggestion._phone),productName: suggestion!._name);
-                                        //hint=suggestion!._name;
-                                        //_typeAheadController.text=suggestion._name;
-                                        var list = sharedPreferences.getStringList("variation");
-                                        http.Response response = await http.get(
-                                            Uri.parse("https://pos.sero.app/connector/api/variation/?name=${suggestion._name}"), headers: {
-                                          'Authorization': sharedPreferences.getString("Authorization")??""
-                                        });
-                                        print("IDDDDDDDDDD");
-                                        print(json.decode(response.body)["data"][0]["variation_id"].toString());
-                                        list!.add(json.decode(response.body)["data"][0]["variation_id"].toString());
-                                        //print(suggestion.variation_id);
-                                        sharedPreferences.setStringList("variation", []);
-                                        sharedPreferences.setStringList("variation", list);
-                                        sharedPreferences.setString("total",cart.getCartItemCount().toString());
-                                        Fluttertoast.showToast(
-                                            msg:suggestion._name+" is selected",
-                                            toastLength: Toast.LENGTH_LONG,
-                                            gravity: ToastGravity.BOTTOM,
-                                            textColor: Colors.green,
-                                            timeInSecForIosWeb: 4);
-                                      },
-                                      suggestionsCallback: CustomerApi.getUserSuggestion,
-                                    )),
-                                // GestureDetector(child:Icon(Icons.search),
-                                //   onTap: (){
-                                //        Navigator.push(
-                                //        context,
-                                //        MaterialPageRoute(
-                                //        builder: (context) => searchproduct()));
-                                //   },
-                                // ),
-                                //
-                                // Text(
-                                //   "Search Category",
-                                //   textAlign: TextAlign.center,
-                                //   style: TextStyle(
-                                //     fontSize: 15,
-                                //   ),
-                                // ),
-
-
-                              ],
-                            ),
-                          ),
-                        ),
-                        //],
-                        //)
-                      )],
-                  ),
-                ),
-              ),
-            ]
-        ),
-        toolbarHeight: 170,
-        backgroundColor: Colors.white,
-      ),
-      body: _isloading?Center(
-          child: CircularProgressIndicator(color: Color(0xff000066),)):searchresult.length != 0 || _controller.text.isNotEmpty?
-      Center(
-        child:Container(
-          padding: EdgeInsets.all(20),
-          child: ListView.builder(
-            itemCount: searchresult.length,
-            itemBuilder: (BuildContext context, int index) {
-              return GestureDetector(child:Container(
-                height: MediaQuery.of(context).size.height/10,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: Colors.white,
+        appBar: AppBar(
+          flexibleSpace:  Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.only(bottomLeft:Radius.circular(30),bottomRight:Radius.circular(30),),
+                    color :const Color(0xffffd45f),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.grey,
                         offset: const Offset(
-                          2.0,
-                          2.0,
-                        ),
-                        blurRadius: 2.0,
-                        spreadRadius: 1.0,
-                      ),
-                    ]//BoxShadow
+                          1.0,
+                          1.0,
+                        ), //Offset
+                        blurRadius: 0.0,
+                        spreadRadius: 2.0,
+                      ), //BoxShadow
+                      BoxShadow(
+                        color: Colors.white,
+                        offset: const Offset(0.0, 0.0),
+                        blurRadius: 0.0,
+                        spreadRadius: 0.0,
+                      ),],
+                  ),
+                  height:180,
+                  child:Padding(
+                    padding: const EdgeInsets.only(top:30),
+                    child: Column(
+                      children:[Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            IconButton(
+                              alignment: Alignment.topLeft,
+                              icon: const Icon(Icons.menu),
+                              onPressed: () {
+                              },
+                            ),
+                            Center(child: Text("CATEGORY",style: GoogleFonts.ptSans(fontSize: 18),)),
+
+                            Row(
+                              children: [
+                                Container(
+                                  margin: EdgeInsets.only(right: 0),
+                                  child: IconButton(
+                                    icon: const Icon(Icons.notifications,
+                                    ),
+                                    onPressed: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (context){
+                                            return OnlineOrder();
+                                          }
+                                      );
+                                    },
+                                  ),),
+                                CircleAvatar(
+                                    backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                                ),
+                              ],
+                            ),
+
+                          ]),
+                        /*Row(
+                   mainAxisAlignment: MainAxisAlignment.center,
+                   children: [*/
+                        Container(
+                          width: MediaQuery.of(context).size.width/1.3,
+                          child:
+                          Material(
+                            elevation: 5.0,
+                            borderRadius: BorderRadius.circular(30.0),
+                            color: Colors.white,
+                            child: MaterialButton(
+                              minWidth:MediaQuery.of(context).size.width/3,
+                              height: MediaQuery.of(context).size.height/20,
+                              padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                              onPressed: () {},
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Container(
+                                      height: MediaQuery.of(context).size.height/20,
+                                      width: MediaQuery.of(context).size.width/1.6,
+                                      child:TypeAheadField<Customer>(
+                                        textFieldConfiguration: TextFieldConfiguration(
+                                          //controller: _typeAheadController,
+                                            textAlign: TextAlign.center,
+                                            decoration: InputDecoration(
+                                              border: InputBorder.none,
+                                              hintText: "Search Product",
+                                              suffixIcon: IconButton(
+                                                  icon:Image.asset("images/barcode.png",height: 20,width: 20,),
+                                                  padding: EdgeInsets.zero,
+                                                  color: Colors.black,
+                                                  onPressed:_scanQR
+                                              ),
+                                              prefixIcon:  IconButton(
+                                                padding: EdgeInsets.zero,
+                                                icon:Icon(Icons.search),
+                                                color: Colors.black,
+                                                onPressed:(){} ,
+                                              ),
+                                            )
+                                        ),
+                                        itemBuilder: (BuildContext context,Customer? suggestion) {
+                                          final content=suggestion!;
+                                          return ListTile(
+                                            title: Text(content._name),
+                                          );
+                                        },
+                                        onSuggestionSelected: (Customer? suggestion) async {
+                                          print("IDDDDDDDDDD");
+                                          SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+                                          var cart=FlutterCart();
+                                          print(suggestion!.id);
+                                          cart.addToCart(productId: double.parse(suggestion!.id), unitPrice: double.parse(suggestion._phone),productName: suggestion!._name);
+                                          //hint=suggestion!._name;
+                                          //_typeAheadController.text=suggestion._name;
+                                          var list = sharedPreferences.getStringList("variation");
+                                          http.Response response = await http.get(
+                                              Uri.parse("https://seropos.app/connector/api/variation/?name=${suggestion._name}"), headers: {
+                                            'Authorization': sharedPreferences.getString("Authorization")??""
+                                          });
+                                          print("IDDDDDDDDDD");
+                                          print(json.decode(response.body)["data"][0]["variation_id"].toString());
+                                          list!.add(json.decode(response.body)["data"][0]["variation_id"].toString());
+                                          //print(suggestion.variation_id);
+                                          sharedPreferences.setStringList("variation", []);
+                                          sharedPreferences.setStringList("variation", list);
+                                          sharedPreferences.setString("total",cart.getCartItemCount().toString());
+                                          Fluttertoast.showToast(
+                                              msg:suggestion._name+" is selected",
+                                              toastLength: Toast.LENGTH_LONG,
+                                              gravity: ToastGravity.BOTTOM,
+                                              textColor: Colors.green,
+                                              timeInSecForIosWeb: 4);
+                                        },
+                                        suggestionsCallback: CustomerApi.getUserSuggestion,
+                                      )),
+                                  // GestureDetector(child:Icon(Icons.search),
+                                  //   onTap: (){
+                                  //        Navigator.push(
+                                  //        context,
+                                  //        MaterialPageRoute(
+                                  //        builder: (context) => searchproduct()));
+                                  //   },
+                                  // ),
+                                  //
+                                  // Text(
+                                  //   "Search Category",
+                                  //   textAlign: TextAlign.center,
+                                  //   style: TextStyle(
+                                  //     fontSize: 15,
+                                  //   ),
+                                  // ),
+
+
+                                ],
+                              ),
+                            ),
+                          ),
+                          //],
+                          //)
+                        )],
+                    ),
+                  ),
                 ),
-                margin: EdgeInsets.all(10),
-                width: MediaQuery.of(context).size.width/1.5,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Container(
-                      //child:Image.network(_images[index],height: 30,width:MediaQuery.of(context).size.width/4.5,)),
-                      /* SizedBox(
-                             width: 15,
-                           ),*/),
-                    Container(
-                        width: MediaQuery.of(context).size.width/3,
-                        child:Text(searchresult[index],
-                            softWrap: true,
-                            textAlign: TextAlign.center,
-                            style: style.copyWith(color: Colors.black))),
-                    /*SizedBox(
-                             width:50,
-                           ),*/
-                    Container(
-                      width: MediaQuery.of(context).size.width/3,
-                      child:  IconButton(icon:Icon(
-                        Icons.arrow_forward,
-                      ),
-                        onPressed:(){
-
-                        } ,
-                      ),
-                    )
-                  ],
-                ),
-
-              ),
-                onTap:() async {
-                  SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-                  _selectedItemsprice!.addAll(sharedPreferences.getStringList("selected")??[]);
-                  print(_selectedItemsprice);
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                      //    builder: (context) => SelectItem(category:searchresult[index],selectedItemsprice:_selectedItemsprice??[],selectedItems: _selectedItems??[],)));
-                } ,
-              );
-            },
-            // SizedBox(
-            //   height: 20,
-            // ),
-
+              ]
           ),
+          toolbarHeight: 170,
+          backgroundColor: Colors.white,
         ),
-      )://No search found then
-      Container(
-        padding: EdgeInsets.all(20),
-        child:Center(
-        child:ListView.builder(
-          itemCount: _datalist.length,
-          itemBuilder: (BuildContext context, int index) {
-            return GestureDetector(child:Container(
-              height: MediaQuery.of(context).size.height/10,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.white,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey,
-                      offset: const Offset(
-                        2.0,
-                        2.0,
-                      ),
-                      blurRadius: 2.0,
-                      spreadRadius: 1.0,
-                    ),
-                  ]//BoxShadow
-              ),
-              margin: EdgeInsets.all(10),
-              width: MediaQuery.of(context).size.width/1.5,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    //child:Image.network(_images[index],height: 30,width:MediaQuery.of(context).size.width/4.5,)),
-                    /* SizedBox(
-                           width: 15,
-                         ),*/),
-                  Container(
-                      width: MediaQuery.of(context).size.width/3,
-                      child:Text(_datalist[index].toString().toUpperCase(),
-                          softWrap: true,
-                          textAlign: TextAlign.center,
-                          style: GoogleFonts.ptSans(color: Color(0xff707070),fontSize: 16,fontWeight: FontWeight.bold))),
-                  /*SizedBox(
-                           width:50,
-                         ),*/
-                  Container(
-                    width: MediaQuery.of(context).size.width/3,
-                    child:  IconButton(icon:Icon(
-                      Icons.arrow_forward,
-                    ),
-                      onPressed:(){
+        body: _isloading?Center(
+            child: CircularProgressIndicator(color: Color(0xff000066),)):searchresult.length != 0 || _controller.text.isNotEmpty?
+        Center(
+          child:Container(
+            padding: EdgeInsets.all(20),
+            child: ListView.builder(
+              itemCount: searchresult.length,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(child:Container(
+                  height: MediaQuery.of(context).size.height/10,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: const Offset(
+                            2.0,
+                            2.0,
+                          ),
+                          blurRadius: 2.0,
+                          spreadRadius: 1.0,
+                        ),
+                      ]//BoxShadow
+                  ),
+                  margin: EdgeInsets.all(10),
+                  width: MediaQuery.of(context).size.width/1.5,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Container(
+                        //child:Image.network(_images[index],height: 30,width:MediaQuery.of(context).size.width/4.5,)),
+                        /* SizedBox(
+                            width: 15,
+                          ),*/),
+                      Container(
+                          width: MediaQuery.of(context).size.width/3,
+                          child:Text(searchresult[index],
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: style.copyWith(color: Colors.black))),
+                      /*SizedBox(
+                            width:50,
+                          ),*/
+                      Container(
+                        width: MediaQuery.of(context).size.width/3,
+                        child:  IconButton(icon:Icon(
+                          Icons.arrow_forward,
+                        ),
+                          onPressed:(){
 
-                      } ,
-                    ),
-                  )
-                ],
-              ),
+                          } ,
+                        ),
+                      )
+                    ],
+                  ),
+
+                ),
+                  onTap:() async {
+                    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+                    _selectedItemsprice!.addAll(sharedPreferences.getStringList("selected")??[]);
+                    print(_selectedItemsprice);
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //    builder: (context) => SelectItem(category:searchresult[index],selectedItemsprice:_selectedItemsprice??[],selectedItems: _selectedItems??[],)));
+                  } ,
+                );
+              },
+              // SizedBox(
+              //   height: 20,
+              // ),
 
             ),
-              onTap:() async {
-                SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-                //_selectedItemsprice!.addAll(sharedPreferences.getStringList("selected")??[]);
-                print(_selectedItemsprice);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                       builder: (context) => SelectItem(category:_datalist[index],selectedItemsprice:_selectedItemsprice??[],selectedItems: _selectedItems??[],)));
-              } ,
-            );
-          },
-          // SizedBox(
-          //   height: 20,
-          // ),
+          ),
+        )://No search found then
+        Container(
+          padding: EdgeInsets.all(20),
+          child:Center(
+            child:ListView.builder(
+              itemCount: _datalist.length,
+              itemBuilder: (BuildContext context, int index) {
+                return GestureDetector(child:Container(
+                  height: MediaQuery.of(context).size.height/10,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10.0),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          offset: const Offset(
+                            2.0,
+                            2.0,
+                          ),
+                          blurRadius: 2.0,
+                          spreadRadius: 1.0,
+                        ),
+                      ]//BoxShadow
+                  ),
+                  margin: EdgeInsets.all(10),
+                  width: MediaQuery.of(context).size.width/1.5,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        //child:Image.network(_images[index],height: 30,width:MediaQuery.of(context).size.width/4.5,)),
+                        /* SizedBox(
+                          width: 15,
+                        ),*/),
+                      Container(
+                          width: MediaQuery.of(context).size.width/3,
+                          child:Text(_datalist[index].toString().toUpperCase(),
+                              softWrap: true,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.ptSans(color: Color(0xff707070),fontSize: 16,fontWeight: FontWeight.bold))),
+                      /*SizedBox(
+                          width:50,
+                        ),*/
+                      Container(
+                        width: MediaQuery.of(context).size.width/3,
+                        child:  IconButton(icon:Icon(
+                          Icons.arrow_forward,
+                        ),
+                          onPressed:(){
 
-        ),
-      ),
-      )// This trailing comma makes auto-formatting nicer for build methods.
+                          } ,
+                        ),
+                      )
+                    ],
+                  ),
+
+                ),
+                  onTap:() async {
+                    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+                    //_selectedItemsprice!.addAll(sharedPreferences.getStringList("selected")??[]);
+                    print(_selectedItemsprice);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => SelectItem(category:_datalist[index],selectedItemsprice:_selectedItemsprice??[],selectedItems: _selectedItems??[],)));
+                  } ,
+                );
+              },
+              // SizedBox(
+              //   height: 20,
+              // ),
+
+            ),
+          ),
+        )// This trailing comma makes auto-formatting nicer for build methods.
     );
 
   }
@@ -618,7 +618,7 @@ class CustomerApi {
     late Customer cus;
     SharedPreferences shared  = await SharedPreferences.getInstance();
     var response = await http.get(
-        Uri.parse("https://pos.sero.app/connector/api/product/?per_page=-1"),
+        Uri.parse("https://seropos.app/connector/api/product/?per_page=-1"),
         headers: {
           'Authorization': shared.getString("Authorization")??""        });
     final List d = json.decode(response.body)["data"];
@@ -633,3 +633,4 @@ class CustomerApi {
     return name;
   }
 }
+

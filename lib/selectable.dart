@@ -147,7 +147,7 @@ class _SelectTableState extends State<SelectTable> {
                 "table_status":"available"
               };
               dio.options.headers["Authorization"]=shared.getString("Authorization");
-              var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+              var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
               print(r2);
               print(id);
               shared.setStringList("variation", []);
@@ -237,65 +237,65 @@ class _SelectTableState extends State<SelectTable> {
               SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
               sharedPreferences.setString("table_name", _tablenos[index]);
               if(_table_status[index]=="occupied")
-    {
-      sharedPreferences.setInt("table_id", id[index]);
-    setState(() {
-    _isloading = true;
-    });
-    http.Response response = await http.get(
-    Uri.parse(
-    "https://pos.sero.app/connector/api/sell?per_page=-1")
-    , headers: {
-    'Authorization': sharedPreferences.getString("Authorization")??""
-    });
-    var v = (json.decode(response.body));
-    var cart=FlutterCart();
-    for(var i in v["data"])
-    {
-    if(i["is_suspend"]==1 && i["res_table_id"]==id[index]) {
-      SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-      print(i["id"]);
-      sharedPreferences.setString("order_id", i["id"].toString());
-    cart.deleteAllCart();
-    print(id[index]);
-    for(var x in i["sell_lines"])
-    {
-      Map m={
-        "pid":x["product_id"],
-        "tax_id":x["tax_id"],
-        "note":x["sell_line_note"]??"",
-        "price_inc_tax":x["unit_price_inc_tax"]
-      };
-      list_of_products.add(m);
-    http.Response response = await http.get(
-    Uri.parse(
-    "https://pos.sero.app/connector/api/product/${x["product_id"]}")
-    , headers: {
-    'Authorization': sharedPreferences.getString("Authorization")??""
-    });
-    var list=sharedPreferences.getStringList("variation");
-    var v = (json.decode(response.body)["data"][0]["name"]);
-    print(v);
-    list!.add(x["variation_id"].toString());
-    sharedPreferences.setStringList("variation", list);
-    cart.addToCart(productId: x["product_id"], unitPrice: double.parse(x["unit_price"]),productName: v);
-    }
-    sharedPreferences.setString("total", cart.getCartItemCount().toString());
-      sharedPreferences.setString("products", json.encode(list_of_products));
-      print("LIST OF PRODUCTS");
-      print(list_of_products);
-    break;
-    }
-    }
-    if(cart.getCartItemCount()!=0){
-      sharedPreferences.setInt("index", 2);
-    }
+              {
+                sharedPreferences.setInt("table_id", id[index]);
+                setState(() {
+                  _isloading = true;
+                });
+                http.Response response = await http.get(
+                    Uri.parse(
+                        "https://seropos.app/connector/api/sell?per_page=-1")
+                    , headers: {
+                  'Authorization': sharedPreferences.getString("Authorization")??""
+                });
+                var v = (json.decode(response.body));
+                var cart=FlutterCart();
+                for(var i in v["data"])
+                {
+                  if(i["is_suspend"]==1 && i["res_table_id"]==id[index]) {
+                    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+                    print(i["id"]);
+                    sharedPreferences.setString("order_id", i["id"].toString());
+                    cart.deleteAllCart();
+                    print(id[index]);
+                    for(var x in i["sell_lines"])
+                    {
+                      Map m={
+                        "pid":x["product_id"],
+                        "tax_id":x["tax_id"],
+                        "note":x["sell_line_note"]??"",
+                        "price_inc_tax":x["unit_price_inc_tax"]
+                      };
+                      list_of_products.add(m);
+                      http.Response response = await http.get(
+                          Uri.parse(
+                              "https://seropos.app/connector/api/product/${x["product_id"]}")
+                          , headers: {
+                        'Authorization': sharedPreferences.getString("Authorization")??""
+                      });
+                      var list=sharedPreferences.getStringList("variation");
+                      var v = (json.decode(response.body)["data"][0]["name"]);
+                      print(v);
+                      list!.add(x["variation_id"].toString());
+                      sharedPreferences.setStringList("variation", list);
+                      cart.addToCart(productId: x["product_id"], unitPrice: double.parse(x["unit_price"]),productName: v);
+                    }
+                    sharedPreferences.setString("total", cart.getCartItemCount().toString());
+                    sharedPreferences.setString("products", json.encode(list_of_products));
+                    print("LIST OF PRODUCTS");
+                    print(list_of_products);
+                    break;
+                  }
+                }
+                if(cart.getCartItemCount()!=0){
+                  sharedPreferences.setInt("index", 2);
+                }
 
-    setState(() {
-    _isloading=false;
-    });
-    }else{
-                // String myUrl = "https://pos.sero.app/connector/api/change-table-status";
+                setState(() {
+                  _isloading=false;
+                });
+              }else{
+                // String myUrl = "https://seropos.app/connector/api/change-table-status";
                 // http.Response response = await http.post(Uri.parse(myUrl), headers: {
                 //   'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
                 // },body: jsonEncode(<String,dynamic>{
@@ -310,8 +310,8 @@ class _SelectTableState extends State<SelectTable> {
                 };
                 var dio=Dio();
                 dio.options.headers["Authorization"]=sharedPreferences.getString("Authorization");;
-                        var r=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api));
-                        print(r);
+                var r=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api));
+                print(r);
                 //print(json.decode(response.body));
                 print(id[index]);
                 setState(() {
@@ -333,9 +333,11 @@ class _SelectTableState extends State<SelectTable> {
 }
 Future<Map<String, dynamic>> getData() async {
   SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
-  String myUrl = "https://pos.sero.app/connector/api/table";
+  String myUrl = "https://seropos.app/connector/api/table";
   http.Response response = await http.get(Uri.parse(myUrl), headers: {
     'Authorization':sharedPreferences.getString("Authorization")??""
   });
   return json.decode(response.body);
 }
+
+

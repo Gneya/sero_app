@@ -163,7 +163,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     SharedPreferences shared=await SharedPreferences.getInstance();
     balance=shared.getDouble("balance")!;
     print(balance.toStringAsFixed(2)+" Balance in payment");
-    String myUrl = "https://pos.sero.app/connector/api/business-details";
+    String myUrl = "https://seropos.app/connector/api/business-details";
     http.Response response = await http.get((Uri.parse(myUrl)), headers: {
       'Authorization':shared.getString("Authorization")??""
     });
@@ -294,71 +294,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 20,right: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 8,left: 8),
-                                    child: Text('Payment Amount',
-                                      style:GoogleFonts.ptSans(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400
-                                      ) ,),
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: TextFormField(
-                                      key:_Key,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter Payment Amount';
-                                        }
-                                        return null;
-                                      },
-                                      enableInteractiveSelection: false,
-                                      //focusNode: new AlwaysDisabledFocusNode(),
-                                      controller: pay,
-                                      keyboardType:TextInputType.number,
-                                      decoration: InputDecoration(
-                                        hintText: "00.00",
-                                        hintStyle: GoogleFonts.ptSans(
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: BorderSide(color:Colors.brown),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: BorderSide(color:Colors.brown),
-                                        ),
-                                      ),
-                                      onFieldSubmitted: (value){
-                                        print("Hii");
-                                        setState(() {
-                                          print(pay.text);
-                                          change_return.text=(double.parse(pay.text)-balance).toStringAsFixed(2);
-                                          print(change_return.text);
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
 
-                        ],
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Row(
@@ -1010,7 +946,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 "table_status":"available"
               };
               dio.options.headers["Authorization"]=shared.getString("Authorization");
-              var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+              var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
               print(r2);
               print(id);
               shared.setStringList("variation", []);
@@ -1458,6 +1394,71 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ],
                 ),
                 Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20,right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8,left: 8),
+                                child: Text('Payment Amount',
+                                  style:GoogleFonts.ptSans(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400
+                                  ) ,),
+                              ),
+                              Container(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width,
+                                child: TextFormField(
+                                  key:_Key,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter Payment Amount';
+                                    }
+                                    return null;
+                                  },
+                                  enableInteractiveSelection: false,
+                                  //focusNode: new AlwaysDisabledFocusNode(),
+                                  controller: pay,
+                                  keyboardType:TextInputType.number,
+                                  decoration: InputDecoration(
+                                    hintText: "00.00",
+                                    hintStyle: GoogleFonts.ptSans(
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      borderSide: BorderSide(color:Colors.brown),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      borderSide: BorderSide(color:Colors.brown),
+                                    ),
+                                  ),
+                                  onFieldSubmitted: (value){
+                                    print("Hii");
+                                    setState(() {
+                                      print(pay.text);
+                                      change_return.text=(double.parse(pay.text)-balance).toStringAsFixed(2);
+                                      print(change_return.text);
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
+                Padding(
                   padding: const EdgeInsets.only(bottom: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1476,9 +1477,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "table_status":"available"
                             };
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
-                            var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                            var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
                             print(r2);
                             print(id);
+
+
                             var variation=shared.getStringList("variation");
                             var cart=FlutterCart();
                             for(int index=0;index<cart.cartItem.length;index++)
@@ -1523,6 +1526,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                              var car = shared.getString("customer_name");
                              print(car!*10);
                              print (dar);
+                             var service_id=shared.getInt("types_of_service_id");
+                             print(service_id.toString()+"servvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv" );
+                             String typ_ser ;
+                             if(service_id == 3){
+                               typ_ser = "ordered";
+                             }
+                             else{
+                               typ_ser = "offline";
+                             }
 
                             if(shared.getString("order_id")=="")
                             {
@@ -1541,7 +1553,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_address": null,
                                     // "shipping_status": null,
                                     // "delivered_to": null,
-                                    "shipping_status":"offline",
+                                    "shipping_status":typ_ser,
                                     "delivered_to":car,
                                     "types_of_service_id":sar,
                                     "is_suspend":0,
@@ -1561,7 +1573,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               };
                               var dio=Dio();
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
-                              var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
+                              var r=await dio.post("https://seropos.app/connector/api/sell",data: json.encode(api));
                               print(r.data);
                               // var y =r.data["id"];
                               var v=r.data[0]["invoice_no"];
@@ -1585,8 +1597,18 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             }
                             else{
                               print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
+                              Map<String,dynamic> driver={
+                                "order_id":shared.getString("order_id"),
+                                "driver_id":shared.getString("driver_id")
+                              };
+                              var dio=Dio();
+                              dio.options.headers["Authorization"]=shared.getString("Authorization");
+                              var r3=await dio.post("https://seropos.app/connector/api/assign-order",data: json.encode(driver));
+                              print("order is assigned");
+                              print(r3);
                               print(shared.getInt("Redeemed Points"));
-                              Map<String,dynamic> api= {
+                              Map<String,dynamic> api=
+                              {
                                 "sells":[
                                   {
                                     "table_id" :shared.getInt("table_id")??null,
@@ -1600,7 +1622,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     // "shipping_address": null,
                                     // "shipping_status": null,
                                     // "delivered_to": null,
-                                    "shipping_status":"offline",
+                                    "shipping_status":typ_ser,
                                     "delivered_to":car,
                                     "types_of_service_id":sar,
                                     "is_suspend":0,
@@ -1619,11 +1641,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ]
                               };
                               print(json.encode(api));
-                              var dio=Dio();
+
                               var vid = shared.getString("order_id".toString());
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
                               print(vid);
-                              var r=await dio.put("https://pos.sero.app/connector/api/sell/$vid",data: json.encode(api));
+                              var r=await dio.put("https://seropos.app/connector/api/sell/$vid",data: json.encode(api));
                               print("hahah");
                               print(r.data);
                               var v=r.data["invoice_no"];
@@ -1638,6 +1660,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 shared.setDouble("packing_charge", 0.0);
                                 shared.setDouble("Discountt", 0.0);
                               });
+
+
 
                               Fluttertoast.showToast(
                                   msg: "Payment Successful and Your Order Id is $vid",
@@ -1696,10 +1720,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             SharedPreferences shared=await SharedPreferences.getInstance();
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
                             var oid = shared.getString("order_id");
-                            var r=await dio.get("https://pos.sero.app/connector/api/sell/$oid");
+                            var r=await dio.get("https://seropos.app/connector/api/sell/$oid");
                             print(oid);
                             print(r.data['data'][0]['invoice_token']);
-                            var  url = "https://pos.sero.app/invoice/"+r.data['data'][0]['invoice_token'];
+                            var  url = "https://seropos.app/invoice/"+r.data['data'][0]['invoice_token'];
                             if (await canLaunch(url)) {
                               await launch(url);
                             } else {
@@ -1716,7 +1740,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "table_status":"billing"
                             };
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
-                            var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                            var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
                             print(r2);
                             print(id);
                             setState(() {
@@ -1913,7 +1937,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 }
 Future<Map<String, dynamic>> getData() async {
   SharedPreferences shared=await SharedPreferences.getInstance();
-  String myUrl = "https://pos.sero.app/connector/api/payment-methods";
+  String myUrl = "https://seropos.app/connector/api/payment-methods";
   http.Response response = await http.get((Uri.parse(myUrl)), headers: {
     'Authorization':shared.getString("Authorization")??""
   });
