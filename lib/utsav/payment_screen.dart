@@ -163,7 +163,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
     SharedPreferences shared=await SharedPreferences.getInstance();
     balance=shared.getDouble("balance")!;
     print(balance.toStringAsFixed(2)+" Balance in payment");
-    String myUrl = "https://pos.sero.app/connector/api/business-details";
+    String myUrl = "https://seropos.app/connector/api/business-details";
     http.Response response = await http.get((Uri.parse(myUrl)), headers: {
       'Authorization':shared.getString("Authorization")??""
     });
@@ -946,7 +946,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 "table_status":"available"
               };
               dio.options.headers["Authorization"]=shared.getString("Authorization");
-              var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+              var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
               print(r2);
               print(id);
               shared.setStringList("variation", []);
@@ -1477,7 +1477,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "table_status":"available"
                             };
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
-                            var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                            var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
                             print(r2);
                             print(id);
 
@@ -1573,7 +1573,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               };
                               var dio=Dio();
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
-                              var r=await dio.post("https://pos.sero.app/connector/api/sell",data: json.encode(api));
+                              var r=await dio.post("https://seropos.app/connector/api/sell",data: json.encode(api));
                               print(r.data);
                               // var y =r.data["id"];
                               var v=r.data[0]["invoice_no"];
@@ -1603,7 +1603,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               };
                               var dio=Dio();
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
-                              var r3=await dio.post("https://pos.sero.app/connector/api/assign-order",data: json.encode(driver));
+                              var r3=await dio.post("https://seropos.app/connector/api/assign-order",data: json.encode(driver));
                               print("order is assigned");
                               print(r3);
                               print(shared.getInt("Redeemed Points"));
@@ -1645,7 +1645,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               var vid = shared.getString("order_id".toString());
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
                               print(vid);
-                              var r=await dio.put("https://pos.sero.app/connector/api/sell/$vid",data: json.encode(api));
+                              var r=await dio.put("https://seropos.app/connector/api/sell/$vid",data: json.encode(api));
                               print("hahah");
                               print(r.data);
                               var v=r.data["invoice_no"];
@@ -1720,10 +1720,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             SharedPreferences shared=await SharedPreferences.getInstance();
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
                             var oid = shared.getString("order_id");
-                            var r=await dio.get("https://pos.sero.app/connector/api/sell/$oid");
+                            var r=await dio.get("https://seropos.app/connector/api/sell/$oid");
                             print(oid);
                             print(r.data['data'][0]['invoice_token']);
-                            var  url = "https://pos.sero.app/invoice/"+r.data['data'][0]['invoice_token'];
+                            var  url = "https://seropos.app/invoice/"+r.data['data'][0]['invoice_token'];
                             if (await canLaunch(url)) {
                               await launch(url);
                             } else {
@@ -1740,7 +1740,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                               "table_status":"billing"
                             };
                             dio.options.headers["Authorization"]=shared.getString("Authorization");
-                            var r2=await dio.post("https://pos.sero.app/connector/api/change-table-status",data: json.encode(api1));
+                            var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
                             print(r2);
                             print(id);
                             setState(() {
@@ -1937,7 +1937,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
 }
 Future<Map<String, dynamic>> getData() async {
   SharedPreferences shared=await SharedPreferences.getInstance();
-  String myUrl = "https://pos.sero.app/connector/api/payment-methods";
+  String myUrl = "https://seropos.app/connector/api/payment-methods";
   http.Response response = await http.get((Uri.parse(myUrl)), headers: {
     'Authorization':shared.getString("Authorization")??""
   });

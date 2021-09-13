@@ -79,14 +79,20 @@ class _SelectItemState extends State<SelectItem> {
         Uri.parse("https://seropos.app/connector/api/variation/?per_page=-1"), headers: {
       'Authorization': sharedPreferences.getString("Authorization")??""
     });
+    var customer_id=sharedPreferences.getString("customer_id")!;
+    var bid=sharedPreferences.getInt("bid");
     v = (json.decode(response.body));
     for (var i in v["data"]) {
       if (i["category"] == widget.category) {
         print(i);
         if(i["not_for_selling"]==0){
-          _product=product.fromJson(i);
+          http.Response response2 = await http.get(
+              Uri.parse("https://seropos.app/connector/api/sells/pos/get_discount_product/${i["variation_id"]}/$bid?customer_id=$customer_id"), headers: {
+            'Authorization': sharedPreferences.getString("Authorization")??""
+          });
+          var x=json.decode(response2.body);
+          _product=product.fromJson(i,x["data"]);
           _productlist.add(_product);
-          print(_productlist);
         }
       }
     }
@@ -722,13 +728,13 @@ class product
   final String price_inc_tax;
   final String variation_id;
   final int tax_id;
-  product.fromJson(Map<String,dynamic> json):
-        price=json["default_sell_price"],
+  product.fromJson(Map<String,dynamic> json,Map<String,dynamic> json2):
+        price=json2["default_sell_price"].toString(),
         name=json["product_name"],
         url=json["product_image_url"],
         id=json["product_id"].toString(),
         variation_id=json["variation_id"].toString(),
-        price_inc_tax=json["sell_price_inc_tax"],
+        price_inc_tax=json2["sell_price_inc_tax"].toString(),
         this.tax_id=json["tax_id"];
 }
 class Customer
