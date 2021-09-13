@@ -294,71 +294,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 ),
                 Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 20,right: 20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 8,left: 8),
-                                    child: Text('Payment Amount',
-                                      style:GoogleFonts.ptSans(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400
-                                      ) ,),
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: TextFormField(
-                                      key:_Key,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter Payment Amount';
-                                        }
-                                        return null;
-                                      },
-                                      enableInteractiveSelection: false,
-                                      //focusNode: new AlwaysDisabledFocusNode(),
-                                      controller: pay,
-                                      keyboardType:TextInputType.number,
-                                      decoration: InputDecoration(
-                                        hintText: "00.00",
-                                        hintStyle: GoogleFonts.ptSans(
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: BorderSide(color:Colors.brown),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: BorderSide(color:Colors.brown),
-                                        ),
-                                      ),
-                                      onFieldSubmitted: (value){
-                                        print("Hii");
-                                        setState(() {
-                                          print(pay.text);
-                                          change_return.text=(double.parse(pay.text)-balance).toStringAsFixed(2);
-                                          print(change_return.text);
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
 
-                        ],
-                      ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Row(
@@ -1458,6 +1394,71 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ],
                 ),
                 Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 20,right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 8,left: 8),
+                                child: Text('Payment Amount',
+                                  style:GoogleFonts.ptSans(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400
+                                  ) ,),
+                              ),
+                              Container(
+                                height: 50,
+                                width: MediaQuery.of(context).size.width,
+                                child: TextFormField(
+                                  key:_Key,
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'Please enter Payment Amount';
+                                    }
+                                    return null;
+                                  },
+                                  enableInteractiveSelection: false,
+                                  //focusNode: new AlwaysDisabledFocusNode(),
+                                  controller: pay,
+                                  keyboardType:TextInputType.number,
+                                  decoration: InputDecoration(
+                                    hintText: "00.00",
+                                    hintStyle: GoogleFonts.ptSans(
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      borderSide: BorderSide(color:Colors.brown),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                      borderSide: BorderSide(color:Colors.brown),
+                                    ),
+                                  ),
+                                  onFieldSubmitted: (value){
+                                    print("Hii");
+                                    setState(() {
+                                      print(pay.text);
+                                      change_return.text=(double.parse(pay.text)-balance).toStringAsFixed(2);
+                                      print(change_return.text);
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+
+                    ],
+                  ),
+                ),
+                Padding(
                   padding: const EdgeInsets.only(bottom: 30),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1512,7 +1513,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             if(shared.containsKey("modifiers")){
                               if(shared.getString("modifiers")!="") {
                                 List<dynamic> mod = json.decode(
-                                    shared.getString("modifiers")??"");
+                                    shared.getString("modifiers") ?? "");
                                 print(mod[0]);
                                 for (int i = 0; i < mod.length; i++) {
                                   list_of_m.add(mod[0]);
@@ -1595,18 +1596,17 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
                             }
                             else{
-                              var dio=Dio();
+                              print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                               Map<String,dynamic> driver={
                                 "order_id":shared.getString("order_id"),
-                                "driver_id":9
+                                "driver_id":shared.getString("driver_id")
                               };
-
-                              print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
-                              print(shared.getInt("Redeemed Points"));
+                              var dio=Dio();
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
                               var r3=await dio.post("https://pos.sero.app/connector/api/assign-order",data: json.encode(driver));
                               print("order is assigned");
                               print(r3);
+                              print(shared.getInt("Redeemed Points"));
                               Map<String,dynamic> api=
                               {
                                 "sells":[
@@ -1641,6 +1641,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 ]
                               };
                               print(json.encode(api));
+
                               var vid = shared.getString("order_id".toString());
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
                               print(vid);
@@ -1659,6 +1660,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 shared.setDouble("packing_charge", 0.0);
                                 shared.setDouble("Discountt", 0.0);
                               });
+
+
 
                               Fluttertoast.showToast(
                                   msg: "Payment Successful and Your Order Id is $vid",
