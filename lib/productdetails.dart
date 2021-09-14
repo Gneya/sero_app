@@ -654,6 +654,7 @@ class _SelectItemState extends State<SelectItem> {
                     else
                     {
                       print("NOOOO");
+                      print("NOOOO");
                     }
                     int flag1 =0;
                     for (int i =0 ;i<cart.cartItem.length;i++){
