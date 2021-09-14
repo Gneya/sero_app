@@ -1499,12 +1499,12 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     }
                                 }
                               Map<String,dynamic> product={
-                                "product_id":int.parse(cart.cartItem[index].productId.toString()),
+                                "product_id":double.parse(cart.cartItem[index].productId.toString()),
                                 "variation_id":double.parse(variation![index]),
                                 "quantity": cart.cartItem[index].quantity,
                                 "unit_price": cart.cartItem[index].unitPrice,
                                 "tax_rate_id":tax_id,
-                                "note":note
+                                "note":note??""
                               };
                               print(product);
                               list_of_m.add(product);
@@ -1571,6 +1571,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   }
                                 ]
                               };
+                              print(api);
                               var dio=Dio();
                               dio.options.headers["Authorization"]=shared.getString("Authorization");
                               var r=await dio.post("https://seropos.app/connector/api/sell",data: json.encode(api));

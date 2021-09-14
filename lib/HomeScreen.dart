@@ -39,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
   int _currentIndex = 0;
   bool _isloading = false;
   late String _name;
+  List<int> types_of_service_id=[];
+  List<String> types_of_service_name=[];
   String hint="Walk In Customer";
   final List<String> _suggestions = [
     'Alligator',
@@ -59,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
         _isloading = true;
       });}
     var cart =FlutterCart();
+    int flag=0;
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("total",cart.getCartItemCount().toString());
     var list=sharedPreferences.getStringList("selected")??[];
@@ -95,6 +98,36 @@ class _HomeScreenState extends State<HomeScreen> {
         sharedPreferences.setInt("bid",d["data"]["business_id"]);
         print("BIDDDDDDDDD:"+sharedPreferences.getInt("bid").toString());
       });}
+    var Response1 = await http.get(
+        Uri.parse("https://seropos.app/connector/api/business-details"),
+        headers: {
+          'Authorization': sharedPreferences.getString("Authorization")??""
+        });
+    var r1=json.decode(Response1.body);
+    var types_of_service=r1["data"]["enabled_modules"];
+    print(types_of_service);
+    for(var v in types_of_service)
+      {
+        if(v=="types_of_service")
+          {
+            flag=1;
+            break;
+          }
+      }
+    if(flag==1) {
+      var Response2 = await http.get(
+          Uri.parse("https://seropos.app/connector/api/types-of-service"),
+          headers: {
+            'Authorization': sharedPreferences.getString("Authorization") ?? ""
+          });
+      var r2=json.decode(Response2.body);
+      for(var x in r2["data"])
+        {
+          types_of_service_id.add(x["id"]);
+          types_of_service_name.add(x["name"]);
+        }
+      print(types_of_service_name);
+    }
     if(mounted){
       setState(() {
         _isloading = false;
@@ -342,147 +375,126 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 30,
               ),
               Container(
-                padding: EdgeInsets.only(left: 20,right: 20),
-                child: Material(
-                  elevation: 5.0,
-                  borderRadius: BorderRadius.circular(30.0),
-                  color: Colors.white,
-                  child: MaterialButton(
-                    minWidth: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
-                    onPressed: () async {
-                      // Phoenix.rebirth(context);
-                      SharedPreferences shared=await SharedPreferences.getInstance();
-                      shared.setInt("types_of_service_id",1);
-                      if(shared.getString("customer_name")=="")
-                      {
-                        shared.setString("customer_name", "Walk-In Customer");
-                        shared.setString("customer_id","1");
-                        shared.setInt("types_of_service_id",1);
-                      }
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SelectTable()));
-                    },
-                    child: Text("Dine in",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.ptSans(fontSize: 18)),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                padding: EdgeInsets.only(left:20,right: 20),
-                child: Material(
-                  elevation: 5.0,
-                  borderRadius: BorderRadius.circular(30.0),
-                  color: Colors.white,
-                  child: MaterialButton(
-                    minWidth: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    onPressed: () async {
-                      SharedPreferences shared=await SharedPreferences.getInstance();
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => CategoryScreen()));
-                      shared.setInt("types_of_service_id",2);
-                      if(shared.getString("customer_name")=="")
-                      {
-                        shared.setString("customer_name", "Walk-In Customer");
-                        shared.setString("customer_id","1");
-                        shared.setInt("types_of_service_id",2);
-                      }
-                      shared.setInt("index", 1);
-                    },
-                    child: Text("Take Away",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.ptSans(fontSize: 18)),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Container(
-                padding: EdgeInsets.only(left: 20,right: 20),
-                child: Material(
-                  elevation: 5.0,
-                  borderRadius: BorderRadius.circular(30.0),
-                  color: Colors.white,
-                  child: MaterialButton(
-                    minWidth: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    onPressed: () async {
-                      print(id);
-                      SharedPreferences shared=await SharedPreferences.getInstance();
-                      if(id!="0") {
-                        shared.setInt("types_of_service_id",3);
-                        setState(() {
-                          _isloading=true;
-                        });
-                        print(id);
-                        shared.setInt("types_of_service_id", 3);
-                        var response = await http.get(
-                            Uri.parse(
-                                "https://seropos.app/connector/api/contactapi/$id"),
-                            headers: {
-                              'Authorization': shared.getString(
-                                  "Authorization") ?? ""
-                            });
-                        print(json.decode(response.body));
-                        final d = json.decode(response.body)["data"][0];
-                        print(d);
-                        var fname = d["first_name"];
-                        var mname = d["middle_name"];
-                        var lname = d["last_name"];
-                        var email_id = d["email"];
-                        var phone = d["mobile"];
-                        var city = d["city"];
-                        var state = d["state"];
-                        var country = d["country"];
-                        var address = d["address_line_1"] ??
-                            d["address_line_2"];
-                        var dob = d["dob"];
-                        if (address == null) {
+                height: MediaQuery.of(context).size.height/3,
+                child: ListView.builder(
+                    itemCount: types_of_service_id.length,
+                    itemBuilder: (BuildContext context, int index) {
+                  return Container(
+                    margin: EdgeInsets.only(top: 10,bottom: 10),
+                    height: MediaQuery.of(context).size.height/12,
+                    padding: EdgeInsets.only(left: 20,right: 20),
+                    child: Material(
+                      elevation: 5.0,
+                      borderRadius: BorderRadius.circular(30.0),
+                      color: Colors.white,
+                      child: MaterialButton(
+                        minWidth: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                        onPressed: () async {
+                          // Phoenix.rebirth(context);
+                          if(types_of_service_id[index]==1){
+                          SharedPreferences shared=await SharedPreferences.getInstance();
+                          shared.setInt("types_of_service_id",1);
+                          if(shared.getString("customer_name")=="")
+                          {
+                            shared.setString("customer_name", "Walk-In Customer");
+                            shared.setString("customer_id","1");
+                            shared.setInt("types_of_service_id",1);
+                          }
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) =>
-                                      edit_customer(id: id,
-                                          fname: fname,
-                                          mname: mname,
-                                          lname: lname,
-                                          email_id: email_id,
-                                          phone: phone,
-                                          city: city,
-                                          state: state,
-                                          country: country,
-                                          dob: dob)));
-                          setState(() {
-                            _isloading = false;
-                          });
+                                  builder: (context) => SelectTable()));
                         }
-                        else {
-                          SharedPreferences share = await SharedPreferences
-                              .getInstance();
-                          share.setInt("index", 1);
-                        }
+                          else if(types_of_service_id[index]==2){
+                            SharedPreferences shared=await SharedPreferences.getInstance();
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) => CategoryScreen()));
+                            shared.setInt("types_of_service_id",2);
+                            if(shared.getString("customer_name")=="")
+                            {
+                              shared.setString("customer_name", "Walk-In Customer");
+                              shared.setString("customer_id","1");
+                            }
+                            shared.setInt("index", 1);
+                          }
+                          else if(types_of_service_id==3)
+                            {
+                              print(id);
+                              SharedPreferences shared=await SharedPreferences.getInstance();
+                              if(id!="0") {
+                                shared.setInt("types_of_service_id",3);
+                                setState(() {
+                                  _isloading=true;
+                                });
+                                print(id);
+                                shared.setInt("types_of_service_id", 3);
+                                var response = await http.get(
+                                    Uri.parse(
+                                        "https://seropos.app/connector/api/contactapi/$id"),
+                                    headers: {
+                                      'Authorization': shared.getString(
+                                          "Authorization") ?? ""
+                                    });
+                                print(json.decode(response.body));
+                                final d = json.decode(response.body)["data"][0];
+                                print(d);
+                                var fname = d["first_name"];
+                                var mname = d["middle_name"];
+                                var lname = d["last_name"];
+                                var email_id = d["email"];
+                                var phone = d["mobile"];
+                                var city = d["city"];
+                                var state = d["state"];
+                                var country = d["country"];
+                                var address = d["address_line_1"] ??
+                                    d["address_line_2"];
+                                var dob = d["dob"];
+                                if (address == null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              edit_customer(id: id,
+                                                  fname: fname,
+                                                  mname: mname,
+                                                  lname: lname,
+                                                  email_id: email_id,
+                                                  phone: phone,
+                                                  city: city,
+                                                  state: state,
+                                                  country: country,
+                                                  dob: dob)));
+                                  setState(() {
+                                    _isloading = false;
+                                  });
+                                }
+                                else {
+                                  SharedPreferences share = await SharedPreferences
+                                      .getInstance();
+                                  share.setInt("index", 1);
+                                }
 
-                        setState(() {
-                          _isloading=false;
-                        });
-                      }},
-                    child: Text("Home Delivery",
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.ptSans(fontSize: 18)
+                                setState(() {
+                                  _isloading=false;
+                                });
+                              }
+                            }
+                          else{}
+                          },
+                        child: Text(types_of_service_name[index],
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.ptSans(fontSize: 18)),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                } ),
               ),
+
+
+
             ],
           ),
         ),

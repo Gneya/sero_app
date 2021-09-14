@@ -678,7 +678,8 @@ class _SelectItemState extends State<SelectItem> {
                     m={
                       "pid":_productlist[index].id,
                       "tax_id":_productlist[index].tax_id,
-                      "price_inc_tax":_productlist[index].price_inc_tax
+                      "price_inc_tax":_productlist[index].price_inc_tax,
+                      "note":""
                     };
                     int flag=0;
                     for(int i=0;i<list_of_products.length;i++)
