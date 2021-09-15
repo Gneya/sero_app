@@ -778,5 +778,3 @@ class CustomerApi {
     return name;
   }
 }
-
-
