@@ -5,10 +5,10 @@ class Responsive extends StatelessWidget {
   final Widget tablet;
 
   const Responsive({
-    required Key key,
+
     required this.mobile,
     required this.tablet,
-  }) : super(key: key);
+  }) ;
 
 // This size work fine on my design, maybe you need some customization depends on your design
 
