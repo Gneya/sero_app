@@ -1,13 +1,14 @@
 import 'dart:convert';
 import 'dart:ui';
-//import 'package:barcode_scan/barcode_scan.dart';
-// import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+
 import 'package:dio/dio.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
+import 'package:flutter_nav_bar/utsav/edit_item.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
+import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
@@ -22,6 +23,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'Category.dart';
 import 'addons_and_modifiers.dart';
+import 'main_drawer.dart';
 import 'personaldetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
@@ -37,9 +39,24 @@ class TabScreen extends StatefulWidget {
 }
 
 class _TabScreenState extends State<TabScreen> {
-  var v;
-  //List<String> selectedReportList = [];
+  List<String> counterList=[];
+
+  bool isEmpty =true;
+  String customer_name="";
+  List<dynamic> _modifiers=[];
+  double paymentAmount=0;
+  double discount =0.0;
+  List<String> counter=[];
+  int points=0;
+  List<dynamic> list_of_products=[];
+  var size,height,width;
+  int table_id=0;
+
+  String table_name='';
   Map m={};
+  double p=0.0;
+  int _currentIndex = 0;
+  var v;
   var cart=FlutterCart();
   late product _product;
   List<Map<String,dynamic>> list_of_m=[];
@@ -49,7 +66,6 @@ class _TabScreenState extends State<TabScreen> {
   List<String> searchresultImages = [];
   List<String> searchresultprice=[];
   List<String> images = [];
-  List<dynamic> list_of_products=[];
   List<String> price=[];
   List<String> _selectedItems = [];
   List<String> _selectedItemsprice = [];
@@ -215,8 +231,39 @@ class _TabScreenState extends State<TabScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MainDrawer(),
+      appBar: AppBar(
+
+        //leading: Icon(Icons.menu),
+        title: Center(child: Image.asset("images/logo.png",height: MediaQuery.of(context).size.height/22,width: MediaQuery.of(context).size.width/3,)),
+        backgroundColor: Color(0xffffd45f),
+        actions: [
+          Container(
+              margin: EdgeInsets.only(right: 0),
+              child: IconButton(
+                icon: const Icon(Icons.notifications,
+                ),
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context){
+                        return OnlineOrder();
+                      }
+                  );
+                },
+              )),
+          SizedBox(height: 10,),
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            child: CircleAvatar(
+                backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+            ),
+          ),
+          SizedBox(height: 10,),
+        ],
+      ),
         floatingActionButton: SpeedDial(
-          marginBottom: 13, //margin bottom
+          marginBottom: 100, //margin bottom
           icon: Icons.open_in_browser_outlined, //icon on Floating action button
           activeIcon: Icons.close, //icon when menu is expanded on button
           backgroundColor: Colors.amber, //background color of button
@@ -519,6 +566,7 @@ class _TabScreenState extends State<TabScreen> {
                         }
 
                         sharedPreferences.setString("total", cart.getCartItemCount().toString());
+                        list_of_products.clear();
                         if(sharedPreferences.getString("products")!=""){
                           list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
                         m={
@@ -566,12 +614,428 @@ class _TabScreenState extends State<TabScreen> {
             ),
             Expanded(
               flex: 5,
-              child:CartScreen() ,
+              child:Container(
+                  height:MediaQuery.of(context).size.height,
+                  child: ListView.builder(
+                      itemCount: cart.cartItem.length,
+                      itemBuilder: (context, index) {
+                        if(counterList.length < _selectedItems.length ) {
+                          counterList.add("1");
+                        }
+                        return GestureDetector(
+                          onTap:(){
+                            showDialog(context: context, builder: (context) {
+                              return edit_item(name: cart.cartItem[index].productName.toString(),quantity: cart.cartItem[index].quantity.toString(),price: cart.cartItem[index].unitPrice.toString(), index: index,);
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: Container(
+                              // height:MediaQuery.of(context).size.height/10 ,
+                              padding: EdgeInsets.only(left:10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey,
+                                    offset: const Offset(
+                                      1.0,
+                                      1.0,
+                                    ), //Offset
+                                    blurRadius: 6.0,
+                                    spreadRadius: 2.0,
+                                  ), //BoxShadow
+                                  BoxShadow(
+                                    color: Colors.white,
+                                    offset: const Offset(0.0, 0.0),
+                                    blurRadius: 0.0,
+                                    spreadRadius: 0.0,
+                                  ),],
+                              ),
+                              child:Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    children: [
+                                      Container(
+                                        width: MediaQuery.of(context).size.width/8,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(left: 0),
+                                          child: Text(cart.cartItem[index].productName.toString(),
+                                            style: GoogleFonts.ptSans(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Row(
+                                        //mainAxisAlignment: MainAxisAlignment.,
+                                        children: [
+                                          IconButton(
+                                            onPressed:(){
+                                              setState(() {
+                                                cart.decrementItemFromCart(index);
+                                              });
+                                            },
+                                            icon: Icon(Icons.remove_circle,
+                                              size: 17,),
+                                          ),
+                                          Text(cart.cartItem[index].quantity.toString(),
+                                            style: GoogleFonts.ptSans(
+                                                fontSize: 15
+                                            ),
+                                          ),
+                                          IconButton(
+                                            onPressed:(){
+                                              print(cart.cartItem[index].productId);
+                                              setState(() {
+                                                cart.incrementItemToCart(index);
+                                              });
+                                            },
+                                            icon: Icon(Icons.add_circle_outlined,
+                                              size: 17,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Container(
+                                          width: MediaQuery.of(context).size.width/23,
+                                          child:Text(
+                                            double.parse((cart.cartItem[index].unitPrice*cart.cartItem[index].quantity).toString()).toStringAsFixed(2),
+                                            style: GoogleFonts.ptSans(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                          )),
+                                      IconButton(
+                                        onPressed:() async {
+                                          SharedPreferences shared = await SharedPreferences.getInstance();
+                                          setState(()  {
+                                            for(int i=0;i<list_of_products.length;i++)
+                                            {
+                                              if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
+                                              {
+                                                list_of_products.removeAt(i);
+                                              }
+                                            }
+                                            cart.deleteItemFromCart(index);
+                                            shared.setString("total", (cart.getCartItemCount()).toString());
+                                            var list = shared.getStringList("variation");
+                                            list!.removeAt(index);
+                                            shared.setStringList("variation", list);
+                                            paymentAmount = cart.getTotalAmount();
+                                            print(cart.getCartItemCount());
+                                          });
+                                          // delete(cart.cartItem[index].productName);
+                                        },
+                                        icon: Icon(Icons.delete,
+                                          color: Colors.red,
+                                          size: 25,),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    height: 20,
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.only(left: 10),
+                                    child:FutureBuilder(
+                                        future:get1(cart.cartItem[index].productName),
+                                        builder: (context,snapshot){
+                                          return ListView.builder(
+                                            itemCount:1,
+                                            itemBuilder: (context, i) {
+                                              return Text(list_of_products[index]["note"]??"");
+
+                                            },
+                                          );}),
+                                  ),
+                                ] ,
+                              ),
+                            ),
+                          ),
+                        );})) ,
             ),
           ]
-        )
+        ),
+      bottomSheet:  Container(
+        height: 80,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.only(topRight:Radius.circular(25),topLeft:Radius.circular(25),),
+          color :const Color(0xFFFFD45F),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey,
+              offset: const Offset(
+                1.0,
+                1.0,
+              ), //Offset
+              blurRadius: 6.0,
+              spreadRadius: 2.0,
+            ), //BoxShadow
+            BoxShadow(
+              color: Colors.white,
+              offset: const Offset(0.0, 0.0),
+              blurRadius: 0.0,
+              spreadRadius: 0.0,
+            ),],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(right: 30),
+              child: OutlinedButton.icon(
+                style: ButtonStyle(
+                    shape: MaterialStateProperty.all(
+                        RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
+                    ),
+                    side: MaterialStateProperty.all(BorderSide(width: 2))
+                ),
+                icon: Icon(Icons.pause_outlined,
+                  color: Colors.black87,),
+                label: Text("HOLD",style: GoogleFonts.ptSans(
+                  color: Colors.black87,
+                  fontSize: 20,
+                ),),
+                onPressed: () async {
+                  list_of_products.clear();
+
+                  print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
+                  List<Map<String,dynamic>> list_of_m=[];
+                  SharedPreferences shared=await SharedPreferences.getInstance();
+                  var variation=shared.getStringList("variation");
+                  print(variation);
+                  var cart=FlutterCart();
+                  for(int index=0;index<cart.cartItem.length;index++)
+                  {
+                    String note="";
+                    int tax_id=0;
+                    for(int i=0;i<list_of_products.length;i++)
+                    {
+                      if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
+                      {
+                        note=list_of_products[i]["note"]??"";
+                        tax_id=list_of_products[i]["tax_id"]??0;
+                        print(note);
+                        break;
+                      }
+                    }
+                    Map<String,dynamic> product={
+                      "product_id":int.parse(cart.cartItem[index].productId.toString()),
+                      "variation_id":double.parse(variation![index]),
+                      "quantity": cart.cartItem[index].quantity,
+                      "unit_price": cart.cartItem[index].unitPrice,
+                      "tax_rate_id":tax_id,
+                      "note":note
+                    };
+                    list_of_m.add(product);
+                    print(list_of_m);
+                  }
+                  if(shared.containsKey("modifiers")){
+                    if(shared.getString("modifiers")!=""){
+                      List<dynamic> mod =json.decode(shared.getString("modifiers")?? "");
+                      print(mod[0]);
+                      for(int i =0;i<mod.length;i++){
+                        list_of_m.add(mod[0]);
+                        // print(mod[0]["name"]);
+                      }}}
+
+                  print(list_of_m);
+
+                  if(shared.getString("order_id")=="")
+                  {
+                    Map<String,dynamic> api= {
+                      "sells":[
+                        {
+                          "table_id" :shared.getInt("table_id")??1,
+                          "location_id": shared.getInt("bid")??1,
+                          "contact_id": double.parse(shared.getString("customer_id")??"1"),
+                          "is_suspend": 1,
+                          "tip":0,
+                          "products":list_of_m,
+                          "payments": [
+                            {
+                              "amount":cart.getTotalAmount(),
+                            }
+                          ]
+                        }
+                      ]
+                    };
+                    var dio=Dio();
+                    dio.options.headers["Authorization"]=shared.getString("Authorization");
+                    var r=await dio.post("https://seropos.app/connector/api/sell",data: json.encode(api));
+                    print(r);
+                    var v=r.data[0]["id"];
+                    print(v.toString());
+                    shared.setString("order_id", v.toString());
+                    var u=r.data[0]["invoice_no"];
+                    print(u);
+                    shared.setString("invoice_no", u);
+                    var inid =shared.getString("invoice_no");
+                    print(inid);
+                    Map<String,dynamic> api2={
+                      "invoice_number":inid
+                    };
+                    dio.options.headers["Authorization"]=shared.getString("Authorization");
+                    var r1=await dio.post("https://seropos.app/connector/api/get-invoice-url",data: json.encode(api2));
+                    print(r1);
+                    Fluttertoast.showToast(
+                        msg: "Order on hold and Your Order Id is $v",
+                        toastLength: Toast.LENGTH_LONG,
+                        gravity: ToastGravity.BOTTOM,
+                        textColor: Colors.green,
+                        timeInSecForIosWeb: 4);
+                  }
+                  else{
+
+                    Map<String,dynamic> api= {
+                      "sells":[
+                        {
+                          "table_id" :shared.getInt("table_id")??0,
+                          "location_id": shared.getInt("bid")??1,
+                          "is_suspend": 1,
+                          "tip":0,
+                          "contact_id": double.parse(shared.getString("customer_id")??"1"),
+                          "products":list_of_m,
+                          "payments": [
+                            {
+                              "amount":cart.getTotalAmount()
+                            }
+                          ]
+                        }
+                      ]
+
+
+                    };
+                    print(json.encode(api));
+
+                    var dio=Dio();
+                    var vid = shared.getString("order_id");
+                    dio.options.headers["Authorization"]=shared.getString("Authorization");
+                    print(vid);
+                    print("hahah");
+                    var r=await dio.put("https://seropos.app/connector/api/sell/$vid",data: json.encode(api));
+
+                    print(r.data);
+                    var v=r.data["invoice_no"];
+                    print(v);
+                    shared.setString("invoice_no", v);
+                    cart.deleteAllCart();
+
+                    setState(() {
+                      shared.setString("total","0");
+                      shared.setInt("index", 0);
+                      shared.setInt("PAY_HOLD",1);
+                    });
+                  }
+                  shared.setString("modifiers", '');
+                  shared.setStringList("selectedmodifiers", []);
+                  shared.setStringList("selectedmodifiersprice", []);
+                  shared.setStringList("variation", []);
+                  cart.deleteAllCart();
+                  // shared.clear();
+
+                  // shared.setString("customer_name", '');
+                  // shared.setString("table_name", '');
+                  setState(() {
+                    shared.setString("total","0");
+                    shared.setInt("index", 0);
+                    shared.setInt("PAY_HOLD",1);
+                  });
+                  shared.setInt("seconds", 0);
+                  Phoenix.rebirth(context);
+                  // get("");
+                },
+              ),
+            ),
+            FutureBuilder(
+              future:getPaymentAmount(),
+              builder: (context,snapshot){
+                return OutlinedButton.icon(
+                  onPressed: () async {
+                    SharedPreferences shared =await SharedPreferences.getInstance();
+                    shared.setString("screen", "Payment");
+                    // shared.setInt("index", 2);
+                    print("ONPRESSED"+paymentAmount.toStringAsFixed(2));
+                    shared.setDouble("balance",paymentAmount);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
+                    );
+                    print(paymentAmount);
+                    // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                    //     builder: (BuildContext context) => PaymentScreen(Ammount: paymentAmount, Balance: paymentAmount, Discountt: discount, Redeem: points)), (
+                    //     Route<dynamic> route) => true);
+                  },
+                  style: ButtonStyle(
+                      shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))
+                      ),
+                      side: MaterialStateProperty.all(BorderSide(width: 2))
+                  ),
+                  icon: Icon(Icons.payment,
+                    color: Colors.black87,),
+                  label: Text("PAY:\$${snapshot.data}",style: GoogleFonts.ptSans(
+                      color: Colors.black87,
+                      fontSize: 20
+                  ),),
+                );
+
+              },
+            )
+
+          ],
+        ),
+      ),
     );
 
+  }
+  Future<String> getPaymentAmount() async {
+    paymentAmount=0;
+    SharedPreferences shared=await SharedPreferences.getInstance();
+    if(shared.getString("products")!=""){
+      List<dynamic> products=json.decode(shared.getString("products")??"")??"";
+
+      print(products);
+      paymentAmount=0;
+      for(int i=0;i<products.length;i++)
+      {
+        setState(() {
+          paymentAmount+=double.parse(products[i]["price_inc_tax"]);
+        });
+      }
+
+      print(paymentAmount);}
+    return paymentAmount.toStringAsFixed(2);
+  }
+  get1(String? name) async {
+    p=0;
+    var cart =FlutterCart();
+    SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+    list_of_products=json.decode(sharedPreferences.getString("products")!);
+    setState(() {
+      customer_name=sharedPreferences.getString("customer_name")??"";
+      table_name=sharedPreferences.getString("table_name")??"";
+    });
+    if(sharedPreferences.containsKey(name!)){
+      m[name]=sharedPreferences.getStringList(name);
+      var price=sharedPreferences.getStringList(name+"price");
+      for (int i=0;i<price!.length;i++) {
+        p += double.parse(price[i]);
+      }
+      print("PPPPPPPPPPPPPPPPPPPPP:"+p.toString());
+      setState(() {
+        paymentAmount = cart.getTotalAmount()+p;
+      });
+
+      return m;
+    }
+    else
+    {
+      return [];
+    }
   }
 }
 class Customer

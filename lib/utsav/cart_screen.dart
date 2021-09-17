@@ -42,7 +42,7 @@ class _CartScreenState extends State<CartScreen> {
       _currentIndex = index;
     });
   }
-  List<String> counterList=[];
+
   Future<void> getSharedPrefs() async {
     setState(() {
       _isloading =true;
@@ -62,7 +62,7 @@ class _CartScreenState extends State<CartScreen> {
     getSharedPrefs();
     super.initState();
   }
-
+  List<String> counterList=[];
   List<dynamic> _selectedItems =[];
   List<dynamic> _selectedItemsprice = [];
   bool isEmpty =true;
