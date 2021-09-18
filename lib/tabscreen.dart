@@ -189,6 +189,7 @@ class _TabScreenState extends State<TabScreen> {
     for (var i in v["data"]) {
      {
         print(i);
+        if(i["category"]=="Soup"){
         if(i["not_for_selling"]==0){
           http.Response response2 = await http.get(
               Uri.parse("https://seropos.app/connector/api/sells/pos/get_discount_product/${i["variation_id"]}/$bid?customer_id=$customer_id"), headers: {
@@ -197,7 +198,7 @@ class _TabScreenState extends State<TabScreen> {
           var x=json.decode(response2.body);
           _product=product.fromJson(i,x["data"]);
           _productlist.add(_product);
-        }
+        }}
       }
     }
     i++;
@@ -377,7 +378,7 @@ class _TabScreenState extends State<TabScreen> {
         Row(
           children: [
             Expanded(
-              flex: 5,
+              flex: 4,
               child:Center(
                 child://No search found then
             Container(
@@ -414,7 +415,7 @@ class _TabScreenState extends State<TabScreen> {
                           width: 15,
                         ),*/),
                     Container(
-                        width: MediaQuery.of(context).size.width/3,
+                        width: MediaQuery.of(context).size.width/5,
                         child:Text(_datalist[index].toString().toUpperCase(),
                             softWrap: true,
                             textAlign: TextAlign.center,
@@ -468,13 +469,13 @@ class _TabScreenState extends State<TabScreen> {
               ),
             ),
             Expanded(
-                flex: 5,
+                flex: 8,
                 child: GridView.builder(
                 primary: false,
                 padding: const EdgeInsets.all(10),
                 itemCount: _productlist.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+                  crossAxisCount: 4,
                   crossAxisSpacing: 25.0,
                   mainAxisSpacing: 25.0,
 
@@ -559,7 +560,6 @@ class _TabScreenState extends State<TabScreen> {
                             print("&&&&&&&&&&&&&&&&&**************(())))))))))))))))))");
                             break;
                           }
-
                         }
                         if( flag1 ==0){
                           cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
@@ -613,7 +613,7 @@ class _TabScreenState extends State<TabScreen> {
                 })
             ),
             Expanded(
-              flex: 5,
+              flex: 6,
               child:Container(
                   height:MediaQuery.of(context).size.height,
                   child: ListView.builder(
@@ -800,7 +800,7 @@ class _TabScreenState extends State<TabScreen> {
                   fontSize: 20,
                 ),),
                 onPressed: () async {
-                  list_of_products.clear();
+                  // list_of_products.clear();
 
                   print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
                   List<Map<String,dynamic>> list_of_m=[];

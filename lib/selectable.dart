@@ -309,7 +309,7 @@ class _SelectTableState extends State<SelectTable> {
                   "table_status":"occupied"
                 };
                 var dio=Dio();
-                dio.options.headers["Authorization"]=sharedPreferences.getString("Authorization");;
+                dio.options.headers["Authorization"]=sharedPreferences.getString("Authorization");
                 var r=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api));
                 print(r);
                 //print(json.decode(response.body));
