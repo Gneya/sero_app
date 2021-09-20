@@ -76,6 +76,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
         print(pid);
         map={
           "order_id":i["id"],
+          "table_id":i["res_table_id"],
           "invoice_no":i["invoice_no"],
           "cus_name":json.decode(response.body)["data"][0]["name"].toString(),
           "pid":pid,
@@ -214,6 +215,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                             SharedPreferences shared=await SharedPreferences.getInstance();
                                             shared.setString("order_id", list[index]["order_id"].toString());
                                             print(shared.getString("order_id"));
+                                            shared.setInt("table_id", list[index]["table_id"]);
                                             shared.setString("invoice_no", list[index]["invoice_no"]);
                                             print( list[index]["invoice_no"]);
                                             var cart=FlutterCart();
@@ -254,7 +256,15 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                                 gravity: ToastGravity.BOTTOM,
                                                 textColor: Colors.green,
                                                 timeInSecForIosWeb: 4);
-                                            shared.setInt("index", 2);
+                                            if( MediaQuery.of(context).size.width < 1100 &&
+                                                MediaQuery.of(context).size.width >= 650){
+                                              shared.setInt("index", 1);
+                                            }
+                                            else{
+                                              shared.setInt("index", 2);
+                                            }
+
+
                                             Navigator.pop(context);
                                           },
                                         ),
