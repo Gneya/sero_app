@@ -1471,6 +1471,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             SharedPreferences shared=await SharedPreferences.getInstance();
                             List<dynamic> list_of_products=json.decode(shared.getString("products")!);
                             var id = shared.getInt("table_id",);
+                            print("tttttttttaaabbbbbbbbbbbbbbbbbbbbllllllleeee");
                             print(shared.getInt("table_id"));
                             Map<String,dynamic> api1={
                               "table_id":id,
