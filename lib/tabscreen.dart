@@ -573,6 +573,7 @@ class _TabScreenState extends State<TabScreen> {
                           "pid":_productlist[index].id,
                           "tax_id":_productlist[index].tax_id,
                           "price_inc_tax":_productlist[index].price_inc_tax,
+                          "total":_productlist[index].price_inc_tax,
                           "note":""
                         };
                         int flag=0;
@@ -1036,7 +1037,7 @@ class _TabScreenState extends State<TabScreen> {
       for(int i=0;i<products.length;i++)
       {
         setState(() {
-          paymentAmount+=double.parse(products[i]["price_inc_tax"]);
+          paymentAmount+=double.parse(products[i]["total"].toString());
         });
       }
 
@@ -1062,7 +1063,6 @@ class _TabScreenState extends State<TabScreen> {
       setState(() {
         paymentAmount = cart.getTotalAmount()+p;
       });
-
       return m;
     }
     else
