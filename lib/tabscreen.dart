@@ -1063,7 +1063,6 @@ class _TabScreenState extends State<TabScreen> {
       setState(() {
         paymentAmount = cart.getTotalAmount()+p;
       });
-
       return m;
     }
     else
