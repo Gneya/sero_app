@@ -380,10 +380,11 @@ class _CartScreenState extends State<CartScreen> {
                                             {
                                               print("BREFORE");
                                               print(list_of_products);
-                                              list_of_products[i]["price_inc_tax"]=list_of_products[i]["price_inc_tax"]*cart.cartItem[index].quantity;
+                                              list_of_products[i]["total"]=double.parse(list_of_products[i]["price_inc_tax"])*double.parse(cart.cartItem[index].quantity.toString());
                                               shared.setString("products", json.encode(list_of_products));
                                               print("AFTER");
                                               print(list_of_products);
+                                              getPaymentAmount();
                                             }
                                           }
                                         });
@@ -408,10 +409,11 @@ class _CartScreenState extends State<CartScreen> {
                                             {
                                               print("BREFORE");
                                               print(list_of_products);
-                                              list_of_products[i]["price_inc_tax"]=cart.cartItem[index].subTotal;
+                                              list_of_products[i]["total"]=double.parse(list_of_products[i]["price_inc_tax"])*double.parse(cart.cartItem[index].quantity.toString());
                                               shared.setString("products", json.encode(list_of_products));
                                               print("AFTER");
                                               print(list_of_products);
+                                              getPaymentAmount();
                                             }
                                           }
                                         });
@@ -924,7 +926,7 @@ class _CartScreenState extends State<CartScreen> {
       for(int i=0;i<products.length;i++)
       {
         setState(() {
-          paymentAmount+=double.parse(products[i]["price_inc_tax"]);
+          paymentAmount+=double.parse(products[i]["total"].toString());
           print("AMOUNTTTTTTTT");
           print(paymentAmount);
         });
