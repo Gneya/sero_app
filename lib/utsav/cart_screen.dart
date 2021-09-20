@@ -370,9 +370,22 @@ class _CartScreenState extends State<CartScreen> {
                                   //mainAxisAlignment: MainAxisAlignment.,
                                   children: [
                                     IconButton(
-                                      onPressed:(){
+                                      onPressed:() async {
+                                        SharedPreferences shared=await SharedPreferences.getInstance();
                                         setState(() {
                                           cart.decrementItemFromCart(index);
+                                          for(int i=0;i<list_of_products.length;i++)
+                                          {
+                                            if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
+                                            {
+                                              print("BREFORE");
+                                              print(list_of_products);
+                                              list_of_products[i]["price_inc_tax"]=list_of_products[i]["price_inc_tax"]*cart.cartItem[index].quantity;
+                                              shared.setString("products", json.encode(list_of_products));
+                                              print("AFTER");
+                                              print(list_of_products);
+                                            }
+                                          }
                                         });
                                       },
                                       icon: Icon(Icons.remove_circle,
@@ -384,10 +397,23 @@ class _CartScreenState extends State<CartScreen> {
                                       ),
                                     ),
                                     IconButton(
-                                      onPressed:(){
+                                      onPressed:() async {
+                                        SharedPreferences shared=await SharedPreferences.getInstance();
                                         print(cart.cartItem[index].productId);
                                         setState(() {
                                           cart.incrementItemToCart(index);
+                                          for(int i=0;i<list_of_products.length;i++)
+                                          {
+                                            if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
+                                            {
+                                              print("BREFORE");
+                                              print(list_of_products);
+                                              list_of_products[i]["price_inc_tax"]=cart.cartItem[index].subTotal;
+                                              shared.setString("products", json.encode(list_of_products));
+                                              print("AFTER");
+                                              print(list_of_products);
+                                            }
+                                          }
                                         });
                                       },
                                       icon: Icon(Icons.add_circle_outlined,
@@ -413,7 +439,12 @@ class _CartScreenState extends State<CartScreen> {
                                       {
                                         if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
                                         {
+                                          print("BREFORE");
+                                          print(list_of_products);
                                           list_of_products.removeAt(i);
+                                          shared.setString("products", json.encode(list_of_products));
+                                          print("AFTER");
+                                          print(list_of_products);
                                         }
                                       }
                                       cart.deleteItemFromCart(index);
@@ -894,6 +925,8 @@ class _CartScreenState extends State<CartScreen> {
       {
         setState(() {
           paymentAmount+=double.parse(products[i]["price_inc_tax"]);
+          print("AMOUNTTTTTTTT");
+          print(paymentAmount);
         });
       }
       print(paymentAmount);}
