@@ -1037,7 +1037,7 @@ class _TabScreenState extends State<TabScreen> {
       for(int i=0;i<products.length;i++)
       {
         setState(() {
-          paymentAmount+=double.parse(products[i]["total"]);
+          paymentAmount+=double.parse(products[i]["total"].toString());
         });
       }
 
