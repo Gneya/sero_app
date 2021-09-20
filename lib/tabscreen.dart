@@ -674,9 +674,23 @@ class _TabScreenState extends State<TabScreen> {
                                         //mainAxisAlignment: MainAxisAlignment.,
                                         children: [
                                           IconButton(
-                                            onPressed:(){
+                                            onPressed:() async {
+                                              SharedPreferences shared=await SharedPreferences.getInstance();
                                               setState(() {
                                                 cart.decrementItemFromCart(index);
+                                                for(int i=0;i<list_of_products.length;i++)
+                                                {
+                                                  if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
+                                                  {
+                                                    print("BREFORE");
+                                                    print(list_of_products);
+                                                    list_of_products[i]["total"]=double.parse(list_of_products[i]["price_inc_tax"])*double.parse(cart.cartItem[index].quantity.toString());
+                                                    shared.setString("products", json.encode(list_of_products));
+                                                    print("AFTER");
+                                                    print(list_of_products);
+                                                    getPaymentAmount();
+                                                  }
+                                                }
                                               });
                                             },
                                             icon: Icon(Icons.remove_circle,
@@ -688,10 +702,24 @@ class _TabScreenState extends State<TabScreen> {
                                             ),
                                           ),
                                           IconButton(
-                                            onPressed:(){
+                                            onPressed:() async {
+                                              SharedPreferences shared=await SharedPreferences.getInstance();
                                               print(cart.cartItem[index].productId);
                                               setState(() {
                                                 cart.incrementItemToCart(index);
+                                                for(int i=0;i<list_of_products.length;i++)
+                                                {
+                                                  if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
+                                                  {
+                                                    print("BREFORE");
+                                                    print(list_of_products);
+                                                    list_of_products[i]["total"]=double.parse(list_of_products[i]["price_inc_tax"])*double.parse(cart.cartItem[index].quantity.toString());
+                                                    shared.setString("products", json.encode(list_of_products));
+                                                    print("AFTER");
+                                                    print(list_of_products);
+                                                    getPaymentAmount();
+                                                  }
+                                                }
                                               });
                                             },
                                             icon: Icon(Icons.add_circle_outlined,
@@ -717,7 +745,12 @@ class _TabScreenState extends State<TabScreen> {
                                             {
                                               if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
                                               {
+                                                print("BREFORE");
+                                                print(list_of_products);
                                                 list_of_products.removeAt(i);
+                                                shared.setString("products", json.encode(list_of_products));
+                                                print("AFTER");
+                                                print(list_of_products);
                                               }
                                             }
                                             cart.deleteItemFromCart(index);
