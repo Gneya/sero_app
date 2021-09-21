@@ -8,6 +8,7 @@ import 'package:flutter_nav_bar/selectable.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
 import 'package:flutter_nav_bar/utsav/edit_item.dart';
 import 'package:flutter_nav_bar/utsav/notification.dart';
+import 'package:flutter_nav_bar/utsav/payTab.dart';
 import 'package:flutter_nav_bar/utsav/payment_screen.dart';
 import 'package:flutter_nav_bar/utsav/resume_screen.dart';
 import 'package:flutter_nav_bar/utsav/void.dart';
@@ -388,7 +389,7 @@ class _TabScreenState extends State<TabScreen> {
             itemCount: _datalist.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(child:Container(
-                height: MediaQuery.of(context).size.height/10,
+                height: MediaQuery.of(context).size.height/16,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     color: Colors.white,
@@ -419,7 +420,7 @@ class _TabScreenState extends State<TabScreen> {
                         child:Text(_datalist[index].toString().toUpperCase(),
                             softWrap: true,
                             textAlign: TextAlign.center,
-                            style: GoogleFonts.ptSans(color: Color(0xff707070),fontSize: 16,fontWeight: FontWeight.bold))),
+                            style: GoogleFonts.ptSans(color: Color(0xff707070),fontSize: 13,fontWeight: FontWeight.bold))),
                   ],
                 ),
 
@@ -663,9 +664,15 @@ class _TabScreenState extends State<TabScreen> {
                                         width: MediaQuery.of(context).size.width/8,
                                         child: Padding(
                                           padding: const EdgeInsets.only(left: 0),
-                                          child: Text(cart.cartItem[index].productName.toString(),
+                                          child: cart.cartItem[index].productName.toString().length > 19?
+                                          Text(cart.cartItem[index].productName.toString().substring(0,18),
                                             style: GoogleFonts.ptSans(
-                                                fontSize: 15,
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                          ): Text(cart.cartItem[index].productName.toString(),
+                                            style: GoogleFonts.ptSans(
+                                                fontSize: 13,
                                                 fontWeight: FontWeight.bold
                                             ),
                                           ),
@@ -940,8 +947,6 @@ class _TabScreenState extends State<TabScreen> {
                           ]
                         }
                       ]
-
-
                     };
                     print(json.encode(api));
 
@@ -996,7 +1001,7 @@ class _TabScreenState extends State<TabScreen> {
                     shared.setDouble("balance",paymentAmount);
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => PaymentScreen(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
+                      MaterialPageRoute(builder: (context) => PayTab(Ammount: paymentAmount, Balance:paymentAmount ,Discountt: discount, Redeem: points,)),
                     );
                     print(paymentAmount);
                     // Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
@@ -1037,7 +1042,7 @@ class _TabScreenState extends State<TabScreen> {
       for(int i=0;i<products.length;i++)
       {
         setState(() {
-          paymentAmount+=double.parse(products[i]["total"].toString());
+          paymentAmount+=double.parse(products[i]["total"]);
         });
       }
 
