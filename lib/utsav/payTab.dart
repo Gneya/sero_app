@@ -248,11 +248,11 @@ class _PayTabState extends State<PayTab> {
   Widget selectPaymentMode(){
     if(isClicked1 ==true){
       return Container(
-        height: 385 ,
+        height: height ,
         color:Colors.white,
         width: width/3,
         child: Padding(
-          padding: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.only(top: 60,bottom: 60),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -270,7 +270,6 @@ class _PayTabState extends State<PayTab> {
                 ),
                 Column(
                   children: [
-
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Row(
@@ -507,8 +506,6 @@ class _PayTabState extends State<PayTab> {
         ),
       );
     }
-
-
     else if(isClicked2==true){
       return  Container(
           height: 320 ,
@@ -964,7 +961,6 @@ class _PayTabState extends State<PayTab> {
         ),
         automaticallyImplyLeading: false,
         flexibleSpace:  Column(
-
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
@@ -988,11 +984,12 @@ class _PayTabState extends State<PayTab> {
                       spreadRadius: 0.0,
                     ),],
                 ),
-                height:145,
+                height:100,
                 child:Padding(
                   padding: const EdgeInsets.only(top:25),
                   child: Column(
-                    children:[Row(
+                    children:[
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -1002,7 +999,183 @@ class _PayTabState extends State<PayTab> {
                             onPressed: () {
                             },
                           ),
-                          Text(table_name,style: GoogleFonts.ptSans(color: Colors.black,fontSize: 18)),
+                          Container(
+                            padding: EdgeInsets.only(top: 0),
+                            //width: MediaQuery.of(context).size.width,
+                            child:  Padding(
+                              padding: const EdgeInsets.only(top: 0,),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    children: [
+                                      OutlineButton(
+                                        onPressed: () async {
+                                          var cart=FlutterCart();
+                                          SharedPreferences shared = await SharedPreferences.getInstance();
+                                          final _dialog=await showDialog(
+                                              context: context,
+                                              builder: (context){
+                                                return Discount(Ammount: widget.Ammount, Balance:balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                              }
+                                          );
+                                          if(_dialog) {
+                                            print("Inside if");
+                                            setState(() {
+                                              balance =shared.getDouble("Balance")!;
+                                              amount=shared.getDouble("Ammount")!;
+                                              discountt=shared.getDouble("Discountt")!;
+                                              discount_type = shared.getString("DiscountType")!;
+                                              print("ddddddddddddddddddddddd"+discount_type);
+                                              // redeemPoint =shared.getInt("Redeemed Points")!;
+                                              // print(redeemPoint);
+                                              print("PRINT:" + balance.toString());
+                                            });
+                                          }
+
+                                        },
+                                        highlightedBorderColor: Colors.black87,
+                                        textColor: Colors.black87,
+                                        // splashColor: isClickedButton? Colors.white : Color(0xFFFFD45F),
+                                        child: Icon(
+                                          Icons.sell_outlined,
+                                          size: 20,
+                                        ),
+                                        padding: EdgeInsets.all(13),
+                                        shape: CircleBorder(),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 2),
+                                        child: Text('Discount',
+                                          style: GoogleFonts.ptSans(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13
+                                          ),),
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      OutlineButton(
+                                        onPressed: () async {
+                                          showDialog(
+                                              context: context,
+                                              builder: (context){
+                                                return SplitPay( Balance: balance,);
+                                              }
+                                          );
+                                        },
+                                        highlightedBorderColor: Colors.black87,
+                                        textColor: Colors.black87,
+                                        child: Icon(
+                                          Icons.safety_divider,
+                                          size: 20,
+                                        ),
+                                        padding: EdgeInsets.all(13),
+                                        shape: CircleBorder(),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 2),
+                                        child: Text('Split',
+                                          style: GoogleFonts.ptSans(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13
+                                          ),),
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      OutlineButton(
+                                        onPressed: ()  async {
+                                          SharedPreferences shared = await SharedPreferences.getInstance();
+                                          final _dialog = await showDialog(
+                                              context: context,
+                                              builder: (context){
+                                                return RedeemPoint(Ammount: widget.Ammount, Balance:balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                              }
+                                          );
+                                          if(_dialog) {
+                                            print("Inside if");
+                                            setState(() {
+                                              balance =shared.getDouble("Balance")!;
+                                              amount=shared.getDouble("Ammount")!;
+                                              // discountt=shared.getDouble("Discountt")!;
+                                              // discount_type = shared.getString("DiscountType")!;
+                                              print("ddddddddddddddddddddddd"+redeemPoint!.toString());
+                                              redeemPoint =shared.getInt("Redeemed Points")!;
+                                              print(redeemPoint);
+                                              print("PRINT:" + balance.toString());
+                                            });
+                                          }
+                                        },
+                                        highlightedBorderColor: Colors.black87,
+                                        textColor: Colors.black87,
+                                        child: Icon(
+                                          Icons.redeem_rounded,
+                                          size: 20,
+                                        ),
+                                        padding: EdgeInsets.all(13),
+                                        shape: CircleBorder(),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 2),
+                                        child: Text('Points',
+                                          style: GoogleFonts.ptSans(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13
+                                          ),),
+                                      )
+                                    ],
+                                  ),
+                                  Column(
+                                    children: [
+                                      OutlineButton(
+                                        onPressed: () async {
+                                          SharedPreferences shared = await SharedPreferences.getInstance();
+                                          final _dialog=await showDialog(
+                                              context: context,
+                                              builder: (context){
+                                                return Shipping(Ammount: widget.Ammount, Balance: balance,
+                                                  Discountt: widget.Discountt, Redeem: widget.Redeem,);
+                                              }
+                                          );
+                                          if(_dialog) {
+                                            print("Inside if");
+                                            setState(() {
+                                              balance =shared.getDouble("Balance")!;
+                                              amount=shared.getDouble("Ammount")!;
+                                              // redeemPoint =shared.getInt("Redeemed Points")!;
+                                              // print(redeemPoint);
+                                              shipping_charge =shared.getDouble("Shipping")!;
+                                              print(shipping_charge);
+                                              print("PRINT:" + balance.toString());
+                                            });
+                                          }
+                                        },
+                                        highlightedBorderColor: Colors.black87,
+                                        textColor: Colors.black87,
+                                        child: Icon(
+                                          Icons.local_shipping,
+                                          size: 20,
+                                        ),
+                                        padding: EdgeInsets.all(13),
+                                        shape: CircleBorder(),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 2),
+                                        child: Text('Shipping',
+                                          style: GoogleFonts.ptSans(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13
+                                          ),),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
                           Row(
                             children: [
                               Container(
@@ -1025,299 +1198,121 @@ class _PayTabState extends State<PayTab> {
                             ],
                           ),
                         ]),
-                      Container(
-                        padding: EdgeInsets.only(top: 0),
-                        //width: MediaQuery.of(context).size.width,
-                        child:  Padding(
-                          padding: const EdgeInsets.only(top: 0,),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Column(
-                                children: [
-                                  OutlineButton(
-                                    onPressed: () async {
-                                      var cart=FlutterCart();
-                                      SharedPreferences shared = await SharedPreferences.getInstance();
-                                      final _dialog=await showDialog(
-                                          context: context,
-                                          builder: (context){
-                                            return Discount(Ammount: widget.Ammount, Balance:balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
-                                          }
-                                      );
-                                      if(_dialog) {
-                                        print("Inside if");
-                                        setState(() {
-                                          balance =shared.getDouble("Balance")!;
-                                          amount=shared.getDouble("Ammount")!;
-                                          discountt=shared.getDouble("Discountt")!;
-                                          discount_type = shared.getString("DiscountType")!;
-                                          print("ddddddddddddddddddddddd"+discount_type);
-                                          // redeemPoint =shared.getInt("Redeemed Points")!;
-                                          // print(redeemPoint);
-                                          print("PRINT:" + balance.toString());
-                                        });
-                                      }
 
-                                    },
-                                    highlightedBorderColor: Colors.black87,
-                                    textColor: Colors.black87,
-                                    // splashColor: isClickedButton? Colors.white : Color(0xFFFFD45F),
-                                    child: Icon(
-                                      Icons.sell_outlined,
-                                      size: 20,
-                                    ),
-                                    padding: EdgeInsets.all(13),
-                                    shape: CircleBorder(),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 2),
-                                    child: Text('Discount',
-                                      style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13
-                                      ),),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  OutlineButton(
-                                    onPressed: () async {
-                                      showDialog(
-                                          context: context,
-                                          builder: (context){
-                                            return SplitPay( Balance: balance,);
-                                          }
-                                      );
-                                    },
-                                    highlightedBorderColor: Colors.black87,
-                                    textColor: Colors.black87,
-                                    child: Icon(
-                                      Icons.safety_divider,
-                                      size: 20,
-                                    ),
-                                    padding: EdgeInsets.all(13),
-                                    shape: CircleBorder(),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 2),
-                                    child: Text('Split',
-                                      style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13
-                                      ),),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  OutlineButton(
-                                    onPressed: ()  async {
-                                      SharedPreferences shared = await SharedPreferences.getInstance();
-                                      final _dialog = await showDialog(
-                                          context: context,
-                                          builder: (context){
-                                            return RedeemPoint(Ammount: widget.Ammount, Balance:balance , Discountt: widget.Discountt, Redeem: widget.Redeem,);
-                                          }
-                                      );
-                                      if(_dialog) {
-                                        print("Inside if");
-                                        setState(() {
-                                          balance =shared.getDouble("Balance")!;
-                                          amount=shared.getDouble("Ammount")!;
-                                          // discountt=shared.getDouble("Discountt")!;
-                                          // discount_type = shared.getString("DiscountType")!;
-                                          print("ddddddddddddddddddddddd"+redeemPoint!.toString());
-                                          redeemPoint =shared.getInt("Redeemed Points")!;
-                                          print(redeemPoint);
-                                          print("PRINT:" + balance.toString());
-                                        });
-                                      }
-                                    },
-                                    highlightedBorderColor: Colors.black87,
-                                    textColor: Colors.black87,
-                                    child: Icon(
-                                      Icons.redeem_rounded,
-                                      size: 20,
-                                    ),
-                                    padding: EdgeInsets.all(13),
-                                    shape: CircleBorder(),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 2),
-                                    child: Text('Points',
-                                      style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13
-                                      ),),
-                                  )
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  OutlineButton(
-                                    onPressed: () async {
-                                      SharedPreferences shared = await SharedPreferences.getInstance();
-                                      final _dialog=await showDialog(
-                                          context: context,
-                                          builder: (context){
-                                            return Shipping(Ammount: widget.Ammount, Balance: balance,
-                                              Discountt: widget.Discountt, Redeem: widget.Redeem,);
-                                          }
-                                      );
-                                      if(_dialog) {
-                                        print("Inside if");
-                                        setState(() {
-                                          balance =shared.getDouble("Balance")!;
-                                          amount=shared.getDouble("Ammount")!;
-                                          // redeemPoint =shared.getInt("Redeemed Points")!;
-                                          // print(redeemPoint);
-                                          shipping_charge =shared.getDouble("Shipping")!;
-                                          print(shipping_charge);
-                                          print("PRINT:" + balance.toString());
-                                        });
-                                      }
-                                    },
-                                    highlightedBorderColor: Colors.black87,
-                                    textColor: Colors.black87,
-                                    child: Icon(
-                                      Icons.local_shipping,
-                                      size: 20,
-                                    ),
-                                    padding: EdgeInsets.all(13),
-                                    shape: CircleBorder(),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 2),
-                                    child: Text('Shipping',
-                                      style: GoogleFonts.ptSans(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13
-                                      ),),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
                     ],
                   ),
                 ),
               ),
             ]
         ),
-        toolbarHeight: 135,
+        toolbarHeight: 80,
         backgroundColor: Colors.white,
       ),
-      body:_isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),)): Container(
+      body:_isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),)):
+      Container(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 40),
+                padding: const EdgeInsets.only(top: 60),
                 child: Container(
                   height: height,
                   width: width/3.3,
                   color:Colors.white54,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 16),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('PAYMENT MODE',
-                                style: GoogleFonts.ptSans(
-                                    fontSize: 18,fontWeight: FontWeight.bold)
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 8),
-                          child: Container(
-                            alignment: Alignment.topCenter,
-                            height: paymentMethod.length*40,
-                            child:  SingleChildScrollView(
-                              child: Wrap(
-                                children: paymentMethod.map((f) => GestureDetector(
-                                  child: Container(
-                                    constraints: BoxConstraints(
-                                        minHeight: 50,
-                                        minWidth: 80,
-                                        maxHeight: 50,
-                                        maxWidth: 80),
-                                    padding: EdgeInsets.all(10),
-                                    margin: EdgeInsets.only(
-                                        left: 5.0, right: 5.0, top: 10.0, bottom: 10.0),
-                                    decoration: BoxDecoration(
-                                      color:  func(f) ?Color(0xFFFFD45F):Colors.white ,
-                                      borderRadius: BorderRadius.circular(35),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.grey,
-                                          offset: const Offset(
-                                            1.0,
-                                            1.0,
-                                          ), //Offset
-                                          blurRadius: 6.0,
-                                          spreadRadius: 2.0,
-                                        ), //BoxShadow
-                                        BoxShadow(
-                                          color: Colors.white,
-                                          offset: const Offset(0.0, 0.0),
-                                          blurRadius: 0.0,
-                                          spreadRadius: 0.0,
-                                        ),],
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('PAYMENT MODE',
+                              style: GoogleFonts.ptSans(
+                                  fontSize: 18,fontWeight: FontWeight.bold)
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Container(
+                          alignment: Alignment.topCenter,
+                          height: paymentMethod.length*40,
+                          child:  SingleChildScrollView(
+                            child: Wrap(
+                              children: paymentMethod.map((f) => GestureDetector(
+                                child: Container(
+                                  constraints: BoxConstraints(
+                                      minHeight: 50,
+                                      minWidth: 80,
+                                      maxHeight: 50,
+                                      maxWidth: 80),
+                                  padding: EdgeInsets.all(10),
+                                  margin: EdgeInsets.only(
+                                      left: 5.0, right: 5.0, top: 10.0, bottom: 10.0),
+                                  decoration: BoxDecoration(
+                                    color:  func(f) ?Color(0xFFFFD45F):Colors.white ,
+                                    borderRadius: BorderRadius.circular(35),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: const Offset(
+                                          1.0,
+                                          1.0,
+                                        ), //Offset
+                                        blurRadius: 6.0,
+                                        spreadRadius: 2.0,
+                                      ), //BoxShadow
+                                      BoxShadow(
+                                        color: Colors.white,
+                                        offset: const Offset(0.0, 0.0),
+                                        blurRadius: 0.0,
+                                        spreadRadius: 0.0,
+                                      ),],
+                                  ),
+                                  child: f.length>6 ?
+                                  Center(
+                                    child: Text(f.substring(0,6),
+                                      style: GoogleFonts.ptSans(
+                                        fontWeight:FontWeight.w600,
+                                        fontSize: 18,
+                                      ),
                                     ),
-                                    child: f.length>6 ?
-                                    Center(
-                                      child: Text(f.substring(0,6),
-                                        style: GoogleFonts.ptSans(
-                                          fontWeight:FontWeight.w600,
-                                          fontSize: 18,
-                                        ),
+                                  ):
+                                  Center(
+                                    child: Text(
+                                      f,
+                                      style: GoogleFonts.ptSans(
+                                        fontWeight:FontWeight.w600,
+                                        fontSize: 18,
                                       ),
-                                    ):
-                                    Center(
-                                      child: Text(
-                                        f,
-                                        style: GoogleFonts.ptSans(
-                                          fontWeight:FontWeight.w600,
-                                          fontSize: 18,
-                                        ),
 
-                                      ),
                                     ),
                                   ),
-                                  onTap: () {
-                                    int res=0;
-                                    for(int i=0;i<paymentMethod.length;i++)
+                                ),
+                                onTap: () {
+                                  int res=0;
+                                  for(int i=0;i<paymentMethod.length;i++)
+                                  {
+                                    if(paymentMethod[i]==f)
                                     {
-                                      if(paymentMethod[i]==f)
-                                      {
-                                        isclicked[i]=true;
-                                        res=i;
-                                        flag=true;
-                                      }
-                                      else
-                                      {
-                                        isclicked[i]=false;
-                                        flag=false;
-                                      }
-                                      print("METHODS");
+                                      isclicked[i]=true;
+                                      res=i;
+                                      flag=true;
                                     }
-                                    select(f);
-                                  },
-                                ))
-                                    .toList(),
-                              ),
+                                    else
+                                    {
+                                      isclicked[i]=false;
+                                      flag=false;
+                                    }
+                                    print("METHODS");
+                                  }
+                                  select(f);
+                                },
+                              ))
+                                  .toList(),
                             ),
                           ),
-                        ) ],
-                    ),
+                        ),
+                      ) ],
                   ),
                 ),
               ),
@@ -1332,39 +1327,8 @@ class _PayTabState extends State<PayTab> {
                 height: height,
                 width: width/3.3,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    // Row(
-                    //   mainAxisAlignment: MainAxisAlignment.center,
-                    //   children: [
-                    //     Checkbox(
-                    //       value: this.isEnabled,
-                    //       activeColor: Color(0xFFFFD45F),
-                    //       onChanged: (value) {
-                    //         setState(() {
-                    //           if(isClicked2==true)
-                    //           {
-                    //             if( _Key.currentState!.validate())
-                    //             {
-                    //               this.isEnabled = value!;
-                    //               totalAmount();
-                    //             }
-                    //           }
-                    //           else if(isClicked1 ==true){
-                    //             // if( _Key.currentState!.validate())
-                    //             {
-                    //               this.isEnabled = value!;
-                    //               totalAmount();
-                    //             }
-                    //           }
-                    //         }
-                    //         );
-                    //       },
-                    //     ),
-                    //     Text(
-                    //       'Continue',
-                    //     )
-                    //   ],
-                    // ),
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: Row(
@@ -1768,7 +1732,6 @@ class _PayTabState extends State<PayTab> {
                   ],
                 ),
               ),
-
             ],
           ),
       ),

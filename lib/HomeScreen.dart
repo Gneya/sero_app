@@ -42,17 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
   List<int> types_of_service_id=[];
   List<String> types_of_service_name=[];
   String hint="Walk In Customer";
-  final List<String> _suggestions = [
-    'Alligator',
-    'Buffalo',
-    'Chicken',
-    'Dog',
-    'Eagle',
-    'Frog'
-  ];
 
   final TextEditingController _typeAheadController = TextEditingController();
-  String _selectedCity="";
   fetch()
   async {
     print("round"+(3.4).round().toString());
@@ -290,212 +281,220 @@ class _HomeScreenState extends State<HomeScreen> {
       body:  _isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),)):Padding(
         padding: const EdgeInsets.only(left: 25,right: 25),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              SizedBox(
-                height: 60.0,
-              ),
-              Text(
-                  _name,
-                  style:GoogleFonts.ptSans(fontSize: 22)),
-              SizedBox(
-                height: 30,
-              ),
-              Material(
-                  elevation: 10.0,
-                  borderRadius: BorderRadius.circular(30.0),
-                  color: const Color(0xFFFFD45F),
-                  child: MaterialButton(
-                    minWidth: MediaQuery.of(context).size.width,
-                    padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-                    onPressed: () {},
-                    child: Container(
-                        padding: EdgeInsets.all(5),
-                        height: MediaQuery.of(context).size.height/22,
-                        child:TypeAheadField<Customer>(
-                          textFieldConfiguration: TextFieldConfiguration(
-                              controller: _typeAheadController,
-                              textAlign: TextAlign.center,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                hintText: hint,
-                                suffixIcon: IconButton(
-                                  icon:Icon(Icons.person_add_rounded),
-                                  padding: EdgeInsets.zero,
-                                  color: Colors.black,
-                                  onPressed:(){
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => PersonalDetails()));
-                                  } ,
-                                ),
-                                prefixIcon:  IconButton(
-                                  padding: EdgeInsets.zero,
-                                  icon:Icon(Icons.search),
-                                  color: Colors.black,
-                                  onPressed:(){} ,
-                                ),
-                              )
-                          ),
-                          itemBuilder: (BuildContext context,Customer? suggestion) {
-                            final content=suggestion!;
-                            return ListTile(
-                              title: Text(content._name+"  ("+content._phone+")"),
-                            );
-                          },
-                          onSuggestionSelected: (Customer? suggestion) async {
-                            hint=suggestion!._name;
-                            id=suggestion.id;
-                            print("ID IS:$id");
-                            _typeAheadController.text=suggestion._name;
-                            Fluttertoast.showToast(
-                                msg:suggestion._name+" is selected",
-                                toastLength: Toast.LENGTH_LONG,
-                                gravity: ToastGravity.BOTTOM,
-                                textColor: Colors.green,
-                                timeInSecForIosWeb: 10);
-                            SharedPreferences prefs= await SharedPreferences.getInstance();
-                            print(prefs.getString("customer_name"));
-                            prefs.setString("customer_name",suggestion._name);
-                            prefs.setString("customer_id",suggestion.id);
-                          },
-                          suggestionsCallback: CustomerApi.getUserSuggestion,
-                        )
-
-                    ),
-                  )),
-              SizedBox(
-                height: 40,
-              ),
-              Text('Select Mode',style: GoogleFonts.ptSans(fontSize: 22),),
-              SizedBox(
-                height: 30,
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height/3,
-                child: ListView.builder(
-                    itemCount: types_of_service_id.length,
-                    itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                    margin: EdgeInsets.only(top: 10,bottom: 10),
-                    height: MediaQuery.of(context).size.height/12,
-                    padding: EdgeInsets.only(left: 20,right: 20),
-                    child: Material(
-                      elevation: 5.0,
+          child: Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                SizedBox(
+                  height: 60.0,
+                ),
+                Text(
+                    _name,
+                    style:GoogleFonts.ptSans(fontSize: 22)),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  width:MediaQuery.of(context).size.width < 650 ? MediaQuery.of(context).size.width
+                  : MediaQuery.of(context).size.width/2.3,
+                  child: Material(
+                      elevation: 10.0,
                       borderRadius: BorderRadius.circular(30.0),
-                      color: Colors.white,
+                      color: const Color(0xFFFFD45F),
                       child: MaterialButton(
                         minWidth: MediaQuery.of(context).size.width,
-                        padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
-                        onPressed: () async {
-                          // Phoenix.rebirth(context);
-                          if(types_of_service_id[index]==1){
-                          SharedPreferences shared=await SharedPreferences.getInstance();
-                          shared.setInt("types_of_service_id",1);
-                          if(shared.getString("customer_name")=="")
-                          {
-                            shared.setString("customer_name", "Walk-In Customer");
-                            shared.setString("customer_id","1");
-                            shared.setInt("types_of_service_id",1);
-                          }
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SelectTable()));
-                        }
-                          else if(types_of_service_id[index]==2){
+                        padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                        onPressed: () {},
+                        child: Container(
+                            padding: EdgeInsets.all(5),
+                            height: MediaQuery.of(context).size.height/22,
+                            child:TypeAheadField<Customer>(
+                              textFieldConfiguration: TextFieldConfiguration(
+                                  controller: _typeAheadController,
+                                  textAlign: TextAlign.center,
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: hint,
+                                    suffixIcon: IconButton(
+                                      icon:Icon(Icons.person_add_rounded),
+                                      padding: EdgeInsets.zero,
+                                      color: Colors.black,
+                                      onPressed:(){
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => PersonalDetails()));
+                                      } ,
+                                    ),
+                                    prefixIcon:  IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon:Icon(Icons.search),
+                                      color: Colors.black,
+                                      onPressed:(){} ,
+                                    ),
+                                  )
+                              ),
+                              itemBuilder: (BuildContext context,Customer? suggestion) {
+                                final content=suggestion!;
+                                return ListTile(
+                                  title: Text(content._name+"  ("+content._phone+")"),
+                                );
+                              },
+                              onSuggestionSelected: (Customer? suggestion) async {
+                                hint=suggestion!._name;
+                                id=suggestion.id;
+                                print("ID IS:$id");
+                                _typeAheadController.text=suggestion._name;
+                                Fluttertoast.showToast(
+                                    msg:suggestion._name+" is selected",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.BOTTOM,
+                                    textColor: Colors.green,
+                                    timeInSecForIosWeb: 10);
+                                SharedPreferences prefs= await SharedPreferences.getInstance();
+                                print(prefs.getString("customer_name"));
+                                prefs.setString("customer_name",suggestion._name);
+                                prefs.setString("customer_id",suggestion.id);
+                              },
+                              suggestionsCallback: CustomerApi.getUserSuggestion,
+                            )
+
+                        ),
+                      )),
+                ),
+                SizedBox(
+                  height: 40,
+                ),
+                Text('Select Mode',style: GoogleFonts.ptSans(fontSize: 22),),
+                SizedBox(
+                  height: 30,
+                ),
+                Container(
+                  width:MediaQuery.of(context).size.width < 650 ? MediaQuery.of(context).size.width
+                      : MediaQuery.of(context).size.width/2.3,
+                  height: MediaQuery.of(context).size.height/3,
+                  child: ListView.builder(
+                      itemCount: types_of_service_id.length,
+                      itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      margin: EdgeInsets.only(top: 10,bottom: 10),
+                      height: MediaQuery.of(context).size.height/12,
+                      padding: EdgeInsets.only(left: 20,right: 20),
+                      child: Material(
+                        elevation: 5.0,
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: Colors.white,
+                        child: MaterialButton(
+                          minWidth: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
+                          onPressed: () async {
+                            // Phoenix.rebirth(context);
+                            if(types_of_service_id[index]==1){
                             SharedPreferences shared=await SharedPreferences.getInstance();
-                            // Navigator.push(
-                            //     context,
-                            //     MaterialPageRoute(
-                            //         builder: (context) => CategoryScreen()));
-                            shared.setInt("types_of_service_id",2);
+                            shared.setInt("types_of_service_id",1);
                             if(shared.getString("customer_name")=="")
                             {
                               shared.setString("customer_name", "Walk-In Customer");
                               shared.setString("customer_id","1");
+                              shared.setInt("types_of_service_id",1);
                             }
-                            shared.setInt("index", 1);
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SelectTable()));
                           }
-                          else if(types_of_service_id==3)
-                            {
-                              print(id);
+                            else if(types_of_service_id[index]==2){
                               SharedPreferences shared=await SharedPreferences.getInstance();
-                              if(id!="0") {
-                                shared.setInt("types_of_service_id",3);
-                                setState(() {
-                                  _isloading=true;
-                                });
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) => CategoryScreen()));
+                              shared.setInt("types_of_service_id",2);
+                              if(shared.getString("customer_name")=="")
+                              {
+                                shared.setString("customer_name", "Walk-In Customer");
+                                shared.setString("customer_id","1");
+                              }
+                              shared.setInt("index", 1);
+                            }
+                            else if(types_of_service_id==3)
+                              {
                                 print(id);
-                                shared.setInt("types_of_service_id", 3);
-                                var response = await http.get(
-                                    Uri.parse(
-                                        "https://seropos.app/connector/api/contactapi/$id"),
-                                    headers: {
-                                      'Authorization': shared.getString(
-                                          "Authorization") ?? ""
-                                    });
-                                print(json.decode(response.body));
-                                final d = json.decode(response.body)["data"][0];
-                                print(d);
-                                var fname = d["first_name"];
-                                var mname = d["middle_name"];
-                                var lname = d["last_name"];
-                                var email_id = d["email"];
-                                var phone = d["mobile"];
-                                var city = d["city"];
-                                var state = d["state"];
-                                var country = d["country"];
-                                var address = d["address_line_1"] ??
-                                    d["address_line_2"];
-                                var dob = d["dob"];
-                                if (address == null) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              edit_customer(id: id,
-                                                  fname: fname,
-                                                  mname: mname,
-                                                  lname: lname,
-                                                  email_id: email_id,
-                                                  phone: phone,
-                                                  city: city,
-                                                  state: state,
-                                                  country: country,
-                                                  dob: dob)));
+                                SharedPreferences shared=await SharedPreferences.getInstance();
+                                if(id!="0") {
+                                  shared.setInt("types_of_service_id",3);
                                   setState(() {
-                                    _isloading = false;
+                                    _isloading=true;
+                                  });
+                                  print(id);
+                                  shared.setInt("types_of_service_id", 3);
+                                  var response = await http.get(
+                                      Uri.parse(
+                                          "https://seropos.app/connector/api/contactapi/$id"),
+                                      headers: {
+                                        'Authorization': shared.getString(
+                                            "Authorization") ?? ""
+                                      });
+                                  print(json.decode(response.body));
+                                  final d = json.decode(response.body)["data"][0];
+                                  print(d);
+                                  var fname = d["first_name"];
+                                  var mname = d["middle_name"];
+                                  var lname = d["last_name"];
+                                  var email_id = d["email"];
+                                  var phone = d["mobile"];
+                                  var city = d["city"];
+                                  var state = d["state"];
+                                  var country = d["country"];
+                                  var address = d["address_line_1"] ??
+                                      d["address_line_2"];
+                                  var dob = d["dob"];
+                                  if (address == null) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                edit_customer(id: id,
+                                                    fname: fname,
+                                                    mname: mname,
+                                                    lname: lname,
+                                                    email_id: email_id,
+                                                    phone: phone,
+                                                    city: city,
+                                                    state: state,
+                                                    country: country,
+                                                    dob: dob)));
+                                    setState(() {
+                                      _isloading = false;
+                                    });
+                                  }
+                                  else {
+                                    SharedPreferences share = await SharedPreferences
+                                        .getInstance();
+                                    share.setInt("index", 1);
+                                  }
+
+                                  setState(() {
+                                    _isloading=false;
                                   });
                                 }
-                                else {
-                                  SharedPreferences share = await SharedPreferences
-                                      .getInstance();
-                                  share.setInt("index", 1);
-                                }
-
-                                setState(() {
-                                  _isloading=false;
-                                });
                               }
-                            }
-                          else{}
-                          },
-                        child: Text(types_of_service_name[index],
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.ptSans(fontSize: 18)),
+                            else{}
+                            },
+                          child: Text(types_of_service_name[index],
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.ptSans(fontSize: 18)),
+                        ),
                       ),
-                    ),
-                  );
-                } ),
-              ),
+                    );
+                  } ),
+                ),
 
 
 
-            ],
+              ],
+            ),
           ),
         ),
       ),

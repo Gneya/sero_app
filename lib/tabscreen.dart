@@ -383,13 +383,14 @@ class _TabScreenState extends State<TabScreen> {
               child:Center(
                 child://No search found then
             Container(
-            padding: EdgeInsets.only(top: 10,bottom:10),
+              width: MediaQuery.of(context).size.width/5 ,
+            padding: EdgeInsets.only(top: 10,bottom:8),
         child:Center(
           child:ListView.builder(
             itemCount: _datalist.length,
             itemBuilder: (BuildContext context, int index) {
               return GestureDetector(child:Container(
-                height: MediaQuery.of(context).size.height/16,
+                height: MediaQuery.of(context).size.height/18,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     color: Colors.white,
@@ -397,16 +398,16 @@ class _TabScreenState extends State<TabScreen> {
                       BoxShadow(
                         color: Colors.grey,
                         offset: const Offset(
-                          2.0,
-                          2.0,
+                          0.0,
+                          1.0,
                         ),
-                        blurRadius: 2.0,
-                        spreadRadius: 1.0,
+                        blurRadius: 1.0,
+                        spreadRadius: 0.9,
                       ),
                     ]//BoxShadow
                 ),
                 margin: EdgeInsets.only(top: 10,bottom:10),
-                width: MediaQuery.of(context).size.width/1.5,
+
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -1112,7 +1113,6 @@ class CustomerApi {
     return name;
   }
 }
-
 class product
 {
   final String id;
