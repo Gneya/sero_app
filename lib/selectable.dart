@@ -290,10 +290,11 @@ class _SelectTableState extends State<SelectTable> {
                 if(cart.getCartItemCount()!=0){
                   sharedPreferences.setInt("index", 2);
                 }
-
-                setState(() {
-                  _isloading=false;
-                });
+                if (!mounted) {
+                  setState(() {
+                    _isloading = false;
+                  });
+                }
               }else{
                 // String myUrl = "https://seropos.app/connector/api/change-table-status";
                 // http.Response response = await http.post(Uri.parse(myUrl), headers: {

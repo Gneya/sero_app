@@ -252,7 +252,7 @@ class _PayTabState extends State<PayTab> {
         color:Colors.white,
         width: width/3,
         child: Padding(
-          padding: const EdgeInsets.only(top: 60,bottom: 60),
+          padding: const EdgeInsets.only(top: 30,bottom: 60),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -1209,531 +1209,542 @@ class _PayTabState extends State<PayTab> {
         backgroundColor: Colors.white,
       ),
       body:_isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),)):
-      Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 60),
-                child: Container(
-                  height: height,
-                  width: width/3.3,
-                  color:Colors.white54,
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
+      SingleChildScrollView(
+        child: Container(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: Container(
+                    height: height,
+                    width: width/3.3,
+                    color:Colors.white54,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Column(
                         children: [
-                          Text('PAYMENT MODE',
-                              style: GoogleFonts.ptSans(
-                                  fontSize: 18,fontWeight: FontWeight.bold)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('PAYMENT MODE',
+                                  style: GoogleFonts.ptSans(
+                                      fontSize: 18,fontWeight: FontWeight.bold)
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 8),
-                        child: Container(
-                          alignment: Alignment.topCenter,
-                          height: paymentMethod.length*40,
-                          child:  SingleChildScrollView(
-                            child: Wrap(
-                              children: paymentMethod.map((f) => GestureDetector(
-                                child: Container(
-                                  constraints: BoxConstraints(
-                                      minHeight: 50,
-                                      minWidth: 80,
-                                      maxHeight: 50,
-                                      maxWidth: 80),
-                                  padding: EdgeInsets.all(10),
-                                  margin: EdgeInsets.only(
-                                      left: 5.0, right: 5.0, top: 10.0, bottom: 10.0),
-                                  decoration: BoxDecoration(
-                                    color:  func(f) ?Color(0xFFFFD45F):Colors.white ,
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                  ),
-                                  child: f.length>6 ?
-                                  Center(
-                                    child: Text(f.substring(0,6),
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
+                          Padding(
+                            padding: const EdgeInsets.only(top: 8),
+                            child: Container(
+                              alignment: Alignment.topCenter,
+                              height: paymentMethod.length*40,
+                              child:  SingleChildScrollView(
+                                child: Wrap(
+                                  children: paymentMethod.map((f) => GestureDetector(
+                                    child: Container(
+                                      constraints: BoxConstraints(
+                                          minHeight: 50,
+                                          minWidth: 80,
+                                          maxHeight: 50,
+                                          maxWidth: 80),
+                                      padding: EdgeInsets.all(10),
+                                      margin: EdgeInsets.only(
+                                          left: 5.0, right: 5.0, top: 10.0, bottom: 10.0),
+                                      decoration: BoxDecoration(
+                                        color:  func(f) ?Color(0xFFFFD45F):Colors.white ,
+                                        borderRadius: BorderRadius.circular(35),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            offset: const Offset(
+                                              1.0,
+                                              1.0,
+                                            ), //Offset
+                                            blurRadius: 6.0,
+                                            spreadRadius: 2.0,
+                                          ), //BoxShadow
+                                          BoxShadow(
+                                            color: Colors.white,
+                                            offset: const Offset(0.0, 0.0),
+                                            blurRadius: 0.0,
+                                            spreadRadius: 0.0,
+                                          ),],
                                       ),
-                                    ),
-                                  ):
-                                  Center(
-                                    child: Text(
-                                      f,
-                                      style: GoogleFonts.ptSans(
-                                        fontWeight:FontWeight.w600,
-                                        fontSize: 18,
-                                      ),
+                                      child: f.length>6 ?
+                                      Center(
+                                        child: Text(f.substring(0,6),
+                                          style: GoogleFonts.ptSans(
+                                            fontWeight:FontWeight.w600,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ):
+                                      Center(
+                                        child: Text(
+                                          f,
+                                          style: GoogleFonts.ptSans(
+                                            fontWeight:FontWeight.w600,
+                                            fontSize: 18,
+                                          ),
 
-                                    ),
-                                  ),
-                                ),
-                                onTap: () {
-                                  int res=0;
-                                  for(int i=0;i<paymentMethod.length;i++)
-                                  {
-                                    if(paymentMethod[i]==f)
-                                    {
-                                      isclicked[i]=true;
-                                      res=i;
-                                      flag=true;
-                                    }
-                                    else
-                                    {
-                                      isclicked[i]=false;
-                                      flag=false;
-                                    }
-                                    print("METHODS");
-                                  }
-                                  select(f);
-                                },
-                              ))
-                                  .toList(),
-                            ),
-                          ),
-                        ),
-                      ) ],
-                  ),
-                ),
-              ),
-              VerticalDivider(
-                thickness: 0.5,
-              ),
-              selectPaymentMode(),
-              VerticalDivider(
-                thickness: 0.5,
-              ),
-              Container(
-                height: height,
-                width: width/3.3,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(5.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 20,right: 20,top: 73),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 8,left: 8),
-                                    child: Text('Payment Amount',
-                                      style:GoogleFonts.ptSans(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400
-                                      ) ,),
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: MediaQuery.of(context).size.width,
-                                    child: TextFormField(
-                                      key:_Key,
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter Payment Amount';
-                                        }
-                                        return null;
-                                      },
-                                      enableInteractiveSelection: false,
-                                      //focusNode: new AlwaysDisabledFocusNode(),
-                                      controller: pay,
-                                      keyboardType:TextInputType.number,
-                                      decoration: InputDecoration(
-                                        hintText: "00.00",
-                                        hintStyle: GoogleFonts.ptSans(
-                                            fontWeight: FontWeight.bold
-                                        ),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: BorderSide(color:Colors.brown),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius: BorderRadius.circular(30),
-                                          borderSide: BorderSide(color:Colors.brown),
                                         ),
                                       ),
-                                      onFieldSubmitted: (value){
-                                        print("Hii");
-                                        setState(() {
-                                          print(pay.text);
-                                          change_return.text=(double.parse(pay.text)-balance).toStringAsFixed(2);
-                                          print(change_return.text);
-                                        });
-                                      },
                                     ),
-                                  ),
-                                ],
+                                    onTap: () {
+                                      int res=0;
+                                      for(int i=0;i<paymentMethod.length;i++)
+                                      {
+                                        if(paymentMethod[i]==f)
+                                        {
+                                          isclicked[i]=true;
+                                          res=i;
+                                          flag=true;
+                                        }
+                                        else
+                                        {
+                                          isclicked[i]=false;
+                                          flag=false;
+                                        }
+                                        print("METHODS");
+                                      }
+                                      select(f);
+                                    },
+                                  ))
+                                      .toList(),
+                                ),
                               ),
                             ),
-                          ),
-
-                        ],
+                          ) ],
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: InkWell(
-                              onTap:isEnabled ? () async {
-                                var dio=Dio();
-                                List<Map<String,dynamic>> list_of_m=[];
-                                SharedPreferences shared=await SharedPreferences.getInstance();
-                                List<dynamic> list_of_products=json.decode(shared.getString("products")!);
-                                var id = shared.getInt("table_id",);
-                                print("tttttttttaaabbbbbbbbbbbbbbbbbbbbllllllleeee");
-                                print(shared.getInt("table_id"));
-                                Map<String,dynamic> api1={
-                                  "table_id":id,
-                                  "table_status":"available"
-                                };
-                                dio.options.headers["Authorization"]=shared.getString("Authorization");
-                                var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
-                                print(r2);
-                                print(id);
-
-
-                                var variation=shared.getStringList("variation");
-                                var cart=FlutterCart();
-                                for(int index=0;index<cart.cartItem.length;index++)
-                                {
-                                  String note="";
-                                  int tax_id=0;
-                                  for(int i=0;i<list_of_products.length;i++)
-                                  {
-                                    if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
-                                    {
-                                      note=list_of_products[i]["note"]??"";
-                                      tax_id=list_of_products[i]["tax_id"]??0;
-                                      print(note);
-                                      break;
-                                    }
-                                  }
-                                  Map<String,dynamic> product={
-                                    "product_id":double.parse(cart.cartItem[index].productId.toString()),
-                                    "variation_id":double.parse(variation![index]),
-                                    "quantity": cart.cartItem[index].quantity,
-                                    "unit_price": cart.cartItem[index].unitPrice,
-                                    "tax_rate_id":tax_id,
-                                    "note":note??""
-                                  };
-                                  print(product);
-                                  list_of_m.add(product);
-                                  // print(list_of_m);
-                                }
-                                if(shared.containsKey("modifiers")){
-                                  if(shared.getString("modifiers")!="") {
-                                    List<dynamic> mod = json.decode(
-                                        shared.getString("modifiers") ?? "");
-                                    print(mod[0]);
-                                    for (int i = 0; i < mod.length; i++) {
-                                      list_of_m.add(mod[0]);
-                                    }
-                                  }
-                                }
-                                print(list_of_m);
-                                var sar =shared.getInt("types_of_service_id");
-                                var dar = shared.getString("DiscountType");
-                                var car = shared.getString("customer_name");
-                                print(car!*10);
-                                print (dar);
-                                var service_id=shared.getInt("types_of_service_id");
-                                print(service_id.toString()+"servvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv" );
-                                String typ_ser ;
-                                if(service_id == 3){
-                                  typ_ser = "ordered";
-                                }
-                                else{
-                                  typ_ser = "offline";
-                                }
-
-                                if(shared.getString("order_id")=="")
-                                {
-
-                                  Map<String,dynamic> api= {
-                                    "sells":[
-                                      {
-                                        "table_id" :shared.getInt("table_id")??null,
-                                        "location_id": shared.getInt("bid")??1,
-                                        "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                                        "discount_amount": shared.getDouble("Discountt_for_db")??0,
-                                        "discount_type": dar,
-                                        "rp_redeemed": shared.getInt("Redeemed Points"),
-                                        "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
-                                        // "shipping_details": null,
-                                        // "shipping_address": null,
-                                        // "shipping_status": null,
-                                        // "delivered_to": null,
-                                        "shipping_status":typ_ser,
-                                        "delivered_to":car,
-                                        "types_of_service_id":sar,
-                                        "is_suspend":0,
-                                        "shipping_charges": shared.getDouble("Shipping"),
-                                        "packing_charge":shared.getDouble("packing_charge")?? 0.0,
-                                        "products":list_of_m,
-                                        "tip":_tipController.text,
-                                        "change_return":double.parse(change_return.text),
-                                        "payments": [
-                                          {
-                                            "amount":double.parse(pay.text),
-                                            "method":shared.getString("method")
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  };
-                                  print(api);
-                                  var dio=Dio();
-                                  dio.options.headers["Authorization"]=shared.getString("Authorization");
-                                  var r=await dio.post("https://seropos.app/connector/api/sell",data: json.encode(api));
-                                  print(r.data);
-                                  // var y =r.data["id"];
-                                  var v=r.data[0]["invoice_no"];
-                                  print(v.toString());
-                                  shared.setString("order_id", v);
-                                  shared.setInt("index",0);
-                                  shared.setInt("PAY_HOLD",1);
-                                  shared.setDouble("Shipping", 0.0);
-                                  shared.setDouble("packing_charge", 0.0);
-                                  shared.setDouble("Discountt", 0.0);
-                                  cart.deleteAllCart();
-                                  shared.setString("total", "0");
-                                  Fluttertoast.showToast(
-                                      msg: "Payment Successful and Your Order Id is $v",
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.BOTTOM,
-                                      textColor: Colors.green,
-                                      timeInSecForIosWeb: 4);
-
-
-                                }
-                                else{
-                                  print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
-                                  Map<String,dynamic> driver={
-                                    "order_id":shared.getString("order_id"),
-                                    "driver_id":shared.getString("driver_id")
-                                  };
-                                  var dio=Dio();
-                                  dio.options.headers["Authorization"]=shared.getString("Authorization");
-                                  var r3=await dio.post("https://seropos.app/connector/api/assign-order",data: json.encode(driver));
-                                  print("order is assigned");
-                                  print(r3);
-                                  print(shared.getInt("Redeemed Points"));
-                                  Map<String,dynamic> api=
-                                  {
-                                    "sells":[
-                                      {
-                                        "table_id" :shared.getInt("table_id")??null,
-                                        "location_id": shared.getInt("bid")??1,
-                                        "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                                        "discount_amount": shared.getDouble("Discountt_for_db")??0,
-                                        "discount_type": dar,
-                                        "rp_redeemed": shared.getInt("Redeemed Points"),
-                                        "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
-                                        // "shipping_details": null,
-                                        // "shipping_address": null,
-                                        // "shipping_status": null,
-                                        // "delivered_to": null,
-                                        "shipping_status":typ_ser,
-                                        "delivered_to":car,
-                                        "types_of_service_id":sar,
-                                        "is_suspend":0,
-                                        "shipping_charges": shared.getDouble("Shipping"),
-                                        "packing_charge":shared.getDouble("packing_charge")?? 0.0,
-                                        "products":list_of_m,
-                                        "tip":_tipController.text,
-                                        "change_return":double.parse(change_return.text),
-                                        "payments": [
-                                          {
-                                            "amount":double.parse(pay.text),
-                                            "method":shared.getString("method")
-                                          }
-                                        ]
-                                      }
-                                    ]
-                                  };
-                                  print(json.encode(api));
-
-                                  var vid = shared.getString("order_id".toString());
-                                  dio.options.headers["Authorization"]=shared.getString("Authorization");
-                                  print(vid);
-                                  var r=await dio.put("https://seropos.app/connector/api/sell/$vid",data: json.encode(api));
-                                  print("hahah");
-                                  print(r.data);
-                                  var v=r.data["invoice_no"];
-                                  print(v);
-                                  shared.setString("order_id", v);
-                                  cart.deleteAllCart();
-                                  setState(() {
-                                    shared.setString("total","0");
-                                    shared.setInt("index", 0);
-                                    shared.setInt("PAY_HOLD",1);
-                                    shared.setDouble("Shipping", 0.0);
-                                    shared.setDouble("packing_charge", 0.0);
-                                    shared.setDouble("Discountt", 0.0);
-                                  });
-
-
-
-                                  Fluttertoast.showToast(
-                                      msg: "Payment Successful and Your Order Id is $vid",
-                                      toastLength: Toast.LENGTH_LONG,
-                                      gravity: ToastGravity.BOTTOM,
-                                      textColor: Colors.green,
-                                      timeInSecForIosWeb: 4);
-                                }
-                                shared.setInt("seconds", 0);
-                                Phoenix.rebirth(context);
-
-                              }:(){},
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                    color : isEnabled  ?  Color(0xFFFFD45F):Colors.grey,
-                                  ),
-                                  margin: EdgeInsets.only(top: 10),
-                                  width: 100,
-                                  height: 45,
-                                  child: Center(
-                                      child:Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.credit_card),
-                                          Text(
-                                            'Pay',
-                                            textScaleFactor: 1.5,
-                                            style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                                          ),
-                                        ],
-                                      ) )),
-                            ),
-                          ),
-                          SizedBox(width: 30),
-                          Container(
-                            child: InkWell(
-                              onTap:() async {
-                                var dio=Dio();
-                                SharedPreferences shared=await SharedPreferences.getInstance();
-                                dio.options.headers["Authorization"]=shared.getString("Authorization");
-                                var oid = shared.getString("order_id");
-                                var r=await dio.get("https://seropos.app/connector/api/sell/$oid");
-                                print(oid);
-                                print(r.data['data'][0]['invoice_token']);
-                                var  url = "https://seropos.app/invoice/"+r.data['data'][0]['invoice_token'];
-                                if (await canLaunch(url)) {
-                                  await launch(url);
-                                } else {
-                                  throw 'Could not launch $url';
-                                }
-
-                                var id = shared.getInt("table_id",);
-                                print(shared.getInt("table_id"));
-                                setState(() {
-                                  _isloading=true;
-                                });
-                                Map<String,dynamic> api1={
-                                  "table_id":id,
-                                  "table_status":"billing"
-                                };
-                                dio.options.headers["Authorization"]=shared.getString("Authorization");
-                                var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
-                                print(r2);
-                                print(id);
-                                setState(() {
-                                  _isloading=false;
-                                });
-
-                              },
-                              child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(35),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey,
-                                        offset: const Offset(
-                                          1.0,
-                                          1.0,
-                                        ), //Offset
-                                        blurRadius: 6.0,
-                                        spreadRadius: 2.0,
-                                      ), //BoxShadow
-                                      BoxShadow(
-                                        color: Colors.white,
-                                        offset: const Offset(0.0, 0.0),
-                                        blurRadius: 0.0,
-                                        spreadRadius: 0.0,
-                                      ),],
-                                    color : isEnabled  ?  Color(0xFFFFD45F):Colors.grey,
-                                  ),
-                                  margin: EdgeInsets.only(top: 10),
-                                  width: 100,
-                                  height: 45,
-                                  child: Center(
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.print_outlined),
-                                          Text(
-                                            'Print',
-                                            textScaleFactor: 1.5,
-                                            style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                                          ),
-
-                                        ],
-                                      ))),
-
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
+                  ),
                 ),
-              ),
-            ],
-          ),
+                VerticalDivider(
+                  thickness: 0.5,
+                ),
+                selectPaymentMode(),
+                VerticalDivider(
+                  thickness: 0.5,
+                ),
+                Container(
+                  height: height,
+                  width: width/3.3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Container(
+                          height: 460,
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(left: 20,right: 20,top: 50),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(bottom: 8,left: 8),
+                                        child: Text('Payment Amount',
+                                          style:GoogleFonts.ptSans(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400
+                                          ) ,),
+                                      ),
+                                      Container(
+                                        height: 50,
+                                        width: MediaQuery.of(context).size.width,
+                                        child: TextFormField(
+                                          key:_Key,
+                                          validator: (value) {
+                                            if (value == null || value.isEmpty) {
+                                              return 'Please enter Payment Amount';
+                                            }
+                                            return null;
+                                          },
+                                          enableInteractiveSelection: false,
+                                          //focusNode: new AlwaysDisabledFocusNode(),
+                                          controller: pay,
+                                          keyboardType:TextInputType.number,
+                                          decoration: InputDecoration(
+                                            hintText: "00.00",
+                                            hintStyle: GoogleFonts.ptSans(
+                                                fontWeight: FontWeight.bold
+                                            ),
+                                            border: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(30),
+                                              borderSide: BorderSide(color:Colors.brown),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.circular(30),
+                                              borderSide: BorderSide(color:Colors.brown),
+                                            ),
+                                          ),
+                                          onFieldSubmitted: (value){
+                                            print("Hii");
+                                            setState(() {
+                                              print(pay.text);
+                                              change_return.text=(double.parse(pay.text)-balance).toStringAsFixed(2);
+                                              print(change_return.text);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30),
+                        child: Container(
+                          color: Colors.white,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                child: InkWell(
+                                  onTap:isEnabled ? () async {
+                                    var dio=Dio();
+                                    List<Map<String,dynamic>> list_of_m=[];
+                                    SharedPreferences shared=await SharedPreferences.getInstance();
+                                    List<dynamic> list_of_products=json.decode(shared.getString("products")!);
+                                    var id = shared.getInt("table_id",);
+                                    print("tttttttttaaabbbbbbbbbbbbbbbbbbbbllllllleeee");
+                                    print(shared.getInt("table_id"));
+                                    Map<String,dynamic> api1={
+                                      "table_id":id,
+                                      "table_status":"available"
+                                    };
+                                    dio.options.headers["Authorization"]=shared.getString("Authorization");
+                                    var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
+                                    print(r2);
+                                    print(id);
+
+
+                                    var variation=shared.getStringList("variation");
+                                    var cart=FlutterCart();
+                                    for(int index=0;index<cart.cartItem.length;index++)
+                                    {
+                                      String note="";
+                                      int tax_id=0;
+                                      for(int i=0;i<list_of_products.length;i++)
+                                      {
+                                        if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
+                                        {
+                                          note=list_of_products[i]["note"]??"";
+                                          tax_id=list_of_products[i]["tax_id"]??0;
+                                          print(note);
+                                          break;
+                                        }
+                                      }
+                                      Map<String,dynamic> product={
+                                        "product_id":double.parse(cart.cartItem[index].productId.toString()),
+                                        "variation_id":double.parse(variation![index]),
+                                        "quantity": cart.cartItem[index].quantity,
+                                        "unit_price": cart.cartItem[index].unitPrice,
+                                        "tax_rate_id":tax_id,
+                                        "note":note??""
+                                      };
+                                      print(product);
+                                      list_of_m.add(product);
+                                      // print(list_of_m);
+                                    }
+                                    if(shared.containsKey("modifiers")){
+                                      if(shared.getString("modifiers")!="") {
+                                        List<dynamic> mod = json.decode(
+                                            shared.getString("modifiers") ?? "");
+                                        print(mod[0]);
+                                        for (int i = 0; i < mod.length; i++) {
+                                          list_of_m.add(mod[0]);
+                                        }
+                                      }
+                                    }
+                                    print(list_of_m);
+                                    var sar =shared.getInt("types_of_service_id");
+                                    var dar = shared.getString("DiscountType");
+                                    var car = shared.getString("customer_name");
+                                    print(car!*10);
+                                    print (dar);
+                                    var service_id=shared.getInt("types_of_service_id");
+                                    print(service_id.toString()+"servvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv" );
+                                    String typ_ser ;
+                                    if(service_id == 3){
+                                      typ_ser = "ordered";
+                                    }
+                                    else{
+                                      typ_ser = "offline";
+                                    }
+
+                                    if(shared.getString("order_id")=="")
+                                    {
+
+                                      Map<String,dynamic> api= {
+                                        "sells":[
+                                          {
+                                            "table_id" :shared.getInt("table_id")??null,
+                                            "location_id": shared.getInt("bid")??1,
+                                            "contact_id": double.parse(shared.getString("customer_id")??"1"),
+                                            "discount_amount": shared.getDouble("Discountt_for_db")??0,
+                                            "discount_type": dar,
+                                            "rp_redeemed": shared.getInt("Redeemed Points"),
+                                            "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
+                                            // "shipping_details": null,
+                                            // "shipping_address": null,
+                                            // "shipping_status": null,
+                                            // "delivered_to": null,
+                                            "shipping_status":typ_ser,
+                                            "delivered_to":car,
+                                            "types_of_service_id":sar,
+                                            "is_suspend":0,
+                                            "shipping_charges": shared.getDouble("Shipping"),
+                                            "packing_charge":shared.getDouble("packing_charge")?? 0.0,
+                                            "products":list_of_m,
+                                            "tip":_tipController.text,
+                                            "change_return":double.parse(change_return.text),
+                                            "payments": [
+                                              {
+                                                "amount":double.parse(pay.text),
+                                                "method":shared.getString("method")
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      };
+                                      print(api);
+                                      var dio=Dio();
+                                      dio.options.headers["Authorization"]=shared.getString("Authorization");
+                                      var r=await dio.post("https://seropos.app/connector/api/sell",data: json.encode(api));
+                                      print(r.data);
+                                      // var y =r.data["id"];
+                                      var v=r.data[0]["invoice_no"];
+                                      print(v.toString());
+                                      shared.setString("order_id", v);
+                                      shared.setInt("index",0);
+                                      shared.setInt("PAY_HOLD",1);
+                                      shared.setDouble("Shipping", 0.0);
+                                      shared.setDouble("packing_charge", 0.0);
+                                      shared.setDouble("Discountt", 0.0);
+                                      cart.deleteAllCart();
+                                      shared.setString("total", "0");
+                                      Fluttertoast.showToast(
+                                          msg: "Payment Successful and Your Order Id is $v",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          gravity: ToastGravity.BOTTOM,
+                                          textColor: Colors.green,
+                                          timeInSecForIosWeb: 4);
+
+
+                                    }
+                                    else{
+                                      print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
+                                      Map<String,dynamic> driver={
+                                        "order_id":shared.getString("order_id"),
+                                        "driver_id":shared.getString("driver_id")
+                                      };
+                                      var dio=Dio();
+                                      dio.options.headers["Authorization"]=shared.getString("Authorization");
+                                      var r3=await dio.post("https://seropos.app/connector/api/assign-order",data: json.encode(driver));
+                                      print("order is assigned");
+                                      print(r3);
+                                      print(shared.getInt("Redeemed Points"));
+                                      Map<String,dynamic> api=
+                                      {
+                                        "sells":[
+                                          {
+                                            "table_id" :shared.getInt("table_id")??null,
+                                            "location_id": shared.getInt("bid")??1,
+                                            "contact_id": double.parse(shared.getString("customer_id")??"1"),
+                                            "discount_amount": shared.getDouble("Discountt_for_db")??0,
+                                            "discount_type": dar,
+                                            "rp_redeemed": shared.getInt("Redeemed Points"),
+                                            "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
+                                            // "shipping_details": null,
+                                            // "shipping_address": null,
+                                            // "shipping_status": null,
+                                            // "delivered_to": null,
+                                            "shipping_status":typ_ser,
+                                            "delivered_to":car,
+                                            "types_of_service_id":sar,
+                                            "is_suspend":0,
+                                            "shipping_charges": shared.getDouble("Shipping"),
+                                            "packing_charge":shared.getDouble("packing_charge")?? 0.0,
+                                            "products":list_of_m,
+                                            "tip":_tipController.text,
+                                            "change_return":double.parse(change_return.text),
+                                            "payments": [
+                                              {
+                                                "amount":double.parse(pay.text),
+                                                "method":shared.getString("method")
+                                              }
+                                            ]
+                                          }
+                                        ]
+                                      };
+                                      print(json.encode(api));
+
+                                      var vid = shared.getString("order_id".toString());
+                                      dio.options.headers["Authorization"]=shared.getString("Authorization");
+                                      print(vid);
+                                      var r=await dio.put("https://seropos.app/connector/api/sell/$vid",data: json.encode(api));
+                                      print("hahah");
+                                      print(r.data);
+                                      var v=r.data["invoice_no"];
+                                      print(v);
+                                      shared.setString("order_id", v);
+                                      cart.deleteAllCart();
+                                      setState(() {
+                                        shared.setString("total","0");
+                                        shared.setInt("index", 0);
+                                        shared.setInt("PAY_HOLD",1);
+                                        shared.setDouble("Shipping", 0.0);
+                                        shared.setDouble("packing_charge", 0.0);
+                                        shared.setDouble("Discountt", 0.0);
+                                      });
+
+
+
+                                      Fluttertoast.showToast(
+                                          msg: "Payment Successful and Your Order Id is $vid",
+                                          toastLength: Toast.LENGTH_LONG,
+                                          gravity: ToastGravity.BOTTOM,
+                                          textColor: Colors.green,
+                                          timeInSecForIosWeb: 4);
+                                    }
+                                    shared.setInt("seconds", 0);
+                                    Phoenix.rebirth(context);
+
+                                  }:(){},
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(35),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            offset: const Offset(
+                                              1.0,
+                                              1.0,
+                                            ), //Offset
+                                            blurRadius: 6.0,
+                                            spreadRadius: 2.0,
+                                          ), //BoxShadow
+                                          BoxShadow(
+                                            color: Colors.white,
+                                            offset: const Offset(0.0, 0.0),
+                                            blurRadius: 0.0,
+                                            spreadRadius: 0.0,
+                                          ),],
+                                        color : isEnabled  ?  Color(0xFFFFD45F):Colors.grey,
+                                      ),
+                                      margin: EdgeInsets.only(top: 10),
+                                      width: 100,
+                                      height: 45,
+                                      child: Center(
+                                          child:Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.credit_card),
+                                              Text(
+                                                'Pay',
+                                                textScaleFactor: 1.5,
+                                                style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
+                                              ),
+                                            ],
+                                          ) )),
+                                ),
+                              ),
+                              SizedBox(width: 30),
+                              Container(
+                                child: InkWell(
+                                  onTap:() async {
+                                    var dio=Dio();
+                                    SharedPreferences shared=await SharedPreferences.getInstance();
+                                    dio.options.headers["Authorization"]=shared.getString("Authorization");
+                                    var oid = shared.getString("order_id");
+                                    var r=await dio.get("https://seropos.app/connector/api/sell/$oid");
+                                    print(oid);
+                                    print(r.data['data'][0]['invoice_token']);
+                                    var  url = "https://seropos.app/invoice/"+r.data['data'][0]['invoice_token'];
+                                    if (await canLaunch(url)) {
+                                      await launch(url);
+                                    } else {
+                                      throw 'Could not launch $url';
+                                    }
+
+                                    var id = shared.getInt("table_id",);
+                                    print(shared.getInt("table_id"));
+                                    setState(() {
+                                      _isloading=true;
+                                    });
+                                    Map<String,dynamic> api1={
+                                      "table_id":id,
+                                      "table_status":"billing"
+                                    };
+                                    dio.options.headers["Authorization"]=shared.getString("Authorization");
+                                    var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
+                                    print(r2);
+                                    print(id);
+                                    setState(() {
+                                      _isloading=false;
+                                    });
+
+                                  },
+                                  child: Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(35),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey,
+                                            offset: const Offset(
+                                              1.0,
+                                              1.0,
+                                            ), //Offset
+                                            blurRadius: 6.0,
+                                            spreadRadius: 2.0,
+                                          ), //BoxShadow
+                                          BoxShadow(
+                                            color: Colors.white,
+                                            offset: const Offset(0.0, 0.0),
+                                            blurRadius: 0.0,
+                                            spreadRadius: 0.0,
+                                          ),],
+                                        color : isEnabled  ?  Color(0xFFFFD45F):Colors.grey,
+                                      ),
+                                      margin: EdgeInsets.only(top: 10),
+                                      width: 100,
+                                      height: 45,
+                                      child: Center(
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Icon(Icons.print_outlined),
+                                              Text(
+                                                'Print',
+                                                textScaleFactor: 1.5,
+                                                style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
+                                              ),
+
+                                            ],
+                                          ))),
+
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+        ),
       ),
     );
   }
