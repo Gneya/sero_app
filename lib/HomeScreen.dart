@@ -63,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
     sharedPreferences.setInt("Redeemed Points",0);
     sharedPreferences.setDouble("Shipping", 0.0);
     sharedPreferences.setString("products","");
+    sharedPreferences.setBool("split", false);
     if(list.length>0) {
       for (int i = 0; i < list.length; i++) {
         if (sharedPreferences.containsKey(list[i])) {
@@ -134,7 +135,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     // TODO: implement initState
 
+
     fetch();
+
     super.initState();
   }
   var id="0";
@@ -269,9 +272,9 @@ class _HomeScreenState extends State<HomeScreen> {
               )),
           SizedBox(height: 10,),
           Container(
-            margin: EdgeInsets.only(right: 10),
+            margin: EdgeInsets.only(right: 6,bottom: 8,top: 8,left: 6),
             child: CircleAvatar(
-                backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                backgroundImage: AssetImage("images/sero_icon.png")
             ),
           ),
           SizedBox(height: 10,),

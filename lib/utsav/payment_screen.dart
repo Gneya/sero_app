@@ -239,36 +239,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
     }
     print(paymentMethod.length);
     print(isclicked.length);
-    // paymentMethod = [
-    //   data['cash'],
-    //   data['card'],
-    //   data['cheque'],
-    //   data['Reward Points'],
-    //   data['other'],
-    //   data['custom_pay_1'],
-    //   data['custom_pay_2'],
-    //   data['custom_pay_3'],
-    //   data['custom_pay_4'],
-    //   data['custom_pay_5'],
-    //   data['custom_pay_6'],
-    //   data['custom_pay_7'],
-    // ];
+    ;
     print(paymentMethod[1]);
     setState(() {
       _isloading=false;
     });
     return paymentMethod;
   }
-  // Future<void> getSharedPrefs() async {
-  //   setState(() {
-  //     _isloading =true;
-  //   });
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   table_name =prefs.getString("table_name")??"";
-  //   setState(() {
-  //     _isloading =false;
-  //   });
-  // }
+
   Widget selectPaymentMode(){
     if(isClicked1 ==true){
       return Container(
@@ -832,18 +810,14 @@ class _PaymentScreenState extends State<PaymentScreen> {
     return Container();
   }
   bool result = false;
+  getSplit()async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    if(shared.getBool("split")?? false){
+      pay.text= shared.getDouble("sum")!.toStringAsFixed(2);
+      change_return.text= (double.parse(pay.text)-balance).toStringAsFixed(2);
+    }
+  }
 
-  // Future<double> getPD() async {
-  //     SharedPreferences shared = await SharedPreferences.getInstance();
-  //       widget.Ammount = shared.getDouble("Ammount")!;
-  //       widget.Balance= shared.getDouble("Balance")!;
-  //       widget.Discountt =shared.getDouble("Discountt")!;
-  //       widget.Redeem =shared.getInt("Redeem")??0;
-  //       print(widget.Ammount);
-  //       print(widget.Balance);
-  //       return widget.Balance;
-  //       // print(widget.Discountt);
-  //  }
   @override
   void initState() {
     fetchData();
@@ -854,14 +828,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    //print("this is build");
+    getSplit();
     print("PRINT IN BUILD"+balance.toStringAsFixed(2));
-    int _counter = 1;
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
-    // paymentAmount=widget.Ammount;
     return Scaffold(
       floatingActionButton: SpeedDial(
         marginBottom: 13, //margin bottom
@@ -1046,8 +1017,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     );
                                   },
                                 ),),
-                              CircleAvatar(
-                                  backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                              Container(
+                                margin: EdgeInsets.only(right: 6,bottom: 8,top: 8,left: 6),
+                                child: CircleAvatar(
+                                    backgroundImage: AssetImage("images/sero_icon.png")
+                                ),
                               ),
                             ],
                           ),
@@ -1563,7 +1537,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "products":list_of_m,
                                     "tip":_tipController.text,
                                     "change_return":double.parse(change_return.text),
-                                    "payments": [
+                                    "payments":shared.getBool("split") ?? false ? json.decode(shared.getString("list_of_payment") ?? ""): [
                                       {
                                         "amount":double.parse(pay.text),
                                         "method":shared.getString("method")
@@ -1633,7 +1607,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     "products":list_of_m,
                                     "tip":_tipController.text,
                                     "change_return":double.parse(change_return.text),
-                                    "payments": [
+                                    "payments":shared.getBool("split") ?? false ? json.decode(shared.getString("list_of_payment") ?? ""): [
                                       {
                                         "amount":double.parse(pay.text),
                                         "method":shared.getString("method")
