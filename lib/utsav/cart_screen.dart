@@ -42,6 +42,7 @@ class _CartScreenState extends State<CartScreen> {
       _currentIndex = index;
     });
   }
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   Future<void> getSharedPrefs() async {
     setState(() {
@@ -69,6 +70,7 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    key: _scaffoldKey;
     final cart=FlutterCart();
     // pay();
     size = MediaQuery.of(context).size;
@@ -208,7 +210,18 @@ class _CartScreenState extends State<CartScreen> {
         ),
         drawer: MainDrawer(),
         appBar:AppBar(
-          //leading: Container(),
+          leading: Container(
+            child: IconButton(
+              alignment: Alignment.topLeft,
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                setState(() {
+                  _scaffoldKey.currentState!.openDrawer();
+                });
+              },
+            ),
+          ),
+
           flexibleSpace:  Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -242,14 +255,7 @@ class _CartScreenState extends State<CartScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            IconButton(
-                              alignment: Alignment.topLeft,
-                              icon: const Icon(Icons.menu),
-                              onPressed: () {
-                                setState(() {
-                                });
-                              },
-                            ),
+
                             Text("ORDER",
                               style: GoogleFonts.ptSans(fontSize: 18),),
                             Row(

@@ -817,6 +817,13 @@ class _PayTabState extends State<PayTab> {
     }
     return Container();
   }
+  getSplit()async {
+    SharedPreferences shared = await SharedPreferences.getInstance();
+    if(shared.getBool("split")?? false){
+      pay.text= shared.getDouble("sum")!.toStringAsFixed(2);
+      change_return.text= (double.parse(pay.text)-balance).toStringAsFixed(2);
+    }
+  }
   bool result = false;
   @override
   void initState() {
@@ -827,6 +834,7 @@ class _PayTabState extends State<PayTab> {
   }
   @override
   Widget build(BuildContext context) {
+    getSplit();
     print("PRINT IN BUILD"+balance.toStringAsFixed(2));
     int _counter = 1;
     size = MediaQuery.of(context).size;
@@ -1511,7 +1519,7 @@ class _PayTabState extends State<PayTab> {
                                             "products":list_of_m,
                                             "tip":_tipController.text,
                                             "change_return":double.parse(change_return.text),
-                                            "payments": [
+                                            "payments":shared.getBool("split") ?? false ? json.decode(shared.getString("list_of_payment") ?? ""): [
                                               {
                                                 "amount":double.parse(pay.text),
                                                 "method":shared.getString("method")
@@ -1581,7 +1589,7 @@ class _PayTabState extends State<PayTab> {
                                             "products":list_of_m,
                                             "tip":_tipController.text,
                                             "change_return":double.parse(change_return.text),
-                                            "payments": [
+                                            "payments":shared.getBool("split") ?? false ? json.decode(shared.getString("list_of_payment") ?? ""): [
                                               {
                                                 "amount":double.parse(pay.text),
                                                 "method":shared.getString("method")
