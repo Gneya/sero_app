@@ -25,6 +25,7 @@ class _OnlineOrderState extends State<OnlineOrder> {
           child: SingleChildScrollView(
             child: Container(
                 height: 430,
+                width: MediaQuery.of(context).size.width/1.5,
                 child: ListView(
                   children: [
                     Column(
