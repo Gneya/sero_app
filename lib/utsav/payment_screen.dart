@@ -1018,9 +1018,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   },
                                 ),),
                               Container(
-                                margin: EdgeInsets.only(right: 6,bottom: 8,top: 8,left: 6),
+                                margin: EdgeInsets.only(right: 6,bottom: 10,top: 10,left: 6),
                                 child: CircleAvatar(
-                                    backgroundImage: AssetImage("images/sero_icon.png")
+                                    backgroundColor:Colors.transparent,
+                                    backgroundImage: AssetImage("images/icon-b-s.png")
                                 ),
                               ),
                             ],
@@ -1209,7 +1210,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ]
         ),
-        toolbarHeight: 170,
+        toolbarHeight: 150,
         backgroundColor: Colors.white,
       ),
       body:_isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),)): SingleChildScrollView(

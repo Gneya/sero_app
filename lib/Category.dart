@@ -295,7 +295,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         spreadRadius: 0.0,
                       ),],
                   ),
-                  height:180,
+                  height:148,
                   child:Padding(
                     padding: const EdgeInsets.only(top:30),
                     child: Column(
@@ -328,18 +328,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                     },
                                   ),),
                                 Container(
-                                  margin: EdgeInsets.only(right: 6,bottom: 8,top: 8,left: 6),
+                                  margin: EdgeInsets.only(right: 8,bottom: 15,top: 10,left: 6),
                                   child: CircleAvatar(
-                                      backgroundImage: AssetImage("images/sero_icon.png")
+                                      backgroundColor:Colors.transparent,
+                                      backgroundImage: AssetImage("images/icon-b-s.png")
                                   ),
                                 ),
                               ],
                             ),
 
                           ]),
-                        /*Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   children: [*/
                         Container(
                           width: MediaQuery.of(context).size.width/1.3,
                           child:
@@ -350,7 +348,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             child: MaterialButton(
                               minWidth:MediaQuery.of(context).size.width/3,
                               height: MediaQuery.of(context).size.height/20,
-                              padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                              padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                               onPressed: () {},
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -414,24 +412,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                         },
                                         suggestionsCallback: CustomerApi.getUserSuggestion,
                                       )),
-                                  // GestureDetector(child:Icon(Icons.search),
-                                  //   onTap: (){
-                                  //        Navigator.push(
-                                  //        context,
-                                  //        MaterialPageRoute(
-                                  //        builder: (context) => searchproduct()));
-                                  //   },
-                                  // ),
-                                  //
-                                  // Text(
-                                  //   "Search Category",
-                                  //   textAlign: TextAlign.center,
-                                  //   style: TextStyle(
-                                  //     fontSize: 15,
-                                  //   ),
-                                  // ),
-
-
                                 ],
                               ),
                             ),
@@ -444,7 +424,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                 ),
               ]
           ),
-          toolbarHeight: 170,
+          toolbarHeight: 110,
           backgroundColor: Colors.white,
         ),
         body: _isloading?Center(

@@ -1201,9 +1201,10 @@ class _PayTabState extends State<PayTab> {
                                   },
                                 ),),
                               Container(
-                                margin: EdgeInsets.only(right: 6,bottom: 8,top: 8,left: 6),
+                                margin: EdgeInsets.only(right: 6,bottom: 15,top: 10,left: 6),
                                 child: CircleAvatar(
-                                    backgroundImage: AssetImage("images/sero_icon.png")
+                                    backgroundColor:Colors.transparent,
+                                    backgroundImage: AssetImage("images/icon-b-s.png")
                                 ),
                               ),
                             ],

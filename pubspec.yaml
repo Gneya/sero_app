@@ -69,7 +69,7 @@ flutter:
     - images/row_4.png
     - images/barcode.png
     - images/eraser.svg
-    - images/sero_icon.png
+    - images/icon-b-s.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

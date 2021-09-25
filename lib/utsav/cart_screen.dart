@@ -42,7 +42,7 @@ class _CartScreenState extends State<CartScreen> {
       _currentIndex = index;
     });
   }
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   Future<void> getSharedPrefs() async {
     setState(() {
@@ -70,7 +70,7 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    key: _scaffoldKey;
+    // key: _scaffoldKey;
     final cart=FlutterCart();
     // pay();
     size = MediaQuery.of(context).size;
@@ -210,18 +210,7 @@ class _CartScreenState extends State<CartScreen> {
         ),
         drawer: MainDrawer(),
         appBar:AppBar(
-          leading: Container(
-            child: IconButton(
-              alignment: Alignment.topLeft,
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                setState(() {
-                  _scaffoldKey.currentState!.openDrawer();
-                });
-              },
-            ),
-          ),
-
+          //leading: Container(),
           flexibleSpace:  Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
@@ -255,7 +244,14 @@ class _CartScreenState extends State<CartScreen> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-
+                            IconButton(
+                              alignment: Alignment.topLeft,
+                              icon: const Icon(Icons.menu),
+                              onPressed: () {
+                                setState(() {
+                                });
+                              },
+                            ),
                             Text("ORDER",
                               style: GoogleFonts.ptSans(fontSize: 18),),
                             Row(
@@ -275,9 +271,10 @@ class _CartScreenState extends State<CartScreen> {
                                     },
                                   ),),
                                 Container(
-                                  margin: EdgeInsets.only(right: 6,bottom: 3,top: 8,left: 6),
+                                  margin: EdgeInsets.only(right: 6,bottom: 0,top: 10,left: 6),
                                   child: CircleAvatar(
-                                      backgroundImage: AssetImage("images/sero_icon.png")
+                                      backgroundColor:Colors.transparent,
+                                      backgroundImage: AssetImage("images/icon-b-s.png")
                                   ),
                                 ),
                               ],
@@ -311,7 +308,6 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                 ),
-
               ]
           ),
           toolbarHeight: 135,

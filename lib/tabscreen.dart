@@ -254,12 +254,10 @@ class _TabScreenState extends State<TabScreen> {
               )),
           SizedBox(height: 10,),
           Container(
-            margin: EdgeInsets.only(right: 10),
-            child:  Container(
-              margin: EdgeInsets.only(right: 6,bottom: 8,top: 8,left: 6),
-              child: CircleAvatar(
-                  backgroundImage: AssetImage("images/sero_icon.png")
-              ),
+            margin: EdgeInsets.only(right: 6,bottom: 15,top: 10,left: 6),
+            child: CircleAvatar(
+                backgroundColor:Colors.transparent,
+                backgroundImage: AssetImage("images/icon-b-s.png")
             ),
           ),
           SizedBox(height: 10,),
