@@ -514,11 +514,11 @@ class _PayTabState extends State<PayTab> {
     }
     else if(isClicked2==true){
       return  Container(
-          height: 320 ,
+          height:height ,
           color:Colors.white,
           width: width/3,
-          child: Padding(
-            padding: const EdgeInsets.only(top: 20),
+          padding:const EdgeInsets.only(top: 30,bottom: 60),
+          child: SingleChildScrollView(
             child: Column(
               children: [
                 Row(
@@ -654,22 +654,25 @@ class _PayTabState extends State<PayTab> {
                                         fontWeight: FontWeight.w400,
                                       ) ,),
                                   ),
-                                  Container(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20,right: 20),
                                     child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.grey,
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                            ),
+                                            borderRadius: BorderRadius.circular(35),
+                                            color :Colors.white,
                                           ),
-                                          borderRadius: BorderRadius.circular(35),
-                                          color :Colors.white,
-                                        ),
-                                        width: MediaQuery.of(context).size.width/2.5,
-                                        height: 50,
-                                        child: Center(
-                                            child: Text(
-                                              '\$'+widget.Discountt.toStringAsFixed(2),
-                                              textScaleFactor: 1.25,
-                                            ))),
+                                          width: MediaQuery.of(context).size.width/2.5,
+                                          height: 50,
+                                          child: Center(
+                                              child: Text(
+                                                '\$'+widget.Discountt.toStringAsFixed(2),
+                                                textScaleFactor: 1.25,
+                                              ))),
+                                    ),
                                   ),
                                 ]
                             ),
@@ -686,23 +689,26 @@ class _PayTabState extends State<PayTab> {
 
                                       ) ,),
                                   ),
-                                  Container(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20,right: 20),
                                     child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.grey,
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                            ),
+                                            borderRadius: BorderRadius.circular(35),
+                                            color :Colors.white,
                                           ),
-                                          borderRadius: BorderRadius.circular(35),
-                                          color :Colors.white,
-                                        ),
-                                        width: MediaQuery.of(context).size.width/2.5,
-                                        height: 50,
-                                        child: Center(
-                                            child: Text(
-                                              redeemPoint.toString(),
-                                              textScaleFactor: 1.25,
-                                            ))),
+                                          width: MediaQuery.of(context).size.width/2.5,
+                                          height: 50,
+                                          child: Center(
+                                              child: Text(
+                                                redeemPoint.toString(),
+                                                textScaleFactor: 1.25,
+                                              ))),
 
+                                    ),
                                   ),
                                 ]
                             ),
@@ -717,12 +723,12 @@ class _PayTabState extends State<PayTab> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 20),
+                              padding: const EdgeInsets.only(left: 20,right: 20),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(bottom: 8,left: 8),
+                                    padding: const EdgeInsets.only(bottom: 8,left: 10),
                                     child: Text('Tip Amount',
                                       style:GoogleFonts.ptSans(
                                           fontSize: 15,
@@ -768,6 +774,47 @@ class _PayTabState extends State<PayTab> {
 
                                       ) ,),
                                   ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 20,right: 20),
+                                    child: Container(
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(35),
+                                            color :Color(0xFFFFD45F),
+                                          ),
+                                          width: MediaQuery.of(context).size.width/2.5,
+                                          height: 50,
+                                          child: Center(
+                                              child: Text(
+                                                '\$'+widget.Balance.toStringAsFixed(2),
+                                                textScaleFactor: 1.25,
+                                                style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
+                                              ))),
+
+                                    ),
+                                  ),
+                                ]
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 22,right: 22,top: 5),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(bottom: 8),
+                                    child: Text('Final Amount',
+                                      style:GoogleFonts.ptSans(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w400,
+
+                                      ) ,),
+                                  ),
                                   Container(
                                     child: Container(
                                         decoration: BoxDecoration(
@@ -778,7 +825,7 @@ class _PayTabState extends State<PayTab> {
                                         height: 50,
                                         child: Center(
                                             child: Text(
-                                              '\$'+widget.Balance.toStringAsFixed(2),
+                                              '\$'+balance.toStringAsFixed(2),
                                               textScaleFactor: 1.25,
                                               style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
                                             ))),
