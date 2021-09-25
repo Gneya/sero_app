@@ -187,9 +187,10 @@ class _SplitPayState extends State<SplitPay> {
                         sum=sum+double.parse(payment[i]);
                       }
                       print(sum);
-                      if(sum.toStringAsFixed(2)!= widget.Balance.toStringAsFixed(2)){
+                      if(sum < widget.Balance){
+
                         Fluttertoast.showToast(
-                            msg: "Total amount must be equal to balance amount",
+                            msg: "Total amount must be equal or greater  than balance amount",
                             toastLength: Toast.LENGTH_LONG,
                             gravity: ToastGravity.BOTTOM,
                             textColor: Colors.green,
@@ -197,150 +198,20 @@ class _SplitPayState extends State<SplitPay> {
                       }
                       else
                       {
-                        var dio=Dio();
-                        List<Map<String,dynamic>> list_of_m=[];
                         List<Map<String,dynamic>> list_of_payment=[];
-                        SharedPreferences shared=await SharedPreferences.getInstance();
-                        var id = shared.getInt("table_id",);
-                        print(shared.getInt("table_id"));
-                        Map<String,dynamic> api1={
-                          "table_id":id,
-                          "table_status":"available"
-                        };
-                        dio.options.headers["Authorization"]=shared.getString("Authorization");
-                        var r2=await dio.post("https://seropos.app/connector/api/change-table-status",data: json.encode(api1));
-                        print(r2);
-                        print(id);
-                        var variation=shared.getStringList("variation");
-                        var cart=FlutterCart();
-                        for(int index=0;index<cart.cartItem.length;index++)
-                        {
-
-                          Map<String,dynamic> product={
-                            "product_id":double.parse(cart.cartItem[index].productId.toString()),
-                            "variation_id":double.parse(variation![index]),
-                            "quantity": cart.cartItem[index].quantity,
-                            "unit_price": cart.cartItem[index].unitPrice*cart.cartItem[index].quantity,
-                          };
-                          list_of_m.add(product);
-                          // print(list_of_m);
-                        }
                         for(int i=0;i<items;i++){
                           Map<String,dynamic> payment1={
                             "amount":payment[i],
                             "method": paymentMode[i],
                           };
                           list_of_payment.add(payment1);
+                          print(list_of_payment);
                         }
-
-                        if(shared.containsKey("modifiers")){
-                          if(shared.getString("modifiers")!="") {
-                            List<dynamic> mod = json.decode(
-                                shared.getString("modifiers") ?? "");
-                            print(mod[0]);
-                            for (int i = 0; i < mod.length; i++) {
-                              list_of_m.add(mod[0]);
-                            }
-                          }
-                        }
-                        print(list_of_m);
-
-                        if(shared.getString("order_id")=="")
-                        {
-
-                          Map<String,dynamic> api= {
-                            "sells":[
-                              {
-                                "table_id" :shared.getInt("table_id")??0,
-                                "location_id": shared.getInt("bid")??1,
-                                "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                                "discount_amount": shared.getDouble("Discountt"),
-                                "discount_type": shared.getString("DiscountType"),
-                                "rp_redeemed": shared.getInt("Redeemed Points"),
-                                "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString()),
-                                // "shipping_details": null,
-                                // "shipping_address": null,
-                                // "shipping_status": null,
-                                // "delivered_to": null,
-                                "shipping_charges": shared.getDouble("Shipping"),
-                                "products":list_of_m,
-                                "payments":list_of_payment
-                              }
-                            ]
-                          };
-                          var dio=Dio();
-                          dio.options.headers["Authorization"]=shared.getString("Authorization");
-                          var r=await dio.post("https://seropos.app/connector/api/sell",data: json.encode(api));
-                          print(r.data);
-                          var v=r.data[0]["invoice_no"];
-                          print(v.toString());
-                          shared.setString("order_id", v);
-                          shared.setInt("index",0);
-                          shared.setInt("PAY_HOLD",1);
-                          cart.deleteAllCart();
-                          shared.setString("total", "0");
-                          Fluttertoast.showToast(
-                              msg: "Payment Successful and Your Order Id is $v",
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.BOTTOM,
-                              textColor: Colors.green,
-                              timeInSecForIosWeb: 4);
-                          Navigator.pop(context);
-
-                        }
-                        else{
-                          print('haaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhhhhhhhhhhhhaaaaaaaaaaaaaaaaaaaa');
-                          print(shared.getInt("Redeemed Points"));
-                          Map<String,dynamic> api= {
-                            "sells":[
-                              {
-                                "table_id" :shared.getInt("table_id")??0,
-                                "location_id": shared.getInt("bid")??1,
-                                "contact_id": double.parse(shared.getString("customer_id")??"1"),
-                                "discount_amount": shared.getDouble("Discountt"),
-                                "discount_type": shared.getString("DiscountType"),
-                                "rp_redeemed": shared.getInt("Redeemed Points"),
-                                "rp_redeemed_amount": double.parse(shared.getInt("Redeemed Points").toString())??0,
-                                // "shipping_details": null,
-                                // "shipping_address": null,
-                                // "shipping_status": null,
-                                // "delivered_to": null,
-                                "shipping_charges": shared.getDouble("Shipping"),
-                                "products":list_of_m,
-                                "payments": list_of_payment
-                              }
-                            ]
-                          };
-                          print(json.encode(api));
-
-                          var dio=Dio();
-                          var vid = shared.getString("order_id");
-                          dio.options.headers["Authorization"]=shared.getString("Authorization");
-                          print(vid);
-                          var r=await dio.put("https://seropos.app/connector/api/sell/$vid",data: json.encode(api));
-                          print("hahah");
-                          print(r.data);
-                          var v=r.data["invoice_no"];
-                          print(v);
-                          shared.setString("order_id", v);
-                          cart.deleteAllCart();
-                          shared.clear();
-
-                          setState(() {
-                            shared.setString("total","0");
-                            shared.setInt("index", 0);
-                            shared.setInt("PAY_HOLD",1);
-                          });
-
-                          Fluttertoast.showToast(
-                              msg: "Payment Successful and Your Order Id is $v",
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.BOTTOM,
-                              textColor: Colors.green,
-                              timeInSecForIosWeb: 4);
-                          Navigator.pop(context);
-
-                        }
+                        SharedPreferences shared = await SharedPreferences.getInstance();
+                        shared.setBool("split", true);
+                        shared.setString("list_of_payment", json.encode(list_of_payment));
+                        shared.setDouble("sum", sum);
+                        Navigator.pop(context);
                       }
                     },
                     child: Container(

@@ -325,7 +325,7 @@ class _SelectItemState extends State<SelectItem> {
                         spreadRadius: 0.0,
                       ),],
                   ),
-                  height:180,
+                  height:145,
                   child:Padding(
                     padding: const EdgeInsets.only(top:30),
                     child: Column(
@@ -356,8 +356,12 @@ class _SelectItemState extends State<SelectItem> {
                                       );
                                     },
                                   ),),
-                                CircleAvatar(
-                                    backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                                Container(
+                                  margin: EdgeInsets.only(right: 6,bottom: 15,top: 7,left: 6),
+                                  child: CircleAvatar(
+                                      backgroundColor:Colors.transparent,
+                                      backgroundImage: AssetImage("images/icon-b-s.png")
+                                  ),
                                 ),
                               ],
                             ),
@@ -375,7 +379,7 @@ class _SelectItemState extends State<SelectItem> {
                             child: MaterialButton(
                               minWidth:MediaQuery.of(context).size.width/3,
                               height: MediaQuery.of(context).size.height/20,
-                              padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+                              padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                               onPressed: () {},
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -453,7 +457,7 @@ class _SelectItemState extends State<SelectItem> {
                 ),
               ]
           ),
-          toolbarHeight: 170,
+          toolbarHeight: 110,
           backgroundColor: Colors.white,
         ),
         /*'Select your food item'-*/

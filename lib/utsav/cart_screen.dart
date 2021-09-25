@@ -42,6 +42,7 @@ class _CartScreenState extends State<CartScreen> {
       _currentIndex = index;
     });
   }
+  // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   Future<void> getSharedPrefs() async {
     setState(() {
@@ -69,6 +70,7 @@ class _CartScreenState extends State<CartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // key: _scaffoldKey;
     final cart=FlutterCart();
     // pay();
     size = MediaQuery.of(context).size;
@@ -268,8 +270,12 @@ class _CartScreenState extends State<CartScreen> {
                                       );
                                     },
                                   ),),
-                                CircleAvatar(
-                                    backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                                Container(
+                                  margin: EdgeInsets.only(right: 6,bottom: 0,top: 10,left: 6),
+                                  child: CircleAvatar(
+                                      backgroundColor:Colors.transparent,
+                                      backgroundImage: AssetImage("images/icon-b-s.png")
+                                  ),
                                 ),
                               ],
                             ),
@@ -302,7 +308,6 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   ),
                 ),
-
               ]
           ),
           toolbarHeight: 135,
