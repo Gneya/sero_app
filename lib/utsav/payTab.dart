@@ -287,7 +287,7 @@ class _PayTabState extends State<PayTab> {
                                       ) ,),
                                   ),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 8),
+                                    padding: const EdgeInsets.only(left: 8,right: 8),
                                     child: Container(
                                       child: Container(
                                           decoration: BoxDecoration(
@@ -322,24 +322,27 @@ class _PayTabState extends State<PayTab> {
 
                                       ) ,),
                                   ),
-                                  Container(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8,right: 8),
                                     child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.grey,
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                            ),
+                                            borderRadius: BorderRadius.circular(35),
+                                            color :Colors.white,
                                           ),
-                                          borderRadius: BorderRadius.circular(35),
-                                          color :Colors.white,
-                                        ),
-                                        width: MediaQuery.of(context).size.width/2.5,
-                                        height: 50,
-                                        child: Center(
-                                            child: Text(
-                                              redeemPoint.toString(),
-                                              textScaleFactor: 1.25,
-                                              // style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
-                                            )
-                                        )
+                                          width: MediaQuery.of(context).size.width/2.5,
+                                          height: 50,
+                                          child: Center(
+                                              child: Text(
+                                                redeemPoint.toString(),
+                                                textScaleFactor: 1.25,
+                                                // style: GoogleFonts.ptSans(fontWeight: FontWeight.bold),
+                                              )
+                                          )
+                                      ),
                                     ),
                                   ),
                                 ]
@@ -354,12 +357,12 @@ class _PayTabState extends State<PayTab> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 20,),
+                              padding: const EdgeInsets.only(left: 8,right: 8),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Padding(
-                                    padding: const EdgeInsets.only(bottom: 8,left: 8),
+                                    padding: const EdgeInsets.only(bottom: 8,left: 12),
                                     child: Text('Tip Amount',
                                       style:GoogleFonts.ptSans(
                                           fontSize: 15,
@@ -405,22 +408,25 @@ class _PayTabState extends State<PayTab> {
 
                                       ) ,),
                                   ),
-                                  Container(
+                                  Padding(
+                                    padding: const EdgeInsets.only(left: 8,right: 8),
                                     child: Container(
-                                        decoration: BoxDecoration(
-                                          border: Border.all(
-                                            color: Colors.grey,
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                            ),
+                                            borderRadius: BorderRadius.circular(35),
+                                            color :Colors.white,
                                           ),
-                                          borderRadius: BorderRadius.circular(35),
-                                          color :Colors.white,
-                                        ),
-                                        width: MediaQuery.of(context).size.width/2.5,
-                                        height: 50,
-                                        child: Center(
-                                            child: Text(
-                                              '\$'+(change_return.text),
-                                              textScaleFactor: 1.25,
-                                            ))),
+                                          width: MediaQuery.of(context).size.width/2.5,
+                                          height: 50,
+                                          child: Center(
+                                              child: Text(
+                                                '\$'+(change_return.text),
+                                                textScaleFactor: 1.25,
+                                              ))),
+                                    ),
                                   ),
                                 ]
                             ),
@@ -429,7 +435,7 @@ class _PayTabState extends State<PayTab> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(4.0),
+                      padding: const EdgeInsets.only(left: 10,right: 10,top: 5),
                       child: Row(
                         children: [
                           Expanded(
