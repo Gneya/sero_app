@@ -37,6 +37,7 @@ class _SplitPayState extends State<SplitPay> {
             children: [
               Container(
                 height: 300,
+                width: MediaQuery.of(context).size.width/1.2,
                 child: ListView.builder(
                   itemCount:items ,
                   padding: const EdgeInsets.all(8),

@@ -1210,7 +1210,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
               ),
             ]
         ),
-        toolbarHeight: 150,
+        toolbarHeight: 160,
         backgroundColor: Colors.white,
       ),
       body:_isloading?Center(child:CircularProgressIndicator(color: Color(0xff000066),)): SingleChildScrollView(

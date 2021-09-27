@@ -85,6 +85,7 @@ class _RedeemPointState extends State<RedeemPoint> {
           child: SingleChildScrollView(
             child: Container(
                 height: 500,
+                width: MediaQuery.of(context).size.width/1.5,
                 child: ListView(
                   children: [
                     Column(
