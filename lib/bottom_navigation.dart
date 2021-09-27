@@ -5,6 +5,7 @@ import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/HomeScreen.dart';
 import 'package:flutter_nav_bar/Category.dart';
 import 'package:flutter_nav_bar/module2.dart';
+import 'package:flutter_nav_bar/tabscreen.dart';
 import 'package:flutter_nav_bar/utsav/cart_screen.dart';
 import 'package:flutter_nav_bar/utsav/more_option.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -90,7 +91,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
           tabs: <TabItem>[
             TabItem(_tab1, HomeScreen(title: '')),
             TabItem(_tab2, Module2()),
-            TabItem(_tab3, CartScreen()),
+            TabItem(_tab3,  MediaQuery.of(context).size.width < 650?CartScreen():TabScreen()),
             // TabItem(_tab4,MoreOptions())
           ],
           selectedIndex: _tabSelectedIndex,
