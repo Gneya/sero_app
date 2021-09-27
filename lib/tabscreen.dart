@@ -195,7 +195,7 @@ class _TabScreenState extends State<TabScreen> {
             'Authorization': sharedPreferences.getString("Authorization")??""
           });
           var x=json.decode(response2.body);
-          _product=product.fromJson(i,x["data"]);
+          _product=product.fromJson(i);
           _productlist.add(_product);
         }}
       }
@@ -431,19 +431,12 @@ class _TabScreenState extends State<TabScreen> {
                     'Authorization': sharedPreferences.getString("Authorization")??""
                   });
                   var customer_id=sharedPreferences.getString("customer_id")!;
-                  var bid=sharedPreferences.getInt("bid");
-                  v = (json.decode(response1.body));
                   for (var i in v["data"]) {
                     {
                       print(i);
                       if(i["category"]==_datalist[index]){
                       if(i["not_for_selling"]==0){
-                        http.Response response2 = await http.get(
-                            Uri.parse("https://seropos.app/connector/api/sells/pos/get_discount_product/${i["variation_id"]}/$bid?customer_id=$customer_id"), headers: {
-                          'Authorization': sharedPreferences.getString("Authorization")??""
-                        });
-                        var x=json.decode(response2.body);
-                        _product=product.fromJson(i,x["data"]);
+                        _product=product.fromJson(i);
                         _productlist.add(_product);
                       }}
                     }
@@ -535,20 +528,18 @@ class _TabScreenState extends State<TabScreen> {
                         sharedPreferences.setStringList("variation", []);
                         sharedPreferences.setStringList("variation", list);
                         Map<String,dynamic> product={};
-                        if(cart.cartItem.contains( _productlist[index].id))
-                        {
-                          print("YESSSSSS");
-                        }
-                        else
-                        {
-                          print("NOOOO");
-                          print("NOOOO");
-                        }
+                        var customer_id=sharedPreferences.getString("customer_id")!;
+                        var bid=sharedPreferences.getInt("bid");
+                        http.Response response2 = await http.get(
+                            Uri.parse("https://seropos.app/connector/api/sells/pos/get_discount_product/${_productlist[index].variation_id}/$bid?customer_id=$customer_id"), headers: {
+                          'Authorization': sharedPreferences.getString("Authorization")??""
+                        });
+                        var x=json.decode(response2.body);
                         int flag1 =0;
                         for (int i =0 ;i<cart.cartItem.length;i++){
                           if(cart.cartItem[i].productId==_productlist[index].id){
                             cart.addToCart(productId: _productlist[index].id,
-                                unitPrice: double.parse(_productlist[index].price),
+                                unitPrice: x["data"]["default_sell_price"],
                                 productName: _productlist[index].name,
                                 quantity: ++cart.cartItem[i].quantity);
                             flag1 =1;
@@ -557,7 +548,7 @@ class _TabScreenState extends State<TabScreen> {
                           }
                         }
                         if( flag1 ==0){
-                          cart.addToCart(productId: _productlist[index].id, unitPrice: double.parse(_productlist[index].price),productName: _productlist[index].name);
+                          cart.addToCart(productId: _productlist[index].id, unitPrice:x["data"]["default_sell_price"],productName: _productlist[index].name);
                         }
 
                         sharedPreferences.setString("total", cart.getCartItemCount().toString());
@@ -567,8 +558,8 @@ class _TabScreenState extends State<TabScreen> {
                         m={
                           "pid":_productlist[index].id,
                           "tax_id":_productlist[index].tax_id,
-                          "price_inc_tax":_productlist[index].price_inc_tax,
-                          "total":_productlist[index].price_inc_tax,
+                          "price_inc_tax":x["data"]["sell_price_inc_tax"],
+                          "total":x["data"]["sell_price_inc_tax"],
                           "note":""
                         };
                         int flag=0;
@@ -1332,18 +1323,14 @@ class product
 {
   final String id;
   final String name;
-  final String price;
   final String url;
-  final String price_inc_tax;
   final String variation_id;
   final int tax_id;
-  product.fromJson(Map<String,dynamic> json,Map<String,dynamic> json2):
-        price=json2["default_sell_price"].toString(),
+  product.fromJson(Map<String,dynamic> json):
         name=json["product_name"],
         url=json["product_image_url"],
         id=json["product_id"].toString(),
         variation_id=json["variation_id"].toString(),
-        price_inc_tax=json2["sell_price_inc_tax"].toString(),
         this.tax_id=json["tax_id"]?? 0;
 }
 

@@ -656,7 +656,7 @@ class _SelectItemState extends State<SelectItem> {
                     for (int i =0 ;i<cart.cartItem.length;i++){
                       if(cart.cartItem[i].productId==_productlist[index].id){
                         cart.addToCart(productId: _productlist[index].id,
-                            unitPrice: double.parse(x["data"]["default_sell_price"]),
+                            unitPrice: x["data"]["default_sell_price"],
                             productName: _productlist[index].name,
                             quantity: ++cart.cartItem[i].quantity);
                         flag1 =1;
