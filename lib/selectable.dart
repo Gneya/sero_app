@@ -196,8 +196,12 @@ class _SelectTableState extends State<SelectTable> {
           SizedBox(height: 10,),
           Container(
             margin: EdgeInsets.only(right: 10),
-            child: CircleAvatar(
-                backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+            child:  Container(
+              margin: EdgeInsets.only(right: 6,bottom: 15,top: 10,left: 6),
+              child: CircleAvatar(
+                  backgroundColor:Colors.transparent,
+                  backgroundImage: AssetImage("images/icon-b-s.png")
+              ),
             ),
           ),
           SizedBox(height: 10,),
@@ -290,10 +294,11 @@ class _SelectTableState extends State<SelectTable> {
                 if(cart.getCartItemCount()!=0){
                   sharedPreferences.setInt("index", 2);
                 }
-
-                setState(() {
-                  _isloading=false;
-                });
+                if (!mounted) {
+                  setState(() {
+                    _isloading = false;
+                  });
+                }
               }else{
                 // String myUrl = "https://seropos.app/connector/api/change-table-status";
                 // http.Response response = await http.post(Uri.parse(myUrl), headers: {

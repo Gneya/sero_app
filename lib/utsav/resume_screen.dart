@@ -225,6 +225,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                                 "pid":list[index]["pid"][i],
                                                 "tax_id":list[index]["tax_id"][i],
                                                 "price_inc_tax":list[index]["price_of_indiviual_with_tax"][i],
+                                                "total":list[index]["price_of_indiviual_with_tax"][i]*list[index]["quantity"][i],
                                                 "note":list[index]["note"][i]??""
                                               };
                                               list_of_products.add(m);

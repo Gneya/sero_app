@@ -1,20 +1,20 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainDrawer extends StatelessWidget {
-  // final String image;
-  // final String name;
-  // final String email;
-  // MainDrawer({this.image,this.name,this.email});
+
 
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child:Container(
+        alignment: Alignment.topLeft,
         color: Colors.white,
         child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Container(
+
                 width: double.infinity,
                 padding: EdgeInsets.all(20),
                 color: Color(0xffffd45f),

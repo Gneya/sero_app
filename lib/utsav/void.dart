@@ -34,6 +34,7 @@ class _VoidBillState extends State<VoidBill> {
           child: SingleChildScrollView(
             child: Container(
                 height: 430,
+                width: MediaQuery.of(context).size.width/1.5,
                 child: ListView(
                   children: [
                     Column(

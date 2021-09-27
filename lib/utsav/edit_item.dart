@@ -49,6 +49,7 @@ class _edit_item_State extends State<edit_item> {
         child:SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height/1.58,
+            width: MediaQuery.of(context).size.width/1.5,
             padding: EdgeInsets.all(8),
             child: (
                 Column(

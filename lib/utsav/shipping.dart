@@ -165,6 +165,7 @@ class _ShippingState extends State<Shipping> {
           child: SingleChildScrollView(
             child: Container(
                 height: 550,
+                width: MediaQuery.of(context).size.width/1.5,
                 child: ListView(
                   children: [
                     SingleChildScrollView(
@@ -259,14 +260,15 @@ class _ShippingState extends State<Shipping> {
                             ],
                           ),
                           Container(
+
                             height: 80,
-                            width: 240,
+                            width: 180,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(30),
                             ),
                             child: Container(
-                              alignment: Alignment.centerLeft,
+                              alignment: Alignment.center,
                               child: EnhancedDropDown.withData(
                                 dropdownLabelTitle: "",
                                 dataSource: name,

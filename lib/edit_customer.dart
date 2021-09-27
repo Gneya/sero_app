@@ -175,9 +175,10 @@ class  edit_customerState extends State< edit_customer> {
                 )),
             SizedBox(height: 10,),
             Container(
-              margin: EdgeInsets.only(right: 10),
+              margin: EdgeInsets.only(right: 6,bottom: 15,top: 10,left: 6),
               child: CircleAvatar(
-                  backgroundImage: NetworkImage('https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500')
+                  backgroundColor:Colors.transparent,
+                  backgroundImage: AssetImage("images/icon-b-s.png")
               ),
             ),
             SizedBox(height: 10,),
