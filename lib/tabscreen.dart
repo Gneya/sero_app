@@ -190,11 +190,6 @@ class _TabScreenState extends State<TabScreen> {
         print(i);
         if(i["category"]=="Soup"){
         if(i["not_for_selling"]==0){
-          http.Response response2 = await http.get(
-              Uri.parse("https://seropos.app/connector/api/sells/pos/get_discount_product/${i["variation_id"]}/$bid?customer_id=$customer_id"), headers: {
-            'Authorization': sharedPreferences.getString("Authorization")??""
-          });
-          var x=json.decode(response2.body);
           _product=product.fromJson(i);
           _productlist.add(_product);
         }}
