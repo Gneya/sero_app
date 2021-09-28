@@ -1,3 +1,4 @@
+//Home Screen
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
@@ -53,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
       });}
     var cart =FlutterCart();
     int flag=0;
+    //clearing shared pref
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("total",cart.getCartItemCount().toString());
     var list=sharedPreferences.getStringList("selected")??[];
@@ -86,10 +88,13 @@ class _HomeScreenState extends State<HomeScreen> {
     var d = json.decode(Response.body.toString());
     if(mounted){
       setState(() {
+        //fetching details of loggedin user
         _name = d["data"]["first_name"];
+        //fetching bussiness location
         sharedPreferences.setInt("bid",d["data"]["business_id"]);
         print("BIDDDDDDDDD:"+sharedPreferences.getInt("bid").toString());
       });}
+    //fetching enabled_modules from api
     var Response1 = await http.get(
         Uri.parse("https://seropos.app/connector/api/business-details"),
         headers: {
@@ -98,6 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var r1=json.decode(Response1.body);
     var types_of_service=r1["data"]["enabled_modules"];
     print(types_of_service);
+    //fetching types of service enabled from api
     for(var v in types_of_service)
       {
         if(v=="types_of_service")
@@ -163,7 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
         elevation: 8.0, //shadow elevation of button
         shape: CircleBorder(), //shape of button
-
+  //more option(clear,table,void and resume)
         children: [
           SpeedDialChild( //speed dial child
             child: Icon(Icons.table_chart_sharp),

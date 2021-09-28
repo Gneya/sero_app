@@ -17,6 +17,7 @@ void main() {
   ));
 
   runApp(
+    //to restart app
       Phoenix(
         child: MyApp(),
       ),
@@ -50,6 +51,7 @@ class _HomePage extends State<MyHomePage> with SingleTickerProviderStateMixin
   int sec=3;
   checkLoginStatus() async {
     var cart=FlutterCart();
+    //clearing shared pref
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     sharedPreferences.setStringList("variation", []);
     sharedPreferences.setString("total",cart.getCartItemCount().toString());

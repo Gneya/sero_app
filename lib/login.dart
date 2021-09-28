@@ -27,6 +27,7 @@ class loginState extends State<login> {
   final _formKey = GlobalKey<FormState>();
   _authenticate() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    //input for the api
     Map input = {
       "grant_type": "password",
       "client_id": "3",
@@ -39,6 +40,7 @@ class loginState extends State<login> {
       setState(() {
         _isloading = true;
       });
+      //api calling
       var response = await http.post(
           Uri.parse("https://seropos.app/oauth/token"), body: input);
       var v= json.decode(response.body);
@@ -53,11 +55,13 @@ class loginState extends State<login> {
           "Authorization": v["access_token"],
         };
         var s=_model.type+" "+m["Authorization"];
+        //storing token in shared pref
         sharedPreferences.setString("Authorization",s);
         Map<String,dynamic> api={
           "token":sharedPreferences.getString("Authorization")
         };
         var dio=Dio();
+        //storing token in api
         dio.options.headers["Authorization"]=sharedPreferences.getString("Authorization");
         var r=await dio.post("https://seropos.app/connector/api/store-token",data: json.encode(api));
         print("RESPONSE"+r.data.toString());

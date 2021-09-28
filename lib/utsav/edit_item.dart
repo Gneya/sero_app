@@ -49,7 +49,7 @@ class _edit_item_State extends State<edit_item> {
         child:SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height/1.58,
-            width: MediaQuery.of(context).size.width/1.5,
+            width: MediaQuery.of(context).size.width/1.8,
             padding: EdgeInsets.all(8),
             child: (
                 Column(
@@ -60,7 +60,7 @@ class _edit_item_State extends State<edit_item> {
                       child: Text("EDIT ITEM",style: GoogleFonts.ptSans(fontSize: 18),),
                     ),
                     Container(
-                      // height:MediaQuery.of(context).size.height/1.85,
+                      width: MediaQuery.of(context).size.width/2.2,
                       child:Padding(
                         padding: const EdgeInsets.only(top: 10,left: 8,right: 7),
                         child: Container(
@@ -85,77 +85,72 @@ class _edit_item_State extends State<edit_item> {
                                   spreadRadius: 0.0,
                                 ),],
                             ),
-                            child:Column(
+                            child:Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Container(
-                                      width: MediaQuery.of(context).size.width/2.8,
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(left: 0),
-                                        child: Text(
-                                          widget.name,
-                                          style: GoogleFonts.ptSans(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold
-                                          ),
-                                        ),
+                                Container(
+
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 0),
+                                    child: Text(
+                                      widget.name,
+                                      style: GoogleFonts.ptSans(
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold
                                       ),
                                     ),
-                                    Row(
-                                      //mainAxisAlignment: MainAxisAlignment.,
-                                      children: [
-                                        IconButton(
-                                          onPressed:(){
-                                            setState(() {
-                                              var c=int.parse(widget.quantity);
-                                              if( c>1)
-                                                c--;
-                                              var cart = FlutterCart();
-                                              cart.decrementItemFromCart(widget.index);
-                                              widget.quantity=c.toString();
-                                              //saveState();
-                                            });
-                                          },
-                                          icon: Icon(Icons.remove_circle,
-                                            size: 17,),
-                                        ),
-                                        Text(widget.quantity,
-                                          style: GoogleFonts.ptSans(
-                                              fontSize: 12
-                                          ),
-                                        ),
-                                        IconButton(
-                                          onPressed:(){
-                                            setState(() {
-                                              var c=int.parse(widget.quantity);
-                                              c++;
-                                              var cart = FlutterCart();
-                                              cart.incrementItemToCart(widget.index);
-                                              widget.quantity=c.toString();
-                                              //saveState();
-                                            });
-                                          },
-                                          icon: Icon(Icons.add_circle_outlined,
-                                            size: 17,
-                                          ),
-                                        ),
-                                      ],
+                                  ),
+                                ),
+                                Row(
+                                  //mainAxisAlignment: MainAxisAlignment.,
+                                  children: [
+                                    IconButton(
+                                      onPressed:(){
+                                        setState(() {
+                                          var c=int.parse(widget.quantity);
+                                          if( c>1)
+                                            c--;
+                                          var cart = FlutterCart();
+                                          cart.decrementItemFromCart(widget.index);
+                                          widget.quantity=c.toString();
+                                          //saveState();
+                                        });
+                                      },
+                                      icon: Icon(Icons.remove_circle,
+                                        size: 17,),
                                     ),
-                                    Container(
-                                        width: MediaQuery.of(context).size.width/9,
-                                        child:Text(
-                                          cart.cartItem[widget.index].subTotal.toString(),
-                                          style: GoogleFonts.ptSans(
-                                              fontSize: 10,
-                                              fontWeight: FontWeight.bold
-                                          ),
-                                        )),
+                                    Text(widget.quantity,
+                                      style: GoogleFonts.ptSans(
+                                          fontSize: 12
+                                      ),
+                                    ),
+                                    IconButton(
+                                      onPressed:(){
+                                        setState(() {
+                                          var c=int.parse(widget.quantity);
+                                          c++;
+                                          var cart = FlutterCart();
+                                          cart.incrementItemToCart(widget.index);
+                                          widget.quantity=c.toString();
+                                          //saveState();
+                                        });
+                                      },
+                                      icon: Icon(Icons.add_circle_outlined,
+                                        size: 17,
+                                      ),
+                                    ),
                                   ],
                                 ),
-
-                              ] ,
+                                Container(
+                                    width: MediaQuery.of(context).size.width/18,
+                                    child:Text(
+                                      cart.cartItem[widget.index].subTotal.toString(),
+                                      style: GoogleFonts.ptSans(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold
+                                      ),
+                                    )),
+                              ],
                             )
                         ),
                       ),
@@ -164,13 +159,14 @@ class _edit_item_State extends State<edit_item> {
                       height:30 ,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(top: 8.0,bottom: 8.0,),
                           child: Container(
+                            alignment: Alignment.center,
                             height: 40,
-                            width: MediaQuery.of(context).size.width/2.6,
+                            width: MediaQuery.of(context).size.width/5,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(30),
@@ -220,7 +216,7 @@ class _edit_item_State extends State<edit_item> {
                         ),
                         Container(
                           height: 40,
-                          width: MediaQuery.of(context).size.width/2.6,
+                          width: MediaQuery.of(context).size.width/5,
                           child: TextField(
                             controller: _discount,
                             enableInteractiveSelection: false,
@@ -248,7 +244,7 @@ class _edit_item_State extends State<edit_item> {
                     ),
                     Container(
                       height: 150,
-                      width: 320,
+                      width: MediaQuery.of(context).size.width/2.2,
                       child: TextField(
                         maxLines: 10,
                         enableInteractiveSelection: false,
