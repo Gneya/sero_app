@@ -1,4 +1,4 @@
-//3rd screen
+//3rd screen(bottom navigation)
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
@@ -14,7 +14,6 @@ class DashboardScreen extends StatefulWidget {
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
-
 class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProviderStateMixin{
   final _tabNavigator = GlobalKey<TabNavigatorState>();
   final _tab1 = GlobalKey<NavigatorState>();
@@ -86,6 +85,7 @@ class _DashboardScreenState extends State<DashboardScreen> with SingleTickerProv
     return WillPopScope(
       onWillPop: () async => !await _tabNavigator.currentState!.maybePop(),
       child: Scaffold(
+        //screens for bottom nav bar
         body: TabNavigator (
           key: _tabNavigator,
           tabs: <TabItem>[
