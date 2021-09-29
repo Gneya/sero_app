@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/main.dart';
-import 'package:flutter_nav_bar/utsav/redeem.dart';
-import 'package:flutter_nav_bar/utsav/resume_screen.dart';
-import 'package:flutter_nav_bar/utsav/shipping.dart';
-import 'package:flutter_nav_bar/utsav/split_payment.dart';
-import 'package:flutter_nav_bar/utsav/discount.dart';
+import 'package:flutter_nav_bar/dialog/redeem.dart';
+import 'package:flutter_nav_bar/screens/resume_screen.dart';
+import 'package:flutter_nav_bar/dialog/shipping.dart';
+import 'package:flutter_nav_bar/dialog/split_payment.dart';
+import 'package:flutter_nav_bar/dialog/discount.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_nav_bar/utsav/notification.dart';
-import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_nav_bar/dialog/notification.dart';
+import 'package:flutter_nav_bar/dialog/void.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../selectable.dart';
+import '../screens/selectable.dart';
 
 
 class PayTab extends StatefulWidget {

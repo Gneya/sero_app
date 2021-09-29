@@ -1,61 +1,44 @@
+//Add customer
 import 'dart:convert';
-
 import 'package:csc_picker/csc_picker.dart';
 import 'package:dio/dio.dart';
+import 'package:enhanced_drop_down/enhanced_drop_down.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_nav_bar/utsav/notification.dart';
+import 'package:flutter_nav_bar/screens/selectable.dart';
+import 'package:flutter_nav_bar/dialog/notification.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 // import 'package:sero_app/selecttable.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class edit_customer extends StatefulWidget {
-  var  fname;
-  var mname;
-  var id;
-  var lname;
-  var email_id;
-  var phone;
-  var city;
-  var state;
-  var country;
-  var address;
-  var dob;
-  edit_customer({
-    this.id,
-    this.fname,
-    this.mname,
-    this.lname,
-    this.email_id,
-    this.phone,
-    this.city,
-    this.state,
-    this.country,
-    this.address,
-    this.dob
-  });
+
+class PersonalDetails extends StatefulWidget {
+  PersonalDetails({Key ? key}) : super(key: key);
   @override
-  edit_customerState createState() =>  edit_customerState();
+  _PersonalDetailsState createState() => _PersonalDetailsState();
 }
 
-class  edit_customerState extends State< edit_customer> {
+class _PersonalDetailsState extends State<PersonalDetails> {
   bool value = false;
   bool value1 = false;
+  String _mySelection="";
   final _formKey = GlobalKey<FormState>();
+  List data = [];
   DateTime selectedDate = DateTime.now();
   bool value3 = false;
   var countryValue;
   var stateValue;
   var cityValue;
-  var id;
   TextEditingController fname=new TextEditingController();
   TextEditingController mname=new TextEditingController();
   TextEditingController lname=new TextEditingController();
   TextEditingController email=new TextEditingController();
   TextEditingController phone_number=new TextEditingController();
   TextEditingController address=new TextEditingController();
+  List<int> id=[];
+  List<String> name=[];
   TextEditingController group=new TextEditingController();
   late customer _customer;
   var _isloading=false;
@@ -77,86 +60,78 @@ class  edit_customerState extends State< edit_customer> {
       setState(() {
         _isloading=true;
       });
-      // var response = await http.post(
-      //     Uri.parse("https://seropos.app/connector/api/contactapi/"), body: input,
-      //     headers: {
-      //       'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjlhNTYwNGYxZDAxMzU2NTRhY2YyYjE4MmEyOGUwMjA4M2QxOGUxY2Y1ZTY0MzM1MzdmNzc3MzFkMTMzZjNmNWQ5MTU3ZTEwOTQ5NDE3ZmQ3In0.eyJhdWQiOiIzIiwianRpIjoiOWE1NjA0ZjFkMDEzNTY1NGFjZjJiMTgyYTI4ZTAyMDgzZDE4ZTFjZjVlNjQzMzUzN2Y3NzczMWQxMzNmM2Y1ZDkxNTdlMTA5NDk0MTdmZDciLCJpYXQiOjE2MjM2NjAxMzksIm5iZiI6MTYyMzY2MDEzOSwiZXhwIjoxNjU1MTk2MTM5LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.WGLAu9KVi-jSt0q9yUyENDoEQnSLF1o0tezej5YozBFXJVQuEvSykvA9T6nnJghujQ2uU-nxUCRftLBhYzGjsu26YoKZBin70k1cqoYDfIWlVZ-fNkJi1vAXYOk9Pzxz7YFBa6hgz1MyUlDOI1LsSSsJh87hGBzIN6Ib_cYmGoo8KHVEfqbDtCNnZdOq68vjhwf6dwYEJUtxanaocuC-_XHkdM7769JiO48Ot93BqZjmRuVwvK9zE_8bilmhktlgD65ahgKOSS2yQlMdpgpsqP1W5Mfy_SBu32BkqTpAc5v2QWRTVhevES-blsfqdoZ59aw0OzrxyC8PvipyuhGQjs6V7eCrKK0jOei9g4RyhKlQueDXxxrWrqsStIsPzkn-kXA5k2NINIFgr2MlLtypTR76xnncWE5rCqm39K5V2_q3aXDQvCHdl3SVBKDqwNCUKq1CxbJlkF8r1R1mxXxN76TBZbcalO7wUX0F-D1j9oWkwXSZBe7L6vQQqvhC2AsQO2LB4QiByuFi1-J4h05vM3Kab0nmRvVeNYekhNP9HtTGWCH_UDuiDAp23VqUhMTrFygUAPEASU0fnw-rMKhrll_O0wMaBE33ZfItsV0o6pHCQhUjsDKwfmgVynOyYu0rX_huVN_PUBSYQVuCiabUMp8Q5Dv7n8Ky7_yI8XypQK4'
-      //     }
-      // );
-      var dio=Dio();
-      Map<String,dynamic> api1={
-        "type": "customer",
-        "first_name": fname.text??"",
-        "middle_name": mname.text??"",
-        "last_name": lname.text??"",
-        "mobile": phone_number.text??"",
-        "address_line_1": address.text??"",
-        "city": cityValue??'',
-        "state": stateValue??'',
-        "country": countryValue??'',
-        "customer_group_id": group.text??"",
-        "dob": selectedDate.toString(),
-        "email": email.text??""
-      };
       SharedPreferences shared=await SharedPreferences.getInstance();
-      dio.options.headers["Authorization"]=shared.getString("Authorization");
-      var r2=await dio.put("https://seropos.app/connector/api/contactapi/$id",data: json.encode(api1));
-      print(r2);
-      // if (_customer.error != "null") {
-      //   setState(() {
-      //     _isloading = false;
-      //   });
-      //   Fluttertoast.showToast(
-      //       msg: _customer.error,
-      //       toastLength: Toast.LENGTH_LONG,
-      //       gravity: ToastGravity.BOTTOM,
-      //       textColor: Colors.red,
-      //       timeInSecForIosWeb: 10);
-      // }
-      // else {
-      //   setState(() {
-      //     _isloading = false;
-      //     print(_customer.id);
-      //   });
-      Fluttertoast.showToast(
-          msg: "Customer Updated Successfully",
-          toastLength: Toast.LENGTH_LONG,
-          gravity: ToastGravity.BOTTOM,
-          textColor: Colors.green,
-          timeInSecForIosWeb: 10);
-      SharedPreferences share=await SharedPreferences.getInstance();
-      share.setInt("index", 1);
-      setState(() {
-        _isloading = false;
-      });
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => SelectTable(),
-      //     ));
+      var response = await http.post(
+          Uri.parse("https://seropos.app/connector/api/contactapi"), body: input,
+          headers: {
+            'Authorization': shared.getString("Authorization")??""
+          }
+      );
+      _customer = customer.fromJson(json.decode(response.body));
+      if (_customer.error != "null") {
+        setState(() {
+          _isloading = false;
+        });
+        Fluttertoast.showToast(
+            msg: _customer.error,
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            textColor: Colors.red,
+            timeInSecForIosWeb: 10);
+      }
+      else {
+        setState(() {
+          _isloading = false;
+          print(_customer.id);
+        });
+        Fluttertoast.showToast(
+            msg: "Customer added Successfully",
+            toastLength: Toast.LENGTH_LONG,
+            gravity: ToastGravity.BOTTOM,
+            textColor: Colors.green,
+            timeInSecForIosWeb: 10);
+        shared.setString("customer_name", _customer.name);
+        shared.setString("customer_id", _customer.id);
+        setState(() {
+          _isloading = false;
+        });
+        Navigator.pop(context);
+      }
     }
+  }
+  Future<void> getSWData() async {
+    setState(() {
+      _isloading=true;
+    });
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    var dio=Dio();
+    dio.options.headers["Authorization"]=sharedPreferences.getString("Authorization");
+    var r=await dio.get("https://seropos.app/connector/api/customer-groups");
+    print(r.data);
+    for(var v in r.data["data"])
+    {
+      print(v["name"]);
+      id.add(v["id"]);
+      name.add(v["name"]);
+    }
+    setState(() {
+      _isloading=false;
+    });
   }
   @override
   void initState() {
     // TODO: implement initState
-    id=widget.id;
-    print("WIDGET ${widget.fname}");
-    fname.text=widget.fname??"";
-    mname.text=widget.mname??"";
-    lname.text=widget.lname??"";
-    email.text=widget.email_id??"";
-    phone_number.text=widget.phone??"";
-    address.text=widget.address??"";
-    group.text="";
-
+    getSWData();
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
         appBar: AppBar(
 
           leading: Icon(Icons.menu,),
-          title: Center(child: Text("EDIT  CUSTOMER",style: TextStyle(fontSize: 18),)),
+          title: Center(child: Text("ADD CUSTOMER",style: TextStyle(fontSize: 18),)),
           backgroundColor: Color(0xffffd45f),
           actions: [
             Container(
@@ -441,14 +416,43 @@ class  edit_customerState extends State< edit_customer> {
                         text: 'Home address',
                         hintText:
                         'Flat number, apartment name, locality, city, pin code'),
-                    ConstContainer(
-                      textcontroller:group,
-                      hintText: '',
-                      text: 'Customer group',
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child:
+                      Text(
+                        "Customer group",
+                        style: TextStyle(
+                          fontFamily: 'AirbnbCerealMedium',
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                          color: Colors.grey.shade600,
+                        ),
+                      ),),
+                    Container(
+                      alignment: Alignment.centerLeft,
+                      child: EnhancedDropDown.withData(
+                        dropdownLabelTitle: "",
+                        dataSource: name,
+                        defaultOptionText: "Customer group",
+                        valueReturned: (chosen) {
+                          print(chosen);
+                          for(int i=0;i<name.length;i++)
+                          {
+                            if(name[i]==chosen)
+                            {
+                              print(name[i]);
+                              group.text=id[i].toString();
+                              print(id[i]);
+                              break;
+                            }
+                          }
+                        },
+
+                      ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
+                    // SizedBox(
+                    //   height: 10,
+                    // ),
                     Align(
                       alignment: Alignment.topLeft,
                       child: Text(
@@ -504,7 +508,19 @@ class  edit_customerState extends State< edit_customer> {
                       height: 50,
                       child: CupertinoButton(
                         onPressed:(){
-
+                          input={
+                            "type": "customer",
+                            "first_name": fname.text,
+                            "middle_name": mname.text,
+                            "last_name": lname.text,
+                            "mobile": phone_number.text,
+                            "address_line_1": address.text,
+                            "city": cityValue??'',
+                            "state": stateValue??'',
+                            "country": countryValue??'',
+                            "customer_group_id": group.text,
+                            "dob": selectedDate.toString(),
+                            "email": email.text??""};
                           _sendData();
                         },
 
@@ -663,8 +679,10 @@ class customer
 {
   final String error;
   final String id;
+  final String name;
   customer.fromJson(Map<String,dynamic> Json):
         this.error=Json["error"].toString(),
+        this.name=Json["data"]["name"],
         this.id=Json["data"]["id"].toString();
 }
 

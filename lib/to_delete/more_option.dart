@@ -3,17 +3,17 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
-import 'package:flutter_nav_bar/Category.dart';
-import 'package:flutter_nav_bar/HomeScreen.dart';
-import 'package:flutter_nav_bar/utsav/cart_screen.dart';
-import 'package:flutter_nav_bar/utsav/payment_screen.dart';
-import 'package:flutter_nav_bar/utsav/resume_screen.dart';
-import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_nav_bar/screens/Category.dart';
+import 'package:flutter_nav_bar/screens/HomeScreen.dart';
+import 'package:flutter_nav_bar/screens/cart_screen.dart';
+import 'package:flutter_nav_bar/screens/payment_screen.dart';
+import 'package:flutter_nav_bar/screens/resume_screen.dart';
+import 'package:flutter_nav_bar/dialog/void.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../selectable.dart';
+import '../screens/selectable.dart';
 
 class MoreOptions extends StatefulWidget {
   const MoreOptions({Key? key}) : super(key: key);

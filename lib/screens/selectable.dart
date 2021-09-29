@@ -3,17 +3,17 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
-import 'package:flutter_nav_bar/utsav/notification.dart';
-import 'package:flutter_nav_bar/utsav/resume_screen.dart';
-import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_nav_bar/dialog/notification.dart';
+import 'package:flutter_nav_bar/screens/resume_screen.dart';
+import 'package:flutter_nav_bar/dialog/void.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_nav_bar/Category.dart';
+import 'package:flutter_nav_bar/screens/Category.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'main_drawer.dart';
+import '../main_drawer.dart';
 
 class SelectTable extends StatefulWidget {
   const SelectTable({Key ? key}) : super(key: key);

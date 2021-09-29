@@ -5,10 +5,10 @@ import 'dart:ui';
 import 'package:dio/dio.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_cart/flutter_cart.dart';
-import 'package:flutter_nav_bar/selectable.dart';
-import 'package:flutter_nav_bar/utsav/notification.dart';
-import 'package:flutter_nav_bar/utsav/resume_screen.dart';
-import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_nav_bar/screens/selectable.dart';
+import 'package:flutter_nav_bar/dialog/notification.dart';
+import 'package:flutter_nav_bar/screens/resume_screen.dart';
+import 'package:flutter_nav_bar/dialog/void.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -23,7 +23,7 @@ import 'personaldetails.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
 import 'package:process/process.dart';
-import 'package:flutter_nav_bar/productdetails.dart';
+import 'package:flutter_nav_bar/screens/productdetails.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CategoryScreen extends StatefulWidget {

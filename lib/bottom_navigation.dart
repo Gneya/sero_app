@@ -2,12 +2,11 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
-import 'package:flutter_nav_bar/HomeScreen.dart';
-import 'package:flutter_nav_bar/Category.dart';
-import 'package:flutter_nav_bar/module2.dart';
-import 'package:flutter_nav_bar/tabscreen.dart';
-import 'package:flutter_nav_bar/utsav/cart_screen.dart';
-import 'package:flutter_nav_bar/utsav/more_option.dart';
+import 'package:flutter_nav_bar/screens/HomeScreen.dart';
+import 'package:flutter_nav_bar/screens/Category.dart';
+import 'package:flutter_nav_bar/tab/module2.dart';
+import 'package:flutter_nav_bar/tab/tabscreen.dart';
+import 'package:flutter_nav_bar/screens/cart_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DashboardScreen extends StatefulWidget {
