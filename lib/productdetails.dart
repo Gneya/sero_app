@@ -1,5 +1,6 @@
 //Product Details
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -494,7 +495,17 @@ class _SelectItemState extends State<SelectItem> {
                     Container(
                       height: MediaQuery.of(context).size.height/14,
                       width: MediaQuery.of(context).size.width/4,
-                      child: Image.network(searchresultImages[index]),
+                      child: Image.network(
+                        _productlist[index].url, // this image doesn't exist
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            color: Colors.amber,
+                            alignment: Alignment.center,
+                            child: Text('Whoops!', style: TextStyle(fontSize: 30),),
+                          );
+                        },
+                      ),
                     ),
                     Container(
                       height: MediaQuery
@@ -615,7 +626,16 @@ class _SelectItemState extends State<SelectItem> {
                     Container(
                         height: MediaQuery.of(context).size.height/12,
                         width: MediaQuery.of(context).size.width,
-                        child:Image.network(_productlist[index].url)
+                        child:Image.network(
+                          _productlist[index].url, // this image doesn't exist
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              alignment: Alignment.center,
+                              child: Image.asset("images/icon-b-s.png"),
+                            );
+                          },
+                        ),
                     ),
                     Container(
                       // height: MediaQuery
