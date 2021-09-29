@@ -773,7 +773,7 @@ class _TabScreenState extends State<TabScreen> {
                                             ],
                                           ),
                                           Container(
-                                            height:list_of_products[index]["note"] != ""?  20: 0,
+                                            height:((list_of_products[index]["note"] != "" )&& (list_of_products[index]["note"] != null)) ?  20 : 0,
                                             alignment: Alignment.centerLeft,
                                             padding: EdgeInsets.only(left: 10),
                                             child:FutureBuilder(

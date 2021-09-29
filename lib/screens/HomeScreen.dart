@@ -13,6 +13,7 @@ import 'package:flutter_nav_bar/screens/selectable.dart';
 import 'package:flutter_nav_bar/dialog/notification.dart';
 import 'package:flutter_nav_bar/screens/resume_screen.dart';
 import 'package:flutter_nav_bar/dialog/void.dart';
+import 'package:flutter_nav_bar/tab/pesonal_details_tab.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -331,10 +332,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       padding: EdgeInsets.zero,
                                       color: Colors.black,
                                       onPressed:(){
+                                        MediaQuery.of(context).size.width < 650 ?
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => PersonalDetails()));
+                                                builder: (context) => PersonalDetails())):
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => PersonalDetailsTab()))
+                                        ;
                                       } ,
                                     ),
                                     prefixIcon:  IconButton(
@@ -508,14 +515,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
       ),
-      // bottomSheet:_currentIndex == 3 ? Container(
-      //   height: 50,
-      //   color: Colors.black,
-      // ):Container(
-      //   height: 50,
-      //   color: Colors.blue,
-      // ),
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -37,14 +37,6 @@ class _CartScreenState extends State<CartScreen> {
   String table_name='';
   Map m={};
   double p=0.0;
-  int _currentIndex = 0;
-  setBottomBarIndex(index){
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-  // final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-
   Future<void> getSharedPrefs() async {
     setState(() {
       _isloading =true;
@@ -54,7 +46,6 @@ class _CartScreenState extends State<CartScreen> {
     customer_name=prefs.getString("customer_name")??"";
     table_id=  prefs.getInt("table_id")??0;
     table_name =prefs.getString("table_name")??"";
-    //selectedItems=prefs.getStringList("selected")!;
     setState(() {
       _isloading =false;
     });
@@ -68,7 +59,6 @@ class _CartScreenState extends State<CartScreen> {
   List<dynamic> _selectedItems =[];
   List<dynamic> _selectedItemsprice = [];
   bool isEmpty =true;
-
   @override
   Widget build(BuildContext context) {
     // key: _scaffoldKey;
@@ -77,26 +67,6 @@ class _CartScreenState extends State<CartScreen> {
     size = MediaQuery.of(context).size;
     height = size.height;
     width = size.width;
-    Future<void> saveState() async {
-      SharedPreferences prefs=await SharedPreferences.getInstance();
-      prefs.setStringList("quantity",[]);
-      prefs.setStringList("quantity",counterList);
-    }
-
-    Future<void> delete(String name ) async {
-      SharedPreferences prefs=await SharedPreferences.getInstance();
-      if(prefs.containsKey(name)){
-        prefs.setStringList(name, []);
-        var price=prefs.getStringList(name+"price");
-        for(int i=0;i<price!.length;i++)
-        {
-          setState(() {
-            p=p-double.parse(price[i]);
-          });
-        }
-        prefs.setStringList(name+"price",[]);
-      }
-    }
     return Scaffold(
         floatingActionButton: SpeedDial(
           marginBottom: 100, //margin bottom
@@ -334,7 +304,6 @@ class _CartScreenState extends State<CartScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10,left: 8,right: 8),
                       child: Container(
-                        // height:MediaQuery.of(context).size.height/10 ,
                         padding: EdgeInsets.only(left:10),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
