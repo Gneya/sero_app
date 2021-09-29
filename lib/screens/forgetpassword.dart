@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_nav_bar/HomeScreen.dart';
+import 'package:flutter_nav_bar/screens/HomeScreen.dart';
 import 'package:flutter_nav_bar/main.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;

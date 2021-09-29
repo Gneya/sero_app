@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:enhanced_drop_down/enhanced_drop_down.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_nav_bar/utsav/payment_screen.dart';
+import 'package:flutter_nav_bar/screens/payment_screen.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';

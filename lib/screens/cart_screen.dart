@@ -3,12 +3,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
-import 'package:flutter_nav_bar/selectable.dart';
-import 'package:flutter_nav_bar/utsav/edit_item.dart';
-import 'package:flutter_nav_bar/utsav/notification.dart';
-import 'package:flutter_nav_bar/utsav/payment_screen.dart';
-import 'package:flutter_nav_bar/utsav/resume_screen.dart';
-import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_nav_bar/screens/selectable.dart';
+import 'package:flutter_nav_bar/dialog/edit_item.dart';
+import 'package:flutter_nav_bar/tab/edit_item_tab.dart';
+import 'package:flutter_nav_bar/dialog/notification.dart';
+import 'package:flutter_nav_bar/screens/payment_screen.dart';
+import 'package:flutter_nav_bar/screens/resume_screen.dart';
+import 'package:flutter_nav_bar/dialog/void.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -326,7 +327,8 @@ class _CartScreenState extends State<CartScreen> {
                   return GestureDetector(
                     onTap:(){
                       showDialog(context: context, builder: (context) {
-                        return edit_item(name: cart.cartItem[index].productName.toString(),quantity: cart.cartItem[index].quantity.toString(),price: cart.cartItem[index].unitPrice.toString(), index: index,);
+                        return MediaQuery.of(context).size.width < 650 ? edit_item(name: cart.cartItem[index].productName.toString(),quantity: cart.cartItem[index].quantity.toString(),price: cart.cartItem[index].unitPrice.toString(), index: index,):
+                        edit_item_TAB(name: cart.cartItem[index].productName.toString(),quantity: cart.cartItem[index].quantity.toString(),price: cart.cartItem[index].unitPrice.toString(), index: index);
                       });
                     },
                     child: Padding(
@@ -481,7 +483,6 @@ class _CartScreenState extends State<CartScreen> {
                                       itemCount:1,
                                       itemBuilder: (context, i) {
                                         return Text(list_of_products[index]["note"]??"");
-
                                       },
                                     );}),
                             ),
@@ -491,137 +492,7 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   );})),
 
-        bottomSheet:_currentIndex == 3 ? new Container(
-          height: 70,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                offset: const Offset(
-                  1.0,
-                  1.0,
-                ), //Offset
-                blurRadius: 6.0,
-                spreadRadius: 2.0,
-              ), //BoxShadow
-              BoxShadow(
-                color: Colors.white,
-                offset: const Offset(0.0, 0.0),
-                blurRadius: 0.0,
-                spreadRadius: 0.0,
-              ),],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Column(
-                children: [
-                  IconButton(
-                    onPressed:(){
-                      setState(() {
-                      });
-                    },
-                    iconSize: 25,
-                    icon: Icon(Icons.table_chart_outlined,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  Text('Tables',
-                    style: GoogleFonts.ptSans(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),)
-                ],
-              ),
-              Column(
-                children: [
-                  IconButton(
-                    onPressed:(){
-                      setState(() {
-                      });
-                    },
-                    iconSize: 29,
-                    icon: Icon(Icons.play_arrow_sharp,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  Text('Resume',
-                    style: GoogleFonts.ptSans(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),
-                  )
-                ],
-              ),Column(
-                children: [
-                  IconButton(
-                    onPressed:(){
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (context){
-                      //       return VoidBill(Ammount: paymentAmount,);
-                      //     }
-                      // );
-                    },
-                    iconSize: 25,
-                    icon: Icon(Icons.delete,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  Text('Void',
-                    style: GoogleFonts.ptSans(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),)
-                ],
-              ),Column(
-                children: [
-                  IconButton(
-                    onPressed:(){
-
-                    },
-                    iconSize: 25,
-                    icon: Icon(Icons.clear_all_sharp,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                  Text('Clear',
-                    style: GoogleFonts.ptSans(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[800],
-                    ),)
-                ],
-              ),
-              Column(
-                children: [
-                  IconButton(
-                    onPressed:()async{
-                      SharedPreferences prefs = await SharedPreferences.getInstance();
-                      table_id =  prefs.getInt("table_id")!;
-                      table_name =prefs.getString("table_name")!;
-                      customer_name=prefs.getString("customer_name")!;
-                      setState(() {
-                        _currentIndex =0;
-
-                        setState(() {
-                          _isloading =false;
-                        });
-                        setState(() {
-
-                        });
-                      });
-                    },
-                    iconSize: 40,
-                    icon: Icon(Icons.keyboard_arrow_down_outlined,
-                      color: Colors.grey[800],
-                    ),
-                  ),
-                ],
-              ),
-
-            ],
-          ),
-        ): Container(
+        bottomSheet: Container(
           height: 80,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(topRight:Radius.circular(25),topLeft:Radius.circular(25),),

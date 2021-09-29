@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_nav_bar/Category.dart';
-import 'package:flutter_nav_bar/productdetails.dart';
-import 'package:flutter_nav_bar/responsive.dart';
-import 'package:flutter_nav_bar/tabscreen.dart';
-import 'package:flutter_nav_bar/utsav/cart_screen.dart';
+import 'package:flutter_nav_bar/screens/Category.dart';
+import 'package:flutter_nav_bar/screens/productdetails.dart';
+import 'package:flutter_nav_bar/tab/responsive.dart';
+import 'package:flutter_nav_bar/tab/tabscreen.dart';
+import 'package:flutter_nav_bar/screens/cart_screen.dart';
 
 
 class Module2 extends StatelessWidget {

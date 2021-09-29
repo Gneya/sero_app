@@ -8,10 +8,10 @@ import 'package:flutter_cart/flutter_cart.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
 import 'package:flutter_nav_bar/bottom_navigation.dart';
-import 'package:flutter_nav_bar/selectable.dart';
-import 'package:flutter_nav_bar/utsav/notification.dart';
-import 'package:flutter_nav_bar/utsav/resume_screen.dart';
-import 'package:flutter_nav_bar/utsav/void.dart';
+import 'package:flutter_nav_bar/screens/selectable.dart';
+import 'package:flutter_nav_bar/dialog/notification.dart';
+import 'package:flutter_nav_bar/screens/resume_screen.dart';
+import 'package:flutter_nav_bar/dialog/void.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -22,7 +22,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'addons_and_modifiers.dart';
+import '../dialog/addons_and_modifiers.dart';
 
 class SelectItem extends StatefulWidget {
   String category;

@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cart/flutter_cart.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-class edit_item extends StatefulWidget {
+class edit_item_TAB extends StatefulWidget {
   String name;
   String quantity;
   String price;
   int index;
-  edit_item({
+  edit_item_TAB({
     required this.name,
     required this.quantity,
     required this.price,
     required this.index,
   });
   @override
-  _edit_item_State createState() => _edit_item_State();
+  _edit_item_TAB_State createState() => _edit_item_TAB_State();
 }
-class _edit_item_State extends State<edit_item> {
+class _edit_item_TAB_State extends State<edit_item_TAB> {
   double discountAmount =0.0;
   double discountted =0.0;
   String  discountedAmount ='0';
@@ -40,7 +40,6 @@ class _edit_item_State extends State<edit_item> {
   }
   @override
   Widget build(BuildContext context) {
-    var dropdownValue1;
     return Dialog(
         insetPadding: EdgeInsets.only(left: 20,right: 20,top: 20,bottom: 20),
         backgroundColor: Colors.white,
@@ -49,7 +48,7 @@ class _edit_item_State extends State<edit_item> {
         child:SingleChildScrollView(
           child: Container(
             height: MediaQuery.of(context).size.height/1.58,
-            width: MediaQuery.of(context).size.width/1.8,
+            width: MediaQuery.of(context).size.width/1.9,
             padding: EdgeInsets.all(8),
             child: (
                 Column(
@@ -60,7 +59,7 @@ class _edit_item_State extends State<edit_item> {
                       child: Text("EDIT ITEM",style: GoogleFonts.ptSans(fontSize: 18),),
                     ),
                     Container(
-                      width: MediaQuery.of(context).size.width/2.2,
+                      width: MediaQuery.of(context).size.width/1.1,
                       child:Padding(
                         padding: const EdgeInsets.only(top: 10,left: 8,right: 7),
                         child: Container(
@@ -252,7 +251,7 @@ class _edit_item_State extends State<edit_item> {
                         decoration: InputDecoration(
                           hintText: 'Cooking Instruction',
                           hintStyle: TextStyle(
-                            color: Colors.grey
+                              color: Colors.grey
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(30),
@@ -283,7 +282,7 @@ class _edit_item_State extends State<edit_item> {
                           width: 130,
                         ),
                         onTap :() async {
-                           SharedPreferences shared = await SharedPreferences.getInstance();
+                          SharedPreferences shared = await SharedPreferences.getInstance();
                           setState(()  {
                             if(dropdownValue == "Fixed"){
                               cart.cartItem[widget.index].unitPrice-= double.parse(_discount.text);
@@ -299,12 +298,12 @@ class _edit_item_State extends State<edit_item> {
                           List<dynamic> list_of_products=[];
                           list_of_products=json.decode(shared.getString("products")!);
                           for(int i=0;i<list_of_products.length;i++)
+                          {
+                            if(list_of_products[i]["pid"]==cart.cartItem[widget.index].productId)
                             {
-                              if(list_of_products[i]["pid"]==cart.cartItem[widget.index].productId)
-                                {
-                                  list_of_products[i]["note"]=note.text;
-                                }
+                              list_of_products[i]["note"]=note.text;
                             }
+                          }
                           print(list_of_products);
                           shared.setString("products", json.encode(list_of_products));
                           Navigator.pop(context);
