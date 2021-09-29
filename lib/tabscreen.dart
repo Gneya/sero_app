@@ -492,7 +492,16 @@ class _TabScreenState extends State<TabScreen> {
                         Container(
                             height: MediaQuery.of(context).size.height/12,
                             width: MediaQuery.of(context).size.width,
-                            child:Image.network(_productlist[index].url)
+                            child:Image.network(
+                              _productlist[index].url, // this image doesn't exist
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  child: Image.asset("images/icon-b-s.png"),
+                                );
+                              },
+                            ),
                         ),
                         Container(
                           // height: MediaQuery
