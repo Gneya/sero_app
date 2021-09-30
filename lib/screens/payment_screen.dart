@@ -1458,7 +1458,6 @@ class _PaymentScreenState extends State<PaymentScreen> {
                             print(r2);
                             print(id);
 
-
                             var variation=shared.getStringList("variation");
                             var cart=FlutterCart();
                             for(int index=0;index<cart.cartItem.length;index++)
@@ -1493,7 +1492,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                     shared.getString("modifiers") ?? "");
                                 print(mod[0]);
                                 for (int i = 0; i < mod.length; i++) {
-                                  list_of_m.add(mod[0]);
+                                  list_of_m.add(mod[i]);
                                 }
                               }
                             }
@@ -1521,7 +1520,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   {
                                     "table_id" :shared.getInt("table_id")??null,
                                     "location_id": shared.getInt("bid")??1,
-                                    "contact_id": double.parse(shared.getString("customer_id")??"1"),
+                                    "contact_id": shared.getString("customer_id")??"1",
                                     "discount_amount": shared.getDouble("Discountt_for_db")??0,
                                     "discount_type": dar,
                                     "rp_redeemed": shared.getInt("Redeemed Points"),

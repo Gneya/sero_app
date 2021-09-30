@@ -148,6 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
   var id="0";
+  var cid="0";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -360,6 +361,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               onSuggestionSelected: (Customer? suggestion) async {
                                 hint=suggestion!._name;
+                                cid=suggestion.cid;
                                 id=suggestion.id;
                                 print("ID IS:$id");
                                 print("NAME :${suggestion._name}");
@@ -438,65 +440,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             }
                             else if(types_of_service_id[index]==3)
                               {
-                                print(id);
-                                SharedPreferences shared=await SharedPreferences.getInstance();
-                                if(id!="0") {
-                                  shared.setInt("types_of_service_id",3);
-                                  setState(() {
-                                    _isloading=true;
-                                  });
-                                  print(id);
-                                  shared.setInt("types_of_service_id", 3);
-                                  var response = await http.get(
-                                      Uri.parse(
-                                          "https://seropos.app/connector/api/contactapi?contact_id=$id"),
-                                      headers: {
-                                        'Authorization': shared.getString(
-                                            "Authorization") ?? ""
-                                      });
-                                  print(json.decode(response.body));
-                                  final d = json.decode(response.body)["data"][0];
-                                  print(d);
-                                  var fname = d["first_name"];
-                                  var mname = d["middle_name"];
-                                  var lname = d["last_name"];
-                                  var email_id = d["email"];
-                                  var phone = d["mobile"];
-                                  var city = d["city"];
-                                  var state = d["state"];
-                                  var country = d["country"];
-                                  var address = d["address_line_1"] ??
-                                      d["address_line_2"];
-                                  var dob = d["dob"];
-                                  if (address == null) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                edit_customer(id: id,
-                                                    fname: fname,
-                                                    mname: mname,
-                                                    lname: lname,
-                                                    email_id: email_id,
-                                                    phone: phone,
-                                                    city: city,
-                                                    state: state,
-                                                    country: country,
-                                                    dob: dob)));
-                                    setState(() {
-                                      _isloading = false;
-                                    });
-                                  }
-                                  else {
-                                    SharedPreferences share = await SharedPreferences
-                                        .getInstance();
-                                    share.setInt("index", 1);
-                                  }
-
-                                  setState(() {
-                                    _isloading=false;
-                                  });
-                                }
+                               dev();
                               }
                             else{}
                             },
@@ -518,16 +462,80 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  Future<void> dev() async {
+    print(id);
+    SharedPreferences shared=await SharedPreferences.getInstance();
+    if(id!="0") {
+      shared.setInt("types_of_service_id",3);
+      setState(() {
+        _isloading=true;
+      });
+      print(id);
+      shared.setInt("types_of_service_id", 3);
+      var response = await http.get(
+          Uri.parse(
+              "https://seropos.app/connector/api/contactapi?contact_id=$cid"),
+          headers: {
+            'Authorization': shared.getString(
+                "Authorization") ?? ""
+          });
+      print(json.decode(response.body));
+      final d = json.decode(response.body)["data"][0];
+      print(d);
+      var fname = d["first_name"];
+      var mname = d["middle_name"];
+      var lname = d["last_name"];
+      var email_id = d["email"];
+      var phone = d["mobile"];
+      var city = d["city"];
+      var state = d["state"];
+      var country = d["country"];
+      var address = d["address_line_1"] ??
+          d["address_line_2"];
+      var dob = d["dob"];
+      if (address == null) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    edit_customer(id: id,
+                        fname: fname,
+                        mname: mname,
+                        lname: lname,
+                        email_id: email_id,
+                        phone: phone,
+                        city: city,
+                        state: state,
+                        country: country,
+                        dob: dob)));
+        setState(() {
+          _isloading = false;
+        });
+      }
+      else {
+        SharedPreferences share = await SharedPreferences
+            .getInstance();
+        share.setInt("index", 1);
+      }
+
+      setState(() {
+        _isloading=false;
+      });
+    }
+  }
 }
 class Customer
 {
   final String _name;
   final String _phone;
+  final String cid;
   final String id;
   Customer.fromJson(Map<String,dynamic> json):
         this._name=json["first_name"]??json["name"],
         this._phone=json["mobile"],
-        this.id=json["contact_id"].toString();
+        this.cid=json["contact_id"].toString(),
+        this.id=json["id"].toString();
 
 }
 class CustomerApi {
