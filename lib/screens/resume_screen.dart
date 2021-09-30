@@ -215,7 +215,7 @@ class _ResumeScreenState extends State<ResumeScreen> {
                                             SharedPreferences shared=await SharedPreferences.getInstance();
                                             shared.setString("order_id", list[index]["order_id"].toString());
                                             print(shared.getString("order_id"));
-                                            shared.setInt("table_id", list[index]["table_id"]);
+                                            shared.setInt("table_id", list[index]["table_id"]??0);
                                             shared.setString("invoice_no", list[index]["invoice_no"]);
                                             print( list[index]["invoice_no"]);
                                             var cart=FlutterCart();
