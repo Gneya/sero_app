@@ -516,6 +516,7 @@ class _CartScreenState extends State<CartScreen> {
                       {
                         if(list_of_products[i]["pid"]==cart.cartItem[index].productId)
                         {
+                          print("TAXXXXXXXXXXXXXXXXXX ${list_of_products[i]["tax_id"]}");
                           note=list_of_products[i]["note"]??"";
                           tax_id=list_of_products[i]["tax_id"]??0;
                           print(note);
@@ -523,7 +524,7 @@ class _CartScreenState extends State<CartScreen> {
                         }
                       }
                       Map<String,dynamic> product={
-                        "product_id":int.parse(cart.cartItem[index].productId.toString()),
+                        "product_id":double.parse(cart.cartItem[index].productId.toString()),
                         "variation_id":double.parse(variation![index]),
                         "quantity": cart.cartItem[index].quantity,
                         "unit_price": cart.cartItem[index].unitPrice,
