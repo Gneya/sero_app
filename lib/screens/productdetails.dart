@@ -423,6 +423,7 @@ class _SelectItemState extends State<SelectItem> {
                                             'Authorization': sharedPreferences.getString("Authorization")??""
                                           });
                                           print("IDDDDDDDDDD");
+                                          var tax=json.decode(response.body)["data"][0]["tax_id"];
                                           print(json.decode(response.body)["data"][0]["variation_id"].toString());
                                           list!.add(json.decode(response.body)["data"][0]["variation_id"].toString());
                                           var customer_id=sharedPreferences.getString("customer_id")!;
@@ -440,7 +441,7 @@ class _SelectItemState extends State<SelectItem> {
                                             list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
                                           m={
                                             "pid":suggestion.id,
-                                            "tax_id":suggestion.tax_id,
+                                            "tax_id":tax,
                                             "price_inc_tax":x["data"]["sell_price_inc_tax"],
                                             "total":x["data"]["sell_price_inc_tax"],
                                             "note":""
@@ -787,13 +788,11 @@ class Customer
 {
   final String _name;
   final String id;
-  final String variation_id;
-  final int tax_id;
+  final int _phone;
   Customer.fromJson(Map<String,dynamic> json):
         this._name=json["name"],
-        this.id=json["id"].toString(),
-        this.variation_id=json["product_variations"][0]["variations"][0]["product_variation_id"].toString(),
-        this.tax_id=json["product_tax"]["id"];
+        this._phone=json["product_variations"][0]["variations"][0]["sell_price_inc_tax"],
+        this.id=json["id"].toString();
 
 }
 class CustomerApi {
@@ -803,22 +802,21 @@ class CustomerApi {
     var pages;
     List<Customer>name = [];
     late Customer cus;
-    SharedPreferences shared  = await SharedPreferences.getInstance();
+    SharedPreferences shared = await SharedPreferences.getInstance();
     var response = await http.get(
         Uri.parse("https://seropos.app/connector/api/product/?per_page=-1"),
         headers: {
-          'Authorization': shared.getString("Authorization")??""
+          'Authorization': shared.getString("Authorization") ?? ""
         });
     final List d = json.decode(response.body)["data"];
-    pages=json.decode(response.body);
+    pages = json.decode(response.body);
     print("DDDDDDDDDDDDDDDD");
     print(d);
     name.addAll(d.map((e) => Customer.fromJson(e)).where((element) {
-      print(element);
       final name = element._name.toLowerCase();
       final _name = query.toLowerCase();
-      print(element._name);
       print("NAME");
+      print(element._name);
       return name.contains(_name);
     }).toList());
     return name;

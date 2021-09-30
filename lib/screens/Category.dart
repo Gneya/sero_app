@@ -384,11 +384,12 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                           );
                                         },
                                         onSuggestionSelected: (Customer? suggestion) async {
+                                          List<dynamic> list_of_products=[];
                                           print("IDDDDDDDDDD");
                                           SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
                                           var cart=FlutterCart();
                                           print(suggestion!.id);
-                                          cart.addToCart(productId: double.parse(suggestion!.id), unitPrice: double.parse(suggestion._phone),productName: suggestion!._name);
+
                                           //hint=suggestion!._name;
                                           //_typeAheadController.text=suggestion._name;
                                           var list = sharedPreferences.getStringList("variation");
@@ -397,11 +398,43 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                             'Authorization': sharedPreferences.getString("Authorization")??""
                                           });
                                           print("IDDDDDDDDDD");
+                                          var tax=json.decode(response.body)["data"][0]["tax_id"];
                                           print(json.decode(response.body)["data"][0]["variation_id"].toString());
                                           list!.add(json.decode(response.body)["data"][0]["variation_id"].toString());
+                                          var customer_id=sharedPreferences.getString("customer_id")!;
+                                          var bid=sharedPreferences.getInt("bid");
+                                          http.Response response2 = await http.get(
+                                              Uri.parse("https://seropos.app/connector/api/sells/pos/get_discount_product/${json.decode(response.body)["data"][0]["variation_id"]}/$bid?customer_id=$customer_id"), headers: {
+                                            'Authorization': sharedPreferences.getString("Authorization")??""
+                                          });
+                                          var x=json.decode(response2.body);
+                                          cart.addToCart(productId: suggestion.id, unitPrice: x["data"]["default_sell_price"],productName: suggestion._name);
                                           //print(suggestion.variation_id);
                                           sharedPreferences.setStringList("variation", []);
                                           sharedPreferences.setStringList("variation", list);
+                                          if(sharedPreferences.getString("products")!=""){
+                                            list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
+                                          Map m={
+                                            "pid":suggestion.id,
+                                            "tax_id":tax,
+                                            "price_inc_tax":x["data"]["sell_price_inc_tax"],
+                                            "total":x["data"]["sell_price_inc_tax"],
+                                            "note":""
+                                          };
+                                          int flag=0;
+                                          for(int i=0;i<list_of_products.length;i++)
+                                          {
+                                            if(list_of_products[i]["pid"]==suggestion.id)
+                                            {
+                                              flag=1;
+                                              break;
+                                              print("Yes product id exist");
+                                            }
+                                          }
+                                          if(flag==0)
+                                            list_of_products.add(m);
+                                          print(list_of_products);
+                                          sharedPreferences.setString("products", json.encode(list_of_products));
                                           sharedPreferences.setString("total",cart.getCartItemCount().toString());
                                           Fluttertoast.showToast(
                                               msg:suggestion._name+" is selected",
