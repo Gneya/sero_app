@@ -1521,7 +1521,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                   {
                                     "table_id" :shared.getInt("table_id")??null,
                                     "location_id": shared.getInt("bid")??1,
-                                    "contact_id": double.parse(shared.getString("customer_id")??"1"),
+                                    "contact_id": shared.getString("customer_id")??"1",
                                     "discount_amount": shared.getDouble("Discountt_for_db")??0,
                                     "discount_type": dar,
                                     "rp_redeemed": shared.getInt("Redeemed Points"),
