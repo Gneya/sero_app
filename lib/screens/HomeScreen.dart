@@ -362,6 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 hint=suggestion!._name;
                                 id=suggestion.id;
                                 print("ID IS:$id");
+                                print("NAME :${suggestion._name}");
                                 _typeAheadController.text=suggestion._name;
                                 Fluttertoast.showToast(
                                     msg:suggestion._name+" is selected",
@@ -435,7 +436,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                               shared.setInt("index", 1);
                             }
-                            else if(types_of_service_id==3)
+                            else if(types_of_service_id[index]==3)
                               {
                                 print(id);
                                 SharedPreferences shared=await SharedPreferences.getInstance();
@@ -448,7 +449,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   shared.setInt("types_of_service_id", 3);
                                   var response = await http.get(
                                       Uri.parse(
-                                          "https://seropos.app/connector/api/contactapi/$id"),
+                                          "https://seropos.app/connector/api/contactapi?contact_id=$id"),
                                       headers: {
                                         'Authorization': shared.getString(
                                             "Authorization") ?? ""
@@ -526,7 +527,7 @@ class Customer
   Customer.fromJson(Map<String,dynamic> json):
         this._name=json["first_name"]??json["name"],
         this._phone=json["mobile"],
-        this.id=json["id"].toString();
+        this.id=json["contact_id"].toString();
 
 }
 class CustomerApi {
