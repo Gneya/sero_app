@@ -405,9 +405,8 @@ class _SelectItemState extends State<SelectItem> {
                                             )
                                         ),
                                         itemBuilder: (BuildContext context,Customer? suggestion) {
-                                          final content=suggestion!;
                                           return ListTile(
-                                            title: Text(content._name),
+                                            title: Text(suggestion!._name),
                                           );
                                         },
                                         onSuggestionSelected: (Customer? suggestion) async {
@@ -415,7 +414,7 @@ class _SelectItemState extends State<SelectItem> {
                                           SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
                                           var cart=FlutterCart();
                                           print(suggestion!.id);
-                                          cart.addToCart(productId: double.parse(suggestion!.id), unitPrice: double.parse(suggestion._phone),productName: suggestion!._name);
+
                                           //hint=suggestion!._name;
                                           //_typeAheadController.text=suggestion._name;
                                           var list = sharedPreferences.getStringList("variation");
@@ -426,9 +425,40 @@ class _SelectItemState extends State<SelectItem> {
                                           print("IDDDDDDDDDD");
                                           print(json.decode(response.body)["data"][0]["variation_id"].toString());
                                           list!.add(json.decode(response.body)["data"][0]["variation_id"].toString());
+                                          var customer_id=sharedPreferences.getString("customer_id")!;
+                                          var bid=sharedPreferences.getInt("bid");
+                                          http.Response response2 = await http.get(
+                                              Uri.parse("https://seropos.app/connector/api/sells/pos/get_discount_product/${json.decode(response.body)["data"][0]["variation_id"]}/$bid?customer_id=$customer_id"), headers: {
+                                            'Authorization': sharedPreferences.getString("Authorization")??""
+                                          });
+                                          var x=json.decode(response2.body);
+                                          cart.addToCart(productId: double.parse(suggestion.id), unitPrice: x["data"]["default_sell_price"],productName: suggestion._name);
                                           //print(suggestion.variation_id);
                                           sharedPreferences.setStringList("variation", []);
                                           sharedPreferences.setStringList("variation", list);
+                                          if(sharedPreferences.getString("products")!=""){
+                                            list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
+                                          m={
+                                            "pid":suggestion.id,
+                                            "tax_id":suggestion.tax_id,
+                                            "price_inc_tax":x["data"]["sell_price_inc_tax"],
+                                            "total":x["data"]["sell_price_inc_tax"],
+                                            "note":""
+                                          };
+                                          int flag=0;
+                                          // for(int i=0;i<list_of_products.length;i++)
+                                          // {
+                                          //   // if(list_of_products[i]["pid"]==_productlist[index].id)
+                                          //   // {
+                                          //   //   flag=1;
+                                          //   //   break;
+                                          //   //   print("Yes product id exist");
+                                          //   // }
+                                          // }
+                                          if(flag==0)
+                                            list_of_products.add(m);
+                                          print(list_of_products);
+                                          sharedPreferences.setString("products", json.encode(list_of_products));
                                           sharedPreferences.setString("total",cart.getCartItemCount().toString());
                                           Fluttertoast.showToast(
                                               msg:suggestion._name+" is selected",
@@ -756,15 +786,14 @@ class product
 class Customer
 {
   final String _name;
-  final String _phone;
   final String id;
   final String variation_id;
+  final int tax_id;
   Customer.fromJson(Map<String,dynamic> json):
         this._name=json["name"],
-        this._phone=json["product_variations"][0]["variations"][0]["default_sell_price"],
         this.id=json["id"].toString(),
-        this.variation_id=json["product_variation_id"].toString();
-
+        this.variation_id=json["product_variations"][0]["variations"][0]["product_variation_id"].toString(),
+        this.tax_id=json["product_tax"]["id"];
 
 }
 class CustomerApi {
@@ -782,10 +811,13 @@ class CustomerApi {
         });
     final List d = json.decode(response.body)["data"];
     pages=json.decode(response.body);
+    print("DDDDDDDDDDDDDDDD");
     print(d);
     name.addAll(d.map((e) => Customer.fromJson(e)).where((element) {
+      print(element);
       final name = element._name.toLowerCase();
       final _name = query.toLowerCase();
+      print(element._name);
       print("NAME");
       return name.contains(_name);
     }).toList());
