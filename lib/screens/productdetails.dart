@@ -56,25 +56,11 @@ class _SelectItemState extends State<SelectItem> {
   List<String> id = [];
   bool _isloading = false;
   var _searchText;
+  //fetching products of category
   Future<void> get() async {
     setState(() {
       _isloading = true;
     });
-    _SelectItemState() {
-      _controller.addListener(() {
-        if (_controller.text.isEmpty) {
-          setState(() {
-            _isSearching = false;
-            _searchText = "";
-          });
-        } else {
-          setState(() {
-            _isSearching = true;
-            _searchText = _controller.text;
-          });
-        }
-      });
-    }
     int i=1;
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     http.Response response = await http.get(

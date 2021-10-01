@@ -11,8 +11,6 @@ import 'dart:convert';
 // import 'package:sero_app/forget_password.dart';
 import 'package:http/http.dart' as http;
 class login extends StatefulWidget {
-
-
   @override
   loginState createState() => loginState();
 }
@@ -25,6 +23,7 @@ class loginState extends State<login> {
   TextEditingController email = new TextEditingController();
   TextEditingController password = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  //on pressedof login button
   _authenticate() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     //input for the api

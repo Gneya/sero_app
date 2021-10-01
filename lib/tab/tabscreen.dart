@@ -55,6 +55,7 @@ class _TabScreenState extends State<TabScreen> {
   String table_name='';
   Map m={};
   double p=0.0;
+  bool _isloading_forcart = false;
   int _currentIndex = 0;
   var v;
   var cart=FlutterCart();
@@ -130,13 +131,7 @@ class _TabScreenState extends State<TabScreen> {
           timeInSecForIosWeb: 4);
 
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
-
-
   }
   Future<void> get() async {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
@@ -160,25 +155,7 @@ class _TabScreenState extends State<TabScreen> {
         print(_datalist);
       }
     }
-
-
-    _SelectItemState() {
-      _controller.addListener(() {
-        if (_controller.text.isEmpty) {
-          setState(() {
-            _isSearching = false;
-            _searchText = "";
-          });
-        } else {
-          setState(() {
-            _isSearching = true;
-            _searchText = _controller.text;
-          });
-        }
-      });
-    }
      i=1;
-
     http.Response response1 = await http.get(
         Uri.parse("https://seropos.app/connector/api/variation/?per_page=-1"), headers: {
       'Authorization': sharedPreferences.getString("Authorization")??""
@@ -200,11 +177,6 @@ class _TabScreenState extends State<TabScreen> {
       setState(() {
         _isloading=false;
       });}
-  }
-  void _handleSearchStart() {
-    setState(() {
-      _isSearching = true;
-    });
   }
   void searchOperation(String searchText) {
     searchresult.clear();
@@ -452,160 +424,295 @@ class _TabScreenState extends State<TabScreen> {
             ),
             Expanded(
                 flex: 8,
-                child: GridView.builder(
-                primary: false,
-                padding: const EdgeInsets.all(10),
-                itemCount: _productlist.length,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 25.0,
-                  mainAxisSpacing: 25.0,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width/1.3,
+                        margin: EdgeInsets.only(left: 10,right: 10,bottom: 10),
+                        child:
+                        Material(
+                          elevation: 5.0,
+                          borderRadius: BorderRadius.circular(30.0),
+                          color: Colors.white,
+                          child: MaterialButton(
+                            minWidth:MediaQuery.of(context).size.width/6,
+                            height: MediaQuery.of(context).size.height/20,
+                            onPressed: () {},
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: <Widget>[
+                                Container(
+                                    height: MediaQuery.of(context).size.height/20,
+                                    width: MediaQuery.of(context).size.width/3.5,
+                                    child:TypeAheadField<Customer>(
+                                      textFieldConfiguration: TextFieldConfiguration(
+                                        //controller: _typeAheadController,
+                                          textAlign: TextAlign.center,
+                                          decoration: InputDecoration(
+                                            border: InputBorder.none,
+                                            hintText: "Search Product",
+                                            suffixIcon: IconButton(
+                                                icon:Image.asset("images/barcode.png",height: 20,width: 20,),
+                                                padding: EdgeInsets.zero,
+                                                color: Colors.black,
+                                                onPressed:_scanQR
+                                            ),
+                                            prefixIcon:  IconButton(
+                                              padding: EdgeInsets.zero,
+                                              icon:Icon(Icons.search),
+                                              color: Colors.black,
+                                              onPressed:(){} ,
+                                            ),
+                                          )
+                                      ),
+                                      itemBuilder: (BuildContext context,Customer? suggestion) {
+                                        final content=suggestion!;
+                                        return ListTile(
+                                          title: Text(content._name),
+                                        );
+                                      },
+                                      onSuggestionSelected: (Customer? suggestion) async {
+                                        setState(() {
+                                          _isloading_forcart=true;
+                                        });
+                                        List<dynamic> list_of_products=[];
+                                        print("IDDDDDDDDDD");
+                                        SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
+                                        var cart=FlutterCart();
+                                        print(suggestion!.id);
+                                        var list = sharedPreferences.getStringList("variation");
+                                        http.Response response = await http.get(
+                                            Uri.parse("https://seropos.app/connector/api/variation/?name=${suggestion._name}"), headers: {
+                                          'Authorization': sharedPreferences.getString("Authorization")??""
+                                        });
+                                        print("IDDDDDDDDDD");
+                                        var tax=json.decode(response.body)["data"][0]["tax_id"];
+                                        print(json.decode(response.body)["data"][0]["variation_id"].toString());
+                                        list!.add(json.decode(response.body)["data"][0]["variation_id"].toString());
+                                        var customer_id=sharedPreferences.getString("customer_id")!;
+                                        var bid=sharedPreferences.getInt("bid");
+                                        http.Response response2 = await http.get(
+                                            Uri.parse("https://seropos.app/connector/api/sells/pos/get_discount_product/${json.decode(response.body)["data"][0]["variation_id"]}/$bid?customer_id=$customer_id"), headers: {
+                                          'Authorization': sharedPreferences.getString("Authorization")??""
+                                        });
+                                        var x=json.decode(response2.body);
+                                        //print(suggestion.variation_id);
+                                        sharedPreferences.setStringList("variation", []);
+                                        sharedPreferences.setStringList("variation", list);
+                                        if(sharedPreferences.getString("products")!=""){
+                                          list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
+                                        Map m={
+                                          "pid":suggestion.id,
+                                          "tax_id":tax,
+                                          "price_inc_tax":x["data"]["sell_price_inc_tax"],
+                                          "total":x["data"]["sell_price_inc_tax"],
+                                          "note":""
+                                        };
 
-                ),
-                itemBuilder: (BuildContext context, int index) {
-                  return GestureDetector(child: Container(
-                    height: MediaQuery
-                        .of(context)
-                        .size
-                        .height,
-                    //width: 550,
-                    //width: 550,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 5,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                        borderRadius: BorderRadius.circular(10)
-                    ),
-                    padding: const EdgeInsets.all(3),
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(
-                          height: 6,
-                        ),
-                        Container(
-                            height: MediaQuery.of(context).size.height/12,
-                            width: MediaQuery.of(context).size.width,
-                            child:Image.network(
-                              _productlist[index].url, // this image doesn't exist
-                              fit: BoxFit.cover,
-                              errorBuilder: (context, error, stackTrace) {
-                                return Container(
-                                  alignment: Alignment.center,
-                                  child: Image.asset("images/icon-b-s.png"),
-                                );
-                              },
+                                        int flag=0;
+                                        for(int i=0;i<list_of_products.length;i++)
+                                        {
+                                          if(list_of_products[i]["pid"]==suggestion.id)
+                                          {
+                                            flag=1;
+                                            break;
+                                            print("Yes product id exist");
+                                          }
+                                        }
+                                        if(flag==0)
+                                          list_of_products.add(m);
+                                        print(list_of_products);
+                                        sharedPreferences.setString("products", json.encode(list_of_products));
+                                        cart.addToCart(productId: suggestion.id, unitPrice: x["data"]["default_sell_price"],productName: suggestion._name);
+                                        sharedPreferences.setString("total",cart.getCartItemCount().toString());
+
+                                        Fluttertoast.showToast(
+                                            msg:suggestion._name+" is selected",
+                                            toastLength: Toast.LENGTH_LONG,
+                                            gravity: ToastGravity.BOTTOM,
+                                            textColor: Colors.green,
+                                            timeInSecForIosWeb: 4);
+                                        setState(() {
+                                          _isloading_forcart=false;
+                                        });
+                                      },
+                                      suggestionsCallback: CustomerApi.getUserSuggestion,
+                                    )),
+                              ],
                             ),
+                          ),
                         ),
-                        Container(
-                          // height: MediaQuery
-                          //     .of(context)
-                          //     .size
-                          //     .height / 25,
-                          width: MediaQuery
+                        //],
+                        //)
+                      ),
+
+                      SingleChildScrollView(
+                        child: Container(
+                          height:MediaQuery
                               .of(context)
                               .size
-                              .width,
-                          child: Center(child: _productlist[index].name.length>15?Text(
-                            _productlist[index].name.substring(0,13),
-                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: 10),
-                          ):Text(
-                            _productlist[index].name,
-                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: 10),
-                          ),),
-                        )],
-                    ),
+                              .height /1.5,
+
+                          child: GridView.builder(
+                          primary: false,
+                          padding: const EdgeInsets.all(10),
+                          itemCount: _productlist.length,
+                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4,
+                            crossAxisSpacing: 25.0,
+                            mainAxisSpacing: 25.0,
+
+                          ),
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(child: Container(
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height,
+                              //width: 550,
+                              //width: 550,
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.5),
+                                      spreadRadius: 5,
+                                      blurRadius: 7,
+                                      offset: Offset(0, 3), // changes position of shadow
+                                    ),
+                                  ],
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              padding: const EdgeInsets.all(3),
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 6,
+                                  ),
+                                  Container(
+                                      height: MediaQuery.of(context).size.height/12,
+                                      width: MediaQuery.of(context).size.width,
+                                      child:Image.network(
+                                        _productlist[index].url, // this image doesn't exist
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (context, error, stackTrace) {
+                                          return Container(
+                                            alignment: Alignment.center,
+                                            child: Image.asset("images/icon-b-s.png"),
+                                          );
+                                        },
+                                      ),
+                                  ),
+                                  Container(
+                                    // height: MediaQuery
+                                    //     .of(context)
+                                    //     .size
+                                    //     .height / 25,
+                                    width: MediaQuery
+                                        .of(context)
+                                        .size
+                                        .width,
+                                    child: Center(child: _productlist[index].name.length>15?Text(
+                                      _productlist[index].name.substring(0,13),
+                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: 10),
+                                    ):Text(
+                                      _productlist[index].name,
+                                      style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,fontSize: 10),
+                                    ),),
+                                  )],
+                              ),
+                            ),
+                                onTap: () async {
+                                  SharedPreferences sharedPreferences = await SharedPreferences
+                                      .getInstance();
+
+                                  var list = sharedPreferences.getStringList("variation");
+                                  list!.add(_productlist[index].variation_id);
+                                  print(_productlist[index].variation_id);
+                                  sharedPreferences.setStringList("variation", []);
+                                  sharedPreferences.setStringList("variation", list);
+                                  Map<String,dynamic> product={};
+                                  var customer_id=sharedPreferences.getString("customer_id")??0;
+                                  var bid=sharedPreferences.getInt("bid");
+                                  http.Response response2 = await http.get(
+                                      Uri.parse("https://seropos.app/connector/api/sells/pos/get_discount_product/${_productlist[index].variation_id}/$bid?customer_id=$customer_id"), headers: {
+                                    'Authorization': sharedPreferences.getString("Authorization")??""
+                                  });
+                                  var x=json.decode(response2.body);
+                                  int flag1 =0;
+                                  for (int i =0 ;i<cart.cartItem.length;i++){
+                                    if(cart.cartItem[i].productId==_productlist[index].id){
+                                      cart.addToCart(productId: _productlist[index].id,
+                                          unitPrice: x["data"]["default_sell_price"],
+                                          productName: _productlist[index].name,
+                                          quantity: ++cart.cartItem[i].quantity);
+                                      flag1 =1;
+                                      print("&&&&&&&&&&&&&&&&&**************(())))))))))))))))))");
+                                      break;
+                                    }
+                                  }
+                                  if( flag1 ==0){
+                                    cart.addToCart(productId: _productlist[index].id, unitPrice:x["data"]["default_sell_price"],productName: _productlist[index].name);
+                                  }
+
+                                  sharedPreferences.setString("total", cart.getCartItemCount().toString());
+                                  list_of_products.clear();
+                                  if(sharedPreferences.getString("products")!=""){
+                                    list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
+                                  m={
+                                    "pid":_productlist[index].id,
+                                    "tax_id":_productlist[index].tax_id,
+                                    "price_inc_tax":x["data"]["sell_price_inc_tax"],
+                                    "total":x["data"]["sell_price_inc_tax"],
+                                    "note":""
+                                  };
+                                  int flag=0;
+                                  for(int i=0;i<list_of_products.length;i++)
+                                  {
+                                    if(list_of_products[i]["pid"]==_productlist[index].id)
+                                    {
+                                      flag=1;
+                                      break;
+                                      print("Yes product id exist");
+                                    }
+                                  }
+                                  if(flag==0)
+                                    list_of_products.add(m);
+                                  print(list_of_products);
+                                  sharedPreferences.setString("products", json.encode(list_of_products));
+                                  http.Response response = await http.get(
+                                      Uri.parse(
+                                          "https://seropos.app/connector/api/product/${_productlist[index].id}")
+                                      ,  headers: {
+                                    'Authorization': sharedPreferences.getString("Authorization")??""
+                                  });
+                                  var v = (json.decode(response.body));
+                                  List<dynamic> check = v["data"][0]["modifiers"];
+                                  if (check.isNotEmpty) {
+                                    showDialog(context: context, builder: (context) {
+                                      return add(product: _productlist[index].name);
+                                    });
+                                  }
+                                  Fluttertoast.showToast(
+                                      msg: "Item added to cart",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.BOTTOM,
+                                      textColor: Colors.green,
+                                      timeInSecForIosWeb: 4);
+                                }
+                            );
+                          }),
+                        ),
+                      ),
+                    ],
                   ),
-                      onTap: () async {
-                        SharedPreferences sharedPreferences = await SharedPreferences
-                            .getInstance();
-
-                        var list = sharedPreferences.getStringList("variation");
-                        list!.add(_productlist[index].variation_id);
-                        print(_productlist[index].variation_id);
-                        sharedPreferences.setStringList("variation", []);
-                        sharedPreferences.setStringList("variation", list);
-                        Map<String,dynamic> product={};
-                        var customer_id=sharedPreferences.getString("customer_id")??0;
-                        var bid=sharedPreferences.getInt("bid");
-                        http.Response response2 = await http.get(
-                            Uri.parse("https://seropos.app/connector/api/sells/pos/get_discount_product/${_productlist[index].variation_id}/$bid?customer_id=$customer_id"), headers: {
-                          'Authorization': sharedPreferences.getString("Authorization")??""
-                        });
-                        var x=json.decode(response2.body);
-                        int flag1 =0;
-                        for (int i =0 ;i<cart.cartItem.length;i++){
-                          if(cart.cartItem[i].productId==_productlist[index].id){
-                            cart.addToCart(productId: _productlist[index].id,
-                                unitPrice: x["data"]["default_sell_price"],
-                                productName: _productlist[index].name,
-                                quantity: ++cart.cartItem[i].quantity);
-                            flag1 =1;
-                            print("&&&&&&&&&&&&&&&&&**************(())))))))))))))))))");
-                            break;
-                          }
-                        }
-                        if( flag1 ==0){
-                          cart.addToCart(productId: _productlist[index].id, unitPrice:x["data"]["default_sell_price"],productName: _productlist[index].name);
-                        }
-
-                        sharedPreferences.setString("total", cart.getCartItemCount().toString());
-                        list_of_products.clear();
-                        if(sharedPreferences.getString("products")!=""){
-                          list_of_products=json.decode(sharedPreferences.getString("products")??"")??[];}
-                        m={
-                          "pid":_productlist[index].id,
-                          "tax_id":_productlist[index].tax_id,
-                          "price_inc_tax":x["data"]["sell_price_inc_tax"],
-                          "total":x["data"]["sell_price_inc_tax"],
-                          "note":""
-                        };
-                        int flag=0;
-                        for(int i=0;i<list_of_products.length;i++)
-                        {
-                          if(list_of_products[i]["pid"]==_productlist[index].id)
-                          {
-                            flag=1;
-                            break;
-                            print("Yes product id exist");
-                          }
-                        }
-                        if(flag==0)
-                          list_of_products.add(m);
-                        print(list_of_products);
-                        sharedPreferences.setString("products", json.encode(list_of_products));
-                        http.Response response = await http.get(
-                            Uri.parse(
-                                "https://seropos.app/connector/api/product/${_productlist[index].id}")
-                            ,  headers: {
-                          'Authorization': sharedPreferences.getString("Authorization")??""
-                        });
-                        var v = (json.decode(response.body));
-                        List<dynamic> check = v["data"][0]["modifiers"];
-                        if (check.isNotEmpty) {
-                          showDialog(context: context, builder: (context) {
-                            return add(product: _productlist[index].name);
-                          });
-                        }
-                        Fluttertoast.showToast(
-                            msg: "Item added to cart",
-                            toastLength: Toast.LENGTH_LONG,
-                            gravity: ToastGravity.BOTTOM,
-                            textColor: Colors.green,
-                            timeInSecForIosWeb: 4);
-                      }
-                  );
-                })
+                )
             ),
             Expanded(
               flex: 6,
               child:SingleChildScrollView(
-                child: Column(
+                child:_isloading_forcart ? Center(child: CircularProgressIndicator(color: Color(0xff000066))): Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
@@ -773,7 +880,7 @@ class _TabScreenState extends State<TabScreen> {
                                             ],
                                           ),
                                           Container(
-                                            height:((list_of_products[index]["note"] != "" )&& (list_of_products[index]["note"] != null)) ?  20 : 0,
+                                            height:(list_of_products.length>0 && (list_of_products[index]["note"] != "" )&& (list_of_products[index]["note"] != null)) ?  20 : 0,
                                             alignment: Alignment.centerLeft,
                                             padding: EdgeInsets.only(left: 10),
                                             child:FutureBuilder(
@@ -1024,7 +1131,7 @@ class _TabScreenState extends State<TabScreen> {
       for(int i=0;i<products.length;i++)
       {
         setState(() {
-          paymentAmount+=double.parse(products[i]["total"]);
+          paymentAmount+=double.parse(products[i]["total"].toString());
         });
       }
 
@@ -1057,6 +1164,20 @@ class _TabScreenState extends State<TabScreen> {
       return [];
     }
   }
+}
+class product
+{
+  final String id;
+  final String name;
+  final String url;
+  final String variation_id;
+  final int tax_id;
+  product.fromJson(Map<String,dynamic> json):
+        name=json["product_name"],
+        url=json["product_image_url"],
+        id=json["product_id"].toString(),
+        variation_id=json["variation_id"].toString(),
+        this.tax_id=json["tax_id"]?? 0;
 }
 class Customer
 {
@@ -1093,18 +1214,3 @@ class CustomerApi {
     return name;
   }
 }
-class product
-{
-  final String id;
-  final String name;
-  final String url;
-  final String variation_id;
-  final int tax_id;
-  product.fromJson(Map<String,dynamic> json):
-        name=json["product_name"],
-        url=json["product_image_url"],
-        id=json["product_id"].toString(),
-        variation_id=json["variation_id"].toString(),
-        this.tax_id=json["tax_id"]?? 0;
-}
-
