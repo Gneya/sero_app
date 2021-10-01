@@ -46,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String hint="Walk In Customer";
 
   final TextEditingController _typeAheadController = TextEditingController();
+  //function called in initstate
   fetch()
   async {
     print("round"+(3.4).round().toString());
@@ -408,7 +409,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           minWidth: MediaQuery.of(context).size.width,
                           padding: EdgeInsets.fromLTRB(30.0, 15.0, 30.0, 15.0),
                           onPressed: () async {
-                            // Phoenix.rebirth(context);
+                            //Dine in
                             if(types_of_service_id[index]==1){
                             SharedPreferences shared=await SharedPreferences.getInstance();
                             shared.setInt("types_of_service_id",1);
@@ -423,6 +424,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 MaterialPageRoute(
                                     builder: (context) => SelectTable()));
                           }
+                            //take away
                             else if(types_of_service_id[index]==2){
                               SharedPreferences shared=await SharedPreferences.getInstance();
                               // Navigator.push(
@@ -437,6 +439,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               }
                               shared.setInt("index", 1);
                             }
+                            //home dev
                             else if(types_of_service_id[index]==3)
                               {
                                dev();
@@ -521,6 +524,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 }
+//for search customer
 class Customer
 {
   final String _name;

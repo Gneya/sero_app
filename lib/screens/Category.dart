@@ -50,21 +50,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   var v;
   bool value = false;
   bool value1 = false;
-  _CategoryScreenState() {
-    _controller.addListener(() {
-      if (_controller.text.isEmpty) {
-        setState(() {
-          _isSearching = false;
-          _searchText = "";
-        });
-      } else {
-        setState(() {
-          _isSearching = true;
-          _searchText = _controller.text;
-        });
-      }
-    });
-  }
+  //barcode scanner
   Future<void> _scanQR() async {
     String barcodeScanRes;
     // Platform messages may fail, so we use a try/catch PlatformException.
@@ -105,6 +91,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
 
   }
+  //fetching categories
   Future<void> get() async {
     SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
     if(mounted){
@@ -132,21 +119,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
         _isloading=false;
       });}
   }
-  void _handleSearchStart() {
-    setState(() {
-      _isSearching = true;
-    });
-  }
-  void searchOperation(String searchText) {
-    searchresult.clear();
-    if (_isSearching != null) {
-      for (int i = 0; i < _datalist.length; i++) {
-        String data = _datalist[i];
-        if (data.toLowerCase().contains(searchText.toLowerCase())) {
-          searchresult.add(data);
-        }
-      }
-    }}
   setBottomBarIndex(index) {
     setState(() {
       _currentIndex = index;
@@ -353,6 +325,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
+                                  //Search product
                                   Container(
                                       height: MediaQuery.of(context).size.height/20,
                                       width: MediaQuery.of(context).size.width/1.6,

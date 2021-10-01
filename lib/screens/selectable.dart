@@ -1,3 +1,4 @@
+//select table
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,6 +34,7 @@ class _SelectTableState extends State<SelectTable> {
           _tablenos = val;
         }));
   }
+  //fetching table data from api
   Future<List<String>> fetchData() async {
     Map data = await getData();
     setState(() {
@@ -209,6 +211,7 @@ class _SelectTableState extends State<SelectTable> {
       ),
       body: _isloading? Center(
           child: CircularProgressIndicator(color: Color(0xff000066),)):
+      //displaying table
       GridView.builder(
         shrinkWrap: true,
         primary: false,
@@ -237,6 +240,7 @@ class _SelectTableState extends State<SelectTable> {
             onTap: ()async {
               // Phoenix.rebirth(context);
               List<dynamic> list_of_products=[];
+              //if table is occupied
               SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
               sharedPreferences.setString("table_name", _tablenos[index]);
               if(_table_status[index]=="occupied")
@@ -245,6 +249,7 @@ class _SelectTableState extends State<SelectTable> {
                 setState(() {
                   _isloading = true;
                 });
+                //if table has previous holds
                 http.Response response = await http.get(
                     Uri.parse(
                         "https://seropos.app/connector/api/sell?per_page=-1")
@@ -299,13 +304,8 @@ class _SelectTableState extends State<SelectTable> {
                   });
                 }
               }else{
-                // String myUrl = "https://seropos.app/connector/api/change-table-status";
-                // http.Response response = await http.post(Uri.parse(myUrl), headers: {
-                //   'Authorization': "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjMwYjE2MGVhNGUzMzA4ZTNiMjhhZGNlYWEwNjllZTA2NjI5Y2M4ZjMxMWFjZjUwMDFjZmZkMTE1ZDZlNTliZGI5NmJlZmQ3ZGYzYjRhNWNhIn0.eyJhdWQiOiIzIiwianRpIjoiMzBiMTYwZWE0ZTMzMDhlM2IyOGFkY2VhYTA2OWVlMDY2MjljYzhmMzExYWNmNTAwMWNmZmQxMTVkNmU1OWJkYjk2YmVmZDdkZjNiNGE1Y2EiLCJpYXQiOjE2MjU4OTY4MDcsIm5iZiI6MTYyNTg5NjgwNywiZXhwIjoxNjU3NDMyODA3LCJzdWIiOiI4Iiwic2NvcGVzIjpbXX0.OJ9XTCy8i5-f17ZPWNpqdT6QMsDgSZUsSY9KFEb-2O6HehbHt1lteJGlLfxJ2IkXF7e9ZZmydHzb587kqhBc_GP4hxj6PdVpoX_GE05H0MGOUHfH59YgSIQaU1cGORBIK2B4Y1j4wyAmo0O1i5WAMQndkKxA03UFGdipiobet64hAvCIEu5CipJM7XPWogo2gLUoWob9STnwYQuOgeTLKfMsMG4bOeaoVISy3ypALDJxZHi85Q9DZgO_zbBp9MMOvhYm9S1vPzoKCaGSx2zNtmOtCmHtUAxCZbu0TR2VDN7RpLdMKgPF8eLJglUhCur3BQnXZfYWlVWdG-T3PCKMvJvoE6rZcVXy2mVJUk3fWgldcOAhPRmQtUS563BR0hWQDJOL3RsRAjeesMhRouCtfmQBcW83bRindIiykYV1HrjdJBQNb3yuFFJqs9u7kgVFgZmwzsbd512t9Vfe1Cq_DhXbJM2GhIoFg72fKbGImu7UnYONUGB3taMmQn4qCXoMFnDl7glDLU9ib5pbd0matbhgkydHqThk5RZOPWje9W93j9RvwqwYL1OkcV9VXWcxYk0wwKRMqNtx74GLOUtIh8XJDK3LtDpRwLKer4dDPxcQHNgwkEH7iJt40bd9j27Mcyech-BZDCZHRSZbwhT7GnNeu2IluqVq3V0hCW3VsB8"
-                // },body: jsonEncode(<String,dynamic>{
-                //   "table_id":3,
-                //   "table_status":"occupied"
-                // }));
+
+              //converting table status as occupied
                 SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
                 sharedPreferences.setInt("table_id", id[index]);
                 Map<String,dynamic> api={
@@ -321,6 +321,7 @@ class _SelectTableState extends State<SelectTable> {
                 setState(() {
                   _isloading=false;
                 });
+                //redirecting to category screen
                 sharedPreferences.setInt("index", 1);
               }
             },
@@ -335,6 +336,7 @@ class _SelectTableState extends State<SelectTable> {
     );
   }
 }
+//function to fetch data
 Future<Map<String, dynamic>> getData() async {
   SharedPreferences sharedPreferences=await SharedPreferences.getInstance();
   String myUrl = "https://seropos.app/connector/api/table";
