@@ -713,8 +713,6 @@ class _CartScreenState extends State<CartScreen> {
           print(price[i]);
           print(price[i]);
           p+=double.parse(price[i]);
-          // print("PPPPPPPPPPPPPPPPPPPPPPPPPPP");
-          // print(p);
         }
         _mod = sharedPreferences.getStringList(list[i]);
         // print(_mod);
