@@ -102,22 +102,6 @@ class  edit_customerState extends State< edit_customer> {
       dio.options.headers["Authorization"]=shared.getString("Authorization");
       var r2=await dio.put("https://seropos.app/connector/api/contactapi/$id",data: json.encode(api1));
       print(r2);
-      // if (_customer.error != "null") {
-      //   setState(() {
-      //     _isloading = false;
-      //   });
-      //   Fluttertoast.showToast(
-      //       msg: _customer.error,
-      //       toastLength: Toast.LENGTH_LONG,
-      //       gravity: ToastGravity.BOTTOM,
-      //       textColor: Colors.red,
-      //       timeInSecForIosWeb: 10);
-      // }
-      // else {
-      //   setState(() {
-      //     _isloading = false;
-      //     print(_customer.id);
-      //   });
       Fluttertoast.showToast(
           msg: "Customer Updated Successfully",
           toastLength: Toast.LENGTH_LONG,
@@ -129,11 +113,6 @@ class  edit_customerState extends State< edit_customer> {
       setState(() {
         _isloading = false;
       });
-      // Navigator.push(
-      //     context,
-      //     MaterialPageRoute(
-      //       builder: (context) => SelectTable(),
-      //     ));
     }
   }
   @override

@@ -141,8 +141,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     // TODO: implement initState
-
-
     fetch();
 
     super.initState();
@@ -317,6 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: MaterialButton(
                         minWidth: MediaQuery.of(context).size.width,
                         padding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+
                         onPressed: () {},
                         child: Container(
                             padding: EdgeInsets.all(5),
@@ -452,9 +451,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   } ),
                 ),
-
-
-
               ],
             ),
           ),
